@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/widgets/splash_screen.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.landscapeLeft,
+  ]).then((_) async{
+    runApp(MyApp());
+  });
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'TRACKER FIRMWARE PROVISIONING',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          color: darkBg,
+          elevation: 0.3,
+        ),
+        scrollbarTheme: ScrollbarThemeData(
+          thumbColor: MaterialStateProperty.all<Color>(Colors.white),
+          trackColor: MaterialStateProperty.all<Color>(Colors.white.withOpacity(0.5)),
+        ),
+      ),
+      home:splashScreen(),
+    );
+  }
+}
