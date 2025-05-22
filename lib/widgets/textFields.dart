@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 
 class TextFeildNewUser extends StatelessWidget{
@@ -150,3 +151,83 @@ class LabelText extends StatelessWidget{
 
 }
 
+class SearchTextFieldContainer extends StatelessWidget {
+  final Widget? child;
+
+  const SearchTextFieldContainer({
+    Key? key,
+    this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+        width: size.width,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28.0),
+          color: Colors.white,
+        ),
+        child: child);
+  }
+}
+
+class CircularTextField extends StatelessWidget {
+  final String? hintText;
+  final TextEditingController? Controller;
+  final dynamic type;
+  final dynamic maxLength;
+  final bool obscure;
+  final IconData? icon;
+  final IconData? sufixicon;
+  dynamic etext;
+  final Color? color;
+  final ValueChanged<String>? onSubmitted;
+
+  final ValueChanged<String>? onChanged;
+
+  CircularTextField({
+    Key? key,
+    this.type,
+    this.etext,
+    this.maxLength,
+    this.Controller,
+    this.icon/*= Icons.person*/,
+    this.onChanged,
+    this.sufixicon,
+    this.obscure = false,
+    this.onSubmitted,
+    this.hintText,
+    this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SearchTextFieldContainer(
+      child: TextField(
+        controller: Controller,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(29.0),
+          ),
+          suffixIcon: Icon(
+            sufixicon,
+            color: Colors.black,
+            size: 20,
+          ),
+          prefix: Icon(
+            icon,
+            color: Colors.black,
+            size: 20,
+          ),
+          hintText: hintText,
+          fillColor: const Color(0xffffffff),
+        ),
+        onChanged: onChanged,
+        onSubmitted: onSubmitted,
+        cursorColor: Colors.black,
+      ),
+    );
+  }
+}

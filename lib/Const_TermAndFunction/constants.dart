@@ -79,8 +79,22 @@ showAlertDialog(
   );
 }
 
-List<String> designation = [
-  "Facctory User","Field User"
-];
+Map<String, dynamic> designationRoles = {
+  "Admin": {
+    "id": 1,
+    "name": "admin",
+    "priority": 1,
+  },
+  "Factory User": {
+    "id": 2,
+    "name": "Factory User",
+    "priority": 2,
+  },
+  "Field User":{
+    "id":3,
+    "name":"Field User",
+    "priority":3
+  },
+};
 
 

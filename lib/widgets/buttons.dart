@@ -15,8 +15,8 @@ class AdminMainBtn extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return SizedBox(
-      width: 350,      // Set your desired width
-      height: 60,
+      width: size.width/1.2,      // Set your desired width
+      height: size.height/15,
       child: ElevatedButton(
         onPressed: onpress as void Function(),
         style: ButtonStyle(

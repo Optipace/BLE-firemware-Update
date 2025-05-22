@@ -4,7 +4,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/admin/api/api.dart';
-import 'package:tracker_firmware/modules/admin/editUser/adminEditUser.dart';
 import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 import 'package:tracker_firmware/modules/admin/newUser/adminNewUser.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
@@ -22,68 +21,74 @@ class AdminMain extends StatelessWidget{
       body: Stack(
         children: [
           Container(color: lightBg,),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              height: size.height/3,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: darkBg,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(300),
-                  bottomRight: Radius.circular(300),
+          Container(
+            child:Stack(
+              children:
+              [
+                Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  height: size.height/3,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                      color: darkBg,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(300),
+                        bottomRight: Radius.circular(300),
+                      ),
+                      border: Border.all(
+                          color: Colors.black,
+                          width: 0.5
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: darkBg,
+                          blurRadius: 30,
+                        )
+                      ]
+                  ),
                 ),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 0.5
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: darkBg,
-                    blurRadius: 30,
-                  )
-                ]
               ),
+                Padding(
+                    padding: EdgeInsets.only(left: size.width/4.2,top: (size.height/3)/2.5),
+                    child: Container(
+                        child: Column(
+                          children: [
+                            Text("ADMIN",
+                              style: TextStyle(
+                                fontSize: 38,
+                                color: lightBg,
+                                fontFamily:baseFont,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 1.1,
+                                backgroundColor: darkBg,
+                                shadows: [Shadow(
+                                  blurRadius: 2,
+
+                                )],
+
+                              ),
+                            ),
+                            Text("DASH-BOARD",
+                              style: TextStyle(
+                                color: lightBg,
+                                fontSize: 38,
+                                fontFamily: baseFont,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 1.1,
+                                backgroundColor: darkBg,
+                                shadows: [Shadow(
+                                  blurRadius: 2,
+                                )],
+
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                )
+              ],
             ),
-          ),
-          Positioned(
-            left: MediaQuery.of(context).size.width/4,
-            top: 120,
-            child: Container(
-              child: Column(
-                children: [
-                  Text("ADMIN",
-                    style: TextStyle(
-                        fontSize: 38,
-                        color: lightBg,
-                        fontFamily:baseFont,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.1,
-                        backgroundColor: darkBg,
-                        shadows: [Shadow(
-                          blurRadius: 2,
-
-                        )],
-
-                    ),
-                  ),
-                  Text("DASH-BOARD",
-                    style: TextStyle(
-                        color: lightBg,
-                        fontSize: 38,
-                        fontFamily: baseFont,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.1,
-                      backgroundColor: darkBg,
-                      shadows: [Shadow(
-                          blurRadius: 2,
-                      )],
-
-                    ),
-                  ),
-                ],
-              )
-            )
           ),
           Align(
             alignment:Alignment.center,
@@ -117,8 +122,8 @@ class AdminMain extends StatelessWidget{
 
                   //----logout----------
                   SizedBox(
-                    width: 350,
-                    height: 60,
+                    width: size.width/1.2,
+                    height: size.height/16,
                     child: ElevatedButton(
                       onPressed: () {
                         showAlertNavigtorLogout(context,

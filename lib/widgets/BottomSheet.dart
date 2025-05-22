@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 BottomSheet_Widget(context, childrens, {String? isFixed, Color? color}) {
@@ -13,7 +12,7 @@ BottomSheet_Widget(context, childrens, {String? isFixed, Color? color}) {
     enableDrag: isFixed == "true" ? false : true,
     constraints: BoxConstraints(maxHeight: size.height * 0.75),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(25.0))),
-    backgroundColor: color ?? darkBg,
+    backgroundColor: color ?? Color(0xff3c3f41),
     context: context,
     builder: (context) =>
     //   Stack(

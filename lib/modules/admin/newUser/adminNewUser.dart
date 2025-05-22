@@ -88,8 +88,8 @@ class AdminNewUserState extends State<AdminNewUser>{
                           });
                         },
                         child: Container(
-                          width:  size.width/2,
-                          height: size.height/9,
+                          width: size.width * 0.48,
+                          height: 120,
                           decoration: BoxDecoration(
                               color:  selectedbutton == 1 ? darkBg :lightBg,
                               borderRadius: const BorderRadius.only(
@@ -323,6 +323,7 @@ class AdminNewUserState extends State<AdminNewUser>{
                                 etext: validateUser && _password.text.trim().isEmpty ?"Please Enter the Password" : "",
                               ),
                               SizedBox(height: 15,),
+
 
 
                             ],

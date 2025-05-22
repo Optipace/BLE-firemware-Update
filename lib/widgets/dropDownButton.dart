@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/widgets/textFields.dart';
 
-class PrimaryDropdown extends StatelessWidget {
+class PrimeryDropDownButton extends StatelessWidget {
   final bool isEnabled;
   final bool isMandatory;
   final String? mainText;
@@ -15,7 +17,7 @@ class PrimaryDropdown extends StatelessWidget {
   final Widget? tail;
   final Widget? anchor;
 
-  const PrimaryDropdown({
+  const PrimeryDropDownButton({
     Key? key,
     this.color,
     this.textColor = Colors.black,
@@ -39,7 +41,31 @@ class PrimaryDropdown extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              anchor ?? SizedBox(),
+              Container(
+                  margin: EdgeInsets.only(
+                    // left: 25,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        "${mainText.toString()} ",
+                        style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500,fontFamily: baseFont),
+                      ),
+                      isMandatory
+                          ? Text(
+                        "*",
+                        style: TextStyle(fontSize: 16, color: Colors.red, fontWeight: FontWeight.w500,fontFamily: baseFont),
+                      )
+                          : SizedBox(),
+                    ],
+                  )),
+            ],
+          ),
           Container(
             margin: EdgeInsets.only(
               top: 5.0,
@@ -63,7 +89,7 @@ class PrimaryDropdown extends StatelessWidget {
                           style: TextStyle(
                             color: isEnabled ? Colors.black87 : Colors.black87,
                             fontSize: 16,
-                            fontFamily: "Graphik",
+                            fontFamily: baseFont,
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -84,27 +110,26 @@ class PrimaryDropdown extends StatelessWidget {
         ],
       ),
     );
-
   }
 }
 
-class MapListItemBuilderWithRadioButton extends StatefulWidget {
+
+class MapListItemBuilder extends StatefulWidget {
   final Map<String, dynamic> listItems;
   final Function()? press;
-  // final DataController? selected;
+  final DataController? selected;
   final bool searchEnable;
 
-  const MapListItemBuilderWithRadioButton(
-      {Key? key, required this.listItems, this.press, this.searchEnable = false})
+  const MapListItemBuilder(
+      {Key? key, required this.listItems, this.press, this.selected, this.searchEnable = false})
       : super(key: key);
 
   @override
-  State<MapListItemBuilderWithRadioButton> createState() => _MapListItemBuilderWithRadioButtonState();
+  State<MapListItemBuilder> createState() => _MapListItemBuilderState();
 }
 
-class _MapListItemBuilderWithRadioButtonState extends State<MapListItemBuilderWithRadioButton> {
-  // //for Searching
-  // TextEditingController search = TextEditingController();
+class _MapListItemBuilderState extends State<MapListItemBuilder> {
+  TextEditingController search = TextEditingController();
 
   Map<String, dynamic> suggestionList = {};
 
@@ -116,23 +141,19 @@ class _MapListItemBuilderWithRadioButtonState extends State<MapListItemBuilderWi
     super.initState();
 
     suggestionList.addAll(widget.listItems);
-    //search
-    // search.clear();
+    search.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        //-----Search thing-------
-        /*
         SizedBox(
           height: 1.0,
         ),
-        //search box
         widget.searchEnable
             ? CircularTextField(
-            hintText: LanguageTextSelection.search[selectedLanguage],
+            hintText: "Search",
             Controller: search,
             sufixicon: Icons.search_outlined,
             onChanged: (value) {
@@ -159,7 +180,7 @@ class _MapListItemBuilderWithRadioButtonState extends State<MapListItemBuilderWi
               Container(
                 width: size.width * 0.7,
                 child: Text(
-                  LanguageTextSelection.select[selectedLanguage],
+                  "SELECT",
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontSize: 20.0,
@@ -169,6 +190,7 @@ class _MapListItemBuilderWithRadioButtonState extends State<MapListItemBuilderWi
                   ),
                 ),
               ),
+              /*
               Radio(
                 // activeColor:Colors.green,
                 fillColor: MaterialStateColor.resolveWith(
@@ -181,22 +203,23 @@ class _MapListItemBuilderWithRadioButtonState extends State<MapListItemBuilderWi
                 ),
                 // overlayColor:Color(0xFFFFFFFF),
                 // fillColor:Colors.green,
-                value: LanguageTextSelection.select[selectedLanguage].toString(),
+                value:"SELECT",
 
                 groupValue: widget.selected?.getText,
                 onChanged: (value) {},
-              ),
+              ),*/
             ],
           ),
         ),
-*/
-        //mainThing
         ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount:widget.listItems.length,
+          itemCount:
+          search.text == "null" || search.text == "" ? widget.listItems.length : suggestionList.length,
           itemBuilder: (context, index) {
-            final entry = widget.listItems.entries.toList()[index];
+            final entry = search.text == "null" || search.text == ""
+                ? widget.listItems.entries.toList()[index]
+                : suggestionList.entries.toList()[index];
 
             return Container(
               alignment: Alignment.centerLeft,
@@ -221,15 +244,22 @@ class _MapListItemBuilderWithRadioButtonState extends State<MapListItemBuilderWi
                     onPressed: () {
                       setState(() {
                         selectedItem = entry.key;
+                        widget.selected?.setobj = entry.value;
+                        widget.selected!.setText = entry.key;
+                        if (widget.press != null) {
+                          widget.press!();
+                        }
                       });
+
                       Navigator.of(context, rootNavigator: true).pop();
                     },
                   ),
+                  /*
                   Radio(
                     // activeColor:Colors.green,
                     fillColor: MaterialStateColor.resolveWith(
                           (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.pressed)) {
+                        if (states.contains(MaterialState.selected)) {
                           return Colors.green;
                         }
                         return Colors.white;
@@ -238,19 +268,25 @@ class _MapListItemBuilderWithRadioButtonState extends State<MapListItemBuilderWi
                     // overlayColor:Color(0xFFFFFFFF),
                     // fillColor:Colors.green,
                     value: entry.key,
-                    groupValue: selectedItem,
+                    groupValue: widget.selected?.getText,
                     onChanged: (value) {
                       setState(() {
                         setState(() {
                           selectedItem = entry.key;
+                          widget.selected?.setobj = entry.value;
+                          widget.selected!.setText = entry.key;
+                          if (widget.press != null) {
+                            widget.press!();
+                          }
                         });
 
                         Navigator.of(context, rootNavigator: true).pop();
-                        printFunc("DROPDOWN : \n ${entry} \n ${selectedItem}");
+                        printFunc(value);
+                        printFunc(widget.selected?.getText.toString());
                         // selectedItem = value.toString();
                       });
                     },
-                  ),
+                  ),*/
                 ],
               ),
             );
@@ -263,4 +299,5 @@ class _MapListItemBuilderWithRadioButtonState extends State<MapListItemBuilderWi
     );
   }
 }
+
 

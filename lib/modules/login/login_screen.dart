@@ -61,8 +61,8 @@ class LoginScreenState extends State<LoginScreen>{
         ),
         child: Center(
           child:Container(
-            height: 450,
-            width: 380,
+            height: size.height/2.2,
+            width: size.width/1.15,
             decoration: BoxDecoration(
                 color:Color.fromRGBO(208, 209, 206, 0.2),
                 borderRadius: BorderRadius.circular(20),
@@ -103,8 +103,8 @@ class LoginScreenState extends State<LoginScreen>{
                           curve: Curves.easeInOut,
                           child: _showInfo
                               ? Container(
-                            width: 250,
-                            height: 40,
+                            width: size.width/1.5,
+                            height: size.height/20,
                             margin: EdgeInsets.only(top: 10,bottom: 10),
                             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
                             decoration: BoxDecoration(
@@ -112,11 +112,11 @@ class LoginScreenState extends State<LoginScreen>{
                               border: Border.all(color: lightBg),
                               borderRadius: BorderRadius.circular(6),
                             ),
-                            child:Align(
+                                  child:Align(
                               alignment: Alignment.centerLeft,
-                              child: Padding(
+                                      child: Padding(
                                 padding: EdgeInsets.only(left: 5),
-                                child: Text(
+                                        child: Text(
                                   'UUID : ',
                                   style: TextStyle(color:Color.fromRGBO(248, 250, 254, 1.0), fontSize: 18,fontWeight: FontWeight.w700,letterSpacing: 1.1),
                                 ),
