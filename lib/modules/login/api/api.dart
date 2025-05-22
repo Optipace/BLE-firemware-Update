@@ -34,7 +34,7 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
         // field user page
         }
       }*/
-      setSharedPreference(await getEmployeeDetail(context, phoneNum));
+      setSharedPreference(await getEmployeeDetail(context, phoneNum)??{});
       sharedPreferences.setBool("user_logged_in", true);
 
       setDeviceId();
@@ -61,7 +61,7 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
 
   return false;
 }
-Future< Map<String, dynamic>> getEmployeeDetail(BuildContext context, String contactNumber) async{
+Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String contactNumber) async{
   sharedPreferences = await SharedPreferences.getInstance();
 
   var data = {
@@ -92,7 +92,7 @@ Future< Map<String, dynamic>> getEmployeeDetail(BuildContext context, String con
         'userId': 'U12345',
         'name': 'John Doe',
         'email': 'john.doe@example.com',
-        'phone': '+1234567890',
+        'phone': '+91$contactNumber',
         'designationCode': '1',
         'empRegisteredId': 'EMP56789',
         'designation': 'Software Engineer',
@@ -100,8 +100,12 @@ Future< Map<String, dynamic>> getEmployeeDetail(BuildContext context, String con
         'refreshToken': 'd2ViLXRva2VuLXJlZnJlc2g=',
         'status': 'active',
       };
+      if(contactNumber=="1111111111"||contactNumber=="2222222222")
       return userinfo;
+      else {
 
+        return null;
+      }
     }
     //  --else cond --
     /*else{
