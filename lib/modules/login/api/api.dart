@@ -99,6 +99,7 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
         'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         'refreshToken': 'd2ViLXRva2VuLXJlZnJlc2g=',
         'status': 'active',
+
       };
       if(contactNumber=="1111111111"||contactNumber=="2222222222")
       return userinfo;
