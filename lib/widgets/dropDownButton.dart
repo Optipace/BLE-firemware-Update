@@ -36,8 +36,8 @@ class PrimeryDropDownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? size.width * 0.90,
-      margin: EdgeInsets.only(top: 5, bottom: 5),
+      width: width ?? size.width*0.85,
+      margin: EdgeInsets.only(left: 18,right: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -54,7 +54,17 @@ class PrimeryDropDownButton extends StatelessWidget {
                     children: [
                       Text(
                         "${mainText.toString()} ",
-                        style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500,fontFamily: baseFont),
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            color:darkBg,
+                            fontFamily: baseFont,
+                            shadows: [Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.2,
+                              // offset: Offset(0.5, 0.5)
+                            )]
+                        ),
                       ),
                       isMandatory
                           ? Text(
@@ -63,17 +73,19 @@ class PrimeryDropDownButton extends StatelessWidget {
                       )
                           : SizedBox(),
                     ],
-                  )),
+                  )) ,
+              // SizedBox(height:2,)
             ],
           ),
           Container(
             margin: EdgeInsets.only(
               top: 5.0,
             ),
+            padding: EdgeInsets.only(left: 22),
             decoration: BoxDecoration(
-                color: isEnabled ? color ?? darkBg : lightBg,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(width: 0.3)),
+                color: isEnabled ? color ?? Colors.white : lightBg,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(width: 1)),
             height: height ?? 45,
             width: width ?? size.width * 0.90,
             child: InkWell(
@@ -86,11 +98,13 @@ class PrimeryDropDownButton extends StatelessWidget {
                         margin: EdgeInsets.only(left: 5),
                         child: Text(
                           text!,
-                          style: TextStyle(
-                            color: isEnabled ? Colors.black87 : Colors.black87,
-                            fontSize: 16,
-                            fontFamily: baseFont,
-                          ),
+                          style:
+                              TextStyle(
+                                  fontSize: 20,
+                                  color: isEnabled ? darkBg : Colors.black87,//Color(0xFF9AC4C9),
+                                  fontFamily: baseFont,
+                                  fontWeight: FontWeight.w300
+                              ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
@@ -98,6 +112,7 @@ class PrimeryDropDownButton extends StatelessWidget {
                     ),
                     Container(
                       margin: EdgeInsets.only(right: 20, bottom: 10),
+                      padding: EdgeInsets.only(top: 10),
                       child: Center(
                         child: icon,
                       ),
@@ -183,10 +198,11 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
                   "SELECT",
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                    fontSize: 20.0,
-                    // color: Color(0xff817f98),
-                    color: Colors.white24,
-                    fontWeight: FontWeight.w500,
+                      fontSize: 20.0,
+                      // color: Color(0xff817f98),
+                      color: primaryButtonText,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: baseFont
                   ),
                 ),
               ),
@@ -234,10 +250,11 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
                         entry.key.trim(),
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontSize: 20.0,
-                          // color: Color(0xff817f98),
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
+                            fontSize: 20.0,
+                            // color: Color(0xff817f98),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: baseFont
                         ),
                       ),
                     ),

@@ -21,6 +21,9 @@ Color secondaryText = Color.fromRGBO(108, 122, 137, 1.0);
 //Border Or Icon
 Color outlineColor = Color.fromRGBO(162, 195, 200, 1.0);
 
+// Error Color
+Color errorText = Color(0xFFCD5C5C);
+
 String baseFont = 'Crimson';
 
 bool isSession = false;

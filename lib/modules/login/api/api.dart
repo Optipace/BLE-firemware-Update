@@ -95,16 +95,39 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
         'phone': '+91$contactNumber',
         'designationCode': '1',
         'empRegisteredId': 'EMP56789',
-        'designation': 'Software Engineer',
+        'designation': 'Admin',
         'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         'refreshToken': 'd2ViLXRva2VuLXJlZnJlc2g=',
-        'status': 'active',
-
+        'status': 'Deactive',
       };
       if(contactNumber=="1111111111"||contactNumber=="2222222222")
       return userinfo;
       else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:Row(
+              children: [
+                Image.asset('assets/image/search.png',width: 24,height: 24,color: Color(0xFFFF6B6B),),
+                SizedBox(width: 15,),
+                Text('User Not Founded',
+                  style: TextStyle(
+                    color: Color(0xFFFF6B6B),
+                    fontWeight: FontWeight.w300,
+                    fontFamily: baseFont,
+                    fontSize: 22,
 
+                  ),),
+              ],
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: primaryButton,
+            elevation: 5,
+            margin: EdgeInsets.only(bottom: 50,left: 20,right: 20,),
+            duration: Duration(seconds: 3),
+
+
+          ),
+        );
         return null;
       }
     }
