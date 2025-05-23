@@ -49,7 +49,7 @@ class TextFeildNewUser extends StatelessWidget{
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Container(
         height: 60,
-        width: MediaQuery.of(context).size.width*0.85,
+        width: size.width*0.85,
 
         padding: EdgeInsets.symmetric(horizontal: 18),
         child: Center(
@@ -58,7 +58,7 @@ class TextFeildNewUser extends StatelessWidget{
               cursorWidth: 1,
               style: TextStyle(
                   fontSize: 20,
-                  color: darkBg,
+                  color: enable?darkBg:Colors.black,
                   fontWeight: FontWeight.w300,
                   fontFamily: baseFont,
                   letterSpacing: 0.2
@@ -77,12 +77,16 @@ class TextFeildNewUser extends StatelessWidget{
                     borderSide: BorderSide(color: darkBg,width: 0.5),
                     borderRadius: BorderRadius.all(Radius.circular(15))
                 ),
+                disabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black,width:1),
+                    borderRadius: BorderRadius.all(Radius.circular(15))
+                ),
                 focusColor: Colors.black,
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     borderSide: BorderSide(
                         width: 1,
-                        color:  etext==""?Colors.black :darkBg
+                        color:  etext==""?darkBg :Colors.black
                     )
                 ),
                 focusedErrorBorder: OutlineInputBorder(
@@ -100,7 +104,7 @@ class TextFeildNewUser extends StatelessWidget{
                     )
                 ),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: enable?Colors.white:lightBg,
                 hintText: hintText,
                 hintStyle: TextStyle(
                     fontSize: 20,
@@ -109,6 +113,9 @@ class TextFeildNewUser extends StatelessWidget{
                     fontWeight: FontWeight.w300
                 ),
                 errorText:etext=="" ? null : etext,
+                errorStyle: TextStyle(
+                  color:errorText
+                ),
                 counterText: ""
 
 

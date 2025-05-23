@@ -17,4 +17,8 @@ class DataController{
   get getobj {
     return obj;
   }
+  void cleardata() {
+    Text = "";
+    obj = null;
+  }
 }
