@@ -54,7 +54,7 @@ class FactoryMain extends StatelessWidget{
                 child: Container(
                     child: Column(
                       children: [
-                        Text("ADMIN",
+                        Text("ADMIN ssdsds",
                           style: TextStyle(
                             fontSize: 38,
                             color: lightBg,
@@ -94,20 +94,20 @@ class FactoryMain extends StatelessWidget{
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AdminMainBtn(
+                      PrimaryButton(
                           icon: Image.asset('assets/image/viewLog.png',width: 24,height: 24,color: darkBg,),
                           text: "View Log",
-                          onpress: (){
+                          onPress: (){
                             Navigator.of(context).push(
                                 MaterialPageRoute<void>(
                                     builder: (_) => AdminLogs()));
                           }
                       ),
                       SizedBox(height: 25,),
-                      AdminMainBtn(
+                      PrimaryButton(
                           icon: Image.asset('assets/image/modify.png',width: 24,height: 24,color: darkBg,),
                           text: "Modify User",
-                          onpress: (){
+                          onPress: (){
                             Navigator.of(context).push(
                                 MaterialPageRoute<void>(
                                     builder: (_) => AdminNewUser()));

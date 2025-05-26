@@ -72,7 +72,7 @@ Future<Map<String, dynamic>> getUserData() async {
   return allData; //sharedPreferences.getBool('user_logged_in') ?? false;
 }
 
-void setDeviceId() async {
+Future setDeviceId() async {
   sharedPreferences = await SharedPreferences.getInstance();
 
   var deviceInfo = DeviceInfoPlugin();

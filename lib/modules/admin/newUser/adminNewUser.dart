@@ -26,6 +26,8 @@ class AdminNewUserState extends State<AdminNewUser>{
 
   int selectedbutton =1;
 
+  Map<String, dynamic> designationRoles = {};
+
 
   // -- New user
   bool validateUser = false;
@@ -69,12 +71,37 @@ class AdminNewUserState extends State<AdminNewUser>{
 
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      designationRoles = {
+        "Admin": {
+          "id": 1,
+          "name": "admin",
+          "priority": 1,
+        },
+        "Factory User": {
+          "id": 2,
+          "name": "Factory User",
+          "priority": 2,
+        },
+        "Field User": {
+          "id": 3,
+          "name": "Field User",
+          "priority": 3
+        },
+      };
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("New-User",style: TextStyle(fontFamily: baseFont,fontWeight: FontWeight.w800, fontSize: 22,color: lightBg),),
+        title: Text("Manage User",style: TextStyle(fontFamily: baseFont,fontWeight: FontWeight.w800, fontSize: 22,color: lightBg),),
         toolbarHeight: 60,
         backgroundColor: darkBg,
         elevation: 5,
@@ -195,7 +222,7 @@ class AdminNewUserState extends State<AdminNewUser>{
                                       height: 32,
                                       color: selectedbutton == 1 ? darkBg : lightBg,
                                     ),
-                                    Text("Field User",
+                                    Text("Edit User",
                                       style: TextStyle(
                                         fontSize: 22,
                                         fontFamily: baseFont,
@@ -218,7 +245,8 @@ class AdminNewUserState extends State<AdminNewUser>{
                 )
             ),
 
-            if (selectedbutton == 1) Card(
+            if (selectedbutton == 1)
+              Card(
               elevation: 5,
               margin: EdgeInsets.only(left: 15,top: 10,right: 15,bottom: 20),
               shape: RoundedRectangleBorder(
@@ -673,27 +701,64 @@ class AdminNewUserState extends State<AdminNewUser>{
                               ),
                               _activeUser ?
                               Container(
-                                padding: EdgeInsets.only(top: 15,bottom: 30),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    manageUserBtn(
-                                        text: "Update",
-                                        onPress: (){
-                                          ValidateEditUser();
-                                          validateEditDropDown(designation01);
-                                          print("validate edit User : $_validateEditDropDown");
-                                          printFunc("Validate Edit Drop Down : ${_validateEditDropDown}");
-                                          printFunc("${!_validateEditUser && !_validateEditDropDown}");
-                                          if(!_validateEditUser && !_validateEditDropDown){
-                                            printFunc("Insid if cond");
+                                padding: EdgeInsets.only(top: 15,bottom: 30,left:15,right:15),
+                                child: FittedBox(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      manageUserBtn(
+                                          text: "Update",
+                                          onPress: (){
+                                            ValidateEditUser();
+                                            validateEditDropDown(designation01);
+                                            print("validate edit User : $_validateEditDropDown");
+                                            printFunc("Validate Edit Drop Down : ${_validateEditDropDown}");
+                                            printFunc("${!_validateEditUser && !_validateEditDropDown}");
+                                            if(!_validateEditUser && !_validateEditDropDown){
+                                              printFunc("Insid if cond");
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content:Row(
+                                                    children: [
+                                                      Icon(CupertinoIcons.checkmark_seal_fill,color: lightBg,),
+                                                      SizedBox(width: 15,),
+                                                      Text('User Updated Successfully!!',
+                                                        style: TextStyle(
+                                                          color: lightBg,
+                                                          fontWeight: FontWeight.w300,
+                                                          fontFamily: baseFont,
+                                                          fontSize: 22,
+
+                                                        ),),
+                                                    ],
+                                                  ),
+                                                  behavior: SnackBarBehavior.floating,
+                                                  backgroundColor: darkBg,
+                                                  elevation: 5,
+                                                  margin: EdgeInsets.all(16),
+                                                  duration: Duration(milliseconds: 800),
+
+
+                                                ),
+                                              );
+                                              // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => AdminMain()));
+
+                                            }else{printFunc("Inside else cond");}
+                                          }
+                                      ),
+                                      SizedBox(width:5),
+                                      manageUserBtn(
+                                          text: "Deactive",
+                                          onPress: (){
+                                            setState(() {
+                                              _activeUser = false;
+                                            });
                                             ScaffoldMessenger.of(context).showSnackBar(
                                               SnackBar(
                                                 content:Row(
                                                   children: [
-                                                    Icon(CupertinoIcons.checkmark_seal_fill,color: lightBg,),
-                                                    SizedBox(width: 15,),
-                                                    Text('User Updated Successfully!!',
+                                                    SizedBox(width: 20,),
+                                                    Text('Employee Deactivted',
                                                       style: TextStyle(
                                                         color: lightBg,
                                                         fontWeight: FontWeight.w300,
@@ -706,56 +771,22 @@ class AdminNewUserState extends State<AdminNewUser>{
                                                 behavior: SnackBarBehavior.floating,
                                                 backgroundColor: darkBg,
                                                 elevation: 5,
-                                                margin: EdgeInsets.all(16),
-                                                duration: Duration(milliseconds: 800),
+                                                margin: EdgeInsets.only(left: 16,right: 16,top: 16,bottom: 21.5),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.only(
+                                                    bottomLeft: Radius.circular(20),
+                                                    bottomRight: Radius.circular(20)
+                                                  ), 
+                                                ),
+                                                duration: Duration(milliseconds: 500),
 
 
                                               ),
                                             );
-                                            // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => AdminMain()));
-
-                                          }else{printFunc("Inside else cond");}
-                                        }
-                                    ),
-                                    manageUserBtn(
-                                        text: "Deactive",
-                                        onPress: (){
-                                          setState(() {
-                                            _activeUser = false;
-                                          });
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content:Row(
-                                                children: [
-                                                  SizedBox(width: 20,),
-                                                  Text('Employee Deactivted',
-                                                    style: TextStyle(
-                                                      color: lightBg,
-                                                      fontWeight: FontWeight.w300,
-                                                      fontFamily: baseFont,
-                                                      fontSize: 22,
-
-                                                    ),),
-                                                ],
-                                              ),
-                                              behavior: SnackBarBehavior.floating,
-                                              backgroundColor: darkBg,
-                                              elevation: 5,
-                                              margin: EdgeInsets.only(left: 16,right: 16,top: 16,bottom: 21.5),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                                  bottomLeft: Radius.circular(20),
-                                                  bottomRight: Radius.circular(20)
-                                                ), 
-                                              ),
-                                              duration: Duration(milliseconds: 500),
-
-
-                                            ),
-                                          );
-                                        }
-                                    )
-                                  ],
+                                          }
+                                      )
+                                    ],
+                                  ),
                                 ),
                               )
                                   :
