@@ -44,7 +44,7 @@ class Dashboard extends StatelessWidget{
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top:size.height*0.07),
+              padding: EdgeInsets.only(top:size.height*0.1),
               width: size.width,
               child: Center(
                   child: Column(
@@ -76,3 +76,4 @@ class Dashboard extends StatelessWidget{
     );
   }
 }
+

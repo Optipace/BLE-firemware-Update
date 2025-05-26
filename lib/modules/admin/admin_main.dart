@@ -18,7 +18,7 @@ class AdminMain extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Dashboard(text: 'ADMIN\nDASH-BOARD', icon: null, child:
+    return Dashboard(text: 'ADMIN\nDASH-BOARD', icon: Image.asset('assets/image/editUser.png'), child:
     Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
