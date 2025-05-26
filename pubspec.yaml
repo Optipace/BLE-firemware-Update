@@ -39,6 +39,8 @@ dependencies:
   mobile_device_identifier: ^0.0.3
   file_picker: ^5.3.1
   path: ^1.8.3
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 #  device_imei : ^0.0.4+2
 

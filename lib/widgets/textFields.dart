@@ -141,7 +141,7 @@ class LabelText extends StatelessWidget{
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Text(text,
           style: TextStyle(
-              fontSize: 22,
+              fontSize: 18,
               fontWeight: FontWeight.w600,
               color:darkBg,
               fontFamily: baseFont,

@@ -36,6 +36,11 @@ Color FailureCardText = Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text
 
 
 String baseFont = 'Crimson';
+String serviceBox = 'ServiceBox';
+// String baseFont = 'Roboto';
+// String baseFont = 'Inter  ';
+// String baseFont = 'Poppins ';
+Map<String, dynamic> serviceProfiles = {};//await hiveService.readAllData();
 
 bool isSession = false;
 

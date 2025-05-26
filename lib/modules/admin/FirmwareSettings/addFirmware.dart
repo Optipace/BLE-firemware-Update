@@ -74,17 +74,17 @@ Map<String, dynamic> batteryList ={};
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       batteryList = {
-        "Admin": {
+        "B6": {
           "id": 1,
           "name": "B6",
           "priority": 1,
         },
-        "Factory User": {
+        "B9": {
           "id": 2,
           "name": "B9",
           "priority": 2,
         },
-        "Field User": {
+        "B12": {
           "id": 3,
           "name": "B12",
           "priority": 3
@@ -161,12 +161,12 @@ Map<String, dynamic> batteryList ={};
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset('assets/image/user.png',
-                                      width: 32,
-                                      height: 32,
-                                      color: selectedbutton == 1 ? lightBg : darkBg,
-                                    ),
-
+                                    // Image.asset('assets/image/user.png',
+                                    //   width: 32,
+                                    //   height: 32,
+                                    //   color: selectedbutton == 1 ? lightBg : darkBg,
+                                    // ),
+                                    Icon(Icons.update,color: selectedbutton == 2 ? darkBg : lightBg,size: 40,),
                                     Text("New Firmware",
                                       style: TextStyle(
                                         fontSize: 22,
@@ -214,11 +214,13 @@ Map<String, dynamic> batteryList ={};
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset('assets/image/editUser.png',
-                                      width: 32,
-                                      height: 32,
-                                      color: selectedbutton == 1 ? darkBg : lightBg,
-                                    ),
+                                    // Image.asset('assets/image/editUser.png',
+                                    //   width: 32,
+                                    //   height: 32,
+                                    //   color: selectedbutton == 1 ? darkBg : lightBg,
+                                    // ),
+                                    // Icon(Icons.tune_outlined),
+                                    Icon(Icons.handyman_outlined,color: selectedbutton == 1 ? darkBg : lightBg,size: 32,),
                                     Text("New Profile",
                                       style: TextStyle(
                                         fontSize: 22,
@@ -341,7 +343,7 @@ Map<String, dynamic> batteryList ={};
                           mainText: "Select Battery Series",
                           text: batterySeries.Text != ""
                               ?batterySeries.getText
-                              : "Select The Battery Series",
+                              : "Battery Series",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
@@ -438,13 +440,13 @@ Map<String, dynamic> batteryList ={};
     );
   }
   Widget newService(context){
-    return  Card(
+   return Card(
       elevation: 5,
-      margin: EdgeInsets.only(left: 15,top: 10,right: 15,bottom: 20 ),
+      margin: EdgeInsets.only(left: 15,top: 10,right: 15,bottom: 20),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20), // <-- radius here
       ),
-      child:  Container(
+      child: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
             border: Border.all(
@@ -456,11 +458,10 @@ Map<String, dynamic> batteryList ={};
         child: SingleChildScrollView(
           child: Column(
             children: [
-              //Title
               Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: 15),
                 child: Center(
-                  child: Text("Empolye's Phone number",
+                  child: Text("ENTER THE DETAILS",
                     style: TextStyle(
                         fontFamily: baseFont,
                         fontWeight: FontWeight.w800,
@@ -475,359 +476,144 @@ Map<String, dynamic> batteryList ={};
                   ),
                 ),
               ),
-              //TextField
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-                      SizedBox(height: 10,),
-                      //----Name-----
-
+                      SizedBox(height: 20 ,),
+                      //----2.0.3-----
+                      LabelText(text: "Profile Name :"),
                       TextFeildNewUser(
-                        hintText: "Enter Phone number",
-                        Controller: _searchPhn,
-                        maxLength: 10,
-                        type: TextInputType.number,
+                        hintText: "Enter Profile Name  ",
+                        Controller: _versionCode,
                         onChanged: (value){},
                         enable: true,
-                        etext: _validatePhn ?"Please Enter 10 digit Phone number" : "",
+                        etext: validateUser && _versionCode.text.trim().isEmpty ?"Please Enter the Profile Name" : "",
                       ),
                       SizedBox(height: 10,),
 
+                      //update on bluetooth conectivity
+                      LabelText(text: "Description :"),
+                      TextFeildNewUser(
+                        hintText: "Description",
+                        Controller: _releaseNote,
+                        onChanged: (value){},
+                        enable: true,
+                        etext: validateUser && _releaseNote.text.trim().isEmpty ?"Please Enter the Description" : "",
+                      ),
+                      SizedBox(height: 8,),
 
-                    ],
-                  )
-              ),
-              //Search btn
-              Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: SizedBox(
-                    width: size.width/3,      // Set your desired width
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed:(){
-                        validatePhn();
-                        setState(() {});
-                        if(!_validatePhn){
-                          setEmpDetails();
-                        }
-                        printFunc("DEMO VALIDATE USER : $_validatePhn");
-                        printFunc("DEMO SetEMp Detials : $_userFound");
-                        //api call and store in a bool var so then if the bool is true then olny set the userFound to true otherwise set to false
-                        /*
-                                if(_searchPhn.text.trim().length == 10){
-                                 setState(() {
-                                   _userFound= true;
-                                 });
-                               }else{
-                                 setState(() {
-                                   _userFound= false;
-                                 });
-                               }*/
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(darkBg),
-                        elevation: MaterialStateProperty.all(5),
-                        shadowColor: MaterialStateProperty.all(darkBg),
-                        shape:MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                              side: BorderSide(
-                                  color: darkBg,
-                                  width: 1
-                              )
+                      const LabelText(text: "Upper Threshold :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Upper Threshold",
+                        inputFormatters:   [OneDecimalInputFormatter()],
+                        type:TextInputType.number,
+                        Controller: _firmWareVersionName,
+                        onChanged: (value){
+                        },
+                        enable: true,
+                        etext: validateUser && _firmWareVersionName.text.trim().isEmpty ?"Please Enter the Upper Threshold" : "",
+                      ),
+                      SizedBox(height: 8,),
+                      const LabelText(text: "Upper Voltage :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Upper Voltage",
+                        inputFormatters:   [OneDecimalInputFormatter()], // Correct
+                        type:TextInputType.number,
+
+                        Controller: _firmWareVersionName,
+                        onChanged: (value){
+                        },
+                        enable: true,
+                        etext: validateUser && _firmWareVersionName.text.trim().isEmpty ?"Please Enter the Upper Voltage" : "",
+                      ),
+                      SizedBox(height: 8,),
+                      const LabelText(text: "Lower Threshold :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Lower Threshold",
+                        inputFormatters:   [OneDecimalInputFormatter()],
+                        type:TextInputType.number,
+
+                        Controller: _firmWareVersionName,
+                        onChanged: (value){
+                        },
+                        enable: true,
+                        etext: validateUser && _firmWareVersionName.text.trim().isEmpty ?"Please Enter the Lower Threshold" : "",
+                      ),
+                      SizedBox(height: 8,),
+                      const LabelText(text: "Lower Voltage :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Lower Voltage",
+                        inputFormatters:   [OneDecimalInputFormatter()],
+                        type:TextInputType.number,
+
+                        Controller: _firmWareVersionName,
+                        onChanged: (value){
+                        },
+                        enable: true,
+                        etext: validateUser && _firmWareVersionName.text.trim().isEmpty ?"Please Enter the Lower Voltage" : "",
+                      ),
+                      SizedBox(height: 8,),
+
+
+
+                      //----Battery series---- [DROPDOWN]
+                      GestureDetector(
+                        child: PrimeryDropDownButton(
+                          isEnabled: true,
+                          tail: ErrorContainer(
+                              show: _validateDropDown,
+                              errorMsg:"Please Select the Battery Series"
                           ),
+                          mainText: "Select Battery Series",
+                          text: batterySeries.Text != ""
+                              ?batterySeries.getText
+                              : "Battery Series",
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            color: darkBg,
+                          ),
+                          press: () async{
+                            await BottomSheet_Widget(
+                                context,
+                                [
+                                  MapListItemBuilder(
+                                    listItems: batteryList,
+                                    press: (){},
+                                    selected: batterySeries,
+                                  )
+                                ]
+                            );
+                            setState(() {});
+                          },
+
+
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.search_rounded,size: 21),
-                          Text("Search",style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: baseFont,
-                              shadows: [Shadow(
-                                  color: Colors.black,
-                                  blurRadius:0.1
-                              )]
-                          ),)
-                        ],
-                      ),
-                    ),
+                      SizedBox(height: 8,),
+
+
+
+
+                    ],
                   )
               ),
 
-              Visibility(
-                  visible: _userFound && !_validatePhn ,
-                  child: Column(
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 20 ,),
-
-                              //----Name-----
-                              LabelText(text: "Emoplyee Name :"),
-                              TextFeildNewUser(
-                                hintText: "Enter Empolyee name",
-                                Controller: _name01,
-                                onChanged: (value){},
-                                enable: _activeUser,
-                                etext: _validateEditUser && _name01.text.trim().isEmpty ?"Please Enter the name" : "",
-                              ),
-                              SizedBox(height: 10,),
-
-                              //----empRegId------
-                              LabelText(text: "Emoplyee Regestred ID[Company ID]:"),
-                              TextFeildNewUser(
-                                hintText: "Enter empRegID",
-                                Controller: _empRegId01,
-                                onChanged: (value){},
-                                enable: _activeUser,
-                                etext: _validateEditUser && _empRegId01.text.trim().isEmpty ?"Please Enter the empRegID" : "",
-                              ),
-                              SizedBox(height: 8,),
-
-                              //------email------
-                              LabelText(text: "Empolyee E-Mail :"),
-                              TextFeildNewUser(
-                                hintText: "Enter Empolyee E-Mail",
-                                Controller: _email01,
-                                onChanged: (value){},
-                                enable: _activeUser,
-                                etext: _validateEditUser && _email01.text.trim().isEmpty ?"Please Enter the E-Mail" : "",
-                              ),
-                              SizedBox(height: 8,),
-
-                              //-----Contact ------
-                              LabelText(text: "Empolyee Phone number :"),
-                              TextFeildNewUser(
-                                hintText: "Enter Empolyee Password",
-                                Controller: _contact01,
-                                onChanged: (value){},
-                                enable: _activeUser,
-                                etext: _validateEditUser && _contact01.text.trim().isEmpty ?"Please Enter the Phone Number" : "",
-                              ),
-                              SizedBox(height: 8,),
-
-                              //----DesignationID---- [DROPDOWN]
-                              GestureDetector(
-                                child: PrimeryDropDownButton(
-                                  isEnabled: _activeUser,
-                                  tail: ErrorContainer(
-                                      show: _validateDropDown,
-                                      errorMsg:"Please Select the Designation"
-                                  ),
-                                  mainText: "Select the desgination",
-                                  text: designation01.Text != ""
-                                      ?designation01.getText
-                                      : "Select The Designation",
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_sharp,
-                                    color: darkBg,
-                                  ),
-                                  press: () async{
-                                    await BottomSheet_Widget(
-                                        context,
-                                        [
-                                          Column(
-                                            children: [
-                                              MapListItemBuilder(
-                                                listItems: batteryList,
-                                                press: (){},
-                                                selected: batterySeries,
-                                              )
-                                            ],
-                                          )
-                                        ]
-                                    );
-                                    setState(() {});
-                                    printFunc("Designation Demo ${designation01.obj}");
-                                  },
-
-
-                                ),
-                              ),
-                              SizedBox(height: 8,),
-
-                              // Password and Re-entry Password
-                              /*
-                                      //-----password-----
-                                      LabelText(text: "Empolyee Password :"),
-                                      TextFeildNewUser(
-                                        hintText: "Enter Empolyee Password",
-                                        Controller: _password01,
-                                        onChanged: (value){},
-                                        enable: true,
-                                        etext: _validateEditUser && _password.text.trim().isEmpty ?"Please Enter the Password" : "",
-                                      ),
-                                      SizedBox(height: 8,),
-
-                                      //-----password-----
-                                      LabelText(text: "Re-Enter Empolyee Password :"),
-                                      TextFeildNewUser(
-                                        hintText: "Re-Enter Empolyee Password",
-                                        Controller: _repassword01,
-                                        onChanged: (value){},
-                                        enable: true,
-                                        etext: _validateEditUser && _password.text.trim().isEmpty ?"Please Enter the Password" : "",
-                                      ),
-
-                                      */
-
-                              SizedBox(height: 15,),
-
-
-
-
-                            ],
-                          )
-                      ),
-                      _activeUser ?
-                      Container(
-                        padding: EdgeInsets.only(top: 15,bottom: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            manageUserBtn(
-                                text: "Update",
-                                onPress: (){
-                                  ValidateEditUser();
-                                  validateEditDropDown(designation01);
-                                  print("validate edit User : $_validateEditDropDown");
-                                  printFunc("Validate Edit Drop Down : ${_validateEditDropDown}");
-                                  printFunc("${!_validateEditUser && !_validateEditDropDown}");
-                                  if(!_validateEditUser && !_validateEditDropDown){
-                                    printFunc("Insid if cond");
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content:Row(
-                                          children: [
-                                            Icon(CupertinoIcons.checkmark_seal_fill,color: lightBg,),
-                                            SizedBox(width: 15,),
-                                            Text('User Updated Successfully!!',
-                                              style: TextStyle(
-                                                color: lightBg,
-                                                fontWeight: FontWeight.w300,
-                                                fontFamily: baseFont,
-                                                fontSize: 22,
-
-                                              ),),
-                                          ],
-                                        ),
-                                        behavior: SnackBarBehavior.floating,
-                                        backgroundColor: darkBg,
-                                        elevation: 5,
-                                        margin: EdgeInsets.all(16),
-                                        duration: Duration(milliseconds: 800),
-
-
-                                      ),
-                                    );
-                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => AdminMain()));
-
-                                  }else{printFunc("Inside else cond");}
-                                }
-                            ),
-                            manageUserBtn(
-                                text: "Deactive",
-                                onPress: (){
-                                  setState(() {
-                                    _activeUser = false;
-                                  });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:Row(
-                                        children: [
-                                          SizedBox(width: 20,),
-                                          Text('Employee Deactivted',
-                                            style: TextStyle(
-                                              color: lightBg,
-                                              fontWeight: FontWeight.w300,
-                                              fontFamily: baseFont,
-                                              fontSize: 22,
-
-                                            ),),
-                                        ],
-                                      ),
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: darkBg,
-                                      elevation: 5,
-                                      margin: EdgeInsets.only(left: 16,right: 16,top: 16,bottom: 21.5),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(20),
-                                            bottomRight: Radius.circular(20)
-                                        ),
-                                      ),
-                                      duration: Duration(milliseconds: 500),
-
-
-                                    ),
-                                  );
-                                }
-                            )
-                          ],
-                        ),
-                      )
-                          :
-                      Container(
-                        padding: EdgeInsets.only(top: 15,bottom: 30),
-                        child: manageUserBtn(
-                            text: "Active",
-                            onPress: (){
-                              setState(() {
-                                _activeUser = true;
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content:Row(
-                                    children: [
-                                      SizedBox(width: 20,),
-                                      Text('Employee Activaited',
-                                        style: TextStyle(
-                                          color: lightBg,
-                                          fontWeight: FontWeight.w300,
-                                          fontFamily: baseFont,
-                                          fontSize: 22,
-
-                                        ),),
-                                    ],
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: darkBg,
-                                  elevation: 5,
-                                  margin: EdgeInsets.only(left: 16,right: 16,top: 16,bottom: 21.5),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20)
-                                    ),
-                                  ),
-                                  duration: Duration(milliseconds: 500),
-
-
-                                ),
-                              );
-                            }
-                        ),
-                      )
-                    ],
-                  )
-              )
+              Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: manageUserBtn(
+                    text: "Upload Profile",
+                    onPress: (){  }
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
-}
+  }
   void ValidateUser(){
     final Controllers = [
       _versionCode,
@@ -983,7 +769,7 @@ Map<String, dynamic> batteryList ={};
   Future<void> pickPdfAndConvertToBase64() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf'],
+      allowedExtensions: ['jpg',"jpeg"],
     );
 
     if (result != null && result.files.single.path != null) {

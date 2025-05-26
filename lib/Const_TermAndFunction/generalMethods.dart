@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'dart:developer' as dev;
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
@@ -112,5 +113,19 @@ getSize(BuildContext context) {
   } else {
     size.width = MediaQuery.of(context).size.width / 2;
     size.height = MediaQuery.of(context).size.height;
+  }
+}
+class OneDecimalInputFormatter extends TextInputFormatter {
+  final RegExp _regExp = RegExp(r'^\d{0,3}(\.\d{0,1})?$'); // Adjust digits as needed
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue,
+      TextEditingValue newValue,
+      ) {
+    if (_regExp.hasMatch(newValue.text)) {
+      return newValue;
+    }
+    return oldValue;
   }
 }
