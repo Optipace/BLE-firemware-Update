@@ -154,7 +154,7 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
 }
 
 
-List<Map<String, dynamic>> getAllEmpolyeeLogs() {
+List<Map<String, dynamic>> getAllEmployeeLogs() {
 
   List<Map<String, dynamic>> empLogs = [
     {

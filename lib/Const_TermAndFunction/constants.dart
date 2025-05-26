@@ -25,6 +25,11 @@ Color outlineColor = Color.fromRGBO(162, 195, 200, 1.0);
 Color errorText = Color(0xFFCD5C5C);
 
 String baseFont = 'Crimson';
+String serviceBox = 'ServiceBox';
+// String baseFont = 'Roboto';
+// String baseFont = 'Inter  ';
+// String baseFont = 'Poppins ';
+Map<String, dynamic> serviceProfiles = {};//await hiveService.readAllData();
 
 bool isSession = false;
 

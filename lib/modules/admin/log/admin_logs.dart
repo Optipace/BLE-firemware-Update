@@ -13,7 +13,7 @@ class AdminLogs extends StatefulWidget{
 
 class AdminLogsState extends State<AdminLogs>{
   int selectedbutton =1;
-  var empLogs=getAllEmpolyeeLogs();
+  var empLogs=getAllEmployeeLogs();
 
   @override
   Widget build(BuildContext context) {

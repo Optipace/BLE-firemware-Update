@@ -290,9 +290,9 @@ class AdminNewUserState extends State<AdminNewUser>{
                             children: [
                               SizedBox(height: 20 ,),
                               //----Name-----
-                              LabelText(text: "Emoplyee Name :"),
+                              const LabelText(text: "Employee Name :"),
                               TextFeildNewUser(
-                                hintText: "Enter Empolyee name",
+                                hintText: "Enter Employee name",
                                 Controller: _name,
                                 onChanged: (value){},
                                 enable: true,
@@ -312,9 +312,9 @@ class AdminNewUserState extends State<AdminNewUser>{
                               SizedBox(height: 8,),
 
                               //------email------
-                              LabelText(text: "Empolyee E-Mail :"),
+                              const LabelText(text: "Employee E-Mail :"),
                               TextFeildNewUser(
-                                hintText: "Enter Empolyee E-Mail",
+                                hintText: "Enter Employee E-Mail",
                                 Controller: _email,
                                 onChanged: (value){},
                                 enable: true,
@@ -323,9 +323,9 @@ class AdminNewUserState extends State<AdminNewUser>{
                               SizedBox(height: 8,),
 
                               //-----Contact ------
-                              LabelText(text: "Empolyee Phone number :"),
+                              LabelText(text: "Employee Phone number :"),
                               TextFeildNewUser(
-                                hintText: "Enter Empolyee Phone number",
+                                hintText: "Enter Employee Phone number",
                                 Controller: _contact,
                                 onChanged: (value){},
                                 enable: true,
@@ -373,9 +373,9 @@ class AdminNewUserState extends State<AdminNewUser>{
                               SizedBox(height: 8,),
 
                               //-----password-----
-                              LabelText(text: "Empolyee Password :"),
+                              LabelText(text: "Employee Password :"),
                               TextFeildNewUser(
-                                hintText: "Enter Empolyee Password",
+                                hintText: "Enter Employee Password",
                                 Controller: _password,
                                 onChanged: (value){},
                                 enable: true,
@@ -384,9 +384,9 @@ class AdminNewUserState extends State<AdminNewUser>{
                               SizedBox(height: 8,),
 
                               //-----RE-password-----
-                              LabelText(text: "Re-Enter Empolyee Password :"),
+                              LabelText(text: "Re-Enter Employee Password :"),
                               TextFeildNewUser(
-                                hintText: "Re-Enter Empolyee Password",
+                                hintText: "Re-Enter Employee Password",
                                 Controller: _repassword,
                                 onChanged: (value){},
                                 enable: true,
@@ -585,7 +585,7 @@ class AdminNewUserState extends State<AdminNewUser>{
                                       //----Name-----
                                       LabelText(text: "Emoplyee Name :"),
                                       TextFeildNewUser(
-                                        hintText: "Enter Empolyee name",
+                                        hintText: "Enter Employee name",
                                         Controller: _name01,
                                         onChanged: (value){},
                                         enable: _activeUser,
@@ -605,9 +605,9 @@ class AdminNewUserState extends State<AdminNewUser>{
                                       SizedBox(height: 8,),
 
                                       //------email------
-                                      LabelText(text: "Empolyee E-Mail :"),
+                                      LabelText(text: "Employee E-Mail :"),
                                       TextFeildNewUser(
-                                        hintText: "Enter Empolyee E-Mail",
+                                        hintText: "Enter Employee E-Mail",
                                         Controller: _email01,
                                         onChanged: (value){},
                                         enable: _activeUser,
@@ -616,9 +616,9 @@ class AdminNewUserState extends State<AdminNewUser>{
                                       SizedBox(height: 8,),
 
                                       //-----Contact ------
-                                      LabelText(text: "Empolyee Phone number :"),
+                                      LabelText(text: "Employee Phone number :"),
                                       TextFeildNewUser(
-                                        hintText: "Enter Empolyee Password",
+                                        hintText: "Enter Employee Password",
                                         Controller: _contact01,
                                         onChanged: (value){},
                                         enable: _activeUser,
@@ -669,9 +669,9 @@ class AdminNewUserState extends State<AdminNewUser>{
                                       // Password and Re-entry Password
                                       /*
                                       //-----password-----
-                                      LabelText(text: "Empolyee Password :"),
+                                      LabelText(text: "Employee Password :"),
                                       TextFeildNewUser(
-                                        hintText: "Enter Empolyee Password",
+                                        hintText: "Enter Employee Password",
                                         Controller: _password01,
                                         onChanged: (value){},
                                         enable: true,
@@ -680,9 +680,9 @@ class AdminNewUserState extends State<AdminNewUser>{
                                       SizedBox(height: 8,),
 
                                       //-----password-----
-                                      LabelText(text: "Re-Enter Empolyee Password :"),
+                                      LabelText(text: "Re-Enter Employee Password :"),
                                       TextFeildNewUser(
-                                        hintText: "Re-Enter Empolyee Password",
+                                        hintText: "Re-Enter Employee Password",
                                         Controller: _repassword01,
                                         onChanged: (value){},
                                         enable: true,
