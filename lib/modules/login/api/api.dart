@@ -34,12 +34,13 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
         // field user page
         }
       }*/
-      setSharedPreference(await getEmployeeDetail(context, phoneNum)??{});
+     await setSharedPreference(await getEmployeeDetail(context, phoneNum)??{});
       sharedPreferences.setBool("user_logged_in", true);
 
-      setDeviceId();
-      setUserData();
+      await setDeviceId();
+      await setUserData();
       UserData userData=new UserData();
+
       navigateToDashBoard(context, int.tryParse(userData.designationCode)??1);
       return true;
     }
@@ -93,12 +94,12 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
         'name': 'John Doe',
         'email': 'john.doe@example.com',
         'phone': '+91$contactNumber',
-        'designationCode': '1',
+        'designationCode': "${((int.parse(contactNumber)/1111111111).round())}",
         'empRegisteredId': 'EMP56789',
         'designation': 'Admin',
         'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         'refreshToken': 'd2ViLXRva2VuLXJlZnJlc2g=',
-        'status': 'Deactive',
+        'status': 'Active',
       };
       if(contactNumber=="1111111111"||contactNumber=="2222222222")
       return userinfo;

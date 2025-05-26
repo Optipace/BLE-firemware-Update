@@ -26,6 +26,8 @@ class AdminNewUserState extends State<AdminNewUser>{
 
   int selectedbutton =1;
 
+  Map<String, dynamic> designationRoles = {};
+
 
   // -- New user
   bool validateUser = false;
@@ -69,12 +71,37 @@ class AdminNewUserState extends State<AdminNewUser>{
 
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      designationRoles = {
+        "Admin": {
+          "id": 1,
+          "name": "admin",
+          "priority": 1,
+        },
+        "Factory User": {
+          "id": 2,
+          "name": "Factory User",
+          "priority": 2,
+        },
+        "Field User": {
+          "id": 3,
+          "name": "Field User",
+          "priority": 3
+        },
+      };
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("New-User",style: TextStyle(fontFamily: baseFont,fontWeight: FontWeight.w800, fontSize: 22,color: lightBg),),
+        title: Text("Manage User",style: TextStyle(fontFamily: baseFont,fontWeight: FontWeight.w800, fontSize: 22,color: lightBg),),
         toolbarHeight: 60,
         backgroundColor: darkBg,
         elevation: 5,
@@ -195,7 +222,7 @@ class AdminNewUserState extends State<AdminNewUser>{
                                       height: 32,
                                       color: selectedbutton == 1 ? darkBg : lightBg,
                                     ),
-                                    Text("Field User",
+                                    Text("Edit User",
                                       style: TextStyle(
                                         fontSize: 22,
                                         fontFamily: baseFont,
@@ -218,7 +245,8 @@ class AdminNewUserState extends State<AdminNewUser>{
                 )
             ),
 
-            if (selectedbutton == 1) Card(
+            if (selectedbutton == 1)
+              Card(
               elevation: 5,
               margin: EdgeInsets.only(left: 15,top: 10,right: 15,bottom: 20),
               shape: RoundedRectangleBorder(

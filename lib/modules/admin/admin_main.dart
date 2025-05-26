@@ -12,6 +12,7 @@ import 'package:tracker_firmware/widgets/dashBoard.dart';
 import 'package:tracker_firmware/widgets/splash_screen.dart';
 
 import '../../widgets/buttons.dart';
+import 'FirmwareSettings/addFirmware.dart';
 
 class AdminMain extends StatelessWidget{
   @override
@@ -23,20 +24,20 @@ class AdminMain extends StatelessWidget{
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
 
-          AdminMainBtn(
+          PrimaryButton(
               icon: Image.asset('assets/image/viewLog.png',width: 24,height: 24,color: darkBg,),
               text: "View Log",
-              onpress: (){
+              onPress: (){
                 Navigator.of(context).push(
                     MaterialPageRoute<void>(
                         builder: (_) => AdminLogs()));
               }
           ),
           SizedBox(height: 25,),
-          AdminMainBtn(
+          PrimaryButton(
               icon: Image.asset('assets/image/modify.png',width: 24,height: 24,color: darkBg,),
               text: "Modify User",
-              onpress: (){
+              onPress: (){
                 Navigator.of(context).push(
                     MaterialPageRoute<void>(
                         builder: (_) => AdminNewUser()));
@@ -45,7 +46,18 @@ class AdminMain extends StatelessWidget{
 
 
           SizedBox(height: 25 ,),
+          PrimaryButton(
+              icon: Image.asset('assets/image/modify.png',width: 24,height: 24,color: darkBg,),
+              text: "Firmware settings",
+              onPress: (){
+                Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                        builder: (_) => AddNewFirmware()));
+              }
+          ),
 
+
+          SizedBox(height: 25 ,),
 //----logout----------
           SizedBox(
             width: 350,
