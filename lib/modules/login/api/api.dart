@@ -61,6 +61,8 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
 
   return false;
 }
+
+
 Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String contactNumber) async{
   sharedPreferences = await SharedPreferences.getInstance();
 
@@ -98,8 +100,8 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
         'designation': 'Admin',
         'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         'refreshToken': 'd2ViLXRva2VuLXJlZnJlc2g=',
-        'status': 'Deactive',
-      };
+        'status': 'active',
+      } ;
       if(contactNumber=="1111111111"||contactNumber=="2222222222")
       return userinfo;
       else {
@@ -149,6 +151,49 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
 
   return {};
 }
+
+
+List<Map<String, dynamic>> getAllEmpolyeeLogs() {
+
+  List<Map<String, dynamic>> empLogs = [
+    {
+      "empId": "EMP121",
+      "Name": "John",
+      "DeviceID": "545",
+      "status": "active",
+      "designation_id": 2,
+      "phone": "+91 9900711798"
+    },
+    {
+      "empId": "EMP122",
+      "Name": "Alice",
+      "DeviceID": "546",
+      "status": "inactive",
+      "designation_id": 2,
+      "phone": "+91 9876543210"
+    },
+    {
+      "empId": "EMP123",
+      "Name": "Bob",
+      "DeviceID": "547",
+      "status": "active",
+      "designation_id": 3,
+      "phone": "+91 9123456780"
+    },
+    {
+      "empId": "EMP124",
+      "Name": "Mary",
+      "DeviceID": "548",
+      "status": "inactive",
+      "designation_id": 3,
+      "phone": "+91 9988776655"
+    }
+  ];
+  return empLogs;
+}
+
+
+
 void navigateToDashBoard(BuildContext context,int  designation_id){
   if(designation_id == 1){
     Navigator.of(context).push(
