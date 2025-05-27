@@ -33,8 +33,6 @@ Color FailureCardText = Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text
 
 
 
-
-
 String baseFont = 'Crimson';
 String serviceBox = 'ServiceBox';
 // String baseFont = 'Roboto';
@@ -97,6 +95,8 @@ showAlertDialog(
     },
   );
 }
+
+final appVersion = "1.0.0";
 
 
 

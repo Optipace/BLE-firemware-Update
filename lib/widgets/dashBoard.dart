@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 
 import '../Const_TermAndFunction/constants.dart';
@@ -7,17 +9,29 @@ import '../Const_TermAndFunction/generalMethods.dart';
 
 class Dashboard extends StatelessWidget{
   final String text;
-  final Image? icon;
   final Widget child;
-  const Dashboard({required this.text, this.icon, required this.child});
+  final bool userProfile;
+  final Function onLogout;
+
+  Dashboard({
+    required this.text,
+    required this.userProfile,
+    required this.child,
+    required this.onLogout,
+  });
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    printFunc("DEMO IN DASHBOARD : ${sharedPreferences.toString()}");
     // TODO: implement build
     return Scaffold(
-// resizeToAvoidBottomInset: true,
+         key: _scaffoldKey,
+        drawer: UserProfileSlider(onLogOut: onLogout),
         body: Stack(
           children: [
+
             Container(color: lightBg,),
             Align(
               alignment: Alignment.topCenter,
@@ -43,6 +57,19 @@ class Dashboard extends StatelessWidget{
                 ),
               ),
             ),
+            userProfile == true
+                ? Positioned(
+                    top:size.height*0.05,
+                    left: 10,
+                    child:
+                    IconButton(
+                        onPressed: (){
+                          _scaffoldKey.currentState?.openDrawer();
+                        },
+                        icon: Icon(CupertinoIcons.line_horizontal_3_decrease_circle_fill,size: 40,color: lightBg,shadows: [Shadow(color: Colors.black,blurRadius: 2.5,)],)
+                    )
+            )
+                : SizedBox(),
             Container(
               padding: EdgeInsets.only(top:size.height*0.1),
               width: size.width,
@@ -51,7 +78,6 @@ class Dashboard extends StatelessWidget{
                     children: [
                       Text(text,
                         style: TextStyle(
-
                           fontSize: 38,
                           color: lightBg,
                           fontFamily:baseFont,
@@ -75,5 +101,192 @@ class Dashboard extends StatelessWidget{
         )
     );
   }
+}
+
+class UserProfileSlider extends StatelessWidget{
+
+  final Function onLogOut;
+
+
+  UserProfileSlider({Key? key, required this.onLogOut}): super(key: key);
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Drawer(
+      width: size.width*0.75,
+      elevation: 20,
+      backgroundColor: lightBg,
+      child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                  padding: EdgeInsets.only(top: size.height*0.05),
+                  child:CircleAvatar(
+                    radius: 50,
+                    backgroundColor: darkBg,
+                    child:Center(
+                      child: Icon(Icons.person,color: lightBg,size: 58,),
+                    ) ,
+                  )
+
+                  /* Icon(CupertinoIcons.person_circle_fill,color: darkBg,size: 100,shadows: [
+                    Shadow(color: Colors.black,blurRadius: 0.5,offset: Offset(0.4, 0.4))
+                  ])*/
+              ),
+              SizedBox(height: 20,),
+
+
+              Text(
+                  "${sharedPreferences.getString("name")}",
+                  style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: baseFont,
+                      color: darkBg,
+                      shadows: [Shadow(
+                        color: Colors.black,
+                        blurRadius:0.5,
+                        offset: Offset(0.5, 0.4)
+                      )]
+                  )
+              ),
+              Divider(),
+
+
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Text("${sharedPreferences.getString("designation")}",
+                                  style: TextStyle(
+                                      fontFamily: baseFont,
+                                      color: darkBg,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      shadows: [
+                                        Shadow(
+                                          color: Colors.black,
+                                          blurRadius:0.3,
+                                          offset: Offset(0.5, 0.4),
+                                        )
+                                      ]
+                                  ),
+
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  Icon(CupertinoIcons.phone,color: darkBg,size: 20,shadows: [
+                                    Shadow(color: darkBg,blurRadius: 0.5,offset: Offset(0.4, 0.4))
+                                  ],),
+                                  SizedBox(width: 10),
+                                  Text("${sharedPreferences.getString("phone")}",
+                                    style: TextStyle(
+                                        fontFamily: baseFont,
+                                        color: darkBg,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        shadows: [
+                                          Shadow(
+                                            color: Colors.black,
+                                            blurRadius:0.3,
+                                            offset: Offset(0.5, 0.4),
+                                          )
+                                        ]
+                                    ),
+                                  )
+                                ],
+                              ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  Icon(CupertinoIcons.mail,color: darkBg,size: 20,shadows: [
+                                    Shadow(color: darkBg,blurRadius: 0.5,offset: Offset(0.4, 0.4))
+                                  ]),
+                                  SizedBox(width: 10,),
+                                  Text("${sharedPreferences.getString("email")}",
+                                    style: TextStyle(
+                                        fontFamily: baseFont,
+                                        color: darkBg,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        shadows: [
+                                          Shadow(
+                                            color: Colors.black,
+                                            blurRadius:0.3,
+                                            offset: Offset(0.5, 0.4),
+                                        )
+                                      ]
+                                    ),
+                                 )
+                               ],
+                             ),
+                           ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Logout and Version at bottom
+
+              Spacer(),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.logout,color: darkBg,size: 28,shadows: [
+                  Shadow(color: darkBg,blurRadius: 0.5,offset: Offset(0.4, 0.4))
+                ]),
+                title: Text("Logout",
+                  style: TextStyle(
+                      fontFamily: baseFont,
+                      color: darkBg,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius:0.3,
+                          offset: Offset(0.5, 0.4),
+                        )
+                      ]
+                  ),
+                ),
+                onTap: () async {
+                  Navigator.of(context).pop(); // Close the drawer first
+                  await Future.delayed(Duration(milliseconds: 300)); // Small delay for smooth UX
+                  onLogOut(); // Execute callback
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  "Version ${appVersion}",
+                  style: TextStyle(color: secondaryText,fontFamily: baseFont,fontWeight: FontWeight.w300),
+                ),
+              ),
+            ],
+          )
+      ),
+    );
+  }
+
 }
 

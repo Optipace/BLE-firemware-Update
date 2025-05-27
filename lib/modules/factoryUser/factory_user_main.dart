@@ -10,6 +10,7 @@ import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 import 'package:tracker_firmware/modules/admin/newUser/adminNewUser.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
+import 'package:tracker_firmware/widgets/dashBoard.dart';
 import 'package:tracker_firmware/widgets/splash_screen.dart';
 
 import '../../widgets/buttons.dart';
@@ -19,159 +20,108 @@ class FactoryMain extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      // resizeToAvoidBottomInset: true,
-        body: Stack(
-          children: [
-            Container(color: lightBg,),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                height: size.height/3,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: darkBg,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(300),
-                      bottomRight: Radius.circular(300),
-                    ),
-                    border: Border.all(
-                        color: Colors.black,
-                        width: 0.5
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: darkBg,
-                        blurRadius: 30,
-                      )
-                    ]
+    return Dashboard(
+        text: "Factory User \n DashBoard",
+        userProfile: true,
+        onLogout: (){
+          showAlertNavigtorLogout(context,
+              "ALERT",
+              "DO YOU REALLY NEED TO LOG-OUT",
+                  (){
+                sharedPreferences.clear();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => LoginScreen()),
+                      (Route<dynamic> route) => false,  // Remove all previous routes
+                );
+
+              },
+                  (){
+                Navigator.pop(context);
+              }
+          );
+        },
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 250),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PrimaryButton(
+                    icon: Image.asset('assets/image/viewLog.png',width: 24,height: 24,color: darkBg,),
+                    text: "View Log",
+                    onPress: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                              builder: (_) => AdminLogs()));
+                    }
                 ),
-              ),
-            ),
-            Positioned(
-                left: MediaQuery.of(context).size.width/4,
-                top: 120,
-                child: Container(
-                    child: Column(
-                      children: [
-                        Text("ADMIN ssdsds",
-                          style: TextStyle(
-                            fontSize: 38,
-                            color: lightBg,
-                            fontFamily:baseFont,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1.1,
-                            backgroundColor: darkBg,
-                            shadows: [Shadow(
-                              blurRadius: 2,
-
-                            )],
-
-                          ),
-                        ),
-                        Text("DASH-BOARD",
-                          style: TextStyle(
-                            color: lightBg,
-                            fontSize: 38,
-                            fontFamily: baseFont,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1.1,
-                            backgroundColor: darkBg,
-                            shadows: [Shadow(
-                              blurRadius: 2,
-                            )],
-
-                          ),
-                        ),
-                      ],
-                    )
-                )
-            ),
-            Align(
-                alignment:Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 250),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      PrimaryButton(
-                          icon: Image.asset('assets/image/viewLog.png',width: 24,height: 24,color: darkBg,),
-                          text: "View Log",
-                          onPress: (){
-                            Navigator.of(context).push(
-                                MaterialPageRoute<void>(
-                                    builder: (_) => AdminLogs()));
-                          }
-                      ),
-                      SizedBox(height: 25,),
-                      PrimaryButton(
-                          icon: Image.asset('assets/image/modify.png',width: 24,height: 24,color: darkBg,),
-                          text: "Modify User",
-                          onPress: (){
-                            Navigator.of(context).push(
-                                MaterialPageRoute<void>(
-                                    builder: (_) => AdminNewUser()));
-                          }
-                      ),
+                SizedBox(height: 25,),
+                PrimaryButton(
+                    icon: Image.asset('assets/image/modify.png',width: 24,height: 24,color: darkBg,),
+                    text: "Modify User",
+                    onPress: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                              builder: (_) => AdminNewUser()));
+                    }
+                ),
 
 
-                      SizedBox(height: 25 ,),
+                SizedBox(height: 25 ,),
 
-                      //----logout----------
-                      SizedBox(
-                        width: 350,
-                        height: 60,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            showAlertNavigtorLogout(context,
-                                "ALERT",
-                                "DO YOU REALLY NEED TO LOG-OUT",
-                                    (){
-                                  sharedPreferences.clear();
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(builder: (_) => LoginScreen()),
-                                        (Route<dynamic> route) => false,  // Remove all previous routes
-                                  );
-
-                                },
-                                    (){
-                                  Navigator.pop(context);
-                                }
+                //----logout----------
+               /* SizedBox(
+                  width: 350,
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showAlertNavigtorLogout(context,
+                          "ALERT",
+                          "DO YOU REALLY NEED TO LOG-OUT",
+                              (){
+                            sharedPreferences.clear();
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (_) => LoginScreen()),
+                                  (Route<dynamic> route) => false,  // Remove all previous routes
                             );
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: darkBg,
-                              elevation: 8,
-                              shadowColor: darkBg,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                  side: BorderSide(
-                                      color: Colors.black,
-                                      width: 0.5
-                                  )
-                              )
-                          ),
-                          child: Text("LOGOUT",
-                            style: TextStyle(
-                                fontFamily: baseFont,
-                                fontSize: 22,
-                                letterSpacing: 1.5,
-                                fontWeight: FontWeight.w800,
-                                shadows: [Shadow(
-                                    color: Colors.black,
-                                    blurRadius: 0.1
-                                )]
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-            ),
 
-          ],
-        )
+                          },
+                              (){
+                            Navigator.pop(context);
+                          }
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: darkBg,
+                        elevation: 8,
+                        shadowColor: darkBg,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                            side: BorderSide(
+                                color: Colors.black,
+                                width: 0.5
+                            )
+                        )
+                    ),
+                    child: Text("LOGOUT",
+                      style: TextStyle(
+                          fontFamily: baseFont,
+                          fontSize: 22,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w800,
+                          shadows: [Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.1
+                          )]
+                      ),
+                    ),
+                  ),
+                ),*/
+              ],
+            ),
+          ),
+        ),
+
     );
 
   }
