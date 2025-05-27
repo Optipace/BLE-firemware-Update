@@ -26,8 +26,6 @@ class splashScreenState extends State<splashScreen> with SingleTickerProviderSta
   void initState(){
     super.initState();
 
-
-
     _controller = AnimationController(
       duration: const Duration(seconds:2),
       vsync: this,
@@ -45,7 +43,6 @@ class splashScreenState extends State<splashScreen> with SingleTickerProviderSta
           UserData userData=new UserData();
           navigateToDashBoard(context, int.tryParse(userData.designationCode)??1);
         }
-
       });
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => LoginScreen())

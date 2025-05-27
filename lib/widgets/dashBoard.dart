@@ -27,7 +27,8 @@ class Dashboard extends StatelessWidget{
     printFunc("DEMO IN DASHBOARD : ${sharedPreferences.toString()}");
     // TODO: implement build
     return Scaffold(
-         key: _scaffoldKey,
+         // Createing Key
+        key: _scaffoldKey,
         drawer: UserProfileSlider(onLogOut: onLogout),
         body: Stack(
           children: [
@@ -57,6 +58,8 @@ class Dashboard extends StatelessWidget{
                 ),
               ),
             ),
+
+            // View Profile
             userProfile == true
                 ? Positioned(
                     top:size.height*0.05,
@@ -64,6 +67,7 @@ class Dashboard extends StatelessWidget{
                     child:
                     IconButton(
                         onPressed: (){
+                          // Useing key
                           _scaffoldKey.currentState?.openDrawer();
                         },
                         icon: Icon(CupertinoIcons.line_horizontal_3_decrease_circle_fill,size: 40,color: lightBg,shadows: [Shadow(color: Colors.black,blurRadius: 2.5,)],)
@@ -106,8 +110,6 @@ class Dashboard extends StatelessWidget{
 class UserProfileSlider extends StatelessWidget{
 
   final Function onLogOut;
-
-
   UserProfileSlider({Key? key, required this.onLogOut}): super(key: key);
 
 
@@ -122,6 +124,7 @@ class UserProfileSlider extends StatelessWidget{
       child: SafeArea(
           child: Column(
             children: [
+              // Icon
               Padding(
                   padding: EdgeInsets.only(top: size.height*0.05),
                   child:CircleAvatar(
@@ -138,7 +141,7 @@ class UserProfileSlider extends StatelessWidget{
               ),
               SizedBox(height: 20,),
 
-
+              // Name
               Text(
                   "${sharedPreferences.getString("name")}",
                   style: TextStyle(
@@ -155,7 +158,7 @@ class UserProfileSlider extends StatelessWidget{
               ),
               Divider(),
 
-
+              // Phone number, mail and Desiganation
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
@@ -245,11 +248,11 @@ class UserProfileSlider extends StatelessWidget{
                   ],
                 ),
               ),
-
-              // Logout and Version at bottom
-
               Spacer(),
               Divider(),
+
+
+              // Logout and Version at bottom
               ListTile(
                 leading: Icon(Icons.logout,color: darkBg,size: 28,shadows: [
                   Shadow(color: darkBg,blurRadius: 0.5,offset: Offset(0.4, 0.4))
@@ -287,6 +290,5 @@ class UserProfileSlider extends StatelessWidget{
       ),
     );
   }
-
 }
 

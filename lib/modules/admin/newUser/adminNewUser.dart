@@ -516,7 +516,31 @@ class AdminNewUserState extends State<AdminNewUser>{
                           child: SizedBox(
                             width: size.width/3,      // Set your desired width
                             height: 40,
-                            child: ElevatedButton(
+                            child: manageUserBtn(
+                                text: "Search",
+                                onPress: (){
+                                  validatePhn();
+                                  setState(() {});
+                                  if(!_validatePhn){
+                                    setEmpDetails();
+                                  }
+                                  printFunc("DEMO VALIDATE USER : $_validatePhn");
+                                  printFunc("DEMO SetEMp Detials : $_userFound");
+                                  //api call and store in a bool var so then if the bool is true then olny set the userFound to true otherwise set to false
+                                  /*
+                                if(_searchPhn.text.trim().length == 10){
+                                 setState(() {
+                                   _userFound= true;
+                                 });
+                               }else{
+                                 setState(() {
+                                   _userFound= false;
+                                 });
+                               }*/
+                                },
+                                icon: Icon(CupertinoIcons.search,size: 20,),
+                            ),
+                            /*ElevatedButton(
                               onPressed:(){
                                 validatePhn();
                                 setState(() {});
@@ -566,7 +590,7 @@ class AdminNewUserState extends State<AdminNewUser>{
                                   ),)
                                 ],
                               ),
-                            ),
+                            )*/
                           )
                       ),
 

@@ -115,6 +115,8 @@ getSize(BuildContext context) {
     size.height = MediaQuery.of(context).size.height;
   }
 }
+
+
 class OneDecimalInputFormatter extends TextInputFormatter {
   final RegExp _regExp = RegExp(r'^\d{0,3}(\.\d{0,1})?$'); // Adjust digits as needed
 

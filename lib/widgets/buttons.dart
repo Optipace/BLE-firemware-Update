@@ -29,7 +29,6 @@ class PrimaryButton extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final buttonWidth = width ?? screenWidth * 0.85;
 
-
     return ElevatedButton(
       onPressed: onPress as void Function(),
       style: ButtonStyle(
@@ -125,54 +124,31 @@ class manageUserBtn extends StatelessWidget{
 
       child: Container(
         height:height??50,
-width: width??size.width/2.5,        child:            FittedBox(fit:BoxFit.scaleDown,
-
-        child:   Row(
-
+        width: width??size.width/2.5,
+        child: FittedBox(
+          fit:BoxFit.scaleDown,
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-
             children: [
-
               if (icon != null)
-
                 icon!, // IconData? passed correctly
-
               if (icon != null)
-
                 SizedBox(width: 5),
-
               Text(text,maxLines: 1,
-
                 style: TextStyle(
-
-
-
                   fontSize: 20,
-
-
-
                   fontWeight: FontWeight.w700,
-
                   fontFamily: baseFont,
-
                   shadows: [Shadow(
-
                       color: Colors.black,
-
                       blurRadius:0.1
-
                   )],
-
                   overflow: TextOverflow.visible,
-
-
-
-                ),)
-
+                ),
+              )
             ],
-
           ),
-),
+          ),
       ),
     );
     // Container(
