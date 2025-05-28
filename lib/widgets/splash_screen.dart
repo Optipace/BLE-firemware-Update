@@ -12,26 +12,27 @@ import 'package:tracker_firmware/modules/login/login_screen.dart';
 
 // import '../screens/login/login_screen.dart';
 
-class splashScreen extends StatefulWidget{
+class splashScreen extends StatefulWidget {
   @override
   splashScreenState createState() => splashScreenState();
 }
 
-class splashScreenState extends State<splashScreen> with SingleTickerProviderStateMixin{
+class splashScreenState extends State<splashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   //Inistiating and navigating to login Screen
   @override
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     _controller = AnimationController(
-      duration: const Duration(seconds:2),
+      duration: const Duration(seconds: 2),
       vsync: this,
     )..repeat();
 
-    Timer(Duration(seconds: 4),(){
+    Timer(Duration(seconds: 4), () {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         requestPermission();
         setDeviceId();
@@ -40,23 +41,22 @@ class splashScreenState extends State<splashScreen> with SingleTickerProviderSta
         if (isSession) {
           printFunc("Yes Session is active");
           printFunc(await getUserData());
-          UserData userData=new UserData();
-          navigateToDashBoard(context, int.tryParse(userData.designationCode)??1);
+          UserData userData = new UserData();
+          navigateToDashBoard(
+              context, int.tryParse(userData.designationCode) ?? 1);
         }
       });
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => LoginScreen())
-      );
+          MaterialPageRoute(builder: (context) => LoginScreen()));
     });
   }
 
   //clearing the Controller
   @override
-  void dispose(){
+  void dispose() {
     _controller.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,42 +64,40 @@ class splashScreenState extends State<splashScreen> with SingleTickerProviderSta
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-              gradient: LinearGradient(
-              colors: [darkBg, lightBg], // Your gradient colors
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+          gradient: LinearGradient(
+            colors: [darkBg, lightBg], // Your gradient colors
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "TRACKER FIRMWARE ",
-                style: TextStyle(
-                  color: primaryText,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  wordSpacing: 1.5,
-                ),
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "TRACKER FIRMWARE ",
+              style: TextStyle(
+                color: primaryText,
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                wordSpacing: 1.5,
               ),
-              SizedBox(height: 20,),
-              Text(
-                "PROVISIONING APP",
-                style: TextStyle(
-                  color: primaryText,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  wordSpacing: 1.5,
-                ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "PROVISIONING APP",
+              style: TextStyle(
+                color: primaryText,
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                wordSpacing: 1.5,
               ),
-            ],
-          )
-        ),
-
-
+            ),
+          ],
+        )),
       ),
     );
   }
-
 }

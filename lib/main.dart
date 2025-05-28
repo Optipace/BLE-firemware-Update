@@ -15,12 +15,11 @@ void main() async {
   final hiveService = HiveService('$serviceBox');
   await hiveService.openBox();
 
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
-  ]).then((_) async{
+  ]).then((_) async {
     runApp(MyApp());
   });
 }
@@ -41,10 +40,11 @@ class MyApp extends StatelessWidget {
         ),
         scrollbarTheme: ScrollbarThemeData(
           thumbColor: MaterialStateProperty.all<Color>(Colors.white),
-          trackColor: MaterialStateProperty.all<Color>(Colors.white.withOpacity(0.5)),
+          trackColor:
+              MaterialStateProperty.all<Color>(Colors.white.withOpacity(0.5)),
         ),
       ),
-      home:splashScreen(),
+      home: splashScreen(),
     );
   }
 }

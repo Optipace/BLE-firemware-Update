@@ -62,8 +62,7 @@ class PrimaryButton extends StatelessWidget {
                 ),
                 child: Center(child: icon),
               ),
-            if (icon != null)
-              SizedBox(width: 20),
+            if (icon != null) SizedBox(width: 20),
             Expanded(
               child: FittedBox(
                 fit: BoxFit.scaleDown,
@@ -78,7 +77,6 @@ class PrimaryButton extends StatelessWidget {
                 ),
               ),
             ),
-
             tailIcon ??
                 Icon(
                   CupertinoIcons.chevron_right_2,
@@ -92,13 +90,19 @@ class PrimaryButton extends StatelessWidget {
   }
 }
 
-class manageUserBtn extends StatelessWidget{
+class manageUserBtn extends StatelessWidget {
   final Icon? icon;
   final String text;
   final Function onPress;
   final double? width;
   final double? height;
-  const manageUserBtn({required this.text, required this.onPress,this.icon, this.width, this.height});
+
+  const manageUserBtn(
+      {required this.text,
+      required this.onPress,
+      this.icon,
+      this.width,
+      this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -106,49 +110,39 @@ class manageUserBtn extends StatelessWidget{
     return ElevatedButton(
       onPressed: onPress as void Function(),
       style: ButtonStyle(
-
         backgroundColor: MaterialStateProperty.all(darkBg),
         elevation: MaterialStateProperty.all(5),
         shadowColor: MaterialStateProperty.all(darkBg),
-        shape:MaterialStateProperty.all(
+        shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
-              side: BorderSide(
-                  color: darkBg,
-                  width: 1
-              )
-          ),
+              side: BorderSide(color: darkBg, width: 1)),
         ),
       ),
-
-
       child: Container(
-        height:height??50,
-        width: width??size.width/2.5,
+        height: height ?? 50,
+        width: width ?? size.width / 2.5,
         child: FittedBox(
-          fit:BoxFit.scaleDown,
+          fit: BoxFit.scaleDown,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (icon != null)
-                icon!, // IconData? passed correctly
-              if (icon != null)
-                SizedBox(width: 5),
-              Text(text,maxLines: 1,
+              if (icon != null) icon!, // IconData? passed correctly
+              if (icon != null) SizedBox(width: 5),
+              Text(
+                text,
+                maxLines: 1,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   fontFamily: baseFont,
-                  shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius:0.1
-                  )],
+                  shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
                   overflow: TextOverflow.visible,
                 ),
               )
             ],
           ),
-          ),
+        ),
       ),
     );
     // Container(
@@ -161,6 +155,4 @@ class manageUserBtn extends StatelessWidget{
     //   ),
     // );
   }
-
-
 }

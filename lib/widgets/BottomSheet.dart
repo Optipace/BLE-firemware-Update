@@ -8,19 +8,19 @@ BottomSheet_Widget(context, childrens, {String? isFixed, Color? color}) {
   printFunc("isFixed :$isFixed");
   return showModalBottomSheet(
     showDragHandle: true,
-
     isScrollControlled: true,
     isDismissible: false,
     enableDrag: isFixed == "true" ? false : true,
     constraints: BoxConstraints(maxHeight: size.height * 0.75),
     shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(25.0),topRight: Radius.circular(25),),
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(25.0),
+        topRight: Radius.circular(25),
+      ),
     ),
     backgroundColor: color ?? Color(0xFF5FAAB0),
     context: context,
-    builder: (context) =>
-
-    Scrollbar(
+    builder: (context) => Scrollbar(
       thumbVisibility: true,
       trackVisibility: true,
       controller: _scrollController,
@@ -31,15 +31,17 @@ BottomSheet_Widget(context, childrens, {String? isFixed, Color? color}) {
         physics: ScrollPhysics(),
         child: Padding(
           padding: EdgeInsets.only(left: 20),
-          child:
-          Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
-            Column(
+          child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children: childrens,
-            ),
-            SizedBox(height: 20),
-          ]),
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: childrens,
+                ),
+                SizedBox(height: 20),
+              ]),
         ),
       ),
     ),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier_platform_interface.dart';
+
 // import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
@@ -85,11 +86,11 @@ Future setDeviceId() async {
         "UUID", iosDeviceInfo.identifierForVendor ?? ' ');
   } else if (Platform.isAndroid) {
     var androidDeviceInfo = await deviceInfo.androidInfo;
-    printFunc("DEMO DEVICEINFO :-------------------------------\n\n ${androidDeviceInfo.data}\n--------------------------------------------\n\n");
+    printFunc(
+        "DEMO DEVICEINFO :-------------------------------\n\n ${androidDeviceInfo.data}\n--------------------------------------------\n\n");
 
     // String? deviceId = await PlatformDeviceId.getDeviceId;
     String? deviceId = "545";
-
 
     sharedPreferences.setString("UUID", deviceId.toString());
     sharedPreferences.setString(
@@ -102,5 +103,3 @@ Future setDeviceId() async {
       "\n version : ${sharedPreferences.getString("osVersion")}"
       "\n model : ${sharedPreferences.getString("deviceModel")}");
 }
-
-

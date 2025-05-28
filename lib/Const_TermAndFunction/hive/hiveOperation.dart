@@ -51,5 +51,4 @@ class HiveService {
   Future<Map<String, dynamic>> readAllData() async {
     return _box.toMap().map((key, value) => MapEntry(key.toString(), value));
   }
-
 }

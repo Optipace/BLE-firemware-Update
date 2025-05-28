@@ -14,74 +14,76 @@ import 'package:tracker_firmware/widgets/splash_screen.dart';
 import '../../widgets/buttons.dart';
 import 'FirmwareSettings/addFirmware.dart';
 
-class AdminMain extends StatelessWidget{
+class AdminMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Dashboard(
         text: 'ADMIN\nDASH-BOARD',
-
         userProfile: true,
-        onLogout: (){
-          showAlertNavigtorLogout(context,
-              "ALERT",
-              "DO YOU REALLY NEED TO LOG-OUT",
-                  (){
-                sharedPreferences.clear();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => LoginScreen()),
-                      (Route<dynamic> route) => false,  // Remove all previous routes
-                );
-
-              },
-                  (){
-                Navigator.pop(context);
-              }
-          );
+        onLogout: () {
+          showAlertNavigtorLogout(
+              context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () {
+            sharedPreferences.clear();
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => LoginScreen()),
+              (Route<dynamic> route) => false, // Remove all previous routes
+            );
+          }, () {
+            Navigator.pop(context);
+          });
         },
-        child:
-          Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-
-                  PrimaryButton(
-                      icon: Image.asset('assets/image/viewLog.png',width: 24,height: 24,color: darkBg,),
-                      text: "View Log",
-                      onPress: (){
-                        Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                                builder: (_) => AdminLogs()));
-                      }
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              PrimaryButton(
+                  icon: Image.asset(
+                    'assets/image/viewLog.png',
+                    width: 24,
+                    height: 24,
+                    color: darkBg,
                   ),
-                  SizedBox(height: 25,),
+                  text: "View Log",
+                  onPress: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+                  }),
+              SizedBox(
+                height: 25,
+              ),
 
-                  PrimaryButton(
-                      icon: Image.asset('assets/image/modify.png',width: 24,height: 24,color: darkBg,),
-                      text: "Modify User",
-                      onPress: (){
-                        Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                                builder: (_) => AdminNewUser()));
-                      }
+              PrimaryButton(
+                  icon: Image.asset(
+                    'assets/image/modify.png',
+                    width: 24,
+                    height: 24,
+                    color: darkBg,
                   ),
-                  SizedBox(height: 25 ,),
+                  text: "Modify User",
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => AdminNewUser()));
+                  }),
+              SizedBox(
+                height: 25,
+              ),
 
-                  PrimaryButton(
-                      icon: Image.asset('assets/image/modify.png',width: 24,height: 24,color: darkBg,),
-                      text: "Firmware settings",
-                      onPress: (){
-                        Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                                builder: (_) => AddNewFirmware()));
-                      }
+              PrimaryButton(
+                  icon: Image.asset(
+                    'assets/image/modify.png',
+                    width: 24,
+                    height: 24,
+                    color: darkBg,
                   ),
+                  text: "Firmware settings",
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => AddNewFirmware()));
+                  }),
 
-
-
-
-                //----logout----------
-                 /* SizedBox(
+              //----logout----------
+              /* SizedBox(
                       width: 350,
                       height: 60,
                       child: ElevatedButton(
@@ -128,9 +130,8 @@ class AdminMain extends StatelessWidget{
               ),
             ),
           ),*/
-                ],
-             ),
-          )
-       );
-    }
+            ],
+          ),
+        ));
   }
+}

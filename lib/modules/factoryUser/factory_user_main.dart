@@ -15,62 +15,65 @@ import 'package:tracker_firmware/widgets/splash_screen.dart';
 
 import '../../widgets/buttons.dart';
 
-
-class FactoryMain extends StatelessWidget{
+class FactoryMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Dashboard(
-        text: "Factory User \n DashBoard",
-        userProfile: true,
-        onLogout: (){
-          showAlertNavigtorLogout(context,
-              "ALERT",
-              "DO YOU REALLY NEED TO LOG-OUT",
-                  (){
-                sharedPreferences.clear();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => LoginScreen()),
-                      (Route<dynamic> route) => false,  // Remove all previous routes
-                );
-
-              },
-                  (){
-                Navigator.pop(context);
-              }
+      text: "Factory User \n DashBoard",
+      userProfile: true,
+      onLogout: () {
+        showAlertNavigtorLogout(
+            context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () {
+          sharedPreferences.clear();
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => LoginScreen()),
+            (Route<dynamic> route) => false, // Remove all previous routes
           );
-        },
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 250),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                PrimaryButton(
-                    icon: Image.asset('assets/image/viewLog.png',width: 24,height: 24,color: darkBg,),
-                    text: "View Log",
-                    onPress: (){
-                      Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                              builder: (_) => AdminLogs()));
-                    }
-                ),
-                SizedBox(height: 25,),
-                PrimaryButton(
-                    icon: Image.asset('assets/image/modify.png',width: 24,height: 24,color: darkBg,),
-                    text: "Modify User",
-                    onPress: (){
-                      Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                              builder: (_) => AdminNewUser()));
-                    }
-                ),
+        }, () {
+          Navigator.pop(context);
+        });
+      },
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 250),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              PrimaryButton(
+                  icon: Image.asset(
+                    'assets/image/viewLog.png',
+                    width: 24,
+                    height: 24,
+                    color: darkBg,
+                  ),
+                  text: "View Log",
+                  onPress: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+                  }),
+              SizedBox(
+                height: 25,
+              ),
+              PrimaryButton(
+                  icon: Image.asset(
+                    'assets/image/modify.png',
+                    width: 24,
+                    height: 24,
+                    color: darkBg,
+                  ),
+                  text: "Modify User",
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => AdminNewUser()));
+                  }),
 
+              SizedBox(
+                height: 25,
+              ),
 
-                SizedBox(height: 25 ,),
-
-                //----logout----------
-               /* SizedBox(
+              //----logout----------
+              /* SizedBox(
                   width: 350,
                   height: 60,
                   child: ElevatedButton(
@@ -117,12 +120,10 @@ class FactoryMain extends StatelessWidget{
                     ),
                   ),
                 ),*/
-              ],
-            ),
+            ],
           ),
         ),
-
+      ),
     );
-
   }
 }

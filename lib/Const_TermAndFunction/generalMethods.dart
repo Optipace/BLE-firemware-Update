@@ -22,8 +22,6 @@ void printLog(var str) {
   // debugPrint(str.toString());
 }
 
-
-
 void requestPermission() async {
   if (await Permission.storage.request().isGranted) {
   } else {
@@ -103,8 +101,6 @@ Future<int> checkInternet(context) async {
   return 1;
 }
 
-
-
 getSize(BuildContext context) {
   size = MediaQuery.of(context).size;
 
@@ -116,15 +112,15 @@ getSize(BuildContext context) {
   }
 }
 
-
 class OneDecimalInputFormatter extends TextInputFormatter {
-  final RegExp _regExp = RegExp(r'^\d{0,3}(\.\d{0,1})?$'); // Adjust digits as needed
+  final RegExp _regExp =
+      RegExp(r'^\d{0,3}(\.\d{0,1})?$'); // Adjust digits as needed
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     if (_regExp.hasMatch(newValue.text)) {
       return newValue;
     }

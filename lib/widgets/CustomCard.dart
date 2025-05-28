@@ -12,26 +12,20 @@ class ErrorContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
 
     return show
         ? Container(
-        // width: size.width,
-           margin: const EdgeInsets.only(left: 28,top: 10),
-           alignment: Alignment.topLeft,
-           child:
-           Text("$errorMsg",
+            // width: size.width,
+            margin: const EdgeInsets.only(left: 28, top: 10),
+            alignment: Alignment.topLeft,
+            child: Text("$errorMsg",
                 textAlign: TextAlign.left,
                 style: TextStyle(
-            fontSize: 12,
-            // fontWeight: FontWeight.w500,
-            color: errorText
-
-                )
-        ),
-    )
+                    fontSize: 12,
+                    // fontWeight: FontWeight.w500,
+                    color: errorText)),
+          )
         : SizedBox();
   }
 }
