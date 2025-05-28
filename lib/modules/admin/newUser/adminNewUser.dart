@@ -1008,6 +1008,7 @@ class AdminNewUserState extends State<AdminNewUser> {
 
     printFunc(
         "name : ${_name.text}\n EmpREGID : ${_empRegId.text}\n email : ${_email.text}\n Contact : ${_contact.text}\n password : ${_password.text} \nRePassword : ${_repassword.text}");
+
     bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
       validateUser = hasEmpty;
@@ -1127,11 +1128,12 @@ class AdminNewUserState extends State<AdminNewUser> {
         _email01.text = empObj["email"];
         _contact01.text = empObj["phone"];
         designation01.setText = empObj["designation"];
+
         designation01.setobj = designationRoles[
             empObj["designation"]]; //Designation.getEmpDetails(int.parse(empObj["designationCode"]));
       });
       printFunc("Inside else cond");
-      if (empObj["status"] == "active") {
+      if ((empObj["status"]).toLowerCase() == "active") {
         setState(() {
           _activeUser = true;
         });

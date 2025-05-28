@@ -105,7 +105,8 @@ class PrimeryDropDownButton extends StatelessWidget {
                           text!,
                           style: TextStyle(
                               fontSize: 20,
-                              color: isEnabled ? darkBg : Colors.black87, //Color(0xFF9AC4C9),
+                              color: isEnabled ? darkBg : Colors.black87,
+                              //Color(0xFF9AC4C9),
                               fontFamily: baseFont,
                               fontWeight: FontWeight.w300),
                           overflow: TextOverflow.ellipsis,
