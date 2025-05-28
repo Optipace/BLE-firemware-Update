@@ -195,7 +195,7 @@ List<Map<String, dynamic>> getFactoryLogs() {
       "Battery-Service": "B9",
       "Battery-profile": "P2,B9",
       "Date-Time": "2025-05-26 11:15:00"
-    }
+    },
   ];
   return empLogs;
 }
@@ -223,7 +223,8 @@ List<Map<String, dynamic>> getFeildLogs() {
       "Battery-Service": "B6",
       "Battery-profile": "P4,B6",
       "Date-Time": "2025-05-26 12:45:00"
-    }
+    },
+
   ];
   return FeildLogs;
 }

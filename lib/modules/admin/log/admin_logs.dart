@@ -797,8 +797,8 @@ class AdminLogsState extends State<AdminLogs> {
                 key: ValueKey('field_$index'),
 
                 tilePadding: EdgeInsets.all(5),
-                backgroundColor: FeildUserLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
-                collapsedBackgroundColor: FeildUserLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+                backgroundColor: FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
+                collapsedBackgroundColor: FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -838,7 +838,7 @@ class AdminLogsState extends State<AdminLogs> {
                                   font_Weight: FontWeight.w800,
                                   size: 19,
                                   FontColor:
-                                  FeildUserLogs[index]['status'] == 'Success'
+                                  FeildUserLogs[index]['status'].toLowerCase() == 'success'
                                       ? SuccessCardText
                                       : FailureCardText)),
                         ],
@@ -863,7 +863,7 @@ class AdminLogsState extends State<AdminLogs> {
                                 font_Weight: FontWeight.w800,
                                 size: 19,
                                 FontColor:
-                                FeildUserLogs[index]['status'] == 'Success'
+                                FeildUserLogs[index]['status'].toLowerCase() == 'Success'
                                     ? SuccessCardText
                                     : FailureCardText),
                           ),
@@ -886,8 +886,8 @@ class AdminLogsState extends State<AdminLogs> {
                             style: CardText(
                               font_Weight: FontWeight.w800,
                               size: 19,
-                              FontColor: FeildUserLogs[index]['status'] ==
-                                  'Success'
+                              FontColor: FeildUserLogs[index]['status'].toLowerCase() ==
+                                  'success'
                                   ? SuccessCardText
                                   : FailureCardText,
                             ),
@@ -926,8 +926,8 @@ class AdminLogsState extends State<AdminLogs> {
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FeildUserLogs[index]['status'] ==
-                                          'Success'
+                                      FontColor: FeildUserLogs[index]['status'].toLowerCase() ==
+                                          'success'
                                           ? SuccessCardText
                                           : FailureCardText),
                                 )
@@ -953,8 +953,8 @@ class AdminLogsState extends State<AdminLogs> {
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FeildUserLogs[index]['status'] ==
-                                          'Success'
+                                      FontColor: FeildUserLogs[index]['status'].toLowerCase() ==
+                                          'success'
                                           ? SuccessCardText
                                           : FailureCardText),
                                 )
@@ -980,8 +980,8 @@ class AdminLogsState extends State<AdminLogs> {
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FeildUserLogs[index]['status'] ==
-                                          'Success'
+                                      FontColor: FeildUserLogs[index]['status'].toLowerCase() ==
+                                          'success'
                                           ? SuccessCardText
                                           : FailureCardText),
                                 )
