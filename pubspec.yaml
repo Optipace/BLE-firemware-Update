@@ -41,6 +41,9 @@ dependencies:
   path: ^1.8.3
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  flutter_blue_plus: #^1.31.19
+#  flutter_blue_plus: #^1.35.5
+
 
 #  device_imei : ^0.0.4+2
 

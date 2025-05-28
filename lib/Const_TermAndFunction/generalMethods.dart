@@ -1,10 +1,13 @@
+import 'dart:developer' as dev;
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:developer' as dev;
-import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entiry/userData.dart';
+import 'package:tracker_firmware/modules/login/login_screen.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
 var size;
 
@@ -21,8 +24,6 @@ void printLog(var str) {
   // dev.log(str.toString());
   // debugPrint(str.toString());
 }
-
-
 
 void requestPermission() async {
   if (await Permission.storage.request().isGranted) {
@@ -103,8 +104,6 @@ Future<int> checkInternet(context) async {
   return 1;
 }
 
-
-
 getSize(BuildContext context) {
   size = MediaQuery.of(context).size;
 
@@ -115,17 +114,33 @@ getSize(BuildContext context) {
     size.height = MediaQuery.of(context).size.height;
   }
 }
+
 class OneDecimalInputFormatter extends TextInputFormatter {
   final RegExp _regExp = RegExp(r'^\d{0,3}(\.\d{0,1})?$'); // Adjust digits as needed
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     if (_regExp.hasMatch(newValue.text)) {
       return newValue;
     }
     return oldValue;
   }
+}
+
+Future<dynamic> LogOut(BuildContext context) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+  showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () {
+    sharedPreferences.clear();
+    UserData().clear();
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => LoginScreen()),
+      (Route<dynamic> route) => false, // Remove all previous routes
+    );
+  }, () {
+    Navigator.pop(context);
+  });
 }

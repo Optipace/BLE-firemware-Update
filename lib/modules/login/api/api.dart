@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
@@ -10,10 +9,10 @@ import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/modules/factoryUser/factory_user_main.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/field_user_main.dart';
 
-Future<bool> logIn(BuildContext context, String phoneNum, String password) async{
+Future<bool> logIn(BuildContext context, String phoneNum, String password) async {
   var data = {
-    "contact" : phoneNum,
-    "password":password,
+    "contact": phoneNum,
+    "password": password,
     "deviceId": sharedPreferences.getString("UUID"),
   };
   // String endPoint = "";
@@ -22,9 +21,9 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
 
   // var response = "";
 
-  if(/* response.statusCode == 200 */ true){
+  if (/* response.statusCode == 200 */ true) {
     // var jsonResponse = (json.decode(utf8.decode(response.bodyBytes)));
-    if(/*jsonResponse["response"]["code"].toString]] == 1 */ true){
+    if (/*jsonResponse["response"]["code"].toString]] == 1 */ true) {
       /*for(var empdata in jsonResponse["data"]){
         if(empdata["designation_id"]== 1)){
          //   admin page
@@ -34,22 +33,20 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
         // field user page
         }
       }*/
-     await setSharedPreference(await getEmployeeDetail(context, phoneNum)??{});
+      await setSharedPreference(await getEmployeeDetail(context, phoneNum) ?? {});
       sharedPreferences.setBool("user_logged_in", true);
 
       await setDeviceId();
       await setUserData();
-      UserData userData=new UserData();
+      UserData userData = new UserData();
 
-      navigateToDashBoard(context, int.tryParse(userData.designationCode)??1);
+      navigateToDashBoard(context, int.tryParse(userData.designationCode) ?? 1);
       return true;
     }
     //  --else cond --
     /*else{
       print("Login Failed");
     }*/
-
-
   }
   //--else cond --
   /*else if(response.statusCode == 198){
@@ -58,17 +55,14 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
     showAlertDialog(context, "Alert", "Service not Available");
   }*/
 
-
-
   return false;
 }
 
-
-Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String contactNumber) async{
+Future<Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String contactNumber) async {
   sharedPreferences = await SharedPreferences.getInstance();
 
   var data = {
-    "contact" : contactNumber,
+    "contact": contactNumber,
   };
   // String endPoint = "";
   var request = json.encode(data);
@@ -76,9 +70,9 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
 
   // var response = "";
 
-  if(/* response.statusCode == 200 */ true){
+  if (/* response.statusCode == 200 */ true) {
     // var jsonResponse = (json.decode(utf8.decode(response.bodyBytes)));
-    if(/*jsonResponse["response"]["code"].toString]] == 1 */ true){
+    if (/*jsonResponse["response"]["code"].toString]] == 1 */ true) {
       /*for(var empdata in jsonResponse["data"]){
         if(empdata["designation_id"]== 1)){
          //   admin page
@@ -89,46 +83,55 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
         }
       }*/
 
-
-      Map<String, dynamic> userinfo =//from responce
-      {
+      Map<String, dynamic> userinfo = //from responce
+          {
         'userId': 'U12345',
         'name': 'John Doe',
         'email': 'john.doe@example.com',
         'phone': '+91$contactNumber',
-        'designationCode': "${((int.parse(contactNumber)/1111111111).round())}",
+        'designationCode': "${((int.parse(contactNumber) / 1111111111).round())}",
         'empRegisteredId': 'EMP56789',
         'designation': 'Admin',
         'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         'refreshToken': 'd2ViLXRva2VuLXJlZnJlc2g=',
         'status': 'Active',
       };
-      if(contactNumber=="1111111111"||contactNumber=="2222222222"||contactNumber=="3333333333")
-      return userinfo;
+      if (contactNumber == "1111111111" || contactNumber == "2222222222" || contactNumber == "3333333333")
+        return userinfo;
       else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content:Row(
+            content: Row(
               children: [
-                Image.asset('assets/image/search.png',width: 24,height: 24,color: Color(0xFFFF6B6B),),
-                SizedBox(width: 15,),
-                Text('User Not Founded',
+                Image.asset(
+                  'assets/image/search.png',
+                  width: 24,
+                  height: 24,
+                  color: Color(0xFFFF6B6B),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  'User Not Founded',
                   style: TextStyle(
                     color: Color(0xFFFF6B6B),
                     fontWeight: FontWeight.w300,
                     fontFamily: baseFont,
                     fontSize: 22,
-
-                  ),),
+                  ),
+                ),
               ],
             ),
             behavior: SnackBarBehavior.floating,
             backgroundColor: primaryButton,
             elevation: 5,
-            margin: EdgeInsets.only(bottom: 50,left: 20,right: 20,),
+            margin: EdgeInsets.only(
+              bottom: 50,
+              left: 20,
+              right: 20,
+            ),
             duration: Duration(seconds: 3),
-
-
           ),
         );
         return null;
@@ -138,8 +141,6 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
     /*else{
       print("Login Failed");
     }*/
-
-
   }
   //--else cond --
   /*else if(response.statusCode == 198){
@@ -148,16 +149,10 @@ Future< Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String co
     showAlertDialog(context, "Alert", "Service not Available");
   }*/
 
-
-
   return {};
 }
 
-
-
 List<Map<String, dynamic>> getFactoryLogs() {
-
-
   List<Map<String, dynamic>> empLogs = [
     {
       "empId": "EMP121",
@@ -185,9 +180,7 @@ List<Map<String, dynamic>> getFactoryLogs() {
   return empLogs;
 }
 
-
 List<Map<String, dynamic>> getFeildLogs() {
-
   List<Map<String, dynamic>> FeildLogs = [
     {
       "empId": "EMP123",
@@ -215,22 +208,14 @@ List<Map<String, dynamic>> getFeildLogs() {
   return FeildLogs;
 }
 
-
-
-void navigateToDashBoard(BuildContext context,int  designation_id){
-  if(designation_id == 1){
-    Navigator.of(context).push(
-        MaterialPageRoute<void>(
-            builder: (_) => AdminMain()));
-  }else if(designation_id == 2){
-    Navigator.of(context).push(
-        MaterialPageRoute<void>(
-            builder: (_) => FactoryMain()));
+void navigateToDashBoard(BuildContext context, int designation_id) {
+  if (designation_id == 1) {
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminMain()));
+  } else if (designation_id == 2) {
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FactoryMain()));
     return;
-  }else if( designation_id == 3){
-    Navigator.of(context).push(
-        MaterialPageRoute<void>(
-            builder: (_) => FieldMain()));
-    return ;
+  } else if (designation_id == 3) {
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FieldMain()));
+    return;
   }
 }

@@ -6,26 +6,27 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/login/api/api.dart';
 
-class LoginScreen extends StatefulWidget{
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
   @override
   State<LoginScreen> createState() => LoginScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen>{
+class LoginScreenState extends State<LoginScreen> {
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController _password = TextEditingController();
   bool _showInfo = false;
-  
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     setDeviceId();
     // isSession = await checkSession();
   }
-  
+
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
@@ -33,117 +34,122 @@ class LoginScreenState extends State<LoginScreen>{
   String? errorPassMsg;
   Color focused_clr = Color(0xCCFFFFFF);
   Color error_clr = Color(0xFFE74C3C);
-  Color base_clr = 	Color(0xCCFFFFFF);
+  Color base_clr = Color(0xCCFFFFFF);
   bool showPass = false;
 
-  bool checkPhnNum(String phone){
+  bool checkPhnNum(String phone) {
     return phone.length == 10;
   }
 
-  bool checkPass(String password){
-    return password.length >=4;
+  bool checkPass(String password) {
+    return password.length >= 4;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     getSize(context);
     // TODO: implement build
     return Scaffold(
-
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [darkBg, lightBg], // Your gradient colors
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child:Container(
-            height: size.height/2.2,
-            width: size.width/1.15,
-            decoration: BoxDecoration(
-                color:Color.fromRGBO(208, 209, 206, 0.2),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                  color: Colors.black.withOpacity(0.2), // Shadow color
-                  spreadRadius: 2, // How wide the shadow spreads
-                  blurRadius: 2,  // How soft the shadow is
-                )],
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [darkBg, lightBg], // Your gradient colors
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            child: Stack(
-              children: [
-                Positioned(
-                    bottom: 0,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Padding(padding: EdgeInsets.only(bottom: 12),child: IconButton(
-                              icon: Icon(
-                                _showInfo ? Icons.info : Icons.info_outline,
-                                color: lightBg,
-                                size: 30,
-
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _showInfo = !_showInfo;
-                                });
-                              },
-                            ),)
-                          ],
-                        ),
-
-                        AnimatedSize(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                          child: _showInfo
-                              ? Container(
-                            width: size.width/1.5,
-                            height: size.height/20,
-                            margin: EdgeInsets.only(top: 10,bottom: 10),
-                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(208, 209, 206, 0.2),
-                              border: Border.all(color: lightBg),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                                  child:Align(
-                              alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                        child: Text(
-                                  'UUID : ',
-                                  style: TextStyle(color:Color.fromRGBO(248, 250, 254, 1.0), fontSize: 18,fontWeight: FontWeight.w700,letterSpacing: 1.1),
-                                ),
-                              ),
-                            )
-                          )
-                              : SizedBox.shrink(),
-                        )
-                      ],
-                    ),
+          ),
+          child: Center(
+            child: Container(
+                height: size.height / 2.2,
+                width: size.width / 1.15,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(208, 209, 206, 0.2),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2), // Shadow color
+                      spreadRadius: 2, // How wide the shadow spreads
+                      blurRadius: 2, // How soft the shadow is
+                    )
+                  ],
                 ),
-                SizedBox(height: 50,),
-                Center(
-                    child: Column(
+                child: Stack(
+                  children: [
+                    Positioned(
+                      bottom: 0,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 12),
+                                child: IconButton(
+                                  icon: Icon(
+                                    _showInfo ? Icons.info : Icons.info_outline,
+                                    color: lightBg,
+                                    size: 30,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _showInfo = !_showInfo;
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                          AnimatedSize(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                            child: _showInfo
+                                ? Container(
+                                    width: size.width / 1.5,
+                                    height: size.height / 20,
+                                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(208, 209, 206, 0.2),
+                                      border: Border.all(color: lightBg),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 5),
+                                        child: Text(
+                                          'UUID : ',
+                                          style: TextStyle(
+                                              color: Color.fromRGBO(248, 250, 254, 1.0),
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700,
+                                              letterSpacing: 1.1),
+                                        ),
+                                      ),
+                                    ))
+                                : SizedBox.shrink(),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Center(
+                        child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //  login Text
                         Container(
-                          child: Text("LOGIN",
+                          child: Text(
+                            "LOGIN",
                             style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: 	Color(0xCCFFFFFF)
-                            ),),
+                                fontSize: 30, fontWeight: FontWeight.bold, color: Color(0xCCFFFFFF)),
+                          ),
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
 
                         //  Phone number
                         Container(
@@ -158,33 +164,53 @@ class LoginScreenState extends State<LoginScreen>{
                                     FilteringTextInputFormatter.digitsOnly,
                                     LengthLimitingTextInputFormatter(10),
                                   ],
-
                                   decoration: InputDecoration(
                                     hintText: 'Enter Your Phone number',
-                                    hintStyle: TextStyle(color: Color(0xCCFFFFFF),fontWeight: FontWeight.w700,wordSpacing: 1.5,letterSpacing: 1.1),
+                                    hintStyle: TextStyle(
+                                        color: Color(0xCCFFFFFF),
+                                        fontWeight: FontWeight.w700,
+                                        wordSpacing: 1.5,
+                                        letterSpacing: 1.1),
                                     hintMaxLines: 1,
                                     labelText: 'Phone Number',
-                                    labelStyle: TextStyle(wordSpacing: 1.5,letterSpacing: 1.1,color: base_clr,fontWeight: FontWeight.w400),
-                                    floatingLabelBehavior:
-                                    FloatingLabelBehavior.auto,
-                                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: base_clr)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: base_clr,width: 1.5)),
-                                    prefixIcon: Icon(CupertinoIcons.phone,color:  base_clr),
-                                    floatingLabelAlignment:
-                                    FloatingLabelAlignment.start,
-                                    floatingLabelStyle: TextStyle(color: focused_clr,fontWeight: FontWeight.w700,wordSpacing: 1.5,letterSpacing: 1.1),
+                                    labelStyle: TextStyle(
+                                        wordSpacing: 1.5,
+                                        letterSpacing: 1.1,
+                                        color: base_clr,
+                                        fontWeight: FontWeight.w400),
+                                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                    enabledBorder:
+                                        OutlineInputBorder(borderSide: BorderSide(color: base_clr)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: base_clr, width: 1.5)),
+                                    prefixIcon: Icon(CupertinoIcons.phone, color: base_clr),
+                                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                                    floatingLabelStyle: TextStyle(
+                                        color: focused_clr,
+                                        fontWeight: FontWeight.w700,
+                                        wordSpacing: 1.5,
+                                        letterSpacing: 1.1),
                                   ),
                                   style: TextStyle(color: Color(0xCCFFFFFF)),
                                 ),
                               ),
                               errorPhnMsg != null
-                                  ? Padding(padding: EdgeInsets.only(top: 2,right: 100), child: Text(errorPhnMsg!,style: TextStyle(color: error_clr),),
-                              )
-                                  : SizedBox(height: 20,),
+                                  ? Padding(
+                                      padding: EdgeInsets.only(top: 2, right: 100),
+                                      child: Text(
+                                        errorPhnMsg!,
+                                        style: TextStyle(color: error_clr),
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: 20,
+                                    ),
                             ],
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
 
                         //  Password
                         Column(
@@ -197,39 +223,60 @@ class LoginScreenState extends State<LoginScreen>{
                                 style: TextStyle(color: Color(0xCCFFFFFF)),
                                 decoration: InputDecoration(
                                   hintText: 'Enter Your Password',
-                                  hintStyle: TextStyle(color: focused_clr,fontWeight: FontWeight.w700,letterSpacing: 1.1,wordSpacing: 1.5),
+                                  hintStyle: TextStyle(
+                                      color: focused_clr,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.1,
+                                      wordSpacing: 1.5),
                                   labelText: 'Password',
-                                  labelStyle: TextStyle(wordSpacing: 1.5,letterSpacing: 1.1,color: base_clr,fontWeight: FontWeight.w400),
+                                  labelStyle: TextStyle(
+                                      wordSpacing: 1.5,
+                                      letterSpacing: 1.1,
+                                      color: base_clr,
+                                      fontWeight: FontWeight.w400),
 
                                   // border: OutlineInputBorder(borderSide: BorderSide(width: 1,),),
                                   enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: base_clr)),
-                                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: focused_clr,width: 1.5)),
-                                  prefixIcon: Icon(CupertinoIcons.lock,color: base_clr,),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: focused_clr, width: 1.5)),
+                                  prefixIcon: Icon(
+                                    CupertinoIcons.lock,
+                                    color: base_clr,
+                                  ),
                                   suffixIcon: IconButton(
-                                    onPressed: (){
+                                    onPressed: () {
                                       setState(() {
                                         showPass = !showPass;
                                       });
                                     },
-                                    icon:Icon(
-                                        showPass?
-                                        Icons.visibility_outlined
-                                            :
-                                        Icons.visibility_off_outlined
-                                    ),color: base_clr,
+                                    icon: Icon(
+                                        showPass ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                                    color: base_clr,
                                   ),
                                   floatingLabelBehavior: FloatingLabelBehavior.auto,
                                   floatingLabelAlignment: FloatingLabelAlignment.start,
-                                  floatingLabelStyle: TextStyle(color: focused_clr,wordSpacing: 1.5,letterSpacing: 1.1,fontWeight: FontWeight.w800),
+                                  floatingLabelStyle: TextStyle(
+                                      color: focused_clr,
+                                      wordSpacing: 1.5,
+                                      letterSpacing: 1.1,
+                                      fontWeight: FontWeight.w800),
                                 ),
                               ),
                             ),
                             errorPassMsg != null
-                                ? Padding(padding: EdgeInsets.only(top: 2,right: 40), child: Text(errorPassMsg!,style: TextStyle(color: Color.fromRGBO(250, 0, 0, 1)),),)
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 2, right: 40),
+                                    child: Text(
+                                      errorPassMsg!,
+                                      style: TextStyle(color: Color.fromRGBO(250, 0, 0, 1)),
+                                    ),
+                                  )
                                 : SizedBox(),
                           ],
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
 
                         //  Login Button
                         Column(
@@ -244,8 +291,7 @@ class LoginScreenState extends State<LoginScreen>{
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     // side: BorderSide(color: Colors.black,width: 1,strokeAlign: 2.5)
-                                  )
-                              ),
+                                  )),
                               onPressed: () async {
                                 // await DataBase.database;
                                 // final exists = await DataBase.isDatabaseCreated();
@@ -259,11 +305,11 @@ class LoginScreenState extends State<LoginScreen>{
                                 //     "\n version : ${sharedPreferences.getString("osVersion")}"
                                 //     "\n model : ${sharedPreferences.getString("deviceModel")}");
                                 setState(() {
-                                  if(checkPhnNum(phoneNumber.text) && checkPass(_password.text)){
+                                  if (checkPhnNum(phoneNumber.text) && checkPass(_password.text)) {
                                     errorPassMsg = null;
                                     errorPhnMsg = null;
                                     // await loginDetails(phoneNumber, _password);
-                                  }else {
+                                  } else {
                                     if (!checkPhnNum(phoneNumber.text)) {
                                       errorPhnMsg = 'Please Enter the 10 Digit number';
                                     } else {
@@ -274,7 +320,8 @@ class LoginScreenState extends State<LoginScreen>{
                                     } else {
                                       errorPassMsg = null;
                                     }
-                                  };
+                                  }
+                                  ;
                                   Future.delayed(Duration(seconds: 3), () {
                                     setState(() {
                                       errorPhnMsg = null;
@@ -282,32 +329,33 @@ class LoginScreenState extends State<LoginScreen>{
                                     });
                                   });
                                 });
-                                print("DEMO DEMO ${checkPhnNum(phoneNumber.toString()) && checkPass(_password.toString())}");
-                                if((checkPhnNum(phoneNumber.text) && checkPass(_password.text) )|| true) {
+                                print(
+                                    "DEMO DEMO ${checkPhnNum(phoneNumber.toString()) && checkPass(_password.toString())}");
+                                if ((checkPhnNum(phoneNumber.text) && checkPass(_password.text)) || true) {
                                   print("Inside if cond");
                                   print("SIZE : $size");
                                   // await getEmpDetails(context, phoneNumber.text, _password.text);
                                   await logIn(context, phoneNumber.text, _password.text);
-                                }else{
+                                } else {
                                   print("inside Else cond");
                                 }
                               },
-                              child: Text("LOGIN",style: TextStyle(color: lightBg, fontSize: 16,fontWeight: FontWeight.w700,letterSpacing: 1.1),),
+                              child: Text(
+                                "LOGIN",
+                                style: TextStyle(
+                                    color: lightBg,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.1),
+                              ),
                             ),
-
                           ],
                         ),
                       ],
-                    )
-                ),
-
-
-              ],
-            )
-          ),
-        )
-      ),
+                    )),
+                  ],
+                )),
+          )),
     );
-
   }
 }

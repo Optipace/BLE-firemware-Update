@@ -11,28 +11,29 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg, Function 
     style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFC62828)),
     child: Text(
       "NO",
-      style: TextStyle(fontSize: 12,fontFamily: baseFont),
+      style: TextStyle(fontSize: 12, fontFamily: baseFont),
     ),
     onPressed: Action2 as void Function()?,
   );
   Widget okButton = ElevatedButton(
     style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF2E7D32)),
-    child: Text("YES",style: TextStyle(fontSize: 12,fontFamily: baseFont),
+    child: Text(
+      "YES",
+      style: TextStyle(fontSize: 12, fontFamily: baseFont),
     ),
     onPressed: Action1 as void Function()?,
   );
-
 
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     backgroundColor: lightBg,
     title: Text(
       type,
-      style: TextStyle(fontSize: 18, color: darkBg,fontFamily: baseFont,fontWeight: FontWeight.w800),
+      style: TextStyle(fontSize: 18, color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w800),
     ),
     content: Text(
       msg,
-      style: TextStyle(fontSize: 18, color: darkBg,fontFamily: baseFont,fontWeight: FontWeight.w500),
+      style: TextStyle(fontSize: 18, color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500),
     ),
     actions: [
       okButton,
@@ -40,7 +41,6 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg, Function 
     ],
     elevation: 5,
     shadowColor: darkBg,
-
   );
 
   // show the dialog

@@ -1,22 +1,27 @@
-class DataController{
+class DataController {
   String? Text;
   var obj = null;
 
-  DataController(){
-    Text="";
+  DataController() {
+    Text = "";
   }
-  set setText(String? value){
+
+  set setText(String? value) {
     Text = value;
   }
+
   set setobj(var value) {
     obj = value;
   }
+
   String? get getText {
     return Text.toString();
   }
+
   get getobj {
     return obj;
   }
+
   void cleardata() {
     Text = "";
     obj = null;

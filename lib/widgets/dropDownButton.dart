@@ -36,8 +36,8 @@ class PrimeryDropDownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? size.width*0.85,
-      margin: EdgeInsets.only(left: 18,right: 30),
+      width: width ?? size.width * 0.85,
+      margin: EdgeInsets.only(left: 18, right: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -48,8 +48,8 @@ class PrimeryDropDownButton extends StatelessWidget {
               anchor ?? SizedBox(),
               Container(
                   margin: EdgeInsets.only(
-                    // left: 25,
-                  ),
+                      // left: 25,
+                      ),
                   child: Row(
                     children: [
                       Text(
@@ -57,23 +57,28 @@ class PrimeryDropDownButton extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
-                            color:darkBg,
+                            color: darkBg,
                             fontFamily: baseFont,
-                            shadows: [Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.2,
-                              // offset: Offset(0.5, 0.5)
-                            )]
-                        ),
+                            shadows: [
+                              Shadow(
+                                color: Colors.black,
+                                blurRadius: 0.2,
+                                // offset: Offset(0.5, 0.5)
+                              )
+                            ]),
                       ),
                       isMandatory
                           ? Text(
-                        "*",
-                        style: TextStyle(fontSize: 16, color: Colors.red, fontWeight: FontWeight.w500,fontFamily: baseFont),
-                      )
+                              "*",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: baseFont),
+                            )
                           : SizedBox(),
                     ],
-                  )) ,
+                  )),
               // SizedBox(height:2,)
             ],
           ),
@@ -89,7 +94,7 @@ class PrimeryDropDownButton extends StatelessWidget {
             height: height ?? 45,
             width: width ?? size.width * 0.90,
             child: InkWell(
-              // color: color,
+                // color: color,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -98,13 +103,11 @@ class PrimeryDropDownButton extends StatelessWidget {
                         margin: EdgeInsets.only(left: 5),
                         child: Text(
                           text!,
-                          style:
-                              TextStyle(
-                                  fontSize: 20,
-                                  color: isEnabled ? darkBg : Colors.black87,//Color(0xFF9AC4C9),
-                                  fontFamily: baseFont,
-                                  fontWeight: FontWeight.w300
-                              ),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: isEnabled ? darkBg : Colors.black87, //Color(0xFF9AC4C9),
+                              fontFamily: baseFont,
+                              fontWeight: FontWeight.w300),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
@@ -127,7 +130,6 @@ class PrimeryDropDownButton extends StatelessWidget {
     );
   }
 }
-
 
 class MapListItemBuilder extends StatefulWidget {
   final Map<String, dynamic> listItems;
@@ -168,23 +170,23 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
         ),
         widget.searchEnable
             ? CircularTextField(
-            hintText: "Search",
-            Controller: search,
-            sufixicon: Icons.search_outlined,
-            onChanged: (value) {
-              suggestionList.clear();
-              printFunc("search texts $value");
-              printFunc(widget.listItems);
-              widget.listItems.entries.forEach((e) {
-                printFunc("search text $value");
-                printFunc(e);
-                if (e.key.toLowerCase().contains(value.toLowerCase())) {
-                  suggestionList[e.key] = e.value;
-                }
-              });
+                hintText: "Search",
+                Controller: search,
+                sufixicon: Icons.search_outlined,
+                onChanged: (value) {
+                  suggestionList.clear();
+                  printFunc("search texts $value");
+                  printFunc(widget.listItems);
+                  widget.listItems.entries.forEach((e) {
+                    printFunc("search text $value");
+                    printFunc(e);
+                    if (e.key.toLowerCase().contains(value.toLowerCase())) {
+                      suggestionList[e.key] = e.value;
+                    }
+                  });
 
-              (context as Element).markNeedsBuild();
-            })
+                  (context as Element).markNeedsBuild();
+                })
             : SizedBox(),
         Container(
           alignment: Alignment.centerLeft,
@@ -202,8 +204,7 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
                       // color: Color(0xff817f98),
                       color: primaryButtonText,
                       fontWeight: FontWeight.w500,
-                      fontFamily: baseFont
-                  ),
+                      fontFamily: baseFont),
                 ),
               ),
               /*
@@ -231,7 +232,7 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount:
-          search.text == "null" || search.text == "" ? widget.listItems.length : suggestionList.length,
+              search.text == "null" || search.text == "" ? widget.listItems.length : suggestionList.length,
           itemBuilder: (context, index) {
             final entry = search.text == "null" || search.text == ""
                 ? widget.listItems.entries.toList()[index]
@@ -254,8 +255,7 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
                             // color: Color(0xff817f98),
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontFamily: baseFont
-                        ),
+                            fontFamily: baseFont),
                       ),
                     ),
                     onPressed: () {
@@ -316,5 +316,3 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
     );
   }
 }
-
-

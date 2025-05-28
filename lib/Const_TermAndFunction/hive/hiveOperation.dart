@@ -1,6 +1,3 @@
-import 'package:hive/hive.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HiveService {
@@ -51,5 +48,4 @@ class HiveService {
   Future<Map<String, dynamic>> readAllData() async {
     return _box.toMap().map((key, value) => MapEntry(key.toString(), value));
   }
-
 }

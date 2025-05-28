@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FieldMain extends StatelessWidget{
+class FieldMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -11,5 +10,4 @@ class FieldMain extends StatelessWidget{
       ),
     );
   }
-
 }

@@ -1,11 +1,6 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:mobile_device_identifier/mobile_device_identifier.dart';
-import 'package:mobile_device_identifier/mobile_device_identifier_platform_interface.dart';
-// import 'package:crypto/crypto.dart';
-import 'dart:convert';
-
 // import 'package:platform_device_id/platform_device_id.dart';
 // import 'package:platform_device_id/platform_device_id.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,26 +76,22 @@ Future setDeviceId() async {
     var iosDeviceInfo = await deviceInfo.iosInfo;
     // String? deviceId = await PlatformDeviceId.getDeviceId;
 
-    sharedPreferences.setString(
-        "UUID", iosDeviceInfo.identifierForVendor ?? ' ');
+    sharedPreferences.setString("UUID", iosDeviceInfo.identifierForVendor ?? ' ');
   } else if (Platform.isAndroid) {
     var androidDeviceInfo = await deviceInfo.androidInfo;
-    printFunc("DEMO DEVICEINFO :-------------------------------\n\n ${androidDeviceInfo.data}\n--------------------------------------------\n\n");
+    printFunc(
+        "DEMO DEVICEINFO :-------------------------------\n\n ${androidDeviceInfo.data}\n--------------------------------------------\n\n");
 
     // String? deviceId = await PlatformDeviceId.getDeviceId;
     String? deviceId = "545";
 
-
     sharedPreferences.setString("UUID", deviceId.toString());
+    sharedPreferences.setString("osVersion", androidDeviceInfo.version.release.toString());
     sharedPreferences.setString(
-        "osVersion", androidDeviceInfo.version.release.toString());
-    sharedPreferences.setString("deviceModel",
-        "${androidDeviceInfo.brand.toString()} - ${androidDeviceInfo.model.toString()}");
+        "deviceModel", "${androidDeviceInfo.brand.toString()} - ${androidDeviceInfo.model.toString()}");
   }
   print("Device Information : \n"
       "uuid :  ${sharedPreferences.getString("UUID")}"
       "\n version : ${sharedPreferences.getString("osVersion")}"
       "\n model : ${sharedPreferences.getString("deviceModel")}");
 }
-
-
