@@ -27,6 +27,8 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg, Function 
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     backgroundColor: lightBg,
+    elevation: 5,
+    shadowColor: darkBg,
     title: Text(
       type,
       style: TextStyle(fontSize: 18, color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w800),
@@ -39,8 +41,6 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg, Function 
       okButton,
       cancleButton,
     ],
-    elevation: 5,
-    shadowColor: darkBg,
   );
 
   // show the dialog

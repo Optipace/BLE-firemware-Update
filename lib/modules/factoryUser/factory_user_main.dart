@@ -14,7 +14,7 @@ class FactoryMain extends StatelessWidget {
     // TODO: implement build
     return Dashboard(
         text: 'Factory User',
-        icon: Image.asset('assets/image/editUser.png'),
+        userProfile: true,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

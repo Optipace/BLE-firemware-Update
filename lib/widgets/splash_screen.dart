@@ -8,8 +8,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/login/api/api.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
 
-// import '../screens/login/login_screen.dart';
-
 class splashScreen extends StatefulWidget {
   @override
   splashScreenState createState() => splashScreenState();
@@ -38,7 +36,10 @@ class splashScreenState extends State<splashScreen> with SingleTickerProviderSta
         if (isSession) {
           printFunc("Yes Session is active");
           printFunc(await getUserData());
+          await setUserData();
+
           UserData userData = new UserData();
+          printFunc("Userdata from Userdata() ${userData.toJson()}");
           navigateToDashBoard(context, int.tryParse(userData.designationCode) ?? 1);
         }
       });

@@ -19,10 +19,7 @@ BottomSheet_Widget(context, childrens, {String? isFixed, Color? color}) {
     ),
     backgroundColor: color ?? Color(0xFF5FAAB0),
     context: context,
-    builder: (context) =>
-        //   Stack(
-        // children: [
-        Scrollbar(
+    builder: (context) => Scrollbar(
       thumbVisibility: true,
       trackVisibility: true,
       controller: _scrollController,

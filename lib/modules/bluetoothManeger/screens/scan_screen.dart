@@ -53,9 +53,10 @@ class _ScanScreenState extends State<ScanScreen> {
     try {
       // `withServices` is required on iOS for privacy purposes, ignored on android.
       var withServices = [Guid("180f")]; // Battery Level Service
-      // _systemDevices = await FlutterBluePlus.systemDevices(withServices);
+      List<Guid> serviceUuids = [Guid("180f")]; // Or provide specific UUIDs
 
-      _systemDevices = await FlutterBluePlus.systemDevices;
+      _systemDevices = await FlutterBluePlus.systemDevices(serviceUuids);
+      // _systemDevices = (await FlutterBluePlus.systemDevices) as List<BluetoothDevice>;
     } catch (e, backtrace) {
       Snackbar.show(ABC.b, prettyException("System Devices Error:", e), success: false);
       print(e);

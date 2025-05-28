@@ -113,32 +113,29 @@ class manageUserBtn extends StatelessWidget {
         ),
       ),
       child: Container(
-        height: height ?? 50,
-        width: width ?? size.width / 2.5,
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (icon != null) icon!, // IconData? passed correctly
-
-              if (icon != null) SizedBox(width: 5),
-
-              Text(
-                text,
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: baseFont,
-                  shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
-                  overflow: TextOverflow.visible,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+          height: height ?? 50,
+          width: width ?? size.width / 2.5,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (icon != null) icon!, // IconData? passed correctly
+                if (icon != null) SizedBox(width: 5),
+                Text(
+                  text,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: baseFont,
+                    shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
+                    overflow: TextOverflow.visible,
+                  ),
+                )
+              ],
+            ),
+          )),
     );
     // Container(
     //   color: Colors.green,

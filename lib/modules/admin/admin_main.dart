@@ -16,7 +16,18 @@ class AdminMain extends StatelessWidget {
     // TODO: implement build
     return Dashboard(
         text: 'ADMIN\nDASH-BOARD',
-        icon: Image.asset('assets/image/editUser.png'),
+        userProfile: true,
+        onLogout: () {
+          showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () {
+            sharedPreferences.clear();
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => LoginScreen()),
+              (Route<dynamic> route) => false, // Remove all previous routes
+            );
+          }, () {
+            Navigator.pop(context);
+          });
+        },
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -46,7 +57,6 @@ class AdminMain extends StatelessWidget {
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminNewUser()));
                   }),
-
               SizedBox(
                 height: 25,
               ),
@@ -61,44 +71,6 @@ class AdminMain extends StatelessWidget {
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AddNewFirmware()));
                   }),
-
-              SizedBox(
-                height: 25,
-              ),
-//----logout----------
-              SizedBox(
-                width: 350,
-                height: 60,
-                child: ElevatedButton(
-                  onPressed: () {
-                    showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () {
-                      sharedPreferences.clear();
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (_) => LoginScreen()),
-                        (Route<dynamic> route) => false, // Remove all previous routes
-                      );
-                    }, () {
-                      Navigator.pop(context);
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: darkBg,
-                      elevation: 8,
-                      shadowColor: darkBg,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                          side: BorderSide(color: Colors.black, width: 0.5))),
-                  child: Text(
-                    "LOGOUT",
-                    style: TextStyle(
-                        fontFamily: baseFont,
-                        fontSize: 22,
-                        letterSpacing: 1.5,
-                        fontWeight: FontWeight.w800,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.1)]),
-                  ),
-                ),
-              ),
             ],
           ),
         ));

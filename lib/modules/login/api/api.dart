@@ -83,6 +83,18 @@ Future<Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String con
         }
       }*/
 
+      String getDesgination(contactNumber) {
+        int result = ((int.parse(contactNumber) / 1111111111).round());
+        if (result == 1) {
+          return ("Admin");
+        } else if (result == 2) {
+          return ("Factory User");
+        } else {
+          return ("Field User");
+        }
+        ;
+      }
+
       Map<String, dynamic> userinfo = //from responce
           {
         'userId': 'U12345',
@@ -91,11 +103,12 @@ Future<Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String con
         'phone': '+91$contactNumber',
         'designationCode': "${((int.parse(contactNumber) / 1111111111).round())}",
         'empRegisteredId': 'EMP56789',
-        'designation': 'Admin',
+        'designation': getDesgination(contactNumber),
         'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         'refreshToken': 'd2ViLXRva2VuLXJlZnJlc2g=',
         'status': 'Active',
       };
+
       if (contactNumber == "1111111111" || contactNumber == "2222222222" || contactNumber == "3333333333")
         return userinfo;
       else {
@@ -186,7 +199,7 @@ List<Map<String, dynamic>> getFeildLogs() {
       "empId": "EMP123",
       "Name": "David Stone",
       "DeviceID": "547",
-      "status": "Success",
+      "status": "Failure",
       "phone": "+91 9812345678",
       "firm_version": "2.3.1",
       "Battery-Service": "B12",
@@ -197,7 +210,7 @@ List<Map<String, dynamic>> getFeildLogs() {
       "empId": "EMP124",
       "Name": "Emma Clark",
       "DeviceID": "548",
-      "status": "Failure",
+      "status": "Success",
       "phone": "+91 9765432109",
       "firm_version": "2.2.9",
       "Battery-Service": "B6",
