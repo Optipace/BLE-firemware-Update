@@ -108,21 +108,25 @@ class _ScanResultTileState extends State<ScanResultTile> {
 
   @override
   Widget build(BuildContext context) {
+
     var adv = widget.result.advertisementData;
     return ExpansionTile(
       title: _buildTitle(context),
       leading: Text(widget.result.rssi.toString()),
       trailing: _buildConnectButton(context),
       children: <Widget>[
-        if (adv.advName.isNotEmpty) _buildAdvRow(context, 'Name', adv.advName),
-        if (adv.txPowerLevel != null) _buildAdvRow(context, 'Tx Power Level', '${adv.txPowerLevel}'),
+        // if (adv.advName.isNotEmpty)
+          _buildAdvRow(context, 'Name', adv.advName.toString()),
+        // if (adv.txPowerLevel != null)
+          _buildAdvRow(context, 'Tx Power Level', '${adv.txPowerLevel}'),
         if ((adv.appearance ?? 0) > 0)
-          _buildAdvRow(context, 'Appearance', '0x${adv.appearance!.toRadixString(16)}'),
-        if (adv.msd.isNotEmpty) _buildAdvRow(context, 'Manufacturer Data', getNiceManufacturerData(adv.msd)),
-        if (adv.serviceUuids.isNotEmpty)
-          _buildAdvRow(context, 'Service UUIDs', getNiceServiceUuids(adv.serviceUuids)),
-        if (adv.serviceData.isNotEmpty)
-          _buildAdvRow(context, 'Service Data', getNiceServiceData(adv.serviceData)),
+          _buildAdvRow(context, 'Appearance', '0x${(adv.appearance!.toRadixString(16)).toString()}'),
+        // if (adv.msd.isNotEmpty)
+          _buildAdvRow(context, 'Manufacturer Data', (getNiceManufacturerData(adv.msd)).toString()),
+        // if (adv.serviceUuids.isNotEmpty)
+          _buildAdvRow(context, 'Service UUIDs', (getNiceServiceUuids(adv.serviceUuids)).toString()),
+        // if (adv.serviceData.isNotEmpty)
+          _buildAdvRow(context, 'Service Data', (getNiceServiceData(adv.serviceData).toString())),
       ],
     );
   }

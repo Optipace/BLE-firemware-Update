@@ -7,6 +7,7 @@ import 'package:tracker_firmware/modules/bluetoothManeger/bluetoothMain.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
 
 import '../../widgets/buttons.dart';
+import 'firmwares/firmwareManagement.dart';
 
 class FactoryMain extends StatelessWidget {
   @override
@@ -29,7 +30,7 @@ class FactoryMain extends StatelessWidget {
                   ),
                   text: "Firmwares",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FirmwareManagement()));
                   }),
               SizedBox(
                 height: 25,

@@ -34,7 +34,6 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
         // field user page
         }
       }*/
-
       await setSharedPreference(await getEmployeeDetail(context, phoneNum) ?? {});
       sharedPreferences.setBool("user_logged_in", true);
 

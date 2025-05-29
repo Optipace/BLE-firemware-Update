@@ -33,6 +33,9 @@ Color FailureCardText = Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text
 
 String baseFont = 'Crimson';
 String serviceBox = 'ServiceBox';
+String seriesSix = 'B6';
+String seriesNine = 'B9';
+String seriesTwelve = 'B12';
 // String baseFont = 'Roboto';
 // String baseFont = 'Inter  ';
 // String baseFont = 'Poppins ';

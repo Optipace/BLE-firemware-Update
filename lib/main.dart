@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/widgets/splash_screen.dart';
 
+import 'Const_TermAndFunction/entiry/firmwareModel.dart';
+import 'Const_TermAndFunction/entiry/firmwareSeriesModel.dart';
 import 'Const_TermAndFunction/hive/hiveOperation.dart';
 
 void main() async {
@@ -11,7 +14,16 @@ void main() async {
 
   await HiveService.init();
   final hiveService = HiveService('$serviceBox');
+  // ✅ Register adapters BEFORE using any boxes
+  Hive.registerAdapter(FirmwareModelAdapter());
+  Hive.registerAdapter(FirmwareSeriesModelAdapter());
+  // final Hive6 = HiveService('$seriesSix');
+  // final hive9 = HiveService('$seriesNine');
+  // final hive12 = HiveService('$seriesTwelve');
   await hiveService.openBox();
+  // await Hive6.openBox();
+  // await hive9.openBox();
+  // await hive12.openBox();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
