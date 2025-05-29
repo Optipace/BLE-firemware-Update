@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/entiry/userData.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/modules/factoryUser/factory_user_main.dart';
@@ -34,6 +34,7 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
         // field user page
         }
       }*/
+
       await setSharedPreference(await getEmployeeDetail(context, phoneNum) ?? {});
       sharedPreferences.setBool("user_logged_in", true);
 

@@ -1,23 +1,22 @@
 import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/entiry/firmwareModel.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/entiry/firmwareSeriesModel.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareSeriesModel.dart';
 
 Future<void> saveFirmwareListToHive(List<Map<String, dynamic>> firmwareList) async {
-  final firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$serviceBox');
+  final firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
 
   for (var series in firmwareList) {
     List<FirmwareModel> firmwareModels = (series['firmware'] as List).map((f) {
       return FirmwareModel(
-        id: f['id'],
-        version: f['version'],
-        releaseNote: f['releaseNote'],
-        versionName: f['versionName'],
-        deviceTypeId: f['deviceTypeId'],
-        file: f['file'],
-        saved:true,
-          deviceType: f['deviceType']
-      );
+          id: f['id'],
+          version: f['version'],
+          releaseNote: f['releaseNote'],
+          versionName: f['versionName'],
+          deviceTypeId: f['deviceTypeId'],
+          file: f['file'],
+          saved: true,
+          deviceType: f['deviceType']);
     }).toList();
 
     var seriesModel = FirmwareSeriesModel(
@@ -31,17 +30,15 @@ Future<void> saveFirmwareListToHive(List<Map<String, dynamic>> firmwareList) asy
 }
 
 Future<FirmwareModel?> getFirmwareByVersion(String seriesId, String version) async {
-  final firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$serviceBox');
+  final firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
   final series = firmwareBox.get(seriesId);
   if (series != null) {
     return series.firmware.firstWhere(
-          (fw) => fw.version == version,
+      (fw) => fw.version == version,
       // orElse: () => null,
     );
   }
   return null;
-
-
 
   // how to use
   /*
@@ -50,11 +47,9 @@ Future<FirmwareModel?> getFirmwareByVersion(String seriesId, String version) asy
   print("Found firmware: ${firmware.versionName}");
 }
    */
-
-
 }
-Future<bool> addFirmware(FirmwareModel newFirmware)async{
 
+Future<bool> addFirmware(FirmwareModel newFirmware) async {
 // to add one by one
 /*
 final newFirmware = FirmwareModel(
@@ -69,12 +64,12 @@ final newFirmware = FirmwareModel(
 );
  */
 
-  final firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$serviceBox');
+  final firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
 
+  newFirmware.saved = true;
 
 // Try to get existing series
   FirmwareSeriesModel? series = firmwareBox.get(newFirmware.deviceTypeId);
-
   if (series == null) {
     // Series doesn't exist, create it
     series = FirmwareSeriesModel(
@@ -95,6 +90,7 @@ final newFirmware = FirmwareModel(
 
   return true;
 }
+
 // to add one by one
 /*
 final newFirmware = FirmwareModel(
@@ -107,7 +103,7 @@ final newFirmware = FirmwareModel(
 );
  */
 Future<List<Map<String, dynamic>>> getAllFirmware() async {
-  final box = await Hive.openBox<FirmwareSeriesModel>('firmware_series');
+  final box = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
 
   return box.values.map((series) {
     return {
@@ -121,8 +117,8 @@ Future<List<Map<String, dynamic>>> getAllFirmware() async {
           "versionName": fw.versionName,
           "deviceTypeId": fw.deviceTypeId,
           "file": fw.file,
-          "saved":fw.saved,
-          "deviceType":fw.deviceType
+          "saved": fw.saved,
+          "deviceType": fw.deviceType
         };
       }).toList(),
     };

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 import 'package:tracker_firmware/modules/admin/newUser/adminNewUser.dart';
+import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
 
-import '../../widgets/buttons.dart';
 import 'FirmwareSettings/addFirmware.dart';
 
 class AdminMain extends StatelessWidget {

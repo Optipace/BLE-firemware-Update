@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/entiry/userData.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 late SharedPreferences sharedPreferences;

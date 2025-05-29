@@ -11,10 +11,9 @@ import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/modules/login/api/api.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
+import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
-
-import '../../../widgets/buttons.dart';
-import '../../../widgets/textFields.dart';
+import 'package:tracker_firmware/widgets/textFields.dart';
 
 class AdminNewUser extends StatefulWidget {
   @override
@@ -498,7 +497,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                       Padding(
                           padding: EdgeInsets.only(bottom: 20),
                           child: SizedBox(
-                            width: size.width / 3, // Set your desired width
+                            width: size.width / 3,
+                            // Set your desired width
                             height: 40,
                             child: manageUserBtn(
                               text: "Search",

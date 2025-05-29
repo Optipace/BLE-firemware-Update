@@ -4,26 +4,27 @@ import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/widgets/splash_screen.dart';
 
-import 'Const_TermAndFunction/entiry/firmwareModel.dart';
-import 'Const_TermAndFunction/entiry/firmwareSeriesModel.dart';
+import 'Const_TermAndFunction/entity/firmwareModel.dart';
+import 'Const_TermAndFunction/entity/firmwareSeriesModel.dart';
+import 'Const_TermAndFunction/entity/profileModel.dart';
+import 'Const_TermAndFunction/entity/profileSeriesModel.dart';
 import 'Const_TermAndFunction/hive/hiveOperation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  WidgetsFlutterBinding.ensureInitialized();
-
   await HiveService.init();
-  final hiveService = HiveService('$serviceBox');
+
+  // final hiveService = HiveService('$firmwareBox');
+
+  await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
+
   // ✅ Register adapters BEFORE using any boxes
   Hive.registerAdapter(FirmwareModelAdapter());
   Hive.registerAdapter(FirmwareSeriesModelAdapter());
-  // final Hive6 = HiveService('$seriesSix');
-  // final hive9 = HiveService('$seriesNine');
-  // final hive12 = HiveService('$seriesTwelve');
-  await hiveService.openBox();
-  // await Hive6.openBox();
-  // await hive9.openBox();
-  // await hive12.openBox();
+  await Hive.openBox<ProfileSeriesModel>('$serviceHiveBox');
+
+  Hive.registerAdapter(ProfileModelAdapter());
+  Hive.registerAdapter(ProfileSeriesModelAdapter());
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

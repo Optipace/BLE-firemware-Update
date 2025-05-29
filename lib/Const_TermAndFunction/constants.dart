@@ -9,6 +9,8 @@ Color darkBg = Color(0xFF358A94);
 // Light background
 Color lightBg = Color.fromRGBO(234, 241, 251, 1.0);
 
+Color second_lightBg = Color.fromRGBO(240, 245, 252, 1.0);
+
 // buttonColor
 Color primaryButton = Color.fromRGBO(53, 138, 148, 1.0);
 Color primaryButtonText = Colors.white;
@@ -32,10 +34,8 @@ Color FailureCard = Color.fromRGBO(245, 235, 250, 1.0); // soft lavender/grayish
 Color FailureCardText = Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text/icon)
 
 String baseFont = 'Crimson';
-String serviceBox = 'ServiceBox';
-String seriesSix = 'B6';
-String seriesNine = 'B9';
-String seriesTwelve = 'B12';
+String serviceHiveBox = 'ServiceBox';
+String firmwareHiveBox = 'firmwareBox';
 // String baseFont = 'Roboto';
 // String baseFont = 'Inter  ';
 // String baseFont = 'Poppins ';

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/entiry/userData.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/login/api/api.dart';

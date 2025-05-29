@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+
 import 'firmwareModel.dart';
 
 part 'firmwareSeriesModel.g.dart';

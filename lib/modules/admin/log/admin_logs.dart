@@ -181,8 +181,9 @@ class AdminLogsState extends State<AdminLogs> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                     side: BorderSide(color: Colors.black, width: 0.3)),
-                title: Padding(
+                title: Container(
                   padding: EdgeInsets.all(5),
+                  width: size.width,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -255,8 +256,9 @@ class AdminLogsState extends State<AdminLogs> {
                   ),
                 ),
                 children: [
-                  Padding(
+                  Container(
                     padding: EdgeInsets.symmetric(horizontal: 15),
+                    width: size.width,
                     child: Column(
                       children: [
                         Divider(
@@ -437,7 +439,6 @@ class AdminLogsState extends State<AdminLogs> {
                   )
                 ],
               ),
-
             );
           }));
     }
@@ -479,8 +480,9 @@ class AdminLogsState extends State<AdminLogs> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                     side: BorderSide(color: Colors.black, width: 0.3)),
-                title: Padding(
+                title: Container(
                   padding: EdgeInsets.all(5),
+                  width: size.width,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -554,8 +556,9 @@ class AdminLogsState extends State<AdminLogs> {
                   ),
                 ),
                 children: [
-                  Padding(
+                  Container(
                     padding: EdgeInsets.symmetric(horizontal: 15),
+                    width: size.width,
                     child: Column(
                       children: [
                         Divider(

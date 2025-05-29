@@ -10,10 +10,9 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
+import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
-
-import '../../../widgets/buttons.dart';
-import '../../../widgets/textFields.dart';
+import 'package:tracker_firmware/widgets/textFields.dart';
 
 class AddNewFirmware extends StatefulWidget {
   @override

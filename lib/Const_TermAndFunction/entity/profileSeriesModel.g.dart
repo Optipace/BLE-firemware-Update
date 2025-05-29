@@ -1,30 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'firmwareSeriesModel.dart';
+part of 'profileSeriesModel.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class FirmwareSeriesModelAdapter extends TypeAdapter<FirmwareSeriesModel> {
+class ProfileSeriesModelAdapter extends TypeAdapter<ProfileSeriesModel> {
   @override
-  final int typeId = 2;
+  final int typeId = 4;
 
   @override
-  FirmwareSeriesModel read(BinaryReader reader) {
+  ProfileSeriesModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return FirmwareSeriesModel(
+    return ProfileSeriesModel(
       id: fields[0] as String,
       name: fields[1] as String,
-      firmware: (fields[2] as List).cast<FirmwareModel>(),
+      profile: (fields[2] as List).cast<ProfileModel>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, FirmwareSeriesModel obj) {
+  void write(BinaryWriter writer, ProfileSeriesModel obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -32,7 +32,7 @@ class FirmwareSeriesModelAdapter extends TypeAdapter<FirmwareSeriesModel> {
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.firmware);
+      ..write(obj.profile);
   }
 
   @override
@@ -41,7 +41,5 @@ class FirmwareSeriesModelAdapter extends TypeAdapter<FirmwareSeriesModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FirmwareSeriesModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is ProfileSeriesModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

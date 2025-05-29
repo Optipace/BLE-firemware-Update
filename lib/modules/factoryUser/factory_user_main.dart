@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/bluetoothMain.dart';
+import 'package:tracker_firmware/modules/factoryUser/profiles/profileFactoryManagement.dart';
+import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
 
-import '../../widgets/buttons.dart';
-import 'firmwares/firmwareManagement.dart';
+import 'firmwares/firmwareFactoryManagement.dart';
 
 class FactoryMain extends StatelessWidget {
   @override
@@ -30,7 +29,8 @@ class FactoryMain extends StatelessWidget {
                   ),
                   text: "Firmwares",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FirmwareManagement()));
+                    Navigator.of(context)
+                        .push(MaterialPageRoute<void>(builder: (_) => FirmwareFactoryManagement()));
                   }),
               SizedBox(
                 height: 25,
@@ -45,7 +45,8 @@ class FactoryMain extends StatelessWidget {
                   ),
                   text: "Profiles/Service",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+                    Navigator.of(context)
+                        .push(MaterialPageRoute<void>(builder: (_) => ProfileFactoryManagement()));
                   }),
               SizedBox(
                 height: 25,
@@ -66,33 +67,6 @@ class FactoryMain extends StatelessWidget {
                   }),
               SizedBox(
                 height: 25,
-              ),
-
-//----logout----------
-              SizedBox(
-                width: 350,
-                height: 60,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await LogOut(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: darkBg,
-                      elevation: 8,
-                      shadowColor: darkBg,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                          side: BorderSide(color: Colors.black, width: 0.5))),
-                  child: Text(
-                    "LOGOUT",
-                    style: TextStyle(
-                        fontFamily: baseFont,
-                        fontSize: 22,
-                        letterSpacing: 1.5,
-                        fontWeight: FontWeight.w800,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.1)]),
-                  ),
-                ),
               ),
             ],
           ),
