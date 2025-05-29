@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
-showAlertNavigtorLogout(BuildContext context, String type, String msg, Function Action1, Function Action2) {
+showAlertNavigtorLogout(BuildContext context, String type, String msg,
+    Function Action1, Function Action2) {
   // Create button
   getSize(context);
   Widget cancleButton = ElevatedButton(
@@ -31,11 +32,19 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg, Function 
     shadowColor: darkBg,
     title: Text(
       type,
-      style: TextStyle(fontSize: 18, color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w800),
+      style: TextStyle(
+          fontSize: 18,
+          color: darkBg,
+          fontFamily: baseFont,
+          fontWeight: FontWeight.w800),
     ),
     content: Text(
       msg,
-      style: TextStyle(fontSize: 18, color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500),
+      style: TextStyle(
+          fontSize: 18,
+          color: darkBg,
+          fontFamily: baseFont,
+          fontWeight: FontWeight.w500),
     ),
     actions: [
       okButton,
@@ -48,7 +57,8 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg, Function 
     barrierDismissible: false,
     context: context,
     builder: (context) {
-      return BackdropFilter(filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
+      return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
     },
   );
 }

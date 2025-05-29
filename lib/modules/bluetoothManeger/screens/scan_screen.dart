@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 import '../utils/extra.dart';
 import '../utils/snackbar.dart';
@@ -58,7 +60,8 @@ class _ScanScreenState extends State<ScanScreen> {
       _systemDevices = await FlutterBluePlus.systemDevices(serviceUuids);
       // _systemDevices = (await FlutterBluePlus.systemDevices) as List<BluetoothDevice>;
     } catch (e, backtrace) {
-      Snackbar.show(ABC.b, prettyException("System Devices Error:", e), success: false);
+      Snackbar.show(ABC.b, prettyException("System Devices Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -79,12 +82,17 @@ class _ScanScreenState extends State<ScanScreen> {
         // ],
       );
     } catch (e, backtrace) {
-      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e), success: false);
+      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
     if (mounted) {
       setState(() {});
+      setState(() {
+        printFunc("Print isLoading");
+        isLoaded = true;
+      });
     }
   }
 
@@ -92,7 +100,8 @@ class _ScanScreenState extends State<ScanScreen> {
     try {
       FlutterBluePlus.stopScan();
     } catch (e, backtrace) {
-      Snackbar.show(ABC.b, prettyException("Stop Scan Error:", e), success: false);
+      Snackbar.show(ABC.b, prettyException("Stop Scan Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -100,10 +109,12 @@ class _ScanScreenState extends State<ScanScreen> {
 
   void onConnectPressed(BluetoothDevice device) {
     device.connectAndUpdateStream().catchError((e) {
-      Snackbar.show(ABC.c, prettyException("Connect Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Connect Error:", e),
+          success: false);
     });
     MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => DeviceScreen(device: device), settings: RouteSettings(name: '/DeviceScreen'));
+        builder: (context) => DeviceScreen(device: device),
+        settings: RouteSettings(name: '/DeviceScreen'));
     Navigator.of(context).push(route);
   }
 
@@ -125,27 +136,36 @@ class _ScanScreenState extends State<ScanScreen> {
         ElevatedButton(
             onPressed: onScanPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Colors.white,
+              backgroundColor: lightBg,
+              foregroundColor: darkBg,
             ),
-            child: Text("SCAN"))
+            child: Text(
+              "SCAN",
+              style: TextStyle(
+                  color: darkBg,
+                  fontFamily: baseFont,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 18),
+            ))
     ]);
   }
 
   Widget buildSpinner() {
     return Padding(
-      padding: const EdgeInsets.all(14.0),
-      child: AspectRatio(
-        aspectRatio: 1.0,
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.black12,
-          color: Colors.black26,
-        ),
-      ),
-    );
+        padding: const EdgeInsets.all(14.0),
+        child: SizedBox(
+          width: 25,
+          height: 25,
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.black12,
+            color: lightBg,
+            strokeWidth: 3, // optional: makes the circle thinner/thicker
+          ),
+        ));
   }
 
   List<Widget> _buildSystemDeviceTiles() {
+    printFunc("Inside _buildSystemDeviceTiles");
     return _systemDevices
         .map(
           (d) => SystemDeviceTile(
@@ -163,7 +183,45 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Iterable<Widget> _buildScanResultTiles() {
-    return _scanResults.map((r) => ScanResultTile(result: r, onTap: () => onConnectPressed(r.device)));
+    printFunc("Inside _buildScanResultTiles");
+    return _scanResults.map((r) => Padding(
+        padding: EdgeInsets.all(5),
+        child: Column(
+          children: [
+            ScanResultTile(
+              result: r,
+              onTap: () => onConnectPressed(r.device),
+            ),
+            Divider(
+              color: darkBg,
+              thickness: 0.2,
+            )
+          ],
+        )));
+  }
+
+  bool isLoaded = false;
+
+  Widget buildBluetoothOffIcon(BuildContext context) {
+    return Icon(
+      Icons.search_outlined,
+      size: 200.0,
+      color: lightBg.withOpacity(0.9),
+      shadows: [
+        Shadow(color: Colors.black, blurRadius: 0.1, offset: Offset(0.4, 0.4))
+      ],
+    );
+  }
+
+  Widget buildTitle(BuildContext context) {
+    return Text(
+      'Nearby devices appear after scanning above.',
+      style: TextStyle(
+          color: darkBg,
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+          fontFamily: baseFont),
+    );
   }
 
   @override
@@ -171,21 +229,52 @@ class _ScanScreenState extends State<ScanScreen> {
     return ScaffoldMessenger(
       key: Snackbar.snackBarKeyB,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Find Devices'),
-          actions: [buildScanButton(), const SizedBox(width: 15)],
-        ),
-        body: RefreshIndicator(
-          onRefresh: onRefresh,
-          child: ListView(
-            children: <Widget>[
-              ..._buildSystemDeviceTiles(),
-              ..._buildScanResultTiles(),
-            ],
+          appBar: AppBar(
+            title: Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                'Find Devices',
+                style: TextStyle(
+                    color: lightBg,
+                    fontFamily: baseFont,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25),
+              ),
+            ),
+            toolbarHeight: 75,
+            backgroundColor: darkBg,
+            actions: [buildScanButton(), const SizedBox(width: 15)],
           ),
-        ),
-        // floatingActionButton: buildScanButton(context),
-      ),
+          body: isLoaded
+              ? Container(
+                  color: second_lightBg,
+                  child: RefreshIndicator(
+                    onRefresh: onRefresh,
+                    child: ListView(
+                      children: <Widget>[
+                        ..._buildSystemDeviceTiles(),
+                        ..._buildScanResultTiles(),
+                      ],
+                    ),
+                  ),
+                )
+              : Container(
+                  color: second_lightBg,
+                  child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          buildBluetoothOffIcon(context),
+                          buildTitle(context),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+          // floatingActionButton: buildScanButton(context),
+          ),
     );
   }
 }

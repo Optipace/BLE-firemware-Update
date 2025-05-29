@@ -38,7 +38,8 @@ class MyApp extends StatelessWidget {
         ),
         scrollbarTheme: ScrollbarThemeData(
           thumbColor: MaterialStateProperty.all<Color>(Colors.white),
-          trackColor: MaterialStateProperty.all<Color>(Colors.white.withOpacity(0.5)),
+          trackColor:
+              MaterialStateProperty.all<Color>(Colors.white.withOpacity(0.5)),
         ),
       ),
       home: splashScreen(),

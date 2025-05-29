@@ -27,7 +27,8 @@ class AdminMain extends StatelessWidget {
                   ),
                   text: "View Log",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: (_) => AdminLogs()));
                   }),
               SizedBox(
                 height: 25,
@@ -42,7 +43,8 @@ class AdminMain extends StatelessWidget {
                   ),
                   text: "Modify User",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminNewUser()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => AdminNewUser()));
                   }),
               SizedBox(
                 height: 25,
@@ -57,7 +59,8 @@ class AdminMain extends StatelessWidget {
                   ),
                   text: "Firmware settings",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AddNewFirmware()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => AddNewFirmware()));
                   }),
 
               //----logout----------

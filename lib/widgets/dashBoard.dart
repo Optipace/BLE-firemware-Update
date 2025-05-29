@@ -27,7 +27,7 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       // Createing Key
       key: _scaffoldKey,
-      drawer: UserProfileSlider(onLogOut: onLogout),
+      drawer: UserProfileSlider(context, onLogout),
       body: Column(
         children: [
           Container(
@@ -69,7 +69,8 @@ class Dashboard extends StatelessWidget {
                               _scaffoldKey.currentState?.openDrawer();
                             },
                             icon: Icon(
-                              CupertinoIcons.line_horizontal_3_decrease_circle_fill,
+                              CupertinoIcons
+                                  .line_horizontal_3_decrease_circle_fill,
                               size: 40,
                               color: lightBg,
                               shadows: [
@@ -120,15 +121,205 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-class UserProfileSlider extends StatelessWidget {
-  final Function? onLogOut;
+UserProfileSlider(context, Function? onlogout) {
+  return Drawer(
+    width: size.width * 0.75,
+    elevation: 20,
+    backgroundColor: lightBg,
+    child: SafeArea(
+        child: Column(
+      children: [
+        // Icon
+        Padding(
+            padding: EdgeInsets.only(top: size.height * 0.05),
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: darkBg,
+              child: Center(
+                child: Icon(
+                  Icons.person,
+                  color: lightBg,
+                  size: 58,
+                ),
+              ),
+            )
 
-  UserProfileSlider({Key? key, this.onLogOut}) : super(key: key);
+            /* Icon(CupertinoIcons.person_circle_fill,color: darkBg,size: 100,shadows: [
+                    Shadow(color: Colors.black,blurRadius: 0.5,offset: Offset(0.4, 0.4))
+                  ])*/
+            ),
+        SizedBox(
+          height: 20,
+        ),
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Drawer(
+        // Name
+        Text("${sharedPreferences.getString("name")}",
+            style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w900,
+                fontFamily: baseFont,
+                color: darkBg,
+                shadows: [
+                  Shadow(
+                      color: Colors.black,
+                      blurRadius: 0.5,
+                      offset: Offset(0.5, 0.4))
+                ])),
+        Divider(),
+
+        // Phone number, mail and Desiganation
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Text(
+                            "${sharedPreferences.getString("designation")}",
+                            style: TextStyle(
+                                fontFamily: baseFont,
+                                color: darkBg,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black,
+                                    blurRadius: 0.3,
+                                    offset: Offset(0.5, 0.4),
+                                  )
+                                ]),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.phone,
+                            color: darkBg,
+                            size: 20,
+                            shadows: [
+                              Shadow(
+                                  color: darkBg,
+                                  blurRadius: 0.5,
+                                  offset: Offset(0.4, 0.4))
+                            ],
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "${sharedPreferences.getString("phone")}",
+                            style: TextStyle(
+                                fontFamily: baseFont,
+                                color: darkBg,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black,
+                                    blurRadius: 0.3,
+                                    offset: Offset(0.5, 0.4),
+                                  )
+                                ]),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Icon(CupertinoIcons.mail,
+                              color: darkBg,
+                              size: 20,
+                              shadows: [
+                                Shadow(
+                                    color: darkBg,
+                                    blurRadius: 0.5,
+                                    offset: Offset(0.4, 0.4))
+                              ]),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "${sharedPreferences.getString("email")}",
+                            style: TextStyle(
+                                fontFamily: baseFont,
+                                color: darkBg,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black,
+                                    blurRadius: 0.3,
+                                    offset: Offset(0.5, 0.4),
+                                  )
+                                ]),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Spacer(),
+        Divider(),
+
+        // Logout and Version at bottom
+        ListTile(
+          leading: Icon(Icons.logout, color: darkBg, size: 28, shadows: [
+            Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))
+          ]),
+          title: Text(
+            "Logout",
+            style: TextStyle(
+                fontFamily: baseFont,
+                color: darkBg,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                shadows: [
+                  Shadow(
+                    color: Colors.black,
+                    blurRadius: 0.3,
+                    offset: Offset(0.5, 0.4),
+                  )
+                ]),
+          ),
+          onTap: onlogout != null
+              ? onlogout as void Function()
+              : () async {
+                  Navigator.of(context).pop(); // Close the drawer first
+                  await Future.delayed(
+                      Duration(milliseconds: 300)); // Small delay for smooth UX
+                  await LogOut(context);
+                },
+        ),
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Text(
+            "Version ${appVersion}",
+            style: TextStyle(
+                color: secondaryText,
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w300),
+          ),
+        ),
+      ],
+    )),
+  );
+}
+
+/*return Drawer(
       width: size.width * 0.75,
       elevation: 20,
       backgroundColor: lightBg,
@@ -304,6 +495,4 @@ class UserProfileSlider extends StatelessWidget {
           ),
         ],
       )),
-    );
-  }
-}
+    );*/

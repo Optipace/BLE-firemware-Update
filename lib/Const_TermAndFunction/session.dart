@@ -74,7 +74,8 @@ Future setDeviceId() async {
     var iosDeviceInfo = await deviceInfo.iosInfo;
     // String? deviceId = await PlatformDeviceId.getDeviceId;
 
-    sharedPreferences.setString("UUID", iosDeviceInfo.identifierForVendor ?? ' ');
+    sharedPreferences.setString(
+        "UUID", iosDeviceInfo.identifierForVendor ?? ' ');
   } else if (Platform.isAndroid) {
     var androidDeviceInfo = await deviceInfo.androidInfo;
     printFunc(
@@ -84,9 +85,10 @@ Future setDeviceId() async {
     String? deviceId = "545";
 
     sharedPreferences.setString("UUID", deviceId.toString());
-    sharedPreferences.setString("osVersion", androidDeviceInfo.version.release.toString());
     sharedPreferences.setString(
-        "deviceModel", "${androidDeviceInfo.brand.toString()} - ${androidDeviceInfo.model.toString()}");
+        "osVersion", androidDeviceInfo.version.release.toString());
+    sharedPreferences.setString("deviceModel",
+        "${androidDeviceInfo.brand.toString()} - ${androidDeviceInfo.model.toString()}");
   }
   print("Device Information : \n"
       "uuid :  ${sharedPreferences.getString("UUID")}"

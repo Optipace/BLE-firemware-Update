@@ -29,7 +29,8 @@ class FactoryMain extends StatelessWidget {
                   ),
                   text: "Firmwares",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: (_) => AdminLogs()));
                   }),
               SizedBox(
                 height: 25,
@@ -44,7 +45,8 @@ class FactoryMain extends StatelessWidget {
                   ),
                   text: "Profiles/Service",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: (_) => AdminLogs()));
                   }),
               SizedBox(
                 height: 25,
@@ -61,7 +63,8 @@ class FactoryMain extends StatelessWidget {
                   onPress: () {
                     FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FlutterBlueApp()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => FlutterBlueApp()));
                   }),
               SizedBox(
                 height: 25,
@@ -89,7 +92,9 @@ class FactoryMain extends StatelessWidget {
                         fontSize: 22,
                         letterSpacing: 1.5,
                         fontWeight: FontWeight.w800,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.1)]),
+                        shadows: [
+                          Shadow(color: Colors.black, blurRadius: 0.1)
+                        ]),
                   ),
                 ),
               ),

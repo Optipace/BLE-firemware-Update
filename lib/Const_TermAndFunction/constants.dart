@@ -9,6 +9,8 @@ Color darkBg = Color(0xFF358A94);
 // Light background
 Color lightBg = Color.fromRGBO(234, 241, 251, 1.0);
 
+Color second_lightBg = Color.fromRGBO(240, 245, 252, 1.0);
+
 // buttonColor
 Color primaryButton = Color.fromRGBO(53, 138, 148, 1.0);
 Color primaryButtonText = Colors.white;
@@ -25,11 +27,13 @@ Color errorText = Color(0xFFCD5C5C);
 
 // Color for cards
 Color SuccessCard = Color.fromRGBO(220, 240, 255, 1.0); // soft light blue
-Color SuccessCardText = Color.fromRGBO(80, 140, 200, 1.0); // medium blue (text/icon)
+Color SuccessCardText =
+    Color.fromRGBO(80, 140, 200, 1.0); // medium blue (text/icon)
 
 Color FailureCard = Color.fromRGBO(245, 235, 250, 1.0); // soft lavender/grayish
 
-Color FailureCardText = Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text/icon)
+Color FailureCardText =
+    Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text/icon)
 
 String baseFont = 'Crimson';
 String serviceBox = 'ServiceBox';
@@ -82,7 +86,8 @@ showAlertDialog(
   showDialog(
     context: context,
     builder: (context) {
-      return BackdropFilter(filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
+      return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
     },
   );
 }

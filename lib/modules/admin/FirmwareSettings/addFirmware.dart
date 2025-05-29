@@ -83,7 +83,11 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       appBar: AppBar(
         title: Text(
           "Manage Firmware",
-          style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 22, color: lightBg),
+          style: TextStyle(
+              fontFamily: baseFont,
+              fontWeight: FontWeight.w800,
+              fontSize: 22,
+              color: lightBg),
         ),
         toolbarHeight: 60,
         backgroundColor: darkBg,
@@ -122,9 +126,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           decoration: BoxDecoration(
                               color: selectedbutton == 1 ? darkBg : lightBg,
                               borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20)),
                               border: Border.all(width: 0.5, color: darkBg),
-                              boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                              boxShadow: [
+                                BoxShadow(blurRadius: 0.5, color: darkBg)
+                              ]),
                           child: Center(
                               heightFactor: 2,
                               child: Center(
@@ -138,7 +145,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                     // ),
                                     Icon(
                                       Icons.system_update_outlined,
-                                      color: selectedbutton == 2 ? darkBg : lightBg,
+                                      color: selectedbutton == 2
+                                          ? darkBg
+                                          : lightBg,
                                       size: 40,
                                     ),
                                     Text(
@@ -147,14 +156,20 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                         fontSize: 22,
                                         fontFamily: baseFont,
                                         fontWeight: FontWeight.w600,
-                                        color: selectedbutton == 1 ? lightBg : darkBg,
+                                        color: selectedbutton == 1
+                                            ? lightBg
+                                            : darkBg,
                                         shadows: [
                                           Shadow(
                                               offset: Offset(0.3, 0.3),
-                                              color: selectedbutton == 1 ? lightBg : darkBg),
+                                              color: selectedbutton == 1
+                                                  ? lightBg
+                                                  : darkBg),
                                           Shadow(
                                               offset: Offset(-0.3, 0.3),
-                                              color: selectedbutton == 1 ? lightBg : darkBg),
+                                              color: selectedbutton == 1
+                                                  ? lightBg
+                                                  : darkBg),
                                         ],
                                       ),
                                     )
@@ -176,8 +191,11 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           decoration: BoxDecoration(
                               color: selectedbutton == 2 ? darkBg : lightBg,
                               borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-                              boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
+                              boxShadow: [
+                                BoxShadow(blurRadius: 0.5, color: darkBg)
+                              ]),
                           child: Center(
                               heightFactor: 2,
                               child: Center(
@@ -192,7 +210,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                     // Icon(Icons.tune_outlined),
                                     Icon(
                                       Icons.handyman_outlined,
-                                      color: selectedbutton == 1 ? darkBg : lightBg,
+                                      color: selectedbutton == 1
+                                          ? darkBg
+                                          : lightBg,
                                       size: 32,
                                     ),
                                     Text(
@@ -201,15 +221,21 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                         fontSize: 22,
                                         fontFamily: baseFont,
                                         fontWeight: FontWeight.w600,
-                                        color: selectedbutton == 1 ? darkBg : lightBg,
+                                        color: selectedbutton == 1
+                                            ? darkBg
+                                            : lightBg,
                                         shadows: [
                                           Shadow(
                                             offset: Offset(0.3, 0.3),
-                                            color: selectedbutton == 1 ? darkBg : lightBg,
+                                            color: selectedbutton == 1
+                                                ? darkBg
+                                                : lightBg,
                                           ),
                                           Shadow(
                                             offset: Offset(-0.3, 0.3),
-                                            color: selectedbutton == 1 ? darkBg : lightBg,
+                                            color: selectedbutton == 1
+                                                ? darkBg
+                                                : lightBg,
                                           ),
                                         ],
                                       ),
@@ -222,7 +248,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                     ],
                   ),
                 )),
-            if (selectedbutton == 1) newFirmware(context) else newService(context)
+            if (selectedbutton == 1)
+              newFirmware(context)
+            else
+              newService(context)
           ],
         ),
       ),
@@ -257,7 +286,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         fontWeight: FontWeight.w800,
                         fontSize: 24,
                         color: darkBg,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))]),
+                        shadows: [
+                          Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.5))
+                        ]),
                   ),
                 ),
               ),
@@ -277,7 +311,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _versionCode,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _versionCode.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _versionCode.text.trim().isEmpty
                             ? "Please Enter the Version"
                             : "",
                       ),
@@ -292,7 +327,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _releaseNote,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _releaseNote.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _releaseNote.text.trim().isEmpty
                             ? "Please Enter the Release Note"
                             : "",
                       ),
@@ -307,7 +343,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _firmWareVersionName,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _firmWareVersionName.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _firmWareVersionName.text.trim().isEmpty
                             ? "Please Enter the Version Name"
                             : "",
                       ),
@@ -320,9 +357,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: PrimeryDropDownButton(
                           isEnabled: true,
                           tail: ErrorContainer(
-                              show: _validateDropDown, errorMsg: "Please Select the Battery Series"),
+                              show: _validateDropDown,
+                              errorMsg: "Please Select the Battery Series"),
                           mainText: "Select Battery Series",
-                          text: _batterySeries.Text != "" ? _batterySeries.getText : "Battery Series",
+                          text: _batterySeries.Text != ""
+                              ? _batterySeries.getText
+                              : "Battery Series",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
@@ -399,7 +439,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             duration: Duration(seconds: 3),
                           ),
                         );
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => AdminMain()));
                       }
                     }),
               ),
@@ -438,7 +479,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         fontWeight: FontWeight.w800,
                         fontSize: 24,
                         color: darkBg,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))]),
+                        shadows: [
+                          Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.5))
+                        ]),
                   ),
                 ),
               ),
@@ -458,7 +504,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _profileName,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _profileName.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _profileName.text.trim().isEmpty
                             ? "Please Enter the Profile Name"
                             : "",
                       ),
@@ -473,7 +520,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _description,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _description.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _description.text.trim().isEmpty
                             ? "Please Enter the Description"
                             : "",
                       ),
@@ -489,7 +537,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _upperTreshold,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _upperTreshold.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _upperTreshold.text.trim().isEmpty
                             ? "Please Enter the Upper Threshold"
                             : "",
                       ),
@@ -506,7 +555,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _upperVoltage,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _upperVoltage.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _upperVoltage.text.trim().isEmpty
                             ? "Please Enter the Upper Voltage"
                             : "",
                       ),
@@ -521,7 +571,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _lowerTreshold,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _lowerTreshold.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _lowerTreshold.text.trim().isEmpty
                             ? "Please Enter the Lower Threshold"
                             : "",
                       ),
@@ -536,7 +587,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _lowerVoltage,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _lowerVoltage.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _lowerVoltage.text.trim().isEmpty
                             ? "Please Enter the Lower Voltage"
                             : "",
                       ),
@@ -549,9 +601,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: PrimeryDropDownButton(
                           isEnabled: true,
                           tail: ErrorContainer(
-                              show: _validateDropDown, errorMsg: "Please Select the Battery Series"),
+                              show: _validateDropDown,
+                              errorMsg: "Please Select the Battery Series"),
                           mainText: "Select Battery Series",
-                          text: _batterySeries.Text != "" ? _batterySeries.getText : "Battery Series",
+                          text: _batterySeries.Text != ""
+                              ? _batterySeries.getText
+                              : "Battery Series",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
@@ -593,7 +648,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
     printFunc(
         "_versionCode : ${_versionCode.text}\n _versionCode : ${_versionCode.text}\n _firmWareVersionName : ${_firmWareVersionName.text}\n Contact : ${_contact.text}\n password : ${_password.text} \nRePassword : ${_repassword.text}");
-    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
       firmwareValidator = hasEmpty;
     });

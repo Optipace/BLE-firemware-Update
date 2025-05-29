@@ -116,7 +116,8 @@ getSize(BuildContext context) {
 }
 
 class OneDecimalInputFormatter extends TextInputFormatter {
-  final RegExp _regExp = RegExp(r'^\d{0,3}(\.\d{0,1})?$'); // Adjust digits as needed
+  final RegExp _regExp =
+      RegExp(r'^\d{0,3}(\.\d{0,1})?$'); // Adjust digits as needed
 
   @override
   TextEditingValue formatEditUpdate(
@@ -133,12 +134,13 @@ class OneDecimalInputFormatter extends TextInputFormatter {
 Future<dynamic> LogOut(BuildContext context) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-  showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () {
+  showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT",
+      () {
     sharedPreferences.clear();
     UserData().clear();
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => LoginScreen()),
-      (Route<dynamic> route) => false, // Remove all previous routes
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (_) => LoginScreen()), // Remove all previous routes
     );
   }, () {
     Navigator.pop(context);

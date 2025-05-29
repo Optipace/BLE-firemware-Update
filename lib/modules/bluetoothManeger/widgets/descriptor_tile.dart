@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 
 import '../utils/data_entry.dart';
 import "../utils/snackbar.dart";
@@ -44,7 +45,8 @@ class _DescriptorTileState extends State<DescriptorTile> {
       await d.read();
       Snackbar.show(ABC.c, "Descriptor Read : Success", success: true);
     } catch (e, backtrace) {
-      Snackbar.show(ABC.c, prettyException("Descriptor Read Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Descriptor Read Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -58,7 +60,8 @@ class _DescriptorTileState extends State<DescriptorTile> {
         Snackbar.show(ABC.c, "Descriptor Write : Success", success: true);
       }
     } catch (e, backtrace) {
-      Snackbar.show(ABC.c, prettyException("Descriptor Write Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Descriptor Write Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -66,25 +69,49 @@ class _DescriptorTileState extends State<DescriptorTile> {
 
   Widget buildUuid(BuildContext context) {
     String uuid = '0x${widget.descriptor.uuid.str.toUpperCase()}';
-    return Text(uuid, style: TextStyle(fontSize: 13));
+    return Text(uuid,
+        style: TextStyle(
+            fontSize: 13,
+            color: darkBg.withOpacity(0.8),
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w300));
   }
 
   Widget buildValue(BuildContext context) {
     String data = _value.toString();
-    return Text(data, style: TextStyle(fontSize: 13, color: Colors.grey));
+    return Text(data,
+        style: TextStyle(
+            fontSize: 13,
+            color: darkBg.withOpacity(0.8),
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w300));
   }
 
   Widget buildReadButton(BuildContext context) {
     return TextButton(
       onPressed: onReadPressed,
-      child: Text("Read"),
+      child: Text(
+        "Read",
+        style: TextStyle(
+            color: Colors.blue,
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w500,
+            fontSize: 17),
+      ),
     );
   }
 
   Widget buildWriteButton(BuildContext context) {
     return TextButton(
       onPressed: onWritePressed,
-      child: Text("Write"),
+      child: Text(
+        "Write",
+        style: TextStyle(
+            color: Colors.blue,
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w500,
+            fontSize: 17),
+      ),
     );
   }
 
@@ -105,7 +132,13 @@ class _DescriptorTileState extends State<DescriptorTile> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Descriptor', style: TextStyle(color: Theme.of(context).primaryColor)),
+          Text('Descriptor',
+              style: TextStyle(
+                  color: darkBg,
+                  fontFamily: baseFont,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  shadows: [Shadow(color: Colors.black, blurRadius: 0.2)])),
           buildUuid(context),
           buildValue(context),
         ],
