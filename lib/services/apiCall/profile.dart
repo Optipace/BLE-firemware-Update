@@ -12,7 +12,7 @@ Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
         {
           "id": 1234,
           "name": "B6P1", // changed from version to name
-          "releaseNote": "29/05/2025",
+          "releaseNote": "31/05/2025",
           "uT": "4.20", // upper threshold voltage
           "uV": "4.15",
           "lT": "3.00",
@@ -25,7 +25,7 @@ Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
         {
           "id": 1235,
           "name": "B6P2",
-          "releaseNote": "29/05/2025",
+          "releaseNote": "30/05/2025",
           "uT": "4.25",
           "uV": "4.18",
           "lT": "3.05",
@@ -38,7 +38,7 @@ Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
         {
           "id": 1236,
           "name": "B6P3",
-          "releaseNote": "29/05/2025",
+          "releaseNote": "26/05/2025",
           "uT": "4.30",
           "uV": "4.20",
           "lT": "3.10",
@@ -70,7 +70,7 @@ Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
         {
           "id": 21235,
           "name": "B9P2",
-          "releaseNote": "29/05/2025",
+          "releaseNote": "20/05/2025",
           "uT": "4.35",
           "uV": "4.28",
           "lT": "3.12",
@@ -89,7 +89,7 @@ Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
         {
           "id": 321234,
           "name": "B12P1",
-          "releaseNote": "29/05/2025",
+          "releaseNote": "28/05/2025",
           "uT": "4.40",
           "uV": "4.35",
           "lT": "3.20",
@@ -102,7 +102,7 @@ Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
         {
           "id": 321235,
           "name": "B12P2",
-          "releaseNote": "29/05/2025",
+          "releaseNote": "25/05/2025",
           "uT": "4.45",
           "uV": "4.38",
           "lT": "3.22",

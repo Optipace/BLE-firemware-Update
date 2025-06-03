@@ -7,7 +7,7 @@ Future<Map<String,dynamic>> getFirmwareList(BuildContext context) async {
     "2.0.3":
         {
       "id": 1234,
-      "version": "2.0.1",
+      "version": "2.0.3",
       "releaseNote": "29/05/2025",
       "versionName": "b6 2.0.3",
       "deviceTypeId": "1",
@@ -18,9 +18,9 @@ Future<Map<String,dynamic>> getFirmwareList(BuildContext context) async {
     "2.0.2":
         {
       "id": 1235,
-      "version": "2.0.12",
-      "releaseNote": "29/05/2025",
-      "versionName": "b6 2.0.3",
+      "version": "2.0.2",
+      "releaseNote": "28/04/2025",
+      "versionName": "b6 2.0.2",
       "deviceTypeId": "1",
       "file": "Base64Data",
       "saved": false,
@@ -29,8 +29,8 @@ Future<Map<String,dynamic>> getFirmwareList(BuildContext context) async {
     "2.0.12":
         {
       "id": 1236,
-      "version": "2.0.2",
-      "releaseNote": "29/05/2025",
+      "version": "2.0.12",
+      "releaseNote": "15/04/2025",
       "versionName": "b6 2.0.3",
       "deviceTypeId": "1",
       "file": "Base64Data",
@@ -40,8 +40,8 @@ Future<Map<String,dynamic>> getFirmwareList(BuildContext context) async {
     "2.0.1":
         {
       "id": 1237,
-      "version": "2.0.3",
-      "releaseNote": "29/05/2025",
+      "version": "2.0.1",
+      "releaseNote": "29/03/2025",
       "versionName": "b6 2.0.3",
       "deviceTypeId": "1",
       "file": "Base64Data",
@@ -51,8 +51,8 @@ Future<Map<String,dynamic>> getFirmwareList(BuildContext context) async {
     "1.0.3":
         {
       "id": 21234,
-      "version": "1.0.0",
-      "releaseNote": "29/05/2025",
+      "version": "1.0.3",
+      "releaseNote": "01/03/2025",
       "versionName": "b6 2.0.3",
       "deviceTypeId": "2",
       "file": "Base64Data",
@@ -62,8 +62,8 @@ Future<Map<String,dynamic>> getFirmwareList(BuildContext context) async {
     "1.0.2":
         {
       "id": 21235,
-      "version": "1.0.1",
-      "releaseNote": "29/05/2025",
+      "version": "1.0.2",
+      "releaseNote": "18/02/2025",
       "versionName": "b6 2.0.3",
       "deviceTypeId": "2",
       "file": "Base64Data",
@@ -73,8 +73,8 @@ Future<Map<String,dynamic>> getFirmwareList(BuildContext context) async {
     "1.0.1":
         {
       "id": 21236,
-      "version": "1.0.2",
-      "releaseNote": "29/05/2025",
+      "version": "1.0.1",
+      "releaseNote": "11/02/2025",
       "versionName": "b6 2.0.3",
       "deviceTypeId": "2",
       "file": "Base64Data",
@@ -84,8 +84,8 @@ Future<Map<String,dynamic>> getFirmwareList(BuildContext context) async {
     "1.0.0":
         {
       "id": 21237,
-      "version": "1.0.3",
-      "releaseNote": "29/05/2025",
+      "version": "1.0.0",
+      "releaseNote": "05/02/2025",
       "versionName": "b6 2.0.3",
       "deviceTypeId": "2",
       "file": "Base64Data",

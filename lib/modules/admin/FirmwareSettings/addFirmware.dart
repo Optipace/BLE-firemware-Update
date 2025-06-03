@@ -79,7 +79,11 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
           "name": "B9",
           "priority": 2,
         },
-        "B12": {"id": 3, "name": "B12", "priority": 3},
+        "B12": {
+          "id": 3,
+          "name": "B12",
+          "priority": 3
+        },
       };
       firmwareList = await getFirmwareList(context);
       // profileList = await getProfileByID(context,);
@@ -227,7 +231,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                       size: 26,
                                     ),
                                     Text(
-                                      "New Profile",
+                                      "New Config",
                                       style: TextStyle(
                                         fontSize: 24,
                                         fontFamily: baseFont,
@@ -249,7 +253,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                 ),
                               )
                                   :  Text(
-                                "Profile",
+                                "Config",
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: baseFont,
@@ -367,7 +371,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     );
   }
 
-  Widget newFirmware(context) {
+  Widget newFirmware(context)  {
     return Card(
       elevation: 5,
       margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
@@ -385,6 +389,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // Enter the details
               Padding(
                 padding: EdgeInsets.only(top: 15),
                 child: Center(
@@ -404,6 +409,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                   ),
                 ),
               ),
+              // Text fields
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
@@ -413,7 +419,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       SizedBox(
                         height: 20,
                       ),
+
                       //----2.0.3-----
+                      // Firmware version
                       LabelText(text: "Firmware Version :"),
                       TextFeildNewUser(
                         hintText: "Enter Firmware Version ",
@@ -430,6 +438,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       //update on bluetooth conectivity
+                      // Release note
                       LabelText(text: "Release Note:"),
                       TextFeildNewUser(
                         hintText: "Release Note",
@@ -446,6 +455,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       //B5 v 2.0.3
+                      // Version name
                       LabelText(text: "Version Name :"),
                       TextFeildNewUser(
                         hintText: "Enter Version Name",
@@ -495,9 +505,11 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                        */
                     ],
                   )),
+
               SizedBox(
                 height: 20,
               ),
+              // add firmware btn
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: PrimaryButton(
@@ -510,6 +522,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                   onPress: pickPdfAndConvertToBase64,
                 ),
               ),
+              // upload btn
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: manageUserBtn(
@@ -580,6 +593,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // Title
               Padding(
                 padding: EdgeInsets.only(top: 15),
                 child: Center(
@@ -599,6 +613,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                   ),
                 ),
               ),
+              // Text fields
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
@@ -609,6 +624,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         height: 20,
                       ),
                       //----2.0.3-----
+                      // ---- Profile name ------
                       LabelText(text: "Profile Name :"),
                       TextFeildNewUser(
                         hintText: "Enter Profile Name  ",
@@ -625,6 +641,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       //update on bluetooth conectivity
+                      // ---- Description -----
                       LabelText(text: "Description :"),
                       TextFeildNewUser(
                         hintText: "Description",
@@ -639,6 +656,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       SizedBox(
                         height: 8,
                       ),
+
                       //----Battery series---- [DROPDOWN]
                       GestureDetector(
                         child: PrimeryDropDownButton(
@@ -668,6 +686,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
                       SizedBox(height: 8,),
 
+                      // ----- Upper threshold -------
                       const LabelText(text: "Upper Threshold :"),
                       TextFeildNewUser(
                         hintText: "Enter Upper Threshold",
@@ -684,6 +703,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       SizedBox(
                         height: 8,
                       ),
+
+                      // -------- Upper Voltage--------
                       const LabelText(text: "Upper Voltage :"),
                       TextFeildNewUser(
                         hintText: "Enter Upper Voltage",
@@ -702,6 +723,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       SizedBox(
                         height: 8,
                       ),
+
+                      // ---------- Lower Threshold ----------
                       const LabelText(text: "Lower Threshold :"),
                       TextFeildNewUser(
                         hintText: "Enter Lower Threshold",
@@ -718,6 +741,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       SizedBox(
                         height: 8,
                       ),
+
+                      // ---------- Lower Voltage -------
                       const LabelText(text: "Lower Voltage :"),
                       TextFeildNewUser(
                         hintText: "Enter Lower Voltage",
@@ -738,9 +763,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                     ],
                   )),
+              //Upload btn
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
-                child: manageUserBtn(text: "Upload Profile", onPress: () {}),
+                child: manageUserBtn(text: "Upload Config", onPress: () {}),
               ),
             ],
           ),
@@ -770,6 +796,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // ------ Title -----
               Padding(
                 padding: EdgeInsets.only(top: 15),
                 child: Center(
@@ -789,6 +816,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                   ),
                 ),
               ),
+              // ----- Text fields ------
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
@@ -799,6 +827,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         height: 20,
                       ),
                       //----2.0.3-----
+                      // ------ Batch name -----
                       LabelText(text: "Batch Name :"),
                       TextFeildNewUser(
                         hintText: "Enter Batch Name  ",
@@ -815,6 +844,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       //update on bluetooth conectivity
+                      // ------- Description --------
                       LabelText(text: "Description :"),
                       TextFeildNewUser(
                         hintText: "Description",
@@ -830,6 +860,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         height: 8,
                       ),
 
+                      // -------- Firmware[DropDown] ---------
                       GestureDetector(
                         child: PrimeryDropDownButton(
                           isEnabled: true,
@@ -860,7 +891,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         height: 8,
                       ),
 
-
+                      // ------ Battery series [DropDown] -----
                       GestureDetector(
                         child: PrimeryDropDownButton(
                           isEnabled: true,
@@ -895,6 +926,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         height: 8,
                       ),
 
+                      // ----- Profile[DropDown] -----
                       Visibility(
                         visible: _visibleProfile,
                           child: GestureDetector(
@@ -937,9 +969,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                     ],
                   )),
+              // ----- Upload btn
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
-                child: manageUserBtn(text: "Upload Profile", onPress: () {}),
+                child: manageUserBtn(text: "Upload Batch", onPress: () {}),
               ),
             ],
           ),
