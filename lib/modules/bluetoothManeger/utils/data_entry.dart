@@ -26,15 +26,23 @@ class DataEntry {
                       valueListenable: isHex,
                       builder: (context, value, _) => SegmentedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                            (states) => states.contains(MaterialState.selected) ? darkBg : lightBg,
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                            (states) => states.contains(MaterialState.selected)
+                                ? darkBg
+                                : lightBg,
                           ),
-                          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-                            (states) => states.contains(MaterialState.selected) ? lightBg : darkBg,
+                          foregroundColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                            (states) => states.contains(MaterialState.selected)
+                                ? lightBg
+                                : darkBg,
                           ),
                           side: MaterialStateProperty.resolveWith<BorderSide?>(
                             (states) => BorderSide(
-                              color: states.contains(MaterialState.selected) ? darkBg : darkBg,
+                              color: states.contains(MaterialState.selected)
+                                  ? darkBg
+                                  : darkBg,
                               width: 0.8,
                             ),
                           ),
@@ -44,16 +52,20 @@ class DataEntry {
                             value: false,
                             label: Text(
                               'String',
-                              style:
-                                  TextStyle(fontFamily: baseFont, fontSize: 17, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  fontFamily: baseFont,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                           ButtonSegment(
                             value: true,
                             label: Text(
                               'Hex',
-                              style:
-                                  TextStyle(fontFamily: baseFont, fontSize: 17, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  fontFamily: baseFont,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                         ],
@@ -85,7 +97,10 @@ class DataEntry {
                         )),
                       ),
                       style: TextStyle(
-                          color: darkBg, fontSize: 18, fontFamily: baseFont, fontWeight: FontWeight.w500),
+                          color: darkBg,
+                          fontSize: 18,
+                          fontFamily: baseFont,
+                          fontWeight: FontWeight.w500),
                       minLines: 1,
                       maxLines: 10,
                       validator: (value) {
@@ -98,7 +113,8 @@ class DataEntry {
                         return null;
                       },
                       textInputAction: TextInputAction.send,
-                      onFieldSubmitted: (value) => Navigator.pop(ctx, dataController.text),
+                      onFieldSubmitted: (value) =>
+                          Navigator.pop(ctx, dataController.text),
                     ),
                   ],
                 ),
@@ -109,14 +125,16 @@ class DataEntry {
                 onPressed: () => Navigator.pop(ctx),
                 child: Text(
                   "Cancel",
-                  style: TextStyle(color: darkBg, fontFamily: baseFont, fontSize: 18),
+                  style: TextStyle(
+                      color: darkBg, fontFamily: baseFont, fontSize: 18),
                 ),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(ctx, dataController.text),
                 child: Text(
                   "Submit",
-                  style: TextStyle(color: darkBg, fontFamily: baseFont, fontSize: 18),
+                  style: TextStyle(
+                      color: darkBg, fontFamily: baseFont, fontSize: 18),
                 ),
               ),
             ],
@@ -135,7 +153,10 @@ class DataEntry {
       return null;
     }
     try {
-      return [for (int i = 0; i < value.length; i += 2) int.parse(value.substring(i, i + 2), radix: 16)];
+      return [
+        for (int i = 0; i < value.length; i += 2)
+          int.parse(value.substring(i, i + 2), radix: 16)
+      ];
     } catch (_) {
       return null;
     }

@@ -68,7 +68,8 @@ class Dashboard extends StatelessWidget {
                               _scaffoldKey.currentState?.openDrawer();
                             },
                             icon: Icon(
-                              CupertinoIcons.line_horizontal_3_decrease_circle_fill,
+                              CupertinoIcons
+                                  .line_horizontal_3_decrease_circle_fill,
                               size: 40,
                               color: lightBg,
                               shadows: [
@@ -157,7 +158,12 @@ UserProfileSlider(context, Function? onlogout) {
                 fontWeight: FontWeight.w900,
                 fontFamily: baseFont,
                 color: darkBg,
-                shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.4))])),
+                shadows: [
+                  Shadow(
+                      color: Colors.black,
+                      blurRadius: 0.5,
+                      offset: Offset(0.5, 0.4))
+                ])),
         Divider(),
 
         // Phone number, mail and Desiganation
@@ -199,7 +205,12 @@ UserProfileSlider(context, Function? onlogout) {
                             CupertinoIcons.phone,
                             color: darkBg,
                             size: 20,
-                            shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))],
+                            shadows: [
+                              Shadow(
+                                  color: darkBg,
+                                  blurRadius: 0.5,
+                                  offset: Offset(0.4, 0.4))
+                            ],
                           ),
                           SizedBox(width: 10),
                           Text(
@@ -227,7 +238,12 @@ UserProfileSlider(context, Function? onlogout) {
                           Icon(CupertinoIcons.mail,
                               color: darkBg,
                               size: 20,
-                              shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))]),
+                              shadows: [
+                                Shadow(
+                                    color: darkBg,
+                                    blurRadius: 0.5,
+                                    offset: Offset(0.4, 0.4))
+                              ]),
                           SizedBox(
                             width: 10,
                           ),
@@ -260,10 +276,9 @@ UserProfileSlider(context, Function? onlogout) {
 
         // Logout and Version at bottom
         ListTile(
-          leading: Icon(Icons.logout,
-              color: darkBg,
-              size: 28,
-              shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))]),
+          leading: Icon(Icons.logout, color: darkBg, size: 28, shadows: [
+            Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))
+          ]),
           title: Text(
             "Logout",
             style: TextStyle(
@@ -283,7 +298,8 @@ UserProfileSlider(context, Function? onlogout) {
               ? onlogout as void Function()
               : () async {
                   Navigator.of(context).pop(); // Close the drawer first
-                  await Future.delayed(Duration(milliseconds: 300)); // Small delay for smooth UX
+                  await Future.delayed(
+                      Duration(milliseconds: 300)); // Small delay for smooth UX
                   await LogOut(context);
                 },
         ),
@@ -291,7 +307,10 @@ UserProfileSlider(context, Function? onlogout) {
           padding: const EdgeInsets.all(12.0),
           child: Text(
             "Version ${appVersion}",
-            style: TextStyle(color: secondaryText, fontFamily: baseFont, fontWeight: FontWeight.w300),
+            style: TextStyle(
+                color: secondaryText,
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w300),
           ),
         ),
       ],

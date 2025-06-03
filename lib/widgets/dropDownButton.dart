@@ -139,7 +139,11 @@ class MapListItemBuilder extends StatefulWidget {
   final bool searchEnable;
 
   const MapListItemBuilder(
-      {Key? key, required this.listItems, this.press, this.selected, this.searchEnable = false})
+      {Key? key,
+      required this.listItems,
+      this.press,
+      this.selected,
+      this.searchEnable = false})
       : super(key: key);
 
   @override
@@ -232,8 +236,9 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
         ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount:
-              search.text == "null" || search.text == "" ? widget.listItems.length : suggestionList.length,
+          itemCount: search.text == "null" || search.text == ""
+              ? widget.listItems.length
+              : suggestionList.length,
           itemBuilder: (context, index) {
             final entry = search.text == "null" || search.text == ""
                 ? widget.listItems.entries.toList()[index]

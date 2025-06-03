@@ -13,7 +13,8 @@ class ProfileFieldManagement extends StatefulWidget {
   State<ProfileFieldManagement> createState() => ProfileFieldManagementState();
 }
 
-TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText(
+    {required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,
@@ -55,7 +56,11 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
             "Profiles",
-            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+            style: TextStyle(
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 24,
+                color: lightBg),
           ),
           toolbarHeight: size.height / 11.5,
           backgroundColor: darkBg,
@@ -92,9 +97,12 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                       decoration: BoxDecoration(
                           color: selectedbutton == 1 ? darkBg : lightBg,
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(28), bottomLeft: Radius.circular(28)),
+                              topLeft: Radius.circular(28),
+                              bottomLeft: Radius.circular(28)),
                           border: Border.all(width: 0.5, color: darkBg),
-                          boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                          boxShadow: [
+                            BoxShadow(blurRadius: 0.5, color: darkBg)
+                          ]),
                       child: Center(
                           heightFactor: 2,
                           child: Center(
@@ -108,10 +116,14 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                 shadows: [
                                   Shadow(
                                       offset: Offset(0.3, 0.3),
-                                      color: selectedbutton == 1 ? lightBg : darkBg),
+                                      color: selectedbutton == 1
+                                          ? lightBg
+                                          : darkBg),
                                   Shadow(
                                       offset: Offset(-0.3, 0.3),
-                                      color: selectedbutton == 1 ? lightBg : darkBg),
+                                      color: selectedbutton == 1
+                                          ? lightBg
+                                          : darkBg),
                                 ],
                               ),
                             ),
@@ -132,7 +144,9 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                             color: selectedbutton == 2 ? darkBg : lightBg,
                             // borderRadius: const BorderRadius.only(
                             //     topRight: Radius.circular(28), bottomRight: Radius.circular(28)),
-                            boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                            boxShadow: [
+                              BoxShadow(blurRadius: 0.5, color: darkBg)
+                            ]),
                         child: Center(
                           heightFactor: 2,
                           child: Center(
@@ -146,11 +160,13 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                 shadows: [
                                   Shadow(
                                     offset: Offset(0.3, 0.3),
-                                    color: selectedbutton == 2 ? lightBg : darkBg,
+                                    color:
+                                        selectedbutton == 2 ? lightBg : darkBg,
                                   ),
                                   Shadow(
                                     offset: Offset(-0.3, 0.3),
-                                    color: selectedbutton == 2 ? lightBg : darkBg,
+                                    color:
+                                        selectedbutton == 2 ? lightBg : darkBg,
                                   ),
                                 ],
                               ),
@@ -172,8 +188,11 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                       decoration: BoxDecoration(
                           color: selectedbutton == 3 ? darkBg : lightBg,
                           borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(28), bottomRight: Radius.circular(28)),
-                          boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                              topRight: Radius.circular(28),
+                              bottomRight: Radius.circular(28)),
+                          boxShadow: [
+                            BoxShadow(blurRadius: 0.5, color: darkBg)
+                          ]),
                       child: Center(
                         heightFactor: 2,
                         child: Center(
@@ -221,20 +240,25 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
     printFunc("Serice six Data : $seriesSixData");
     List<Widget> seriesSixWidgetList = [];
 
-    for (int index = 0; index < ((seriesSixData != null) ? seriesSixData.length : 0); index++) {
+    for (int index = 0;
+        index < ((seriesSixData != null) ? seriesSixData.length : 0);
+        index++) {
       printFunc("DEMO DEMO Profile logs : ${seriesSixData[index]}");
-      ValueNotifier moreInfo = ValueNotifier<bool>(seriesSixData[index]['saved']);
+      ValueNotifier moreInfo =
+          ValueNotifier<bool>(seriesSixData[index]['saved']);
       seriesSixWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 2,
-                )
-              ]),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                    )
+                  ]),
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
@@ -242,7 +266,8 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
-                collapsedBackgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
+                collapsedBackgroundColor:
+                    (moreInfo.value) ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -262,13 +287,17 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Profile : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                              style: CardText(
+                                  font_Weight: FontWeight.w300,
+                                  FontColor: secondaryText)),
                           SizedBox(
                             height: 3,
                           ),
                           Text(seriesSixData[index]["name"],
                               style: CardText(
-                                  font_Weight: FontWeight.w800, size: 19, FontColor: SuccessCardText)),
+                                  font_Weight: FontWeight.w800,
+                                  size: 19,
+                                  FontColor: SuccessCardText)),
                         ],
                       ),
                       // EmpID
@@ -278,15 +307,19 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         children: [
                           Text(
                             "Release Note : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
                           ),
                           Text(
                             seriesSixData[index]["releaseNote"],
-                            style:
-                                CardText(font_Weight: FontWeight.w800, size: 19, FontColor: SuccessCardText),
+                            style: CardText(
+                                font_Weight: FontWeight.w800,
+                                size: 19,
+                                FontColor: SuccessCardText),
                           ),
                         ],
                       ),
@@ -297,15 +330,19 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         children: [
                           Text(
                             "Series : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
                           ),
                           Text(
                             seriesSixData[index]['deviceType'],
-                            style:
-                                CardText(font_Weight: FontWeight.w800, size: 19, FontColor: SuccessCardText),
+                            style: CardText(
+                                font_Weight: FontWeight.w800,
+                                size: 19,
+                                FontColor: SuccessCardText),
                           )
                         ],
                       ),
@@ -328,13 +365,17 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_charging_full_outlined,
-                                              size: 18, color: secondaryText),
+                                          Icon(
+                                              Icons
+                                                  .battery_charging_full_outlined,
+                                              size: 18,
+                                              color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesSixData[index]['uT']} V",
@@ -361,12 +402,14 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                   ),
                                   SizedBox(width: 20),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_6_bar_outlined, size: 18, color: secondaryText),
+                                          Icon(Icons.battery_6_bar_outlined,
+                                              size: 18, color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesSixData[index]['uV']} V",
@@ -393,12 +436,14 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                   ),
                                   SizedBox(width: 20),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_alert_outlined, size: 18, color: secondaryText),
+                                          Icon(Icons.battery_alert_outlined,
+                                              size: 18, color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesSixData[index]['lT']} V",
@@ -430,7 +475,8 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                       // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_1_bar_rounded, size: 18, color: secondaryText),
+                                          Icon(Icons.battery_1_bar_rounded,
+                                              size: 18, color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesSixData[index]['lV']} V",
@@ -480,20 +526,25 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
     printFunc("Serice six Data : $seriesNineData");
     List<Widget> seriesNineWidgetList = [];
 
-    for (int index = 0; index < ((seriesNineData != null) ? seriesNineData.length : 0); index++) {
+    for (int index = 0;
+        index < ((seriesNineData != null) ? seriesNineData.length : 0);
+        index++) {
       printFunc("DEMO DEMO Profile logs : ${seriesNineData[index]}");
-      ValueNotifier moreInfo = ValueNotifier<bool>(seriesNineData[index]['saved']);
+      ValueNotifier moreInfo =
+          ValueNotifier<bool>(seriesNineData[index]['saved']);
       seriesNineWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 2,
-                )
-              ]),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                    )
+                  ]),
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
@@ -501,7 +552,8 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
-                collapsedBackgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
+                collapsedBackgroundColor:
+                    (moreInfo.value) ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -521,13 +573,17 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Profile : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                              style: CardText(
+                                  font_Weight: FontWeight.w300,
+                                  FontColor: secondaryText)),
                           SizedBox(
                             height: 3,
                           ),
                           Text(seriesNineData[index]["name"],
                               style: CardText(
-                                  font_Weight: FontWeight.w800, size: 19, FontColor: SuccessCardText)),
+                                  font_Weight: FontWeight.w800,
+                                  size: 19,
+                                  FontColor: SuccessCardText)),
                         ],
                       ),
                       // EmpID
@@ -537,15 +593,19 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         children: [
                           Text(
                             "Release Note : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
                           ),
                           Text(
                             seriesNineData[index]["releaseNote"],
-                            style:
-                                CardText(font_Weight: FontWeight.w800, size: 19, FontColor: SuccessCardText),
+                            style: CardText(
+                                font_Weight: FontWeight.w800,
+                                size: 19,
+                                FontColor: SuccessCardText),
                           ),
                         ],
                       ),
@@ -556,15 +616,19 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         children: [
                           Text(
                             "Series : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
                           ),
                           Text(
                             seriesNineData[index]['deviceType'],
-                            style:
-                                CardText(font_Weight: FontWeight.w800, size: 19, FontColor: SuccessCardText),
+                            style: CardText(
+                                font_Weight: FontWeight.w800,
+                                size: 19,
+                                FontColor: SuccessCardText),
                           )
                         ],
                       ),
@@ -587,13 +651,17 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_charging_full_outlined,
-                                              size: 18, color: secondaryText),
+                                          Icon(
+                                              Icons
+                                                  .battery_charging_full_outlined,
+                                              size: 18,
+                                              color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesNineData[index]['uT']} V",
@@ -620,12 +688,14 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                   ),
                                   SizedBox(width: 20),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_6_bar_outlined, size: 18, color: secondaryText),
+                                          Icon(Icons.battery_6_bar_outlined,
+                                              size: 18, color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesNineData[index]['uV']} V",
@@ -652,12 +722,14 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                   ),
                                   SizedBox(width: 20),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_alert_outlined, size: 18, color: secondaryText),
+                                          Icon(Icons.battery_alert_outlined,
+                                              size: 18, color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesNineData[index]['lT']} V",
@@ -689,7 +761,8 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                       // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_1_bar_rounded, size: 18, color: secondaryText),
+                                          Icon(Icons.battery_1_bar_rounded,
+                                              size: 18, color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesNineData[index]['lV']} V",
@@ -739,20 +812,25 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
     printFunc("Serice six Data : $seriesTwelveData");
     List<Widget> seriesTwelveWidgetList = [];
 
-    for (int index = 0; index < ((seriesTwelveData != null) ? seriesTwelveData.length : 0); index++) {
+    for (int index = 0;
+        index < ((seriesTwelveData != null) ? seriesTwelveData.length : 0);
+        index++) {
       printFunc("DEMO DEMO Profile logs : ${seriesTwelveData[index]}");
-      ValueNotifier moreInfo = ValueNotifier<bool>(seriesTwelveData[index]['saved']);
+      ValueNotifier moreInfo =
+          ValueNotifier<bool>(seriesTwelveData[index]['saved']);
       seriesTwelveWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 2,
-                )
-              ]),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                    )
+                  ]),
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
@@ -760,7 +838,8 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
-                collapsedBackgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
+                collapsedBackgroundColor:
+                    (moreInfo.value) ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -780,13 +859,17 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Profile : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                              style: CardText(
+                                  font_Weight: FontWeight.w300,
+                                  FontColor: secondaryText)),
                           SizedBox(
                             height: 3,
                           ),
                           Text(seriesTwelveData[index]["name"],
                               style: CardText(
-                                  font_Weight: FontWeight.w800, size: 19, FontColor: SuccessCardText)),
+                                  font_Weight: FontWeight.w800,
+                                  size: 19,
+                                  FontColor: SuccessCardText)),
                         ],
                       ),
                       // EmpID
@@ -796,15 +879,19 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         children: [
                           Text(
                             "Release Note : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
                           ),
                           Text(
                             seriesTwelveData[index]["releaseNote"],
-                            style:
-                                CardText(font_Weight: FontWeight.w800, size: 19, FontColor: SuccessCardText),
+                            style: CardText(
+                                font_Weight: FontWeight.w800,
+                                size: 19,
+                                FontColor: SuccessCardText),
                           ),
                         ],
                       ),
@@ -815,15 +902,19 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         children: [
                           Text(
                             "Series : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
                           ),
                           Text(
                             seriesTwelveData[index]['deviceType'],
-                            style:
-                                CardText(font_Weight: FontWeight.w800, size: 19, FontColor: SuccessCardText),
+                            style: CardText(
+                                font_Weight: FontWeight.w800,
+                                size: 19,
+                                FontColor: SuccessCardText),
                           )
                         ],
                       ),
@@ -846,13 +937,17 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_charging_full_outlined,
-                                              size: 18, color: secondaryText),
+                                          Icon(
+                                              Icons
+                                                  .battery_charging_full_outlined,
+                                              size: 18,
+                                              color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesTwelveData[index]['uT']} V",
@@ -879,12 +974,14 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                   ),
                                   SizedBox(width: 20),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_6_bar_outlined, size: 18, color: secondaryText),
+                                          Icon(Icons.battery_6_bar_outlined,
+                                              size: 18, color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesTwelveData[index]['uV']} V",
@@ -911,12 +1008,14 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                   ),
                                   SizedBox(width: 20),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_alert_outlined, size: 18, color: secondaryText),
+                                          Icon(Icons.battery_alert_outlined,
+                                              size: 18, color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesTwelveData[index]['lT']} V",
@@ -948,7 +1047,8 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                                       // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
                                       Row(
                                         children: [
-                                          Icon(Icons.battery_1_bar_rounded, size: 18, color: secondaryText),
+                                          Icon(Icons.battery_1_bar_rounded,
+                                              size: 18, color: secondaryText),
                                           SizedBox(width: 5),
                                           Text(
                                             "${seriesTwelveData[index]['lV']} V",

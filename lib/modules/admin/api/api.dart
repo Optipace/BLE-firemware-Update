@@ -18,7 +18,8 @@ Future<bool> getAllLogs(BuildContext context) async {
         }
       }*/
       var designation_id = 1;
-      Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+      Navigator.of(context)
+          .push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
       return true;
     }
     //  --else cond --

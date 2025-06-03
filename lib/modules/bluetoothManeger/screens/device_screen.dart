@@ -21,13 +21,15 @@ class DeviceScreen extends StatefulWidget {
 class _DeviceScreenState extends State<DeviceScreen> {
   int? _rssi;
   int? _mtuSize;
-  BluetoothConnectionState _connectionState = BluetoothConnectionState.disconnected;
+  BluetoothConnectionState _connectionState =
+      BluetoothConnectionState.disconnected;
   List<BluetoothService> _services = [];
   bool _isDiscoveringServices = false;
   bool _isConnecting = false;
   bool _isDisconnecting = false;
 
-  late StreamSubscription<BluetoothConnectionState> _connectionStateSubscription;
+  late StreamSubscription<BluetoothConnectionState>
+      _connectionStateSubscription;
   late StreamSubscription<bool> _isConnectingSubscription;
   late StreamSubscription<bool> _isDisconnectingSubscription;
   late StreamSubscription<int> _mtuSubscription;
@@ -36,7 +38,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
   void initState() {
     super.initState();
 
-    _connectionStateSubscription = widget.device.connectionState.listen((state) async {
+    _connectionStateSubscription =
+        widget.device.connectionState.listen((state) async {
       _connectionState = state;
       if (state == BluetoothConnectionState.connected) {
         _services = []; // must rediscover services
@@ -63,7 +66,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
       }
     });
 
-    _isDisconnectingSubscription = widget.device.isDisconnecting.listen((value) {
+    _isDisconnectingSubscription =
+        widget.device.isDisconnecting.listen((value) {
       _isDisconnecting = value;
       if (mounted) {
         setState(() {});
@@ -89,10 +93,12 @@ class _DeviceScreenState extends State<DeviceScreen> {
       await widget.device.connectAndUpdateStream();
       Snackbar.show(ABC.c, "Connect: Success", success: true);
     } catch (e, backtrace) {
-      if (e is FlutterBluePlusException && e.code == FbpErrorCode.connectionCanceled.index) {
+      if (e is FlutterBluePlusException &&
+          e.code == FbpErrorCode.connectionCanceled.index) {
         // ignore connections canceled by the user
       } else {
-        Snackbar.show(ABC.c, prettyException("Connect Error:", e), success: false);
+        Snackbar.show(ABC.c, prettyException("Connect Error:", e),
+            success: false);
         print(e);
         print("backtrace: $backtrace");
       }
@@ -115,7 +121,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
       await widget.device.disconnectAndUpdateStream();
       Snackbar.show(ABC.c, "Disconnect: Success", success: true);
     } catch (e, backtrace) {
-      Snackbar.show(ABC.c, prettyException("Disconnect Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Disconnect Error:", e),
+          success: false);
       print("$e backtrace: $backtrace");
     }
   }
@@ -130,7 +137,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
       _services = await widget.device.discoverServices();
       Snackbar.show(ABC.c, "Discover Services: Success", success: true);
     } catch (e, backtrace) {
-      Snackbar.show(ABC.c, prettyException("Discover Services Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Discover Services Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -146,7 +154,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
       await widget.device.requestMtu(223, predelay: 0);
       Snackbar.show(ABC.c, "Request Mtu: Success", success: true);
     } catch (e, backtrace) {
-      Snackbar.show(ABC.c, prettyException("Change Mtu Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Change Mtu Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -157,7 +166,9 @@ class _DeviceScreenState extends State<DeviceScreen> {
         .map(
           (s) => ServiceTile(
             service: s,
-            characteristicTiles: s.characteristics.map((c) => _buildCharacteristicTile(c)).toList(),
+            characteristicTiles: s.characteristics
+                .map((c) => _buildCharacteristicTile(c))
+                .toList(),
           ),
         )
         .toList();
@@ -166,7 +177,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
   CharacteristicTile _buildCharacteristicTile(BluetoothCharacteristic c) {
     return CharacteristicTile(
       characteristic: c,
-      descriptorTiles: c.descriptors.map((d) => DescriptorTile(descriptor: d)).toList(),
+      descriptorTiles:
+          c.descriptors.map((d) => DescriptorTile(descriptor: d)).toList(),
     );
   }
 
@@ -209,7 +221,10 @@ class _DeviceScreenState extends State<DeviceScreen> {
                 color: darkBg,
               ),
         Text(((isConnected && _rssi != null) ? '${_rssi!} dBm' : ''),
-            style: TextStyle(color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500))
+            style: TextStyle(
+                color: darkBg,
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w500))
       ],
     );
   }
@@ -223,7 +238,10 @@ class _DeviceScreenState extends State<DeviceScreen> {
           child: Text(
             "Get Services",
             style: TextStyle(
-                color: Colors.blue, fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 15),
+                color: Colors.blue,
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 15),
           ),
         ),
         IconButton(
@@ -268,7 +286,9 @@ class _DeviceScreenState extends State<DeviceScreen> {
     return Row(children: [
       if (_isConnecting || _isDisconnecting) buildSpinner(context),
       ElevatedButton(
-          onPressed: _isConnecting ? onCancelPressed : (isConnected ? onDisconnectPressed : onConnectPressed),
+          onPressed: _isConnecting
+              ? onCancelPressed
+              : (isConnected ? onDisconnectPressed : onConnectPressed),
           style: ElevatedButton.styleFrom(
             backgroundColor: lightBg,
             foregroundColor: darkBg,
@@ -303,7 +323,10 @@ class _DeviceScreenState extends State<DeviceScreen> {
                 leading: buildRssiTile(context),
                 title: Text(
                   'Device is ${_connectionState.toString().split('.')[1]}.',
-                  style: TextStyle(color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      color: darkBg,
+                      fontFamily: baseFont,
+                      fontWeight: FontWeight.w500),
                 ),
                 trailing: buildGetServices(context),
               ),

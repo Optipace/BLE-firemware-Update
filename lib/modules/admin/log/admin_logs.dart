@@ -8,7 +8,8 @@ class AdminLogs extends StatefulWidget {
   State<AdminLogs> createState() => AdminLogsState();
 }
 
-TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText(
+    {required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,
@@ -30,7 +31,11 @@ class AdminLogsState extends State<AdminLogs> {
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
             "Logs",
-            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+            style: TextStyle(
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 24,
+                color: lightBg),
           ),
           toolbarHeight: size.height / 11.5,
           backgroundColor: darkBg,
@@ -67,9 +72,12 @@ class AdminLogsState extends State<AdminLogs> {
                       decoration: BoxDecoration(
                           color: selectedbutton == 1 ? darkBg : lightBg,
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(28), bottomLeft: Radius.circular(28)),
+                              topLeft: Radius.circular(28),
+                              bottomLeft: Radius.circular(28)),
                           border: Border.all(width: 0.5, color: darkBg),
-                          boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                          boxShadow: [
+                            BoxShadow(blurRadius: 0.5, color: darkBg)
+                          ]),
                       child: Center(
                           heightFactor: 2,
                           child: Center(
@@ -83,10 +91,14 @@ class AdminLogsState extends State<AdminLogs> {
                                 shadows: [
                                   Shadow(
                                       offset: Offset(0.3, 0.3),
-                                      color: selectedbutton == 1 ? lightBg : darkBg),
+                                      color: selectedbutton == 1
+                                          ? lightBg
+                                          : darkBg),
                                   Shadow(
                                       offset: Offset(-0.3, 0.3),
-                                      color: selectedbutton == 1 ? lightBg : darkBg),
+                                      color: selectedbutton == 1
+                                          ? lightBg
+                                          : darkBg),
                                 ],
                               ),
                             ),
@@ -105,8 +117,11 @@ class AdminLogsState extends State<AdminLogs> {
                       decoration: BoxDecoration(
                           color: selectedbutton == 2 ? darkBg : lightBg,
                           borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(28), bottomRight: Radius.circular(28)),
-                          boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                              topRight: Radius.circular(28),
+                              bottomRight: Radius.circular(28)),
+                          boxShadow: [
+                            BoxShadow(blurRadius: 0.5, color: darkBg)
+                          ]),
                       child: Center(
                         heightFactor: 2,
                         child: Center(
@@ -161,18 +176,24 @@ class AdminLogsState extends State<AdminLogs> {
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 2,
-                )
-              ]),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                    )
+                  ]),
               child: ExpansionTile(
                 key: ValueKey('factory_$index'),
                 tilePadding: EdgeInsets.all(5),
-                backgroundColor: FactoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+                backgroundColor: FactoryLogs[index]['status'] == 'Success'
+                    ? SuccessCard
+                    : FailureCard,
                 collapsedBackgroundColor:
-                    FactoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+                    FactoryLogs[index]['status'] == 'Success'
+                        ? SuccessCard
+                        : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -193,7 +214,9 @@ class AdminLogsState extends State<AdminLogs> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Name : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                              style: CardText(
+                                  font_Weight: FontWeight.w300,
+                                  FontColor: secondaryText)),
                           SizedBox(
                             height: 3,
                           ),
@@ -201,9 +224,10 @@ class AdminLogsState extends State<AdminLogs> {
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: FactoryLogs[index]['status'] == 'Success'
-                                      ? SuccessCardText
-                                      : FailureCardText)),
+                                  FontColor:
+                                      FactoryLogs[index]['status'] == 'Success'
+                                          ? SuccessCardText
+                                          : FailureCardText)),
                         ],
                       ),
                       // EmpID
@@ -213,7 +237,9 @@ class AdminLogsState extends State<AdminLogs> {
                         children: [
                           Text(
                             "EmpID : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
@@ -223,9 +249,10 @@ class AdminLogsState extends State<AdminLogs> {
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: FactoryLogs[index]['status'] == 'Success'
-                                    ? SuccessCardText
-                                    : FailureCardText),
+                                FontColor:
+                                    FactoryLogs[index]['status'] == 'Success'
+                                        ? SuccessCardText
+                                        : FailureCardText),
                           ),
                         ],
                       ),
@@ -236,7 +263,9 @@ class AdminLogsState extends State<AdminLogs> {
                         children: [
                           Text(
                             "DeviceID : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
@@ -246,9 +275,10 @@ class AdminLogsState extends State<AdminLogs> {
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: FactoryLogs[index]['status'] == 'Success'
-                                    ? SuccessCardText
-                                    : FailureCardText),
+                                FontColor:
+                                    FactoryLogs[index]['status'] == 'Success'
+                                        ? SuccessCardText
+                                        : FailureCardText),
                           )
                         ],
                       ),
@@ -275,7 +305,9 @@ class AdminLogsState extends State<AdminLogs> {
                               children: [
                                 Text(
                                   "Phone Number : ",
-                                  style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                  style: CardText(
+                                      font_Weight: FontWeight.w300,
+                                      FontColor: secondaryText),
                                 ),
                                 SizedBox(
                                   height: 3,
@@ -285,7 +317,8 @@ class AdminLogsState extends State<AdminLogs> {
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FactoryLogs[index]['status'] == 'Success'
+                                      FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
                                           ? SuccessCardText
                                           : FailureCardText),
                                 )
@@ -301,7 +334,9 @@ class AdminLogsState extends State<AdminLogs> {
                               children: [
                                 Text(
                                   "Firm version : ",
-                                  style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                  style: CardText(
+                                      font_Weight: FontWeight.w300,
+                                      FontColor: secondaryText),
                                 ),
                                 SizedBox(
                                   height: 3,
@@ -311,7 +346,8 @@ class AdminLogsState extends State<AdminLogs> {
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FactoryLogs[index]['status'] == 'Success'
+                                      FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
                                           ? SuccessCardText
                                           : FailureCardText),
                                 )
@@ -327,7 +363,9 @@ class AdminLogsState extends State<AdminLogs> {
                               children: [
                                 Text(
                                   "Battery-Service : ",
-                                  style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                  style: CardText(
+                                      font_Weight: FontWeight.w300,
+                                      FontColor: secondaryText),
                                 ),
                                 SizedBox(
                                   height: 3,
@@ -337,7 +375,8 @@ class AdminLogsState extends State<AdminLogs> {
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FactoryLogs[index]['status'] == 'Success'
+                                      FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
                                           ? SuccessCardText
                                           : FailureCardText),
                                 )
@@ -370,7 +409,8 @@ class AdminLogsState extends State<AdminLogs> {
                                     style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FactoryLogs[index]['status'] == 'Success'
+                                      FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
                                           ? SuccessCardText
                                           : FailureCardText,
                                     ),
@@ -393,11 +433,13 @@ class AdminLogsState extends State<AdminLogs> {
                                   ),
                                   SizedBox(height: 3),
                                   Text(
-                                    FactoryLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
+                                    FactoryLogs[index]['Date-Time']
+                                        .replaceFirst(' ', '\n'),
                                     style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FactoryLogs[index]['status'] == 'Success'
+                                      FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
                                           ? SuccessCardText
                                           : FailureCardText,
                                     ),
@@ -424,7 +466,8 @@ class AdminLogsState extends State<AdminLogs> {
                                     style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FactoryLogs[index]['status'] == 'Success'
+                                      FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
                                           ? SuccessCardText
                                           : FailureCardText,
                                     ),
@@ -459,19 +502,25 @@ class AdminLogsState extends State<AdminLogs> {
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 2,
-                )
-              ]),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                    )
+                  ]),
               child: ExpansionTile(
                 key: ValueKey('field_$index'),
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor:
-                    FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
+                    FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                        ? SuccessCard
+                        : FailureCard,
                 collapsedBackgroundColor:
-                    FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
+                    FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                        ? SuccessCard
+                        : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -492,7 +541,9 @@ class AdminLogsState extends State<AdminLogs> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Name : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                              style: CardText(
+                                  font_Weight: FontWeight.w300,
+                                  FontColor: secondaryText)),
                           SizedBox(
                             height: 3,
                           ),
@@ -500,7 +551,9 @@ class AdminLogsState extends State<AdminLogs> {
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                  FontColor: FeildUserLogs[index]['status']
+                                              .toLowerCase() ==
+                                          'success'
                                       ? SuccessCardText
                                       : FailureCardText)),
                         ],
@@ -512,7 +565,9 @@ class AdminLogsState extends State<AdminLogs> {
                         children: [
                           Text(
                             "EmpID : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
@@ -522,7 +577,9 @@ class AdminLogsState extends State<AdminLogs> {
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'Success'
+                                FontColor: FeildUserLogs[index]['status']
+                                            .toLowerCase() ==
+                                        'Success'
                                     ? SuccessCardText
                                     : FailureCardText),
                           ),
@@ -545,7 +602,9 @@ class AdminLogsState extends State<AdminLogs> {
                             style: CardText(
                               font_Weight: FontWeight.w800,
                               size: 19,
-                              FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                              FontColor: FeildUserLogs[index]['status']
+                                          .toLowerCase() ==
+                                      'success'
                                   ? SuccessCardText
                                   : FailureCardText,
                             ),
@@ -575,7 +634,9 @@ class AdminLogsState extends State<AdminLogs> {
                               children: [
                                 Text(
                                   "Phone Number : ",
-                                  style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                  style: CardText(
+                                      font_Weight: FontWeight.w300,
+                                      FontColor: secondaryText),
                                 ),
                                 SizedBox(
                                   height: 3,
@@ -585,7 +646,9 @@ class AdminLogsState extends State<AdminLogs> {
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                      FontColor: FeildUserLogs[index]['status']
+                                                  .toLowerCase() ==
+                                              'success'
                                           ? SuccessCardText
                                           : FailureCardText),
                                 )
@@ -601,7 +664,9 @@ class AdminLogsState extends State<AdminLogs> {
                               children: [
                                 Text(
                                   "Firm version : ",
-                                  style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                  style: CardText(
+                                      font_Weight: FontWeight.w300,
+                                      FontColor: secondaryText),
                                 ),
                                 SizedBox(
                                   height: 3,
@@ -611,7 +676,9 @@ class AdminLogsState extends State<AdminLogs> {
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                      FontColor: FeildUserLogs[index]['status']
+                                                  .toLowerCase() ==
+                                              'success'
                                           ? SuccessCardText
                                           : FailureCardText),
                                 )
@@ -627,7 +694,9 @@ class AdminLogsState extends State<AdminLogs> {
                               children: [
                                 Text(
                                   "Battery-Service : ",
-                                  style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                  style: CardText(
+                                      font_Weight: FontWeight.w300,
+                                      FontColor: secondaryText),
                                 ),
                                 SizedBox(
                                   height: 3,
@@ -637,7 +706,9 @@ class AdminLogsState extends State<AdminLogs> {
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                      FontColor: FeildUserLogs[index]['status']
+                                                  .toLowerCase() ==
+                                              'success'
                                           ? SuccessCardText
                                           : FailureCardText),
                                 )
@@ -670,7 +741,9 @@ class AdminLogsState extends State<AdminLogs> {
                                     style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FeildUserLogs[index]['status'] == 'Success'
+                                      FontColor: FeildUserLogs[index]
+                                                  ['status'] ==
+                                              'Success'
                                           ? SuccessCardText
                                           : FailureCardText,
                                     ),
@@ -693,11 +766,14 @@ class AdminLogsState extends State<AdminLogs> {
                                   ),
                                   SizedBox(height: 3),
                                   Text(
-                                    FeildUserLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
+                                    FeildUserLogs[index]['Date-Time']
+                                        .replaceFirst(' ', '\n'),
                                     style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
-                                      FontColor: FeildUserLogs[index]['status'] == 'Success'
+                                      FontColor: FeildUserLogs[index]
+                                                  ['status'] ==
+                                              'Success'
                                           ? SuccessCardText
                                           : FailureCardText,
                                     ),
@@ -715,7 +791,9 @@ class AdminLogsState extends State<AdminLogs> {
                                 children: [
                                   Text(
                                     "DeviceID : ",
-                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: secondaryText),
                                   ),
                                   SizedBox(
                                     height: 3,
@@ -725,7 +803,9 @@ class AdminLogsState extends State<AdminLogs> {
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
-                                        FontColor: FeildUserLogs[index]['status'] == 'Success'
+                                        FontColor: FeildUserLogs[index]
+                                                    ['status'] ==
+                                                'Success'
                                             ? SuccessCardText
                                             : FailureCardText),
                                   )

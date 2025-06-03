@@ -44,7 +44,8 @@ class _DescriptorTileState extends State<DescriptorTile> {
       await d.read();
       Snackbar.show(ABC.c, "Descriptor Read : Success", success: true);
     } catch (e, backtrace) {
-      Snackbar.show(ABC.c, prettyException("Descriptor Read Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Descriptor Read Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -58,7 +59,8 @@ class _DescriptorTileState extends State<DescriptorTile> {
         Snackbar.show(ABC.c, "Descriptor Write : Success", success: true);
       }
     } catch (e, backtrace) {
-      Snackbar.show(ABC.c, prettyException("Descriptor Write Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Descriptor Write Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -68,14 +70,20 @@ class _DescriptorTileState extends State<DescriptorTile> {
     String uuid = '0x${widget.descriptor.uuid.str.toUpperCase()}';
     return Text(uuid,
         style: TextStyle(
-            fontSize: 13, color: darkBg.withOpacity(0.8), fontFamily: baseFont, fontWeight: FontWeight.w300));
+            fontSize: 13,
+            color: darkBg.withOpacity(0.8),
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w300));
   }
 
   Widget buildValue(BuildContext context) {
     String data = _value.toString();
     return Text(data,
         style: TextStyle(
-            fontSize: 13, color: darkBg.withOpacity(0.8), fontFamily: baseFont, fontWeight: FontWeight.w300));
+            fontSize: 13,
+            color: darkBg.withOpacity(0.8),
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w300));
   }
 
   Widget buildReadButton(BuildContext context) {
@@ -83,7 +91,11 @@ class _DescriptorTileState extends State<DescriptorTile> {
       onPressed: onReadPressed,
       child: Text(
         "Read",
-        style: TextStyle(color: Colors.blue, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 17),
+        style: TextStyle(
+            color: Colors.blue,
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w500,
+            fontSize: 17),
       ),
     );
   }
@@ -93,7 +105,11 @@ class _DescriptorTileState extends State<DescriptorTile> {
       onPressed: onWritePressed,
       child: Text(
         "Write",
-        style: TextStyle(color: Colors.blue, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 17),
+        style: TextStyle(
+            color: Colors.blue,
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w500,
+            fontSize: 17),
       ),
     );
   }

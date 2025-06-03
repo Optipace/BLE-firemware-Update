@@ -1,147 +1,97 @@
 import 'package:flutter/cupertino.dart';
 
-Future<List> getFirmwareList(BuildContext context) async {
-  List firmwareList = [{}];
+Future<Map<String,dynamic>> getFirmwareList(BuildContext context) async {
+  Map<String,dynamic> firmwareList = {};
 
-  firmwareList = [
-    {
-      "id": "1",
-      "name": "B6",
-      "firmware": [
+  firmwareList = {
+    "2.0.3":
         {
-          "id": 1234,
-          "version": "2.0.3",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "1",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-        {
-          "id": 1235,
-          "version": "2.0.31",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "1",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-        {
-          "id": 1236,
-          "version": "2.0.32",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "1",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-        {
-          "id": 1237,
-          "version": "2.0.33",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "1",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-      ]
+      "id": 1234,
+      "version": "2.0.1",
+      "releaseNote": "29/05/2025",
+      "versionName": "b6 2.0.3",
+      "deviceTypeId": "1",
+      "file": "Base64Data",
+      "saved": false,
+      "deviceType": "B6"
     },
-    {
-      "id": "2",
-      "name": "B9",
-      "firmware": [
+    "2.0.2":
         {
-          "id": 21234,
-          "version": "21.0.3",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "2",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-        {
-          "id": 21235,
-          "version": "21.0.31",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "2",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-        {
-          "id": 21236,
-          "version": "21.0.32",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "2",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-        {
-          "id": 21237,
-          "version": "21.0.33",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "2",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-      ]
+      "id": 1235,
+      "version": "2.0.12",
+      "releaseNote": "29/05/2025",
+      "versionName": "b6 2.0.3",
+      "deviceTypeId": "1",
+      "file": "Base64Data",
+      "saved": false,
+      "deviceType": "B6"
     },
-    {
-      "id": "3",
-      "name": "B12",
-      "firmware": [
+    "2.0.12":
         {
-          "id": 321234,
-          "version": "321.0.3",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "3",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-        {
-          "id": 321235,
-          "version": "321.0.31",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "3",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-        {
-          "id": 321236,
-          "version": "321.0.32",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "3",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-        {
-          "id": 321237,
-          "version": "321.0.33",
-          "releaseNote": "29/05/2025",
-          "versionName": "b6 2.0.3",
-          "deviceTypeid": "3",
-          "file": "Base64Data",
-          "saved": false,
-          "deviceType": "B6"
-        },
-      ]
+      "id": 1236,
+      "version": "2.0.2",
+      "releaseNote": "29/05/2025",
+      "versionName": "b6 2.0.3",
+      "deviceTypeId": "1",
+      "file": "Base64Data",
+      "saved": false,
+      "deviceType": "B6"
     },
-  ];
+    "2.0.1":
+        {
+      "id": 1237,
+      "version": "2.0.3",
+      "releaseNote": "29/05/2025",
+      "versionName": "b6 2.0.3",
+      "deviceTypeId": "1",
+      "file": "Base64Data",
+      "saved": false,
+      "deviceType": "B6"
+    },
+    "1.0.3":
+        {
+      "id": 21234,
+      "version": "1.0.0",
+      "releaseNote": "29/05/2025",
+      "versionName": "b6 2.0.3",
+      "deviceTypeId": "2",
+      "file": "Base64Data",
+      "saved": false,
+      "deviceType": "B6"
+    },
+    "1.0.2":
+        {
+      "id": 21235,
+      "version": "1.0.1",
+      "releaseNote": "29/05/2025",
+      "versionName": "b6 2.0.3",
+      "deviceTypeId": "2",
+      "file": "Base64Data",
+      "saved": false,
+      "deviceType": "B6"
+    },
+    "1.0.1":
+        {
+      "id": 21236,
+      "version": "1.0.2",
+      "releaseNote": "29/05/2025",
+      "versionName": "b6 2.0.3",
+      "deviceTypeId": "2",
+      "file": "Base64Data",
+      "saved": false,
+      "deviceType": "B6"
+    },
+    "1.0.0":
+        {
+      "id": 21237,
+      "version": "1.0.3",
+      "releaseNote": "29/05/2025",
+      "versionName": "b6 2.0.3",
+      "deviceTypeId": "2",
+      "file": "Base64Data",
+      "saved": false,
+      "deviceType": "B6"
+    },
+  };
   return firmwareList;
 }

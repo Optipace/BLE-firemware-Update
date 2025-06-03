@@ -3,7 +3,8 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileSeriesModel.dart';
 
-Future<void> saveProfileListToHive(List<Map<String, dynamic>> profileList) async {
+Future<void> saveProfileListToHive(
+    List<Map<String, dynamic>> profileList) async {
   final profileBox = await Hive.openBox<ProfileSeriesModel>('$serviceHiveBox');
 
   for (var series in profileList) {
@@ -75,12 +76,14 @@ final newProfile = ProfileModel(
 
     // Save to box
     await profileBox.put(newProfile.deviceTypeId, series);
-    print("Series ${newProfile.deviceTypeId} created and profile ${newProfile.name} added.");
+    print(
+        "Series ${newProfile.deviceTypeId} created and profile ${newProfile.name} added.");
   } else {
     // Series exists, add new profile
     series.profile.add(newProfile);
     await series.save();
-    print("Profile ${newProfile.name} added to series ${newProfile.deviceTypeId}.");
+    print(
+        "Profile ${newProfile.name} added to series ${newProfile.deviceTypeId}.");
   }
 
   return true;
