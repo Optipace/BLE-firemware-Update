@@ -67,24 +67,42 @@ class listOverviewState extends State<listOverview> {
         body: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // List of firmware
                 ExpansionTile(
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: second_lightBg,
                   collapsedBackgroundColor: Colors.transparent,
-                  iconColor: Colors.black,
+                  iconColor: darkBg,
                   textColor: Colors.black,
-                  collapsedIconColor: Colors.black,
+                  collapsedIconColor: darkBg,
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.transparent)),
-                  tilePadding: EdgeInsets.only(left: 10),
-                  childrenPadding: EdgeInsets.symmetric(horizontal: size.width/30),
-                  title: Text("FirmWare"),
+                    side: BorderSide(color: darkBg,width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+
+                  ),
+                  collapsedShape:  RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.transparent,width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+
+                  ),
+                  tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                  childrenPadding: EdgeInsets.symmetric(horizontal: 35),
+                  title: Text("Firmware",
+                    style: TextStyle(
+                      color: darkBg,
+                      fontFamily: baseFont,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      shadows: [Shadow(color: Colors.black,blurRadius: 0.2)],
+
+                    ),
+                  ),
+
                   children: [
-                    Divider(color: Colors.grey, thickness: 1),
+                    Divider(color: darkBg),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: size.width / 20),
                       child: Row(
@@ -92,25 +110,55 @@ class listOverviewState extends State<listOverview> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: size.width / 5,
+                            width: size.width / 5.6,
                             padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Text("ID"),
-                          ),
-                          SizedBox(
-                            width: 15,
+                            child: Text("Id",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black,blurRadius: 0.2)],
+
+                              ),
+                            ),
                           ),
                           Container(
-                            width: size.width / 5,
+                            width: size.width /5.4,
                             padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Text("Version"),
-                          ),
-                          SizedBox(
-                            width: 10,
+                            child: Text("Version",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black,blurRadius: 0.2)],
+
+                              ),
+                            ),
                           ),
                           Container(
-                            width: size.width / 5,
+                            width: size.width / 4,
                             padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Text("Release Note"),
+                            child: Text("Release Note",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black,blurRadius: 0.2)],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      child: Column(
+                        children: [
+                          Divider(color: darkBg, thickness: 1),
+                          SizedBox(
+                            height: 5,
                           ),
                         ],
                       ),
@@ -125,24 +173,44 @@ class listOverviewState extends State<listOverview> {
                           children: [
                             Container(
                               width: size.width / 5,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("${entry.value["id"]}"),
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text("${entry.value["id"]}",
+                                style: TextStyle(
+                                  color: darkBg,
+                                  fontSize: 18,
+                                  fontFamily: baseFont,
+                                  fontWeight: FontWeight.w500,
+                                  shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                ) ,
+                              ),
                             ),
-                            SizedBox(
-                              width: 20,
+                            Container(
+                              width: size.width / 5.4,
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text("${entry.value["version"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                ) ,
+
+                              ),
                             ),
                             Container(
                               width: size.width / 5,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("${entry.value["version"]}"),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              width: size.width / 5,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("${entry.value["releaseNote"]}"),
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text("${entry.value["releaseNote"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                ) ,
+
+                              ),
                             ),
                           ],
                         ),
@@ -156,7 +224,9 @@ class listOverviewState extends State<listOverview> {
                       SizedBox(
                         height: 5,
                       ),
-                      Divider(),
+                      Divider(
+                        color: darkBg,
+                      ),
                       SizedBox(
                         height: 5,
                       ),
@@ -166,16 +236,33 @@ class listOverviewState extends State<listOverview> {
 
                 // List of Batteries
                 ExpansionTile(
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: second_lightBg,
                   collapsedBackgroundColor: Colors.transparent,
-                  iconColor: Colors.black,
+                  iconColor: darkBg,
                   textColor: Colors.black,
-                  collapsedIconColor: Colors.black,
+                  collapsedIconColor: darkBg,
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.transparent)),
-                  tilePadding: EdgeInsets.only(left: 10),
-                  childrenPadding: EdgeInsets.symmetric(horizontal: size.width/30),
-                  title: Text("Batteries"),
+                      side: BorderSide(color: darkBg,width: 0.3),
+                      borderRadius: BorderRadius.circular(20),
+
+                  ),
+                  collapsedShape:  RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.transparent,width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+
+                  ),
+                  tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                  childrenPadding: EdgeInsets.symmetric(horizontal: 35),
+                  title: Text("Batteries",
+                    style: TextStyle(
+                      color: darkBg,
+                      fontFamily: baseFont,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      shadows: [Shadow(color: Colors.black,blurRadius: 0.2)],
+
+                    ),
+                  ),
 
                   children: [
                     Divider(color: Colors.grey, thickness: 1),
@@ -187,24 +274,56 @@ class listOverviewState extends State<listOverview> {
                         children: [
                           Container(
                             width: size.width / 5,
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Text("ID"),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Container(
-                            width: size.width / 5,
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Text("Name"),
-                          ),
-                          SizedBox(
-                            width: 10,
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text("Id",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black,blurRadius: 0.2)],
+
+                              ),
+                            ),
                           ),
                           Container(
                             width: size.width / 5,
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Text("Priority"),
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text("Name",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black,blurRadius: 0.2)],
+
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: size.width / 5.4,
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text("Priority",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black,blurRadius: 0.2)],
+
+                              ),
+
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      child: Column(
+                        children: [
+                          Divider(color: darkBg, thickness: 1),
+                          SizedBox(
+                            height: 5,
                           ),
                         ],
                       ),
@@ -212,7 +331,7 @@ class listOverviewState extends State<listOverview> {
                     ...batteryList.entries.map((entry) {
                       return Container(
                         padding:
-                        EdgeInsets.symmetric(horizontal: size.width / 20),
+                        EdgeInsets.symmetric(horizontal: size.width / 22),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,23 +339,45 @@ class listOverviewState extends State<listOverview> {
                             Container(
                               width: size.width / 5,
                               padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("${entry.value["id"]}"),
-                            ),
-                            SizedBox(
-                              width: 20,
+                              child: Text("${entry.value["id"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                ) ,
+                              ),
                             ),
                             Container(
                               width: size.width / 5.4,
                               padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("${entry.value["name"]}"),
+                              child: Text("${entry.value["name"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                ) ,
+                              ),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
+                            SizedBox(width: 10,),
                             Container(
-                              width: size.width / 5,
+                              width: size.width / 5.4,
                               padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("${entry.value["priority"]}"),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 25),
+                                child: Text("${entry.value["priority"]}",
+                                  style: TextStyle(
+                                      color: darkBg,
+                                      fontSize: 18,
+                                      fontFamily: baseFont,
+                                      fontWeight: FontWeight.w500,
+                                      shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                  ) ,
+                                ),
+                              )
                             ),
                           ],
                         ),
@@ -250,7 +391,9 @@ class listOverviewState extends State<listOverview> {
                       SizedBox(
                         height: 5,
                       ),
-                      Divider(),
+                      Divider(
+                        color: darkBg,
+                      ),
                       SizedBox(
                         height: 5,
                       ),
@@ -261,19 +404,36 @@ class listOverviewState extends State<listOverview> {
 
                 // List of config
                 ExpansionTile(
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: second_lightBg,
                   collapsedBackgroundColor: Colors.transparent,
-                  iconColor: Colors.black,
+                  iconColor: darkBg,
                   textColor: Colors.black,
-                  collapsedIconColor: Colors.black,
+                  collapsedIconColor: darkBg,
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.transparent)),
-                  tilePadding: EdgeInsets.only(left: 10),
-                  childrenPadding: EdgeInsets.symmetric(horizontal: size.width/30),
-                  title: Text("Batteries"),
+                    side: BorderSide(color: darkBg,width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+
+                  ),
+                  collapsedShape:  RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.transparent,width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+
+                  ),
+                  tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                  childrenPadding: EdgeInsets.symmetric(horizontal: 35,vertical: 10),
+                  title: Text("Config",
+                    style: TextStyle(
+                      color: darkBg,
+                      fontFamily: baseFont,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      shadows: [Shadow(color: Colors.black,blurRadius: 0.2)],
+
+                    ),
+                  ),
 
                   children: [
-                    Divider(color: Colors.grey, thickness: 1),
+                    Divider(color: darkBg),
                     ...batteryList.entries.map((e) {
                       final profiles = profileListMap[e.key] ?? [];
 
@@ -284,45 +444,91 @@ class listOverviewState extends State<listOverview> {
                             decoration: BoxDecoration(
                                 border: Border(
                                     bottom:
-                                    BorderSide(color: Colors.grey))),
+                                    BorderSide(color: darkBg,width: 0.5))),
+                            padding: EdgeInsets.symmetric(vertical: 10),
                             child: ExpansionTile(
-                              backgroundColor: Colors.transparent,
+                              backgroundColor: second_lightBg,
                               collapsedBackgroundColor: Colors.transparent,
-                              iconColor: Colors.black,
+                              iconColor: darkBg,
                               textColor: Colors.black,
-                              collapsedIconColor: Colors.black,
+                              collapsedIconColor: darkBg,
                               shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      color: Colors.transparent)),
-                              tilePadding: EdgeInsets.only(left: 10),
-                              childrenPadding: EdgeInsets.zero,
-                              title: Text(e.key),
+                                side: BorderSide(color: darkBg,width: 0.3),
+                                borderRadius: BorderRadius.circular(20),
+
+                              ),
+                              collapsedShape:  RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.transparent,width: 0.3),
+                                borderRadius: BorderRadius.circular(20),
+
+                              ),
+                              tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                              childrenPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                              title: Text(e.key,
+                                style: TextStyle(
+                                  color: darkBg,
+                                  fontFamily: baseFont,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w500,
+                                  shadows: [Shadow(
+                                    color: Colors.black,blurRadius: 0.2
+                                  )]
+                                ),
+                              ),
                               children: [
-                                Divider(color: Colors.grey, thickness: 1),
+                                Divider(color: darkBg),
                                 Container(
                                   padding:
-                                  EdgeInsets.symmetric(horizontal: 10),
+                                  EdgeInsets.symmetric(horizontal: 20),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         width: size.width / 5,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 5),
-                                        child: Text("ID"),
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text("Id",
+                                          style: TextStyle(
+                                            color: darkBg,
+                                            fontFamily: baseFont,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 20,
+                                            shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                          ),
+                                        ),
+
                                       ),
                                       Container(
-                                        width: size.width / 5,
+                                        width: size.width / 4.5,
                                         padding: EdgeInsets.symmetric(
-                                            vertical: 5),
-                                        child: Text("name"),
+                                            horizontal: 10),
+                                        child: Text("Name",
+                                          style: TextStyle(
+                                              color: darkBg,
+                                              fontFamily: baseFont,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 20,
+                                              shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                          ),
+                                        ),
                                       ),
-                                      Container(
-                                        width: size.width / 5,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 5),
-                                        child: Text("releaseNote"),
+
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Divider(
+                                        color: darkBg,
+                                        thickness: 1,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
                                       ),
                                     ],
                                   ),
@@ -330,30 +536,41 @@ class listOverviewState extends State<listOverview> {
                                 ...profiles.map((profile) {
                                   return Container(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                        horizontal: 20),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           width: size.width / 5,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 5),
-                                          child: Text("${profile['id']}"),
+                                          child: Text("${profile['id']}",
+                                            style: TextStyle(
+                                              color: darkBg,
+                                              fontFamily: baseFont,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                              shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                            ),
+                                          ),
                                         ),
                                         Container(
                                           width: size.width / 5,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 5),
-                                          child: Text("${profile['name']}"),
+                                          child: Text("${profile['name']}",
+                                            style: TextStyle(
+                                                color: darkBg,
+                                                fontFamily: baseFont,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                            ),
+                                          ),
                                         ),
-                                        Container(
-                                          width: size.width / 5,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 5),
-                                          child: Text(
-                                              "${profile['releaseNote']}"),
-                                        ),
+
                                       ],
                                     ),
                                   );
@@ -361,7 +578,8 @@ class listOverviewState extends State<listOverview> {
                               ],
                             ),
                           ));
-                    }).toList(),                  ],
+                    }).toList(),
+                  ],
                 ),
                 SizedBox(
                   child: Column(
@@ -369,7 +587,9 @@ class listOverviewState extends State<listOverview> {
                       SizedBox(
                         height: 5,
                       ),
-                      Divider(),
+                      Divider(
+                        color: darkBg,
+                      ),
                       SizedBox(
                         height: 5,
                       ),

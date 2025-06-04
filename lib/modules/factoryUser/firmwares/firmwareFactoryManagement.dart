@@ -74,6 +74,208 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
             SizedBox(
               height: 5,
             ),
+
+            // Card desgn for demo
+            /*Container(
+              margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                    )
+                  ]),
+              child: ExpansionTile(
+
+                tilePadding: EdgeInsets.all(5),
+                backgroundColor: SuccessCard,
+                collapsedBackgroundColor:SuccessCard,
+                iconColor: darkBg,
+                collapsedIconColor: darkBg,
+                collapsedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    side: BorderSide(color: Colors.black, width: 0.3)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    side: BorderSide(color: Colors.black, width: 0.3)),
+                title: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // Name
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Version : ",
+                              style: CardText(
+                                  font_Weight: FontWeight.w300,
+                                  FontColor: secondaryText)),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Text("Version ",
+                              style: CardText(
+                                  font_Weight: FontWeight.w800,
+                                  size: 19,
+                                  FontColor: FailureCardText)),
+                        ],
+                      ),
+                      // EmpID
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Release Note : ",
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Text(
+                            "ReleaseNote",
+                            style: CardText(
+                                font_Weight: FontWeight.w800,
+                                size: 19,
+                                FontColor:  FailureCardText),
+                          ),
+                        ],
+                      ),
+                      // DeviceID
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Series : ",
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Text(
+                            "DeviceType",
+                            style: CardText(
+                                font_Weight: FontWeight.w800,
+                                size: 19,
+                                FontColor: FailureCardText),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      children: [
+                        Divider(
+                          color: Colors.black26,
+                        ),
+                        SizedBox(height: 10),
+                        FittedBox(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // vertion name
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Version Name",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: secondaryText),
+                                  ),
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Text(
+                                    "Version name",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w800,
+                                        size: 19,
+                                        FontColor: FailureCardText),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              // Firm id
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Firmware Id",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: secondaryText),
+                                  ),
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Text(
+                                    "id",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w800,
+                                        size: 19,
+                                        FontColor: FailureCardText),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              // download
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon:
+                                      Icon(Icons.download_done_outlined,
+                                          color: darkBg, size: 40)),
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Text("Download",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: FailureCardText),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              // CARD DESIGN
+            ),
+
+             */
+
             Card(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               shape: RoundedRectangleBorder(
@@ -227,6 +429,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
                 child: SingleChildScrollView(
               child: Column(
                 children: [
+
                   if (selectedbutton == 1) ...?seriesSix(),
                   if (selectedbutton == 2) ...?seriesNine(),
                   if (selectedbutton == 3) ...?seriesTwelve(),
