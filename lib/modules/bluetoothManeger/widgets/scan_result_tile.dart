@@ -15,18 +15,15 @@ class ScanResultTile extends StatefulWidget {
 }
 
 class _ScanResultTileState extends State<ScanResultTile> {
-  BluetoothConnectionState _connectionState =
-      BluetoothConnectionState.disconnected;
+  BluetoothConnectionState _connectionState = BluetoothConnectionState.disconnected;
 
-  late StreamSubscription<BluetoothConnectionState>
-      _connectionStateSubscription;
+  late StreamSubscription<BluetoothConnectionState> _connectionStateSubscription;
 
   @override
   void initState() {
     super.initState();
 
-    _connectionStateSubscription =
-        widget.result.device.connectionState.listen((state) {
+    _connectionStateSubscription = widget.result.device.connectionState.listen((state) {
       _connectionState = state;
       if (mounted) {
         setState(() {});
@@ -49,10 +46,7 @@ class _ScanResultTileState extends State<ScanResultTile> {
   }
 
   String getNiceServiceData(Map<Guid, List<int>> data) {
-    return data.entries
-        .map((v) => '${v.key}: ${getNiceHexArray(v.value)}')
-        .join(', ')
-        .toUpperCase();
+    return data.entries.map((v) => '${v.key}: ${getNiceHexArray(v.value)}').join(', ').toUpperCase();
   }
 
   String getNiceServiceUuids(List<Guid> serviceUuids) {
@@ -72,11 +66,7 @@ class _ScanResultTileState extends State<ScanResultTile> {
           Text(
             widget.result.device.platformName,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: darkBg,
-                fontFamily: baseFont,
-                fontWeight: FontWeight.w500,
-                fontSize: 18),
+            style: TextStyle(color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 18),
           ),
           Text(widget.result.device.remoteId.str,
               style: TextStyle(
@@ -89,26 +79,19 @@ class _ScanResultTileState extends State<ScanResultTile> {
     } else {
       return Text(
         widget.result.device.remoteId.str,
-        style: TextStyle(
-            color: darkBg,
-            fontFamily: baseFont,
-            fontWeight: FontWeight.w500,
-            fontSize: 18),
+        style: TextStyle(color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 18),
       );
     }
   }
 
   Widget _buildConnectButton(BuildContext context) {
     return TextButton(
-      onPressed:
-          widget.result.advertisementData.connectable ? widget.onTap : null,
+      onPressed: widget.result.advertisementData.connectable ? widget.onTap : null,
       child: isConnected
           ? Text(
               'Open',
               style: TextStyle(
-                  color: widget.result.advertisementData.connectable
-                      ? darkBg
-                      : Colors.grey,
+                  color: widget.result.advertisementData.connectable ? darkBg : Colors.grey,
                   fontFamily: baseFont,
                   fontSize: 18,
                   shadows: widget.result.advertisementData.connectable
@@ -117,18 +100,11 @@ class _ScanResultTileState extends State<ScanResultTile> {
             )
           : Text('Connect',
               style: TextStyle(
-                  color: widget.result.advertisementData.connectable
-                      ? darkBg
-                      : Colors.black.withOpacity(0.3),
+                  color: widget.result.advertisementData.connectable ? darkBg : Colors.black.withOpacity(0.3),
                   fontFamily: baseFont,
                   fontSize: 18,
                   shadows: widget.result.advertisementData.connectable
-                      ? [
-                          Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.2,
-                              offset: Offset(0.4, 0.4))
-                        ]
+                      ? [Shadow(color: Colors.black, blurRadius: 0.2, offset: Offset(0.4, 0.4))]
                       : [])),
     );
   }
@@ -140,21 +116,14 @@ class _ScanResultTileState extends State<ScanResultTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(title,
-              style: TextStyle(
-                  color: darkBg,
-                  fontFamily: baseFont,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16)),
+              style:
+                  TextStyle(color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 16)),
           const SizedBox(
             width: 6.0,
           ),
           Text(
             ":",
-            style: TextStyle(
-                color: darkBg,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-                fontFamily: baseFont),
+            style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, fontSize: 16, fontFamily: baseFont),
           ),
           const SizedBox(
             width: 6.0,
@@ -182,35 +151,24 @@ class _ScanResultTileState extends State<ScanResultTile> {
       padding: EdgeInsets.only(left: 10, right: 10, top: 10),
       child: ExpansionTile(
         shape: RoundedRectangleBorder(
-            side: BorderSide(color: darkBg, width: 0.5),
-            borderRadius: BorderRadius.circular(15)),
+            side: BorderSide(color: darkBg, width: 0.5), borderRadius: BorderRadius.circular(15)),
         title: _buildTitle(context),
         leading: Text(
           widget.result.rssi.toString(),
-          style: TextStyle(
-              color: darkBg,
-              fontFamily: baseFont,
-              fontWeight: FontWeight.w500,
-              fontSize: 18),
+          style: TextStyle(color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 18),
         ),
         trailing: _buildConnectButton(context),
         children: <Widget>[
-          if (adv.advName.isNotEmpty)
-            _buildAdvRow(context, 'Name', adv.advName),
-          if (adv.txPowerLevel != null)
-            _buildAdvRow(context, 'Tx Power Level', '${adv.txPowerLevel}'),
+          if (adv.advName.isNotEmpty) _buildAdvRow(context, 'Name', adv.advName),
+          if (adv.txPowerLevel != null) _buildAdvRow(context, 'Tx Power Level', '${adv.txPowerLevel}'),
           if ((adv.appearance ?? 0) > 0)
-            _buildAdvRow(context, 'Appearance',
-                '0x${adv.appearance!.toRadixString(16)}'),
+            _buildAdvRow(context, 'Appearance', '0x${adv.appearance!.toRadixString(16)}'),
           if (adv.msd.isNotEmpty)
-            _buildAdvRow(
-                context, 'Manufacturer Data', getNiceManufacturerData(adv.msd)),
+            _buildAdvRow(context, 'Manufacturer Data', getNiceManufacturerData(adv.msd)),
           if (adv.serviceUuids.isNotEmpty)
-            _buildAdvRow(context, 'Service UUIDs',
-                getNiceServiceUuids(adv.serviceUuids)),
+            _buildAdvRow(context, 'Service UUIDs', getNiceServiceUuids(adv.serviceUuids)),
           if (adv.serviceData.isNotEmpty)
-            _buildAdvRow(
-                context, 'Service Data', getNiceServiceData(adv.serviceData)),
+            _buildAdvRow(context, 'Service Data', getNiceServiceData(adv.serviceData)),
         ],
       ),
     );

@@ -59,8 +59,7 @@ class _ScanScreenState extends State<ScanScreen> {
       _systemDevices = await FlutterBluePlus.systemDevices(serviceUuids);
       // _systemDevices = (await FlutterBluePlus.systemDevices) as List<BluetoothDevice>;
     } catch (e, backtrace) {
-      Snackbar.show(ABC.b, prettyException("System Devices Error:", e),
-          success: false);
+      Snackbar.show(ABC.b, prettyException("System Devices Error:", e), success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -81,8 +80,7 @@ class _ScanScreenState extends State<ScanScreen> {
         // ],
       );
     } catch (e, backtrace) {
-      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e),
-          success: false);
+      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e), success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -99,8 +97,7 @@ class _ScanScreenState extends State<ScanScreen> {
     try {
       FlutterBluePlus.stopScan();
     } catch (e, backtrace) {
-      Snackbar.show(ABC.b, prettyException("Stop Scan Error:", e),
-          success: false);
+      Snackbar.show(ABC.b, prettyException("Stop Scan Error:", e), success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -108,12 +105,10 @@ class _ScanScreenState extends State<ScanScreen> {
 
   void onConnectPressed(BluetoothDevice device) {
     device.connectAndUpdateStream().catchError((e) {
-      Snackbar.show(ABC.c, prettyException("Connect Error:", e),
-          success: false);
+      Snackbar.show(ABC.c, prettyException("Connect Error:", e), success: false);
     });
     MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => DeviceScreen(device: device),
-        settings: RouteSettings(name: '/DeviceScreen'));
+        builder: (context) => DeviceScreen(device: device), settings: RouteSettings(name: '/DeviceScreen'));
     Navigator.of(context).push(route);
   }
 
@@ -140,11 +135,8 @@ class _ScanScreenState extends State<ScanScreen> {
             ),
             child: Text(
               "SCAN",
-              style: TextStyle(
-                  color: darkBg,
-                  fontFamily: baseFont,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18),
+              style:
+                  TextStyle(color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w900, fontSize: 18),
             ))
     ]);
   }
@@ -206,20 +198,14 @@ class _ScanScreenState extends State<ScanScreen> {
       Icons.search_outlined,
       size: 200.0,
       color: lightBg.withOpacity(0.9),
-      shadows: [
-        Shadow(color: Colors.black, blurRadius: 0.1, offset: Offset(0.4, 0.4))
-      ],
+      shadows: [Shadow(color: Colors.black, blurRadius: 0.1, offset: Offset(0.4, 0.4))],
     );
   }
 
   Widget buildTitle(BuildContext context) {
     return Text(
       'Nearby devices appear after scanning above.',
-      style: TextStyle(
-          color: darkBg,
-          fontWeight: FontWeight.w800,
-          fontSize: 16,
-          fontFamily: baseFont),
+      style: TextStyle(color: darkBg, fontWeight: FontWeight.w800, fontSize: 16, fontFamily: baseFont),
     );
   }
 
@@ -234,10 +220,7 @@ class _ScanScreenState extends State<ScanScreen> {
               child: Text(
                 'Find Devices',
                 style: TextStyle(
-                    color: lightBg,
-                    fontFamily: baseFont,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 25),
+                    color: lightBg, fontFamily: baseFont, fontWeight: FontWeight.w600, fontSize: 25),
               ),
             ),
             toolbarHeight: 75,

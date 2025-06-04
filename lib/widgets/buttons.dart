@@ -96,12 +96,7 @@ class manageUserBtn extends StatelessWidget {
   final double? width;
   final double? height;
 
-  const manageUserBtn(
-      {required this.text,
-      required this.onPress,
-      this.icon,
-      this.width,
-      this.height});
+  const manageUserBtn({required this.text, required this.onPress, this.icon, this.width, this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +109,7 @@ class manageUserBtn extends StatelessWidget {
         shadowColor: MaterialStateProperty.all(darkBg),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              side: BorderSide(color: darkBg, width: 1)),
+              borderRadius: BorderRadius.circular(25), side: BorderSide(color: darkBg, width: 1)),
         ),
       ),
       child: Container(

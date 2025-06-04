@@ -30,17 +30,15 @@ BottomSheet_Widget(context, childrens, {String? isFixed, Color? color}) {
         physics: ScrollPhysics(),
         child: Padding(
           padding: EdgeInsets.only(left: 20),
-          child: Column(
+          child:
+              Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: childrens,
-                ),
-                SizedBox(height: 20),
-              ]),
+              children: childrens,
+            ),
+            SizedBox(height: 20),
+          ]),
         ),
       ),
     ),

@@ -62,7 +62,5 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ProfileModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is ProfileModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

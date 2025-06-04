@@ -8,17 +8,13 @@ class ServiceTile extends StatelessWidget {
   final BluetoothService service;
   final List<CharacteristicTile> characteristicTiles;
 
-  const ServiceTile(
-      {super.key, required this.service, required this.characteristicTiles});
+  const ServiceTile({super.key, required this.service, required this.characteristicTiles});
 
   Widget buildUuid(BuildContext context) {
     String uuid = '0x${service.uuid.str.toUpperCase()}';
     return Text(uuid,
         style: TextStyle(
-            fontSize: 16,
-            fontFamily: baseFont,
-            fontWeight: FontWeight.w300,
-            color: darkBg.withOpacity(0.8)));
+            fontSize: 16, fontFamily: baseFont, fontWeight: FontWeight.w300, color: darkBg.withOpacity(0.8)));
   }
 
   @override

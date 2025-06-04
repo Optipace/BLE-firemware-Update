@@ -13,8 +13,7 @@ class splashScreen extends StatefulWidget {
   splashScreenState createState() => splashScreenState();
 }
 
-class splashScreenState extends State<splashScreen>
-    with SingleTickerProviderStateMixin {
+class splashScreenState extends State<splashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   //Inistiating and navigating to login Screen
@@ -41,12 +40,10 @@ class splashScreenState extends State<splashScreen>
 
           UserData userData = new UserData();
           printFunc("Userdata from Userdata() ${userData.toJson()}");
-          navigateToDashBoard(
-              context, int.tryParse(userData.designationCode) ?? 1);
+          navigateToDashBoard(context, int.tryParse(userData.designationCode) ?? 1);
         }
       });
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
     });
   }
 

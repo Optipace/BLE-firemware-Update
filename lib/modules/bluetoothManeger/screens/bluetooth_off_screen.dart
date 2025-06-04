@@ -16,9 +16,7 @@ class BluetoothOffScreen extends StatelessWidget {
       Icons.bluetooth_disabled,
       size: 200.0,
       color: lightBg.withOpacity(0.9),
-      shadows: [
-        Shadow(color: Colors.black, blurRadius: 0.1, offset: Offset(0.4, 0.4))
-      ],
+      shadows: [Shadow(color: Colors.black, blurRadius: 0.1, offset: Offset(0.4, 0.4))],
     );
   }
 
@@ -26,11 +24,7 @@ class BluetoothOffScreen extends StatelessWidget {
     String? state = adapterState?.toString().split(".").last;
     return Text(
       'Bluetooth Adapter is ${state ?? 'not available'}',
-      style: TextStyle(
-          color: darkBg,
-          fontWeight: FontWeight.w800,
-          fontSize: 16,
-          fontFamily: baseFont),
+      style: TextStyle(color: darkBg, fontWeight: FontWeight.w800, fontSize: 16, fontFamily: baseFont),
     );
   }
 
@@ -42,14 +36,10 @@ class BluetoothOffScreen extends StatelessWidget {
             elevation: MaterialStatePropertyAll(5),
             backgroundColor: MaterialStatePropertyAll(darkBg),
             shadowColor: MaterialStatePropertyAll(Colors.black),
-            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)))),
+            shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
         child: Text(
           'TURN ON',
-          style: TextStyle(
-              color: lightBg,
-              fontFamily: baseFont,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: lightBg, fontFamily: baseFont, fontWeight: FontWeight.w500),
         ),
         onPressed: () async {
           try {
@@ -57,8 +47,7 @@ class BluetoothOffScreen extends StatelessWidget {
               await FlutterBluePlus.turnOn();
             }
           } catch (e, backtrace) {
-            Snackbar.show(ABC.a, prettyException("Error Turning On:", e),
-                success: false);
+            Snackbar.show(ABC.a, prettyException("Error Turning On:", e), success: false);
             print("$e");
             print("backtrace: $backtrace");
           }
