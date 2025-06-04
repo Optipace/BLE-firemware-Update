@@ -106,8 +106,10 @@ class LoginScreenState extends State<LoginScreen> {
                                 ? Container(
                                     width: size.width / 1.5,
                                     height: size.height / 20,
-                                    margin: EdgeInsets.only(top: 10, bottom: 10),
-                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+                                    margin:
+                                        EdgeInsets.only(top: 10, bottom: 10),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 6),
                                     decoration: BoxDecoration(
                                       color: Color.fromRGBO(208, 209, 206, 0.2),
                                       border: Border.all(color: lightBg),
@@ -120,7 +122,8 @@ class LoginScreenState extends State<LoginScreen> {
                                         child: Text(
                                           'UUID : ',
                                           style: TextStyle(
-                                              color: Color.fromRGBO(248, 250, 254, 1.0),
+                                              color: Color.fromRGBO(
+                                                  248, 250, 254, 1.0),
                                               fontSize: 18,
                                               fontWeight: FontWeight.w700,
                                               letterSpacing: 1.1),
@@ -144,7 +147,9 @@ class LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             "LOGIN",
                             style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold, color: Color(0xCCFFFFFF)),
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xCCFFFFFF)),
                           ),
                         ),
                         SizedBox(
@@ -178,13 +183,18 @@ class LoginScreenState extends State<LoginScreen> {
                                         letterSpacing: 1.1,
                                         color: base_clr,
                                         fontWeight: FontWeight.w400),
-                                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                    enabledBorder:
-                                        OutlineInputBorder(borderSide: BorderSide(color: base_clr)),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.auto,
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: base_clr)),
                                     focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: base_clr, width: 1.5)),
-                                    prefixIcon: Icon(CupertinoIcons.phone, color: base_clr),
-                                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                                        borderSide: BorderSide(
+                                            color: base_clr, width: 1.5)),
+                                    prefixIcon: Icon(CupertinoIcons.phone,
+                                        color: base_clr),
+                                    floatingLabelAlignment:
+                                        FloatingLabelAlignment.start,
                                     floatingLabelStyle: TextStyle(
                                         color: focused_clr,
                                         fontWeight: FontWeight.w700,
@@ -196,7 +206,8 @@ class LoginScreenState extends State<LoginScreen> {
                               ),
                               errorPhnMsg != null
                                   ? Padding(
-                                      padding: EdgeInsets.only(top: 2, right: 100),
+                                      padding:
+                                          EdgeInsets.only(top: 2, right: 100),
                                       child: Text(
                                         errorPhnMsg!,
                                         style: TextStyle(color: error_clr),
@@ -237,9 +248,11 @@ class LoginScreenState extends State<LoginScreen> {
 
                                   // border: OutlineInputBorder(borderSide: BorderSide(width: 1,),),
 
-                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: base_clr)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: base_clr)),
                                   focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: focused_clr, width: 1.5)),
+                                      borderSide: BorderSide(
+                                          color: focused_clr, width: 1.5)),
                                   prefixIcon: Icon(
                                     CupertinoIcons.lock,
                                     color: base_clr,
@@ -250,12 +263,15 @@ class LoginScreenState extends State<LoginScreen> {
                                         showPass = !showPass;
                                       });
                                     },
-                                    icon: Icon(
-                                        showPass ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                                    icon: Icon(showPass
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined),
                                     color: base_clr,
                                   ),
-                                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                  floatingLabelAlignment: FloatingLabelAlignment.start,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.auto,
+                                  floatingLabelAlignment:
+                                      FloatingLabelAlignment.start,
                                   floatingLabelStyle: TextStyle(
                                       color: focused_clr,
                                       wordSpacing: 1.5,
@@ -269,7 +285,8 @@ class LoginScreenState extends State<LoginScreen> {
                                     padding: EdgeInsets.only(top: 2, right: 40),
                                     child: Text(
                                       errorPassMsg!,
-                                      style: TextStyle(color: Color.fromRGBO(250, 0, 0, 1)),
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(250, 0, 0, 1)),
                                     ),
                                   )
                                 : SizedBox(),
@@ -306,18 +323,21 @@ class LoginScreenState extends State<LoginScreen> {
                                 //     "\n version : ${sharedPreferences.getString("osVersion")}"
                                 //     "\n model : ${sharedPreferences.getString("deviceModel")}");
                                 setState(() {
-                                  if (checkPhnNum(phoneNumber.text) && checkPass(_password.text)) {
+                                  if (checkPhnNum(phoneNumber.text) &&
+                                      checkPass(_password.text)) {
                                     errorPassMsg = null;
                                     errorPhnMsg = null;
                                     // await loginDetails(phoneNumber, _password);
                                   } else {
                                     if (!checkPhnNum(phoneNumber.text)) {
-                                      errorPhnMsg = 'Please Enter the 10 Digit number';
+                                      errorPhnMsg =
+                                          'Please Enter the 10 Digit number';
                                     } else {
                                       errorPhnMsg = null;
                                     }
                                     if (!checkPass(_password.text)) {
-                                      errorPassMsg = 'Password Must be greater than 4 Characters';
+                                      errorPassMsg =
+                                          'Password Must be greater than 4 Characters';
                                     } else {
                                       errorPassMsg = null;
                                     }
@@ -333,11 +353,14 @@ class LoginScreenState extends State<LoginScreen> {
                                 print(
                                     "DEMO DEMO ${checkPhnNum(phoneNumber.toString()) && checkPass(_password.toString())}");
 
-                                if ((checkPhnNum(phoneNumber.text) && checkPass(_password.text)) || true) {
+                                if ((checkPhnNum(phoneNumber.text) &&
+                                        checkPass(_password.text)) ||
+                                    true) {
                                   print("Inside if cond");
                                   print("SIZE : $size");
                                   // await getEmpDetails(context, phoneNumber.text, _password.text);
-                                  await logIn(context, phoneNumber.text, _password.text);
+                                  await logIn(context, phoneNumber.text,
+                                      _password.text);
                                 } else {
                                   print("inside Else cond");
                                 }

@@ -28,8 +28,8 @@ class FieldMain extends StatelessWidget {
                   ),
                   text: "Firmwares",
                   onPress: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(builder: (_) => FirmwareFieldManagement()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => FirmwareFieldManagement()));
                   }),
               SizedBox(
                 height: 25,
@@ -44,8 +44,8 @@ class FieldMain extends StatelessWidget {
                   ),
                   text: "Profiles/Service",
                   onPress: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(builder: (_) => ProfileFieldManagement()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => ProfileFieldManagement()));
                   }),
               SizedBox(
                 height: 25,
@@ -62,7 +62,8 @@ class FieldMain extends StatelessWidget {
                   onPress: () {
                     FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FlutterBlueApp()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => FlutterBlueApp()));
                   }),
               SizedBox(
                 height: 25,

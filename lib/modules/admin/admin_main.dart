@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/modules/admin/ListOverview/listOverview.dart';
 import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 import 'package:tracker_firmware/modules/admin/newUser/adminNewUser.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
@@ -18,6 +19,7 @@ class AdminMain extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // View logs
               PrimaryButton(
                   icon: Image.asset(
                     'assets/image/viewLog.png',
@@ -27,12 +29,14 @@ class AdminMain extends StatelessWidget {
                   ),
                   text: "View Log",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: (_) => AdminLogs()));
                   }),
               SizedBox(
                 height: 25,
               ),
 
+              // Manage users
               PrimaryButton(
                   icon: Image.asset(
                     'assets/image/modify.png',
@@ -42,12 +46,14 @@ class AdminMain extends StatelessWidget {
                   ),
                   text: "Modify User",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminNewUser()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => AdminNewUser()));
                   }),
               SizedBox(
                 height: 25,
               ),
 
+              //  Firmware
               PrimaryButton(
                   icon: Image.asset(
                     'assets/image/modify.png',
@@ -57,8 +63,29 @@ class AdminMain extends StatelessWidget {
                   ),
                   text: "Firmware settings",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AddNewFirmware()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => AddNewFirmware()));
                   }),
+              SizedBox(
+                height: 25,
+              ),
+
+              // List of Firmware, profiles, batches
+              PrimaryButton(
+                  icon: Image.asset(
+                    'assets/image/to-do-list.png',
+                    width: 24,
+                    height: 24,
+                    color: darkBg,
+                  ),
+                  text: "System Overview",
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => listOverview()));
+                  }),
+              SizedBox(
+                height: 25,
+              ),
 
               //----logout----------
               /* SizedBox(

@@ -11,7 +11,8 @@ class CharacteristicTile extends StatefulWidget {
   final BluetoothCharacteristic characteristic;
   final List<DescriptorTile> descriptorTiles;
 
-  const CharacteristicTile({super.key, required this.characteristic, required this.descriptorTiles});
+  const CharacteristicTile(
+      {super.key, required this.characteristic, required this.descriptorTiles});
 
   @override
   State<CharacteristicTile> createState() => _CharacteristicTileState();
@@ -25,7 +26,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
   @override
   void initState() {
     super.initState();
-    _lastValueSubscription = widget.characteristic.lastValueStream.listen((value) {
+    _lastValueSubscription =
+        widget.characteristic.lastValueStream.listen((value) {
       _value = value;
       _update();
     });
@@ -54,7 +56,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     try {
       List<int>? value = await DataEntry.enterData(context);
       if (value != null) {
-        await c.write(value, withoutResponse: c.properties.writeWithoutResponse);
+        await c.write(value,
+            withoutResponse: c.properties.writeWithoutResponse);
         Snackbar.show(ABC.c, "Write: Success", success: true);
         if (c.properties.read) {
           await c.read();
@@ -77,7 +80,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
       }
       _update();
     } catch (e, backtrace) {
-      Snackbar.show(ABC.c, prettyException("Subscribe Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Subscribe Error:", e),
+          success: false);
       print(e);
       print("backtrace: $backtrace");
     }
@@ -87,22 +91,31 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     String uuid = '0x${widget.characteristic.uuid.str.toUpperCase()}';
     return Text(uuid,
         style: TextStyle(
-            fontSize: 15, fontFamily: baseFont, fontWeight: FontWeight.w300, color: darkBg.withOpacity(0.8)));
+            fontSize: 15,
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w300,
+            color: darkBg.withOpacity(0.8)));
   }
 
   Widget buildValue(BuildContext context) {
     String data = _value.toString();
     return Text(data,
         style: TextStyle(
-            fontSize: 13, color: darkBg.withOpacity(0.8), fontFamily: baseFont, fontWeight: FontWeight.w300));
+            fontSize: 13,
+            color: darkBg.withOpacity(0.8),
+            fontFamily: baseFont,
+            fontWeight: FontWeight.w300));
   }
 
   Widget buildReadButton(BuildContext context) {
     return TextButton(
         child: Text(
           "Read",
-          style:
-              TextStyle(color: Colors.blue, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 17),
+          style: TextStyle(
+              color: Colors.blue,
+              fontFamily: baseFont,
+              fontWeight: FontWeight.w500,
+              fontSize: 17),
         ),
         onPressed: () async {
           await onReadPressed();
@@ -115,8 +128,11 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     return TextButton(
         child: Text(
           withoutResp ? "WriteNoResp" : "Write",
-          style:
-              TextStyle(color: Colors.blue, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 17),
+          style: TextStyle(
+              color: Colors.blue,
+              fontFamily: baseFont,
+              fontWeight: FontWeight.w500,
+              fontSize: 17),
         ),
         onPressed: () async {
           await onWritePressed();
@@ -129,8 +145,11 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     return TextButton(
         child: Text(
           isNotifying ? "Unsubscribe" : "Subscribe",
-          style:
-              TextStyle(color: Colors.blue, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 17),
+          style: TextStyle(
+              color: Colors.blue,
+              fontFamily: baseFont,
+              fontWeight: FontWeight.w500,
+              fontSize: 17),
         ),
         onPressed: () async {
           await onSubscribePressed();

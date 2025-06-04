@@ -10,7 +10,8 @@ import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/modules/factoryUser/factory_user_main.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/field_user_main.dart';
 
-Future<bool> logIn(BuildContext context, String phoneNum, String password) async {
+Future<bool> logIn(
+    BuildContext context, String phoneNum, String password) async {
   var data = {
     "contact": phoneNum,
     "password": password,
@@ -35,7 +36,8 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
         }
       }*/
 
-      await setSharedPreference(await getEmployeeDetail(context, phoneNum) ?? {});
+      await setSharedPreference(
+          await getEmployeeDetail(context, phoneNum) ?? {});
       sharedPreferences.setBool("user_logged_in", true);
 
       await setDeviceId();
@@ -60,7 +62,8 @@ Future<bool> logIn(BuildContext context, String phoneNum, String password) async
   return false;
 }
 
-Future<Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String contactNumber) async {
+Future<Map<String, dynamic>?> getEmployeeDetail(
+    BuildContext context, String contactNumber) async {
   sharedPreferences = await SharedPreferences.getInstance();
 
   var data = {
@@ -103,7 +106,8 @@ Future<Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String con
         'name': 'John Doe',
         'email': 'john.doe@example.com',
         'phone': '+91$contactNumber',
-        'designationCode': "${((int.parse(contactNumber) / 1111111111).round())}",
+        'designationCode':
+            "${((int.parse(contactNumber) / 1111111111).round())}",
         'empRegisteredId': 'EMP56789',
         'designation': getDesgination(contactNumber),
         'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
@@ -111,7 +115,9 @@ Future<Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String con
         'status': 'Active',
       };
 
-      if (contactNumber == "1111111111" || contactNumber == "2222222222" || contactNumber == "3333333333")
+      if (contactNumber == "1111111111" ||
+          contactNumber == "2222222222" ||
+          contactNumber == "3333333333")
         return userinfo;
       else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -225,12 +231,15 @@ List<Map<String, dynamic>> getFeildLogs() {
 
 void navigateToDashBoard(BuildContext context, int designation_id) {
   if (designation_id == 1) {
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminMain()));
+    Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (_) => AdminMain()));
   } else if (designation_id == 2) {
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FactoryMain()));
+    Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (_) => FactoryMain()));
     return;
   } else if (designation_id == 3) {
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FieldMain()));
+    Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (_) => FieldMain()));
     return;
   }
 }

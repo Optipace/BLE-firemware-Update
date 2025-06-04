@@ -36,7 +36,8 @@ extension _StreamNewStreamWithInitialValue<T> on Stream<T> {
 }
 
 // Helper for 'newStreamWithInitialValue' method for streams.
-class _NewStreamWithInitialValueTransformer<T> extends StreamTransformerBase<T, T> {
+class _NewStreamWithInitialValueTransformer<T>
+    extends StreamTransformerBase<T, T> {
   /// the initial value to push to the new stream
   final T initialValue;
 
