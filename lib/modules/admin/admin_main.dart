@@ -152,7 +152,7 @@ class AdminMainState extends State<AdminMain> {
                 ],
               ),
               SizedBox(
-                height: size.height / 5,
+                height: 5,
               ),
               Padding(
                 padding: EdgeInsets.only(left: size.width / 1.3),
@@ -162,9 +162,10 @@ class AdminMainState extends State<AdminMain> {
                         context: context,
                         position: RelativeRect.fromLTRB(
                           size.width / 2, // adjust based on your icon location
-                          size.height / 1.13, // vertical position from top
+
+                          size.height / 1.5, // vertical position from top
                           90,
-                          80,
+                          size.height / 2, // vertical position from top
                         ),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                         color: lightBg,

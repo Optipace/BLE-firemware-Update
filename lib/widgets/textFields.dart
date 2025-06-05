@@ -40,7 +40,6 @@ class TextFeildNewUser extends StatelessWidget {
 
   Widget build(BuildContext context) {
     if (maxLength != null) {}
-    printFunc("DEMO ETEXT : $etext");
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),

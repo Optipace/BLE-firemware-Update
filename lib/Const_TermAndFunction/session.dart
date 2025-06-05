@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:platform_device_id/platform_device_id.dart';
 
 late SharedPreferences sharedPreferences;
 
@@ -75,18 +76,31 @@ Future setDeviceId() async {
     // String? deviceId = await PlatformDeviceId.getDeviceId;
 
     sharedPreferences.setString("UUID", iosDeviceInfo.identifierForVendor ?? ' ');
-  } else if (Platform.isAndroid) {
+  }
+  // else if (Platform.isAndroid) {
+  //   var androidDeviceInfo = await deviceInfo.androidInfo;
+  //   printFunc(
+  //       "DEMO DEVICEINFO :-------------------------------\n\n ${androidDeviceInfo.data}\n--------------------------------------------\n\n");
+  //
+  //   // String? deviceId = await PlatformDeviceId.getDeviceId;
+  //   String? deviceId = "545";
+  //
+  //   sharedPreferences.setString("UUID", deviceId.toString());
+  //   sharedPreferences.setString("osVersion", androidDeviceInfo.version.release.toString());
+  //   sharedPreferences.setString(
+  //       "deviceModel", "${androidDeviceInfo.brand.toString()} - ${androidDeviceInfo.model.toString()}");
+  // }
+  else if (Platform.isAndroid) {
     var androidDeviceInfo = await deviceInfo.androidInfo;
-    printFunc(
-        "DEMO DEVICEINFO :-------------------------------\n\n ${androidDeviceInfo.data}\n--------------------------------------------\n\n");
 
-    // String? deviceId = await PlatformDeviceId.getDeviceId;
-    String? deviceId = "545";
+    String? deviceId = await PlatformDeviceId.getDeviceId;
 
     sharedPreferences.setString("UUID", deviceId.toString());
     sharedPreferences.setString("osVersion", androidDeviceInfo.version.release.toString());
     sharedPreferences.setString(
         "deviceModel", "${androidDeviceInfo.brand.toString()} - ${androidDeviceInfo.model.toString()}");
+
+    // return androidDeviceInfo.androidId; // unique ID on Android
   }
   print("Device Information : \n"
       "uuid :  ${sharedPreferences.getString("UUID")}"

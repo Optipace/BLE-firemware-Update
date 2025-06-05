@@ -119,21 +119,22 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                     children: [
                       //NEW Firmware
                       InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedbutton = 1;
-                          });
-                        },
-                        child: Container(
-                          width: selectedbutton == 1 ? size.width / 1.85 : (size.width / 2) / 2.2,
-                          height: 120,
-                          decoration: BoxDecoration(
-                              color: selectedbutton == 1 ? darkBg : Colors.white,
-                              borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
-                              border: Border.all(width: 0.8, color: darkBg),
-                              boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
-                          child: Center(
+                          onTap: () {
+                            setState(() {
+                              selectedbutton = 1;
+                            });
+                          },
+                          child: Container(
+                            width: selectedbutton == 1 ? size.width / 1.85 : (size.width / 2) / 2.2,
+                            height: 120,
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                color: selectedbutton == 1 ? darkBg : Colors.white,
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                                border: Border.all(width: 0.8, color: darkBg),
+                                boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                            child: Center(
                               heightFactor: 2,
                               child: selectedbutton == 1
                                   ? Center(
@@ -162,22 +163,20 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                       ),
                                     )
                                   : Center(
-                                      child: Text(
-                                        "Firmware",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontFamily: baseFont,
-                                          fontWeight: FontWeight.w600,
-                                          color: darkBg,
-                                          shadows: [
-                                            Shadow(offset: Offset(0.3, 0.3), color: darkBg),
-                                            Shadow(offset: Offset(-0.3, 0.3), color: darkBg),
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-                        ),
-                      ),
+                                      child: Text("Firmware",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontFamily: baseFont,
+                                              fontWeight: FontWeight.w600,
+                                              color: darkBg,
+                                              shadows: [
+                                                Shadow(offset: Offset(0.3, 0.3), color: darkBg),
+                                              ])),
+                                    ),
+                            ),
+                          )),
                       //New profile
                       InkWell(
                         onTap: () {
@@ -197,54 +196,45 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             child: selectedbutton == 2
                                 ? Center(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.handyman_outlined,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.handyman_outlined,
+                                        color: lightBg,
+                                        size: 26,
+                                      ),
+                                      Text(
+                                        "New Config",
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontFamily: baseFont,
+                                          fontWeight: FontWeight.w600,
                                           color: lightBg,
-                                          size: 26,
+                                          shadows: [
+                                            Shadow(
+                                              offset: Offset(0.3, 0.3),
+                                              color: lightBg,
+                                            ),
+                                            Shadow(
+                                              offset: Offset(-0.3, 0.3),
+                                              color: lightBg,
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          "New Config",
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                            fontFamily: baseFont,
-                                            fontWeight: FontWeight.w600,
-                                            color: lightBg,
-                                            shadows: [
-                                              Shadow(
-                                                offset: Offset(0.3, 0.3),
-                                                color: lightBg,
-                                              ),
-                                              Shadow(
-                                                offset: Offset(-0.3, 0.3),
-                                                color: lightBg,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Text(
-                                    "Config",
+                                      ),
+                                    ],
+                                  ))
+                                : Text("Config",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w600,
-                                      color: darkBg,
-                                      shadows: [
-                                        Shadow(
-                                          offset: Offset(0.3, 0.3),
-                                          color: darkBg,
-                                        ),
-                                        Shadow(
-                                          offset: Offset(-0.3, 0.3),
-                                          color: darkBg,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                        fontSize: 16,
+                                        fontFamily: baseFont,
+                                        fontWeight: FontWeight.w600,
+                                        color: darkBg,
+                                        shadows: [
+                                          Shadow(offset: Offset(0.3, 0.3), color: darkBg),
+                                        ])),
                           ),
                         ),
                       ),
@@ -294,25 +284,20 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                       ],
                                     ),
                                   )
-                                : Text(
-                                    "Batch",
+                                : Text("Batch",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w600,
-                                      color: darkBg,
-                                      shadows: [
-                                        Shadow(
-                                          offset: Offset(0.3, 0.3),
-                                          color: darkBg,
-                                        ),
-                                        Shadow(offset: Offset(-0.3, 0.3), color: darkBg),
-                                      ],
-                                    ),
-                                  ),
+                                        fontSize: 16,
+                                        fontFamily: baseFont,
+                                        fontWeight: FontWeight.w600,
+                                        color: darkBg,
+                                        shadows: [
+                                          Shadow(offset: Offset(0.3, 0.3), color: darkBg),
+                                        ])),
                           ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 )),

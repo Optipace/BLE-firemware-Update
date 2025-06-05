@@ -88,7 +88,7 @@ class Dashboard extends StatelessWidget {
                       Text(
                         text,
                         style: TextStyle(
-                          fontSize: 38,
+                          fontSize: 34,
                           color: lightBg,
                           fontFamily: baseFont,
                           fontWeight: FontWeight.w900,
