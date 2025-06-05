@@ -136,6 +136,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: Container(
                           width: selectedbutton == 1 ? size.width/1.85 : (size.width/2)/2.2,
                           height: 120,
+                          padding: EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               color: selectedbutton == 1 ? darkBg : Colors.white,
                               borderRadius: const BorderRadius.only(
@@ -182,7 +183,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                 child:  Text(
                                   "Firmware",
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 16,
                                     fontFamily: baseFont,
                                     fontWeight: FontWeight.w600,
                                     color: darkBg,
@@ -255,7 +256,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                   :  Text(
                                 "Config",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontFamily: baseFont,
                                   fontWeight: FontWeight.w600,
                                   color: darkBg,
@@ -333,7 +334,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                               : Text(
                                 "Batch",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontFamily: baseFont,
                                   fontWeight: FontWeight.w600,
                                   color: darkBg,

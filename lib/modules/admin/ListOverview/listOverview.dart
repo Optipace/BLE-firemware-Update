@@ -104,13 +104,11 @@ class listOverviewState extends State<listOverview> {
                   children: [
                     Divider(color: darkBg),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: size.width / 20),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            width: size.width / 5.6,
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: Text("Id",
                               style: TextStyle(
@@ -124,7 +122,6 @@ class listOverviewState extends State<listOverview> {
                             ),
                           ),
                           Container(
-                            width: size.width /5.4,
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: Text("Version",
                               style: TextStyle(
@@ -138,9 +135,8 @@ class listOverviewState extends State<listOverview> {
                             ),
                           ),
                           Container(
-                            width: size.width / 4,
                             padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Text("Release Note",
+                            child: Text("Release\nNote",
                               style: TextStyle(
                                 color: darkBg,
                                 fontFamily: baseFont,
@@ -165,14 +161,11 @@ class listOverviewState extends State<listOverview> {
                     ),
                     ...firmList.entries.map((entry) {
                       return Container(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: size.width / 20),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: size.width / 5,
                               padding: EdgeInsets.symmetric(vertical: 10),
                               child: Text("${entry.value["id"]}",
                                 style: TextStyle(
@@ -185,7 +178,6 @@ class listOverviewState extends State<listOverview> {
                               ),
                             ),
                             Container(
-                              width: size.width / 5.4,
                               padding: EdgeInsets.symmetric(vertical: 10),
                               child: Text("${entry.value["version"]}",
                                 style: TextStyle(
@@ -199,7 +191,6 @@ class listOverviewState extends State<listOverview> {
                               ),
                             ),
                             Container(
-                              width: size.width / 5,
                               padding: EdgeInsets.symmetric(vertical: 10),
                               child: Text("${entry.value["releaseNote"]}",
                                 style: TextStyle(
@@ -269,11 +260,10 @@ class listOverviewState extends State<listOverview> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: size.width / 20),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            width: size.width / 5,
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text("Id",
                               style: TextStyle(
@@ -287,7 +277,6 @@ class listOverviewState extends State<listOverview> {
                             ),
                           ),
                           Container(
-                            width: size.width / 5,
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text("Name",
                               style: TextStyle(
@@ -301,7 +290,6 @@ class listOverviewState extends State<listOverview> {
                             ),
                           ),
                           Container(
-                            width: size.width / 5.4,
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text("Priority",
                               style: TextStyle(
@@ -330,14 +318,11 @@ class listOverviewState extends State<listOverview> {
                     ),
                     ...batteryList.entries.map((entry) {
                       return Container(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: size.width / 22),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: size.width / 5,
                               padding: EdgeInsets.symmetric(vertical: 5),
                               child: Text("${entry.value["id"]}",
                                 style: TextStyle(
@@ -350,7 +335,6 @@ class listOverviewState extends State<listOverview> {
                               ),
                             ),
                             Container(
-                              width: size.width / 5.4,
                               padding: EdgeInsets.symmetric(vertical: 5),
                               child: Text("${entry.value["name"]}",
                                 style: TextStyle(
@@ -362,22 +346,17 @@ class listOverviewState extends State<listOverview> {
                                 ) ,
                               ),
                             ),
-                            SizedBox(width: 10,),
                             Container(
-                              width: size.width / 5.4,
                               padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 25),
-                                child: Text("${entry.value["priority"]}",
-                                  style: TextStyle(
-                                      color: darkBg,
-                                      fontSize: 18,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w500,
-                                      shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
-                                  ) ,
-                                ),
-                              )
+                              child:Text("${entry.value["priority"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black,blurRadius: 0.2)]
+                                ) ,
+                              ),
                             ),
                           ],
                         ),
@@ -482,11 +461,10 @@ class listOverviewState extends State<listOverview> {
                                   EdgeInsets.symmetric(horizontal: 20),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceEvenly,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        width: size.width / 5,
                                         padding: EdgeInsets.symmetric(horizontal: 10),
                                         child: Text("Id",
                                           style: TextStyle(
@@ -500,7 +478,6 @@ class listOverviewState extends State<listOverview> {
 
                                       ),
                                       Container(
-                                        width: size.width / 4.5,
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 10),
                                         child: Text("Name",
@@ -535,15 +512,13 @@ class listOverviewState extends State<listOverview> {
                                 ),
                                 ...profiles.map((profile) {
                                   return Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20),
+
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                          width: size.width / 5,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 5),
                                           child: Text("${profile['id']}",
@@ -557,7 +532,6 @@ class listOverviewState extends State<listOverview> {
                                           ),
                                         ),
                                         Container(
-                                          width: size.width / 5,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 5),
                                           child: Text("${profile['name']}",

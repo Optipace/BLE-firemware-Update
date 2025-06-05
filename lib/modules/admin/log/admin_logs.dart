@@ -223,7 +223,7 @@ class AdminLogsState extends State<AdminLogs> {
                           Text(FactoryLogs[index]["Name"],
                               style: CardText(
                                   font_Weight: FontWeight.w800,
-                                  size: 19,
+                                  size: 14,
                                   FontColor:
                                       FactoryLogs[index]['status'] == 'Success'
                                           ? SuccessCardText
@@ -248,7 +248,7 @@ class AdminLogsState extends State<AdminLogs> {
                             FactoryLogs[index]["empId"],
                             style: CardText(
                                 font_Weight: FontWeight.w800,
-                                size: 19,
+                                size: 14,
                                 FontColor:
                                     FactoryLogs[index]['status'] == 'Success'
                                         ? SuccessCardText
@@ -274,7 +274,7 @@ class AdminLogsState extends State<AdminLogs> {
                             FactoryLogs[index]['DeviceID'],
                             style: CardText(
                                 font_Weight: FontWeight.w800,
-                                size: 19,
+                                size: 14,
                                 FontColor:
                                     FactoryLogs[index]['status'] == 'Success'
                                         ? SuccessCardText
@@ -287,198 +287,387 @@ class AdminLogsState extends State<AdminLogs> {
                 ),
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
                     width: size.width,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Divider(
-                          color: Colors.black26,
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // phone number
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Phone Number : ",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  FactoryLogs[index]['phone'],
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FactoryLogs[index]['status'] ==
-                                              'Success'
-                                          ? SuccessCardText
-                                          : FailureCardText),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            // Firm Version
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Firm version : ",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  FactoryLogs[index]['firm_version'],
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FactoryLogs[index]['status'] ==
-                                              'Success'
-                                          ? SuccessCardText
-                                          : FailureCardText),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            // Battery-Service
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Battery-Service : ",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  FactoryLogs[index]['Battery-Service'],
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FactoryLogs[index]['status'] ==
-                                              'Success'
-                                          ? SuccessCardText
-                                          : FailureCardText),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        Divider(color: Colors.black26,),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 10),
+                            padding: EdgeInsets.symmetric(vertical: 5),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              //Service-Profile
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Service-Profile:",
-                                    style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText,
-                                    ),
+                                  // phone number
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Phone\nNumber : ",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w300,
+                                            FontColor: secondaryText),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        FactoryLogs[index]['phone'],
+                                        style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 16,
+                                            FontColor: FactoryLogs[index]['status'] ==
+                                                'Success'
+                                                ? SuccessCardText
+                                                : FailureCardText),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    FactoryLogs[index]['Battery-profile'],
-                                    style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FactoryLogs[index]['status'] ==
+                                  SizedBox(height: 10,),
+                                  //Service-Profile
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Service\nProfile:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FactoryLogs[index]['Battery-profile'],
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FactoryLogs[index]['status'] ==
                                               'Success'
-                                          ? SuccessCardText
-                                          : FailureCardText,
-                                    ),
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                width: 35,
-                              ),
-                              // Date-Time
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Date-Time:",
-                                    style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText,
-                                    ),
+                                  // Firm Version
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Firm\nversion : ",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w300,
+                                            FontColor: secondaryText),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        FactoryLogs[index]['firm_version'],
+                                        style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 16,
+                                            FontColor: FactoryLogs[index]['status'] ==
+                                                'Success'
+                                                ? SuccessCardText
+                                                : FailureCardText),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    FactoryLogs[index]['Date-Time']
-                                        .replaceFirst(' ', '\n'),
-                                    style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FactoryLogs[index]['status'] ==
+                                  SizedBox(height: 10,),
+                                  // Date-Time
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Date\nTime:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FactoryLogs[index]['Date-Time']
+                                            .replaceFirst(' ', '\n'),
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FactoryLogs[index]['status'] ==
                                               'Success'
-                                          ? SuccessCardText
-                                          : FailureCardText,
-                                    ),
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              // Status
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Status:",
-                                    style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText,
-                                    ),
+                                  // Battery-Service
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Battery\nService : ",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w300,
+                                            FontColor: secondaryText),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        FactoryLogs[index]['Battery-Service'],
+                                        style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 16,
+                                            FontColor: FactoryLogs[index]['status'] ==
+                                                'Success'
+                                                ? SuccessCardText
+                                                : FailureCardText),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    FactoryLogs[index]['status'],
-                                    style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FactoryLogs[index]['status'] ==
+                                  SizedBox(height: 10,),
+                                  // Status
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Status:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FactoryLogs[index]['status'],
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FactoryLogs[index]['status'] ==
                                               'Success'
-                                          ? SuccessCardText
-                                          : FailureCardText,
-                                    ),
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
+                              /*Column(
+                          children: [
+                            Divider(
+                              color: Colors.black26,
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // phone number
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Phone\nNumber : ",
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      FactoryLogs[index]['phone'],
+                                      style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                // Firm Version
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Firm\nversion : ",
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      FactoryLogs[index]['firm_version'],
+                                      style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                // Battery-Service
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Battery\nService : ",
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      FactoryLogs[index]['Battery-Service'],
+                                      style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  //Service-Profile
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Service\nProfile:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FactoryLogs[index]['Battery-profile'],
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 35,
+                                  ),
+                                  // Date-Time
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Date\nTime:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FactoryLogs[index]['Date-Time']
+                                            .replaceFirst(' ', '\n'),
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 30,
+                                  ),
+                                  // Status
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Status:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FactoryLogs[index]['status'],
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FactoryLogs[index]['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        )*/
                             ],
                           ),
+
                         )
+
                       ],
-                    ),
+                    )
                   )
                 ],
               ),
@@ -550,7 +739,7 @@ class AdminLogsState extends State<AdminLogs> {
                           Text(FeildUserLogs[index]["Name"],
                               style: CardText(
                                   font_Weight: FontWeight.w800,
-                                  size: 19,
+                                  size: 14,
                                   FontColor: FeildUserLogs[index]['status']
                                               .toLowerCase() ==
                                           'success'
@@ -576,7 +765,7 @@ class AdminLogsState extends State<AdminLogs> {
                             FeildUserLogs[index]["empId"],
                             style: CardText(
                                 font_Weight: FontWeight.w800,
-                                size: 19,
+                                size: 14,
                                 FontColor: FeildUserLogs[index]['status']
                                             .toLowerCase() ==
                                         'Success'
@@ -601,7 +790,7 @@ class AdminLogsState extends State<AdminLogs> {
                             FeildUserLogs[index]['status'],
                             style: CardText(
                               font_Weight: FontWeight.w800,
-                              size: 19,
+                              size: 14,
                               FontColor: FeildUserLogs[index]['status']
                                           .toLowerCase() ==
                                       'success'
@@ -616,201 +805,394 @@ class AdminLogsState extends State<AdminLogs> {
                 ),
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
                     width: size.width,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Divider(
-                          color: Colors.black26,
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // phone number
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Phone Number : ",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  FeildUserLogs[index]['phone'],
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FeildUserLogs[index]['status']
-                                                  .toLowerCase() ==
-                                              'success'
-                                          ? SuccessCardText
-                                          : FailureCardText),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            // Firm Version
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Firm version : ",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  FeildUserLogs[index]['firm_version'],
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FeildUserLogs[index]['status']
-                                                  .toLowerCase() ==
-                                              'success'
-                                          ? SuccessCardText
-                                          : FailureCardText),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            // Battery-Service
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Battery-Service : ",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  FeildUserLogs[index]['Battery-Service'],
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FeildUserLogs[index]['status']
-                                                  .toLowerCase() ==
-                                              'success'
-                                          ? SuccessCardText
-                                          : FailureCardText),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        Divider(color: Colors.black26,),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 10),
+                            padding: EdgeInsets.symmetric(vertical:5),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              //Service-Profile
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Service-Profile:",
-                                    style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText,
-                                    ),
+                                  // phone number
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Phone\nNumber : ",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w300,
+                                            FontColor: secondaryText),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        FeildUserLogs[index]['phone'],
+                                        style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 16,
+                                            FontColor: FeildUserLogs[index]['status']
+                                                .toLowerCase() ==
+                                                'success'
+                                                ? SuccessCardText
+                                                : FailureCardText),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    FeildUserLogs[index]['Battery-profile'],
-                                    style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FeildUserLogs[index]
-                                                  ['status'] ==
-                                              'Success'
-                                          ? SuccessCardText
-                                          : FailureCardText,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 35,
-                              ),
-                              // Date-Time
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Date-Time:",
-                                    style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText,
-                                    ),
-                                  ),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    FeildUserLogs[index]['Date-Time']
-                                        .replaceFirst(' ', '\n'),
-                                    style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: FeildUserLogs[index]
-                                                  ['status'] ==
-                                              'Success'
-                                          ? SuccessCardText
-                                          : FailureCardText,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
 
-                              // DeviceID
+                                  SizedBox(height: 10,),
+                                  //Service-Profile
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Service\nProfile:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FeildUserLogs[index]['Battery-profile'],
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FeildUserLogs[index]
+                                          ['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Firm Version
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Firm\nversion : ",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w300,
+                                            FontColor: secondaryText),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        FeildUserLogs[index]['firm_version'],
+                                        style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 16,
+                                            FontColor: FeildUserLogs[index]['status']
+                                                .toLowerCase() ==
+                                                'success'
+                                                ? SuccessCardText
+                                                : FailureCardText),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: 10,),
+                                  // Date-Time
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Date\nTime:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FeildUserLogs[index]['Date-Time']
+                                            .replaceFirst(' ', '\n'),
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FeildUserLogs[index]
+                                          ['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "DeviceID : ",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w300,
-                                        FontColor: secondaryText),
+                                  // Battery-Service
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Battery\nService : ",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w300,
+                                            FontColor: secondaryText),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        FeildUserLogs[index]['Battery-Service'],
+                                        style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 16,
+                                            FontColor: FeildUserLogs[index]['status']
+                                                .toLowerCase() ==
+                                                'success'
+                                                ? SuccessCardText
+                                                : FailureCardText),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: 10,),
+                                  // DeviceID
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "DeviceID : ",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w300,
+                                            FontColor: secondaryText),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        FeildUserLogs[index]['DeviceID'],
+                                        style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 14,
+                                            FontColor: FeildUserLogs[index]
+                                            ['status'] ==
+                                                'Success'
+                                                ? SuccessCardText
+                                                : FailureCardText),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              /* Column(
+                          children: [
+                            Divider(
+                              color: Colors.black26,
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // phone number
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Phone\nNumber : ",
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      FeildUserLogs[index]['phone'],
+                                      style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FeildUserLogs[index]['status']
+                                              .toLowerCase() ==
+                                              'success'
+                                              ? SuccessCardText
+                                              : FailureCardText),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                // Firm Version
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Firm\nversion : ",
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      FeildUserLogs[index]['firm_version'],
+                                      style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FeildUserLogs[index]['status']
+                                              .toLowerCase() ==
+                                              'success'
+                                              ? SuccessCardText
+                                              : FailureCardText),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                // Battery-Service
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Battery\nService : ",
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      FeildUserLogs[index]['Battery-Service'],
+                                      style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FeildUserLogs[index]['status']
+                                              .toLowerCase() ==
+                                              'success'
+                                              ? SuccessCardText
+                                              : FailureCardText),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  //Service-Profile
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Service\nProfile:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FeildUserLogs[index]['Battery-profile'],
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FeildUserLogs[index]
+                                          ['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(
-                                    height: 3,
+                                    width: 5,
                                   ),
-                                  Text(
-                                    FeildUserLogs[index]['DeviceID'],
-                                    style: CardText(
-                                        font_Weight: FontWeight.w800,
-                                        size: 19,
-                                        FontColor: FeildUserLogs[index]
-                                                    ['status'] ==
+                                  // Date-Time
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Date\nTime:",
+                                        style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        FeildUserLogs[index]['Date-Time']
+                                            .replaceFirst(' ', '\n'),
+                                        style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 16,
+                                          FontColor: FeildUserLogs[index]
+                                          ['status'] ==
+                                              'Success'
+                                              ? SuccessCardText
+                                              : FailureCardText,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+
+                                  // DeviceID
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "DeviceID : ",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w300,
+                                            FontColor: secondaryText),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        FeildUserLogs[index]['DeviceID'],
+                                        style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 14,
+                                            FontColor: FeildUserLogs[index]
+                                            ['status'] ==
                                                 'Success'
-                                            ? SuccessCardText
-                                            : FailureCardText),
-                                  )
+                                                ? SuccessCardText
+                                                : FailureCardText),
+                                      )
+                                    ],
+                                  ),
                                 ],
                               ),
+                            )
+                          ],
+                        )*/
                             ],
                           ),
                         )
