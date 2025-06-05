@@ -44,6 +44,7 @@ class AdminNewUserState extends State<AdminNewUser> {
   TextEditingController _empRegId = TextEditingController();
   TextEditingController _email = TextEditingController();
   TextEditingController _contact = TextEditingController();
+  TextEditingController _uuid = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _repassword = TextEditingController();
   DataController designation = DataController();
@@ -56,6 +57,8 @@ class AdminNewUserState extends State<AdminNewUser> {
   TextEditingController _empRegId01 = TextEditingController();
   TextEditingController _email01 = TextEditingController();
   TextEditingController _contact01 = TextEditingController();
+  TextEditingController _uuidEdit = TextEditingController();
+
   TextEditingController _password01 = TextEditingController();
   TextEditingController _repassword01 = TextEditingController();
   DataController designation01 = DataController();
@@ -317,6 +320,18 @@ class AdminNewUserState extends State<AdminNewUser> {
                               ),
                               SizedBox(
                                 height: 8,
+                              ),
+                              const LabelText(text: "Device UUID :"),
+                              TextFeildNewUser(
+                                hintText: "Enter device UUID",
+                                Controller: _uuid,
+                                onChanged: (value) {},
+                                enable: true,
+                                etext:
+                                    validateUser && _uuid.text.trim().isEmpty ? "Please Enter the UUID" : "",
+                              ),
+                              SizedBox(
+                                height: 10,
                               ),
 
                               //----DesignationID---- [DROPDOWN]
@@ -732,7 +747,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                   ),
 
                                                   //----empRegId------
-                                                  LabelText(text: "Emoplyee Regestred ID[Company ID]:"),
+                                                  LabelText(text: "Emoplyee Regestred ID:"),
                                                   TextFeildNewUser(
                                                     hintText: "Enter empRegID",
                                                     Controller: _empRegId01,
@@ -771,6 +786,19 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                     enable: _activeUser,
                                                     etext: _validateEditUser && _contact01.text.trim().isEmpty
                                                         ? "Please Enter the Phone Number"
+                                                        : "",
+                                                  ),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  LabelText(text: "Employee Device UUID :"),
+                                                  TextFeildNewUser(
+                                                    hintText: "Enter device UUID",
+                                                    Controller: _uuidEdit,
+                                                    onChanged: (value) {},
+                                                    enable: _activeUser,
+                                                    etext: _validateEditUser && _uuidEdit.text.trim().isEmpty
+                                                        ? "Please Enter the UUID"
                                                         : "",
                                                   ),
                                                   SizedBox(
@@ -1130,6 +1158,7 @@ class AdminNewUserState extends State<AdminNewUser> {
         _email01.text = empObj["email"];
         _contact01.text = empObj["phone"];
         designation01.setText = empObj["designation"];
+        _uuidEdit.text = empObj["deviceId"];
 
         designation01.setobj = designationRoles[
             empObj["designation"]]; //Designation.getEmpDetails(int.parse(empObj["designationCode"]));

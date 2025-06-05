@@ -4,7 +4,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareSeriesModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/services/apiCall/firmware.dart';
 import 'package:tracker_firmware/services/firmware/methods.dart';
 
 class FirmwareFieldManagement extends StatefulWidget {
