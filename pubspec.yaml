@@ -43,6 +43,8 @@ dependencies:
   hive_flutter: ^1.1.0
   flutter_blue_plus: ^1.31.19
   platform_device_id: ^1.0.1
+  share_plus: ^7.2.1  # Check for latest version
+
 #  device_imei : ^0.0.4+2
 
 #  sqflite: ^2.3.2 #(2.4.1 available)

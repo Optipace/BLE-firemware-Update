@@ -6,6 +6,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/login/api/api.dart';
+import 'package:share_plus/share_plus.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -133,28 +134,31 @@ class LoginScreenState extends State<LoginScreen> {
                                                   overflow: TextOverflow
                                                       .ellipsis, // Prevent overflow if UUID is too long
                                                 ),
-/*Text(
-                                                'UUID : $_uuid',
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(248, 250, 254, 0.8),
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w600,
-                                                    letterSpacing: 1.1),
-                                              ),*/
+
                                               ),
                                             )),
+                                        //to copu UUID
+
+                                        // IconButton(
+                                        //   icon: Icon(Icons.copy, color: Colors.white, size: 18),
+                                        //   tooltip: "Copy UUID",
+                                        //   onPressed: () async {
+                                        //     await Clipboard.setData(ClipboardData(text: _uuid.toString()));
+                                        //     ScaffoldMessenger.of(context).showSnackBar(
+                                        //       SnackBar(
+                                        //         content: Text("UUID copied to clipboard"),
+                                        //         behavior: SnackBarBehavior.floating,
+                                        //         duration: Duration(seconds: 2),
+                                        //       ),
+                                        //     );
+                                        //   },
+                                        // ),
+                                        // Share UUID
                                         IconButton(
-                                          icon: Icon(Icons.copy, color: Colors.white, size: 18),
-                                          tooltip: "Copy UUID",
-                                          onPressed: () async {
-                                            await Clipboard.setData(ClipboardData(text: _uuid.toString()));
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                content: Text("UUID copied to clipboard"),
-                                                behavior: SnackBarBehavior.floating,
-                                                duration: Duration(seconds: 2),
-                                              ),
-                                            );
+                                          icon: Icon(Icons.share, color: Colors.white, size: 20),
+                                          tooltip: "Share UUID",
+                                          onPressed: () {
+                                            Share.share("Here is the device UUID: $_uuid");
                                           },
                                         ),
                                       ],
