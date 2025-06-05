@@ -36,6 +36,7 @@ Color FailureCardText = Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text
 String baseFont = 'Crimson';
 String serviceHiveBox = 'ServiceBox';
 String firmwareHiveBox = 'firmwareBox';
+String batchHiveBox = 'batchBox';
 // String baseFont = 'Roboto';
 // String baseFont = 'Inter  ';
 // String baseFont = 'Poppins ';

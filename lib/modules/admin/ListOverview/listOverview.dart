@@ -10,9 +10,6 @@ class listOverview extends StatefulWidget {
 }
 
 class listOverviewState extends State<listOverview> {
-  bool firmware = false;
-  bool config = false;
-  bool battery = false;
   Map<String, dynamic> firmList = {};
   Map<String, dynamic> batteryList = {};
 
@@ -62,339 +59,511 @@ class listOverviewState extends State<listOverview> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // List of firmware
-              GestureDetector(
-                onTap: _firmwareSelection,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // List of firmware
+                ExpansionTile(
+                  backgroundColor: second_lightBg,
+                  collapsedBackgroundColor: Colors.transparent,
+                  iconColor: darkBg,
+                  textColor: Colors.black,
+                  collapsedIconColor: darkBg,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: darkBg, width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  collapsedShape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.transparent, width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                  childrenPadding: EdgeInsets.symmetric(horizontal: 35),
+                  title: Text(
+                    "Firmware",
+                    style: TextStyle(
+                      color: darkBg,
+                      fontFamily: baseFont,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                    ),
+                  ),
+                  children: [
+                    Divider(color: darkBg),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: size.width / 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: size.width / 5.6,
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              "Id",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: size.width / 5.4,
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              "Version",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: size.width / 4,
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              "Release Note",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      child: Column(
+                        children: [
+                          Divider(color: darkBg, thickness: 1),
+                          SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    ...firmList.entries.map((entry) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(horizontal: size.width / 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: size.width / 5,
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                "${entry.value["id"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                              ),
+                            ),
+                            Container(
+                              width: size.width / 5.4,
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                "${entry.value["version"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                              ),
+                            ),
+                            Container(
+                              width: size.width / 5,
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                "${entry.value["releaseNote"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                ),
+                SizedBox(
+                  child: Column(
                     children: [
-                      Text("List of firmware"),
-                      firmware ? Icon(Icons.keyboard_arrow_up) : Icon(Icons.keyboard_arrow_down)
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Divider(
+                        color: darkBg,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                child: Column(
+
+                // List of Batteries
+                ExpansionTile(
+                  backgroundColor: second_lightBg,
+                  collapsedBackgroundColor: Colors.transparent,
+                  iconColor: darkBg,
+                  textColor: Colors.black,
+                  collapsedIconColor: darkBg,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: darkBg, width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  collapsedShape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.transparent, width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                  childrenPadding: EdgeInsets.symmetric(horizontal: 35),
+                  title: Text(
+                    "Batteries",
+                    style: TextStyle(
+                      color: darkBg,
+                      fontFamily: baseFont,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                    ),
+                  ),
                   children: [
-                    SizedBox(
-                      height: 5,
+                    Divider(color: Colors.grey, thickness: 1),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: size.width / 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: size.width / 5,
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "Id",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: size.width / 5,
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "Name",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: size.width / 5.4,
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "Priority",
+                              style: TextStyle(
+                                color: darkBg,
+                                fontFamily: baseFont,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Divider(),
                     SizedBox(
-                      height: 5,
+                      child: Column(
+                        children: [
+                          Divider(color: darkBg, thickness: 1),
+                          SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              // ----- List of FirmWare -----
-              Visibility(
-                  visible: firmware,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        Row(
+                    ...batteryList.entries.map((entry) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(horizontal: size.width / 22),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               width: size.width / 5,
                               padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("ID"),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                              width: size.width / 5,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("version"),
-                            ),
-                            SizedBox(
-                              width: 20,
+                              child: Text(
+                                "${entry.value["id"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                              ),
                             ),
                             Container(
-                              width: size.width / 5,
+                              width: size.width / 5.4,
                               padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("releaseNote"),
+                              child: Text(
+                                "${entry.value["name"]}",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                              ),
                             ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                                width: size.width / 5.4,
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 25),
+                                  child: Text(
+                                    "${entry.value["priority"]}",
+                                    style: TextStyle(
+                                        color: darkBg,
+                                        fontSize: 18,
+                                        fontFamily: baseFont,
+                                        fontWeight: FontWeight.w500,
+                                        shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                  ),
+                                )),
                           ],
                         ),
-                        ...firmList.entries.map((entry) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: size.width / 5,
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Text("${entry.value["id"]}"),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Container(
-                                width: size.width / 5,
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Text("${entry.value["version"]}"),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Container(
-                                width: size.width / 5,
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Text("${entry.value["releaseNote"]}"),
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                      ],
-                    ),
-                  )),
-              Visibility(visible: firmware, child: Divider()),
-
-              // List of Batteries
-              GestureDetector(
-                onTap: _batterySelection,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      );
+                    }).toList(),
+                  ],
+                ),
+                SizedBox(
+                  child: Column(
                     children: [
-                      Text("List of Batteries"),
-                      battery ? Icon(Icons.keyboard_arrow_up) : Icon(Icons.keyboard_arrow_down)
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Divider(
+                        color: darkBg,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 5,
-                    ),
-                  ],
-                ),
-              ),
-              Visibility(
-                  visible: battery,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: size.width / 5,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("ID"),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                              width: size.width / 5,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("name"),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                              width: size.width / 5,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text("priority"),
-                            ),
-                          ],
-                        ),
-                        ...batteryList.entries.map((entry) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: size.width / 5,
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Text("${entry.value["id"]}"),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Container(
-                                width: size.width / 5,
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Text("${entry.value["name"]}"),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Container(
-                                width: size.width / 5,
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Text("${entry.value["priority"]}"),
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                      ],
-                    ),
-                  )),
-              Visibility(visible: battery, child: Divider()),
 
-              // List of config
-              GestureDetector(
-                onTap: _configSelection,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("List of config"),
-                      config ? Icon(Icons.keyboard_arrow_up) : Icon(Icons.keyboard_arrow_down)
-                    ],
+                // List of config
+                ExpansionTile(
+                  backgroundColor: second_lightBg,
+                  collapsedBackgroundColor: Colors.transparent,
+                  iconColor: darkBg,
+                  textColor: Colors.black,
+                  collapsedIconColor: darkBg,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: darkBg, width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                ),
-              ),
-              SizedBox(
-                child: Column(
+                  collapsedShape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.transparent, width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                  childrenPadding: EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+                  title: Text(
+                    "Config",
+                    style: TextStyle(
+                      color: darkBg,
+                      fontFamily: baseFont,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                    ),
+                  ),
                   children: [
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 5,
-                    ),
-                  ],
-                ),
-              ),
-              Visibility(
-                  visible: config,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      children: [
-                        // from here i got the flag thing
-                        ...batteryList.entries.map((e) {
-                          final profiles = profileListMap[e.key] ?? [];
+                    Divider(color: darkBg),
+                    ...batteryList.entries.map((e) {
+                      final profiles = profileListMap[e.key] ?? [];
 
-                          return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                              child: Container(
-                                decoration:
-                                    BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
-                                child: ExpansionTile(
-                                  backgroundColor: Colors.transparent,
-                                  collapsedBackgroundColor: Colors.transparent,
-                                  iconColor: Colors.black,
-                                  textColor: Colors.black,
-                                  collapsedIconColor: Colors.black,
-                                  shape: RoundedRectangleBorder(side: BorderSide(color: Colors.transparent)),
-                                  tilePadding: EdgeInsets.only(left: 10),
-                                  childrenPadding: EdgeInsets.zero,
-                                  title: Text(e.key),
-                                  children: [
-                                    Divider(color: Colors.grey, thickness: 1),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Container(
-                                            width: size.width / 5,
-                                            padding: EdgeInsets.symmetric(vertical: 5),
-                                            child: Text("ID"),
-                                          ),
-                                          Container(
-                                            width: size.width / 5,
-                                            padding: EdgeInsets.symmetric(vertical: 5),
-                                            child: Text("name"),
-                                          ),
-                                          Container(
-                                            width: size.width / 5,
-                                            padding: EdgeInsets.symmetric(vertical: 5),
-                                            child: Text("releaseNote"),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    ...profiles.map((profile) {
-                                      return Container(
+                      return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                          child: Container(
+                            decoration:
+                                BoxDecoration(border: Border(bottom: BorderSide(color: darkBg, width: 0.5))),
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: ExpansionTile(
+                              backgroundColor: second_lightBg,
+                              collapsedBackgroundColor: Colors.transparent,
+                              iconColor: darkBg,
+                              textColor: Colors.black,
+                              collapsedIconColor: darkBg,
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(color: darkBg, width: 0.3),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              collapsedShape: RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.transparent, width: 0.3),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                              childrenPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                              title: Text(
+                                e.key,
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontFamily: baseFont,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                              ),
+                              children: [
+                                Divider(color: darkBg),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: size.width / 5,
                                         padding: EdgeInsets.symmetric(horizontal: 10),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              width: size.width / 5,
-                                              padding: EdgeInsets.symmetric(vertical: 5),
-                                              child: Text("${profile['id']}"),
-                                            ),
-                                            Container(
-                                              width: size.width / 5,
-                                              padding: EdgeInsets.symmetric(vertical: 5),
-                                              child: Text("${profile['name']}"),
-                                            ),
-                                            Container(
-                                              width: size.width / 5,
-                                              padding: EdgeInsets.symmetric(vertical: 5),
-                                              child: Text("${profile['releaseNote']}"),
-                                            ),
-                                          ],
+                                        child: Text(
+                                          "Id",
+                                          style: TextStyle(
+                                              color: darkBg,
+                                              fontFamily: baseFont,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 20,
+                                              shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
                                         ),
-                                      );
-                                    }).toList(),
-                                  ],
+                                      ),
+                                      Container(
+                                        width: size.width / 4.5,
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text(
+                                          "Name",
+                                          style: TextStyle(
+                                              color: darkBg,
+                                              fontFamily: baseFont,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 20,
+                                              shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ));
-                        }).toList(),
-                        Divider()
-                      ],
-                    ),
-                  )),
-            ],
+                                SizedBox(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Divider(
+                                        color: darkBg,
+                                        thickness: 1,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                ...profiles.map((profile) {
+                                  return Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: size.width / 5,
+                                          padding: EdgeInsets.symmetric(vertical: 5),
+                                          child: Text(
+                                            "${profile['id']}",
+                                            style: TextStyle(
+                                                color: darkBg,
+                                                fontFamily: baseFont,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: size.width / 5,
+                                          padding: EdgeInsets.symmetric(vertical: 5),
+                                          child: Text(
+                                            "${profile['name']}",
+                                            style: TextStyle(
+                                                color: darkBg,
+                                                fontFamily: baseFont,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ],
+                            ),
+                          ));
+                    }).toList(),
+                  ],
+                ),
+                SizedBox(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Divider(
+                        color: darkBg,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ));
-  }
-
-  void _firmwareSelection() {
-    // printFunc("DEMO FIRMWARE : $firmList");
-    setState(() {
-      firmware = !firmware;
-      battery = false;
-      config = false; // Toggle the boolean value
-    });
-  }
-
-  void _configSelection() {
-    printFunc("DEMO BATTERY LIST : $batteryList");
-    setState(() {
-      firmware = false;
-      config = !config;
-      battery = false;
-    });
-  }
-
-  void _batterySelection() {
-    setState(() {
-      firmware = false;
-      config = false;
-      battery = !battery;
-    });
   }
 }
