@@ -4,10 +4,8 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareSeriesModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
-Future<void> saveFirmwareListToHive(
-    List<Map<String, dynamic>> firmwareList) async {
-  final firmwareBox =
-      await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
+Future<void> saveFirmwareListToHive(List<Map<String, dynamic>> firmwareList) async {
+  final firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
 
   for (var series in firmwareList) {
     List<FirmwareModel> firmwareModels = (series['firmware'] as List).map((f) {
@@ -32,10 +30,8 @@ Future<void> saveFirmwareListToHive(
   }
 }
 
-Future<FirmwareModel?> getFirmwareByVersion(
-    String seriesId, String version) async {
-  final firmwareBox =
-      await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
+Future<FirmwareModel?> getFirmwareByVersion(String seriesId, String version) async {
+  final firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
   final series = firmwareBox.get(seriesId);
   if (series != null) {
     return series.firmware.firstWhere(
@@ -68,9 +64,8 @@ final newFirmware = FirmwareModel(
   deviceType: "b12"
 );
  */
-printFunc("Firmware model : \n${newFirmware.toJson()}");
-  final firmwareBox =
-      await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
+  printFunc("Firmware model : \n${newFirmware.toJson()}");
+  final firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
 
   newFirmware.saved = true;
 
@@ -86,14 +81,12 @@ printFunc("Firmware model : \n${newFirmware.toJson()}");
 
     // Save to box
     await firmwareBox.put(newFirmware.deviceTypeId, series);
-    printFunc(
-        "Series ${newFirmware.deviceTypeId} created and firmware ${newFirmware.version} added.");
+    printFunc("Series ${newFirmware.deviceTypeId} created and firmware ${newFirmware.version} added.");
   } else {
     // Series exists, add new firmware
     series.firmware.add(newFirmware);
     await series.save();
-    printFunc(
-        "Firmware ${newFirmware.version} added to series ${newFirmware.deviceTypeId}.");
+    printFunc("Firmware ${newFirmware.version} added to series ${newFirmware.deviceTypeId}.");
   }
 
   return true;

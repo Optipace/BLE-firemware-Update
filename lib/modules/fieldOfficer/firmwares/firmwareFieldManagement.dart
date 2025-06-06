@@ -4,19 +4,16 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareSeriesModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/services/apiCall/firmware.dart';
 import 'package:tracker_firmware/services/firmware/methods.dart';
 
 class FirmwareFieldManagement extends StatefulWidget {
   const FirmwareFieldManagement({super.key});
 
   @override
-  State<FirmwareFieldManagement> createState() =>
-      FirmwareFieldManagementState();
+  State<FirmwareFieldManagement> createState() => FirmwareFieldManagementState();
 }
 
-TextStyle CardText(
-    {required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,
@@ -57,11 +54,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
             "Firmwares",
-            style: TextStyle(
-                fontFamily: baseFont,
-                fontWeight: FontWeight.w800,
-                fontSize: 24,
-                color: lightBg),
+            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
           ),
           toolbarHeight: size.height / 11.5,
           backgroundColor: darkBg,
@@ -98,12 +91,9 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                       decoration: BoxDecoration(
                           color: selectedbutton == 1 ? darkBg : lightBg,
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(28),
-                              bottomLeft: Radius.circular(28)),
+                              topLeft: Radius.circular(28), bottomLeft: Radius.circular(28)),
                           border: Border.all(width: 0.5, color: darkBg),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 0.5, color: darkBg)
-                          ]),
+                          boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
                       child: Center(
                           heightFactor: 2,
                           child: Center(
@@ -117,14 +107,10 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                 shadows: [
                                   Shadow(
                                       offset: Offset(0.3, 0.3),
-                                      color: selectedbutton == 1
-                                          ? lightBg
-                                          : darkBg),
+                                      color: selectedbutton == 1 ? lightBg : darkBg),
                                   Shadow(
                                       offset: Offset(-0.3, 0.3),
-                                      color: selectedbutton == 1
-                                          ? lightBg
-                                          : darkBg),
+                                      color: selectedbutton == 1 ? lightBg : darkBg),
                                 ],
                               ),
                             ),
@@ -145,9 +131,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                             color: selectedbutton == 2 ? darkBg : lightBg,
                             // borderRadius: const BorderRadius.only(
                             //     topRight: Radius.circular(28), bottomRight: Radius.circular(28)),
-                            boxShadow: [
-                              BoxShadow(blurRadius: 0.5, color: darkBg)
-                            ]),
+                            boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
                         child: Center(
                           heightFactor: 2,
                           child: Center(
@@ -161,13 +145,11 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                 shadows: [
                                   Shadow(
                                     offset: Offset(0.3, 0.3),
-                                    color:
-                                        selectedbutton == 2 ? lightBg : darkBg,
+                                    color: selectedbutton == 2 ? lightBg : darkBg,
                                   ),
                                   Shadow(
                                     offset: Offset(-0.3, 0.3),
-                                    color:
-                                        selectedbutton == 2 ? lightBg : darkBg,
+                                    color: selectedbutton == 2 ? lightBg : darkBg,
                                   ),
                                 ],
                               ),
@@ -189,11 +171,8 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                       decoration: BoxDecoration(
                           color: selectedbutton == 3 ? darkBg : lightBg,
                           borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(28),
-                              bottomRight: Radius.circular(28)),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 0.5, color: darkBg)
-                          ]),
+                              topRight: Radius.circular(28), bottomRight: Radius.circular(28)),
+                          boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
                       child: Center(
                         heightFactor: 2,
                         child: Center(
@@ -241,25 +220,20 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
     printFunc("Serice six Data : $seriesSixData");
     List<Widget> seriesSixWidgetList = [];
 
-    for (int index = 0;
-        index < ((seriesSixData != null) ? seriesSixData.length : 0);
-        index++) {
+    for (int index = 0; index < ((seriesSixData != null) ? seriesSixData.length : 0); index++) {
       printFunc("DEMO DEMO Firmware logs : ${seriesSixData[index]}");
-      ValueNotifier moreInfo =
-          ValueNotifier<bool>(seriesSixData[index]['saved']);
+      ValueNotifier moreInfo = ValueNotifier<bool>(seriesSixData[index]['saved']);
       seriesSixWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 2,
-                    )
-                  ]),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 2,
+                )
+              ]),
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
@@ -267,8 +241,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
-                collapsedBackgroundColor:
-                    (moreInfo.value) ? SuccessCard : FailureCard,
+                collapsedBackgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -288,9 +261,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Version : ",
-                              style: CardText(
-                                  font_Weight: FontWeight.w300,
-                                  FontColor: secondaryText)),
+                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
                           SizedBox(
                             height: 3,
                           ),
@@ -298,9 +269,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: !(moreInfo.value)
-                                      ? SuccessCardText
-                                      : FailureCardText)),
+                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText)),
                         ],
                       ),
                       // EmpID
@@ -310,9 +279,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                         children: [
                           Text(
                             "Release Note : ",
-                            style: CardText(
-                                font_Weight: FontWeight.w300,
-                                FontColor: secondaryText),
+                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
@@ -322,9 +289,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: !(moreInfo.value)
-                                    ? SuccessCardText
-                                    : FailureCardText),
+                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                           ),
                         ],
                       ),
@@ -335,9 +300,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                         children: [
                           Text(
                             "Series : ",
-                            style: CardText(
-                                font_Weight: FontWeight.w300,
-                                FontColor: secondaryText),
+                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
@@ -347,9 +310,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: !(moreInfo.value)
-                                    ? SuccessCardText
-                                    : FailureCardText),
+                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                           )
                         ],
                       ),
@@ -376,9 +337,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                 children: [
                                   Text(
                                     "Version Name",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w300,
-                                        FontColor: secondaryText),
+                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                   ),
                                   SizedBox(
                                     height: 3,
@@ -388,9 +347,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
-                                        FontColor: !(moreInfo.value)
-                                            ? SuccessCardText
-                                            : FailureCardText),
+                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                                   )
                                 ],
                               ),
@@ -404,9 +361,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                 children: [
                                   Text(
                                     "Firmware Id",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w300,
-                                        FontColor: secondaryText),
+                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                   ),
                                   SizedBox(
                                     height: 3,
@@ -416,9 +371,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
-                                        FontColor: !(moreInfo.value)
-                                            ? SuccessCardText
-                                            : FailureCardText),
+                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                                   )
                                 ],
                               ),
@@ -434,27 +387,21 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                       onPressed: () async {
                                         printFunc("is saved : ${seriesSixData[index]['saved']}");
                                         if (!(seriesSixData[index]['saved'])) {
-                                          await addFirmware(
-                                              FirmwareModel.fromJson(
-                                                  seriesSixData[index]));
+                                          await addFirmware(FirmwareModel.fromJson(seriesSixData[index]));
 
                                           setState(() {});
                                         }
                                         // seriesSixData.clear();
 
                                         seriesSixData = await getSeriesData(1);
-                                        moreInfo.value=seriesSixData[index]['saved'];
+                                        moreInfo.value = seriesSixData[index]['saved'];
                                         ValueNotifier<bool>(seriesSixData[index]['saved']);
                                         setState(() {});
                                       },
                                       icon: (!seriesSixData[index]['saved'])
-                                          ? Icon(
-                                              Icons
-                                                  .download_for_offline_outlined,
-                                              color: SuccessCardText,
-                                              size: 40)
-                                          : Icon(Icons.download_done_outlined,
-                                              color: darkBg, size: 40)),
+                                          ? Icon(Icons.download_for_offline_outlined,
+                                              color: SuccessCardText, size: 40)
+                                          : Icon(Icons.download_done_outlined, color: darkBg, size: 40)),
                                   SizedBox(
                                     height: 3,
                                   ),
@@ -462,9 +409,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                     (moreInfo.value) ? "Saved" : "Download",
                                     style: CardText(
                                         font_Weight: FontWeight.w300,
-                                        FontColor: !(moreInfo.value)
-                                            ? SuccessCardText
-                                            : FailureCardText),
+                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                                   ),
                                 ],
                               ),
@@ -495,25 +440,20 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
     printFunc("Serice Nine Data : $seriesNineData");
     List<Widget> seriesNineWidgetList = [];
 
-    for (int index = 0;
-        index < ((seriesNineData != null) ? seriesNineData.length : 0);
-        index++) {
+    for (int index = 0; index < ((seriesNineData != null) ? seriesNineData.length : 0); index++) {
       printFunc("DEMO DEMO Firmware logs : ${seriesNineData[index]}");
-      ValueNotifier moreInfo =
-          ValueNotifier<bool>(seriesNineData[index]['saved']);
+      ValueNotifier moreInfo = ValueNotifier<bool>(seriesNineData[index]['saved']);
       seriesNineWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 2,
-                    )
-                  ]),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 2,
+                )
+              ]),
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
@@ -521,8 +461,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
-                collapsedBackgroundColor:
-                    (moreInfo.value) ? SuccessCard : FailureCard,
+                collapsedBackgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -542,9 +481,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Version : ",
-                              style: CardText(
-                                  font_Weight: FontWeight.w300,
-                                  FontColor: secondaryText)),
+                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
                           SizedBox(
                             height: 3,
                           ),
@@ -552,9 +489,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: !(moreInfo.value)
-                                      ? SuccessCardText
-                                      : FailureCardText)),
+                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText)),
                         ],
                       ),
                       // EmpID
@@ -564,9 +499,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                         children: [
                           Text(
                             "Release Note : ",
-                            style: CardText(
-                                font_Weight: FontWeight.w300,
-                                FontColor: secondaryText),
+                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
@@ -576,9 +509,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: !(moreInfo.value)
-                                    ? SuccessCardText
-                                    : FailureCardText),
+                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                           ),
                         ],
                       ),
@@ -589,9 +520,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                         children: [
                           Text(
                             "Series : ",
-                            style: CardText(
-                                font_Weight: FontWeight.w300,
-                                FontColor: secondaryText),
+                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
@@ -601,9 +530,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: !(moreInfo.value)
-                                    ? SuccessCardText
-                                    : FailureCardText),
+                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                           )
                         ],
                       ),
@@ -630,9 +557,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                 children: [
                                   Text(
                                     "Version Name",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w300,
-                                        FontColor: secondaryText),
+                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                   ),
                                   SizedBox(
                                     height: 3,
@@ -642,9 +567,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
-                                        FontColor: !(moreInfo.value)
-                                            ? SuccessCardText
-                                            : FailureCardText),
+                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                                   )
                                 ],
                               ),
@@ -658,9 +581,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                 children: [
                                   Text(
                                     "Firmware Id",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w300,
-                                        FontColor: secondaryText),
+                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                   ),
                                   SizedBox(
                                     height: 3,
@@ -670,9 +591,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
-                                        FontColor: !(moreInfo.value)
-                                            ? SuccessCardText
-                                            : FailureCardText),
+                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                                   )
                                 ],
                               ),
@@ -687,27 +606,20 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                   IconButton(
                                       onPressed: () async {
                                         if (!seriesNineData[index]['saved']) {
-                                          await addFirmware(
-                                              FirmwareModel.fromJson(
-                                                  seriesNineData[index]));
+                                          await addFirmware(FirmwareModel.fromJson(seriesNineData[index]));
 
                                           setState(() {});
                                         }
                                         // seriesNineData.clear();
 
                                         seriesNineData = await getSeriesData(2);
-                                        moreInfo.value(
-                                            seriesNineData[index]['saved']);
+                                        moreInfo.value(seriesNineData[index]['saved']);
                                         setState(() {});
                                       },
                                       icon: (!seriesNineData[index]['saved'])
-                                          ? Icon(
-                                              Icons
-                                                  .download_for_offline_outlined,
-                                              color: SuccessCardText,
-                                              size: 40)
-                                          : Icon(Icons.download_done_outlined,
-                                              color: darkBg, size: 40)),
+                                          ? Icon(Icons.download_for_offline_outlined,
+                                              color: SuccessCardText, size: 40)
+                                          : Icon(Icons.download_done_outlined, color: darkBg, size: 40)),
                                   SizedBox(
                                     height: 3,
                                   ),
@@ -715,9 +627,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                     !(moreInfo.value) ? "Saved" : "Download",
                                     style: CardText(
                                         font_Weight: FontWeight.w300,
-                                        FontColor: !(moreInfo.value)
-                                            ? SuccessCardText
-                                            : FailureCardText),
+                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                                   ),
                                 ],
                               ),
@@ -748,25 +658,20 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
     printFunc("Serice Twelve Data : $seriesTwelveData");
     List<Widget> seriesTwelveWidgetList = [];
 
-    for (int index = 0;
-        index < ((seriesTwelveData != null) ? seriesTwelveData.length : 0);
-        index++) {
+    for (int index = 0; index < ((seriesTwelveData != null) ? seriesTwelveData.length : 0); index++) {
       printFunc("DEMO DEMO Firmware logs : ${seriesTwelveData[index]}");
-      ValueNotifier moreInfo =
-          ValueNotifier<bool>(seriesTwelveData[index]['saved']);
+      ValueNotifier moreInfo = ValueNotifier<bool>(seriesTwelveData[index]['saved']);
       seriesTwelveWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 2,
-                    )
-                  ]),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 2,
+                )
+              ]),
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
@@ -774,8 +679,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
-                collapsedBackgroundColor:
-                    (moreInfo.value) ? SuccessCard : FailureCard,
+                collapsedBackgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -795,9 +699,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Version : ",
-                              style: CardText(
-                                  font_Weight: FontWeight.w300,
-                                  FontColor: secondaryText)),
+                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
                           SizedBox(
                             height: 3,
                           ),
@@ -805,9 +707,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: !(moreInfo.value)
-                                      ? SuccessCardText
-                                      : FailureCardText)),
+                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText)),
                         ],
                       ),
                       // EmpID
@@ -817,9 +717,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                         children: [
                           Text(
                             "Release Note : ",
-                            style: CardText(
-                                font_Weight: FontWeight.w300,
-                                FontColor: secondaryText),
+                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
@@ -829,9 +727,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: !(moreInfo.value)
-                                    ? SuccessCardText
-                                    : FailureCardText),
+                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                           ),
                         ],
                       ),
@@ -842,9 +738,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                         children: [
                           Text(
                             "Series : ",
-                            style: CardText(
-                                font_Weight: FontWeight.w300,
-                                FontColor: secondaryText),
+                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
@@ -854,9 +748,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: !(moreInfo.value)
-                                    ? SuccessCardText
-                                    : FailureCardText),
+                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                           )
                         ],
                       ),
@@ -883,9 +775,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                 children: [
                                   Text(
                                     "Version Name",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w300,
-                                        FontColor: secondaryText),
+                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                   ),
                                   SizedBox(
                                     height: 3,
@@ -895,9 +785,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
-                                        FontColor: !(moreInfo.value)
-                                            ? SuccessCardText
-                                            : FailureCardText),
+                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                                   )
                                 ],
                               ),
@@ -911,9 +799,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                 children: [
                                   Text(
                                     "Firmware Id",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w300,
-                                        FontColor: secondaryText),
+                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                   ),
                                   SizedBox(
                                     height: 3,
@@ -923,9 +809,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
-                                        FontColor: !(moreInfo.value)
-                                            ? SuccessCardText
-                                            : FailureCardText),
+                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                                   )
                                 ],
                               ),
@@ -940,28 +824,20 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                   IconButton(
                                       onPressed: () async {
                                         if (!seriesTwelveData[index]['saved']) {
-                                          await addFirmware(
-                                              FirmwareModel.fromJson(
-                                                  seriesTwelveData[index]));
+                                          await addFirmware(FirmwareModel.fromJson(seriesTwelveData[index]));
 
                                           setState(() {});
                                         }
                                         // seriesTwelveData.clear();
 
-                                        seriesTwelveData =
-                                            await getSeriesData(3);
-                                        moreInfo.value(
-                                            seriesTwelveData[index]['saved']);
+                                        seriesTwelveData = await getSeriesData(3);
+                                        moreInfo.value(seriesTwelveData[index]['saved']);
                                         setState(() {});
                                       },
                                       icon: (!seriesTwelveData[index]['saved'])
-                                          ? Icon(
-                                              Icons
-                                                  .download_for_offline_outlined,
-                                              color: SuccessCardText,
-                                              size: 40)
-                                          : Icon(Icons.download_done_outlined,
-                                              color: darkBg, size: 40)),
+                                          ? Icon(Icons.download_for_offline_outlined,
+                                              color: SuccessCardText, size: 40)
+                                          : Icon(Icons.download_done_outlined, color: darkBg, size: 40)),
                                   SizedBox(
                                     height: 3,
                                   ),
@@ -969,9 +845,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
                                     !(moreInfo.value) ? "Saved" : "Download",
                                     style: CardText(
                                         font_Weight: FontWeight.w300,
-                                        FontColor: !(moreInfo.value)
-                                            ? SuccessCardText
-                                            : FailureCardText),
+                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
                                   ),
                                 ],
                               ),
@@ -1004,8 +878,7 @@ class FirmwareFieldManagementState extends State<FirmwareFieldManagement> {
     // firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
 
 // Get B6 from firmwareList
-    final firmwareFromList = firmwareList
-        .firstWhere((series) => series['id'] == "$id", orElse: () => null);
+    final firmwareFromList = firmwareList.firstWhere((series) => series['id'] == "$id", orElse: () => null);
     printFunc("firmwareFromList : $firmwareFromList");
 // Get stored B6 from Hive
     final firmwareFromHive = firmwareBox.get("$id");

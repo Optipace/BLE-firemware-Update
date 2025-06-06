@@ -27,17 +27,16 @@ Color errorText = Color(0xFFCD5C5C);
 
 // Color for cards
 Color SuccessCard = Color.fromRGBO(220, 240, 255, 1.0); // soft light blue
-Color SuccessCardText =
-    Color.fromRGBO(80, 140, 200, 1.0); // medium blue (text/icon)
+Color SuccessCardText = Color.fromRGBO(80, 140, 200, 1.0); // medium blue (text/icon)
 
 Color FailureCard = Color.fromRGBO(245, 235, 250, 1.0); // soft lavender/grayish
 
-Color FailureCardText =
-    Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text/icon)
+Color FailureCardText = Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text/icon)
 
 String baseFont = 'Crimson';
 String serviceHiveBox = 'ServiceBox';
 String firmwareHiveBox = 'firmwareBox';
+String batchHiveBox = 'batchBox';
 // String baseFont = 'Roboto';
 // String baseFont = 'Inter  ';
 // String baseFont = 'Poppins ';
@@ -87,8 +86,7 @@ showAlertDialog(
   showDialog(
     context: context,
     builder: (context) {
-      return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
+      return BackdropFilter(filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
     },
   );
 }

@@ -44,6 +44,7 @@ class AdminNewUserState extends State<AdminNewUser> {
   TextEditingController _empRegId = TextEditingController();
   TextEditingController _email = TextEditingController();
   TextEditingController _contact = TextEditingController();
+  TextEditingController _uuid = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _repassword = TextEditingController();
   DataController designation = DataController();
@@ -56,6 +57,8 @@ class AdminNewUserState extends State<AdminNewUser> {
   TextEditingController _empRegId01 = TextEditingController();
   TextEditingController _email01 = TextEditingController();
   TextEditingController _contact01 = TextEditingController();
+  TextEditingController _uuidEdit = TextEditingController();
+
   TextEditingController _password01 = TextEditingController();
   TextEditingController _repassword01 = TextEditingController();
   DataController designation01 = DataController();
@@ -88,11 +91,7 @@ class AdminNewUserState extends State<AdminNewUser> {
         appBar: AppBar(
           title: Text(
             "Manage User",
-            style: TextStyle(
-                fontFamily: baseFont,
-                fontWeight: FontWeight.w800,
-                fontSize: 22,
-                color: lightBg),
+            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 22, color: lightBg),
           ),
           toolbarHeight: 60,
           backgroundColor: darkBg,
@@ -101,8 +100,7 @@ class AdminNewUserState extends State<AdminNewUser> {
         ),
         backgroundColor: lightBg,
         body: SingleChildScrollView(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Card(
               // elevation: ,
               // shadowColor: Colors.black,
@@ -130,12 +128,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                         decoration: BoxDecoration(
                             color: selectedbutton == 1 ? darkBg : lightBg,
                             borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20)),
+                                topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
                             border: Border.all(width: 0.5, color: darkBg),
-                            boxShadow: [
-                              BoxShadow(blurRadius: 0.5, color: darkBg)
-                            ]),
+                            boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
                         child: Center(
                             heightFactor: 2,
                             child: Center(
@@ -146,8 +141,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     'assets/image/user.png',
                                     width: 32,
                                     height: 32,
-                                    color:
-                                        selectedbutton == 1 ? lightBg : darkBg,
+                                    color: selectedbutton == 1 ? lightBg : darkBg,
                                   ),
                                   Text(
                                     "New User",
@@ -155,20 +149,14 @@ class AdminNewUserState extends State<AdminNewUser> {
                                       fontSize: 22,
                                       fontFamily: baseFont,
                                       fontWeight: FontWeight.w600,
-                                      color: selectedbutton == 1
-                                          ? lightBg
-                                          : darkBg,
+                                      color: selectedbutton == 1 ? lightBg : darkBg,
                                       shadows: [
                                         Shadow(
                                             offset: Offset(0.3, 0.3),
-                                            color: selectedbutton == 1
-                                                ? lightBg
-                                                : darkBg),
+                                            color: selectedbutton == 1 ? lightBg : darkBg),
                                         Shadow(
                                             offset: Offset(-0.3, 0.3),
-                                            color: selectedbutton == 1
-                                                ? lightBg
-                                                : darkBg),
+                                            color: selectedbutton == 1 ? lightBg : darkBg),
                                       ],
                                     ),
                                   )
@@ -190,11 +178,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                         decoration: BoxDecoration(
                             color: selectedbutton == 2 ? darkBg : lightBg,
                             borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
-                            boxShadow: [
-                              BoxShadow(blurRadius: 0.5, color: darkBg)
-                            ]),
+                                topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                            boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
                         child: Center(
                             heightFactor: 2,
                             child: Center(
@@ -205,8 +190,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     'assets/image/editUser.png',
                                     width: 32,
                                     height: 32,
-                                    color:
-                                        selectedbutton == 1 ? darkBg : lightBg,
+                                    color: selectedbutton == 1 ? darkBg : lightBg,
                                   ),
                                   Text(
                                     "Edit User",
@@ -214,21 +198,15 @@ class AdminNewUserState extends State<AdminNewUser> {
                                       fontSize: 22,
                                       fontFamily: baseFont,
                                       fontWeight: FontWeight.w600,
-                                      color: selectedbutton == 1
-                                          ? darkBg
-                                          : lightBg,
+                                      color: selectedbutton == 1 ? darkBg : lightBg,
                                       shadows: [
                                         Shadow(
                                           offset: Offset(0.3, 0.3),
-                                          color: selectedbutton == 1
-                                              ? darkBg
-                                              : lightBg,
+                                          color: selectedbutton == 1 ? darkBg : lightBg,
                                         ),
                                         Shadow(
                                           offset: Offset(-0.3, 0.3),
-                                          color: selectedbutton == 1
-                                              ? darkBg
-                                              : lightBg,
+                                          color: selectedbutton == 1 ? darkBg : lightBg,
                                         ),
                                       ],
                                     ),
@@ -271,10 +249,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                 fontSize: 24,
                                 color: darkBg,
                                 shadows: [
-                                  Shadow(
-                                      color: Colors.black,
-                                      blurRadius: 0.5,
-                                      offset: Offset(0.5, 0.5))
+                                  Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))
                                 ]),
                           ),
                         ),
@@ -295,24 +270,21 @@ class AdminNewUserState extends State<AdminNewUser> {
                                 Controller: _name,
                                 onChanged: (value) {},
                                 enable: true,
-                                etext: validateUser && _name.text.trim().isEmpty
-                                    ? "Please Enter the name"
-                                    : "",
+                                etext:
+                                    validateUser && _name.text.trim().isEmpty ? "Please Enter the name" : "",
                               ),
                               SizedBox(
                                 height: 10,
                               ),
 
                               //----empRegId------
-                              LabelText(
-                                  text: "Emoplyee Regestred ID[Company ID]:"),
+                              LabelText(text: "Emoplyee Regestred ID[Company ID]:"),
                               TextFeildNewUser(
                                 hintText: "Enter empRegID",
                                 Controller: _empRegId,
                                 onChanged: (value) {},
                                 enable: true,
-                                etext: validateUser &&
-                                        _empRegId.text.trim().isEmpty
+                                etext: validateUser && _empRegId.text.trim().isEmpty
                                     ? "Please Enter the empRegID"
                                     : "",
                               ),
@@ -327,10 +299,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                                 Controller: _email,
                                 onChanged: (value) {},
                                 enable: true,
-                                etext:
-                                    validateUser && _email.text.trim().isEmpty
-                                        ? "Please Enter the E-Mail"
-                                        : "",
+                                etext: validateUser && _email.text.trim().isEmpty
+                                    ? "Please Enter the E-Mail"
+                                    : "",
                               ),
                               SizedBox(
                                 height: 8,
@@ -343,13 +314,24 @@ class AdminNewUserState extends State<AdminNewUser> {
                                 Controller: _contact,
                                 onChanged: (value) {},
                                 enable: true,
-                                etext:
-                                    validateUser && _contact.text.trim().isEmpty
-                                        ? "Please Enter the Phone Number"
-                                        : "",
+                                etext: validateUser && _contact.text.trim().isEmpty
+                                    ? "Please Enter the Phone Number"
+                                    : "",
                               ),
                               SizedBox(
                                 height: 8,
+                              ),
+                              const LabelText(text: "Device UUID :"),
+                              TextFeildNewUser(
+                                hintText: "Enter device UUID",
+                                Controller: _uuid,
+                                onChanged: (value) {},
+                                enable: true,
+                                etext:
+                                    validateUser && _uuid.text.trim().isEmpty ? "Please Enter the UUID" : "",
+                              ),
+                              SizedBox(
+                                height: 10,
                               ),
 
                               //----DesignationID---- [DROPDOWN]
@@ -357,13 +339,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                                 child: PrimeryDropDownButton(
                                   isEnabled: true,
                                   tail: ErrorContainer(
-                                      show: _validateDropDown,
-                                      errorMsg:
-                                          "Please Select the Designation"),
+                                      show: _validateDropDown, errorMsg: "Please Select the Designation"),
                                   mainText: "Select the desgination",
-                                  text: designation.Text != ""
-                                      ? designation.getText
-                                      : "Select The Designation",
+                                  text:
+                                      designation.Text != "" ? designation.getText : "Select The Designation",
                                   icon: Icon(
                                     Icons.keyboard_arrow_down_sharp,
                                     color: darkBg,
@@ -395,8 +374,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                 Controller: _password,
                                 onChanged: (value) {},
                                 enable: true,
-                                etext: validateUser &&
-                                        _password.text.trim().isEmpty
+                                etext: validateUser && _password.text.trim().isEmpty
                                     ? "Please Enter the Password"
                                     : "",
                               ),
@@ -411,8 +389,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                 Controller: _repassword,
                                 onChanged: (value) {},
                                 enable: true,
-                                etext: validateUser &&
-                                        _password.text.trim().isEmpty
+                                etext: validateUser && _password.text.trim().isEmpty
                                     ? "Please Re-Entry the Password"
                                     : validateUser && _passwordNotSame
                                         ? "Password mismatched"
@@ -463,8 +440,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     duration: Duration(seconds: 3),
                                   ),
                                 );
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => AdminMain()));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
                               }
                             }),
                       )
@@ -476,8 +452,7 @@ class AdminNewUserState extends State<AdminNewUser> {
           else
             Card(
                 elevation: 5,
-                margin:
-                    EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
+                margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20), // <-- radius here
                 ),
@@ -504,10 +479,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                 fontSize: 24,
                                 color: darkBg,
                                 shadows: [
-                                  Shadow(
-                                      color: Colors.black,
-                                      blurRadius: 0.5,
-                                      offset: Offset(0.5, 0.5))
+                                  Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))
                                 ]),
                           ),
                         ),
@@ -531,9 +503,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                 type: TextInputType.number,
                                 onChanged: (value) {},
                                 enable: true,
-                                etext: _validatePhn
-                                    ? "Please Enter 10 digit Phone number"
-                                    : "",
+                                etext: _validatePhn ? "Please Enter 10 digit Phone number" : "",
                               ),
                               SizedBox(
                                 height: 10,
@@ -662,8 +632,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     Controller: _name01,
                                     onChanged: (value) {},
                                     enable: _activeUser,
-                                    etext: _validateEditUser &&
-                                            _name01.text.trim().isEmpty
+                                    etext: _validateEditUser && _name01.text.trim().isEmpty
                                         ? "Please Enter the name"
                                         : "",
                                   ),
@@ -672,16 +641,13 @@ class AdminNewUserState extends State<AdminNewUser> {
                                   ),
 
                                   //----empRegId------
-                                  LabelText(
-                                      text:
-                                          "Emoplyee Regestred ID[Company ID]:"),
+                                  LabelText(text: "Emoplyee Regestred ID[Company ID]:"),
                                   TextFeildNewUser(
                                     hintText: "Enter empRegID",
                                     Controller: _empRegId01,
                                     onChanged: (value) {},
                                     enable: _activeUser,
-                                    etext: _validateEditUser &&
-                                            _empRegId01.text.trim().isEmpty
+                                    etext: _validateEditUser && _empRegId01.text.trim().isEmpty
                                         ? "Please Enter the empRegID"
                                         : "",
                                   ),
@@ -696,8 +662,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     Controller: _email01,
                                     onChanged: (value) {},
                                     enable: _activeUser,
-                                    etext: _validateEditUser &&
-                                            _email01.text.trim().isEmpty
+                                    etext: _validateEditUser && _email01.text.trim().isEmpty
                                         ? "Please Enter the E-Mail"
                                         : "",
                                   ),
@@ -712,8 +677,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     Controller: _contact01,
                                     onChanged: (value) {},
                                     enable: _activeUser,
-                                    etext: _validateEditUser &&
-                                            _contact01.text.trim().isEmpty
+                                    etext: _validateEditUser && _contact01.text.trim().isEmpty
                                         ? "Please Enter the Phone Number"
                                         : "",
                                   ),
@@ -726,9 +690,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     child: PrimeryDropDownButton(
                                       isEnabled: _activeUser,
                                       tail: ErrorContainer(
-                                          show: _validateDropDown,
-                                          errorMsg:
-                                              "Please Select the Designation"),
+                                          show: _validateDropDown, errorMsg: "Please Select the Designation"),
                                       mainText: "Select the desgination",
                                       text: designation01.Text != ""
                                           ? designation01.getText
@@ -750,8 +712,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                           )
                                         ]);
                                         setState(() {});
-                                        printFunc(
-                                            "Designation Demo ${designation01.obj}");
+                                        printFunc("Designation Demo ${designation01.obj}");
                                       },
                                     ),
                                   ),
@@ -761,30 +722,23 @@ class AdminNewUserState extends State<AdminNewUser> {
                                       child: Column(
                                         children: [
                                           Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10),
+                                              padding: EdgeInsets.symmetric(horizontal: 10),
                                               child: Column(
                                                 // mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   SizedBox(
                                                     height: 20,
                                                   ),
 
                                                   //----Name-----
-                                                  LabelText(
-                                                      text: "Emoplyee Name :"),
+                                                  LabelText(text: "Emoplyee Name :"),
                                                   TextFeildNewUser(
-                                                    hintText:
-                                                        "Enter Employee name",
+                                                    hintText: "Enter Employee name",
                                                     Controller: _name01,
                                                     onChanged: (value) {},
                                                     enable: _activeUser,
-                                                    etext: _validateEditUser &&
-                                                            _name01.text
-                                                                .trim()
-                                                                .isEmpty
+                                                    etext: _validateEditUser && _name01.text.trim().isEmpty
                                                         ? "Please Enter the name"
                                                         : "",
                                                   ),
@@ -793,39 +747,29 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                   ),
 
                                                   //----empRegId------
-                                                  LabelText(
-                                                      text:
-                                                          "Emoplyee Regestred ID[Company ID]:"),
+                                                  LabelText(text: "Emoplyee Regestred ID:"),
                                                   TextFeildNewUser(
                                                     hintText: "Enter empRegID",
                                                     Controller: _empRegId01,
                                                     onChanged: (value) {},
                                                     enable: _activeUser,
-                                                    etext: _validateEditUser &&
-                                                            _empRegId01.text
-                                                                .trim()
-                                                                .isEmpty
-                                                        ? "Please Enter the empRegID"
-                                                        : "",
+                                                    etext:
+                                                        _validateEditUser && _empRegId01.text.trim().isEmpty
+                                                            ? "Please Enter the empRegID"
+                                                            : "",
                                                   ),
                                                   SizedBox(
                                                     height: 8,
                                                   ),
 
                                                   //------email------
-                                                  LabelText(
-                                                      text:
-                                                          "Employee E-Mail :"),
+                                                  LabelText(text: "Employee E-Mail :"),
                                                   TextFeildNewUser(
-                                                    hintText:
-                                                        "Enter Employee E-Mail",
+                                                    hintText: "Enter Employee E-Mail",
                                                     Controller: _email01,
                                                     onChanged: (value) {},
                                                     enable: _activeUser,
-                                                    etext: _validateEditUser &&
-                                                            _email01.text
-                                                                .trim()
-                                                                .isEmpty
+                                                    etext: _validateEditUser && _email01.text.trim().isEmpty
                                                         ? "Please Enter the E-Mail"
                                                         : "",
                                                   ),
@@ -834,20 +778,27 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                   ),
 
                                                   //-----Contact ------
-                                                  LabelText(
-                                                      text:
-                                                          "Employee Phone number :"),
+                                                  LabelText(text: "Employee Phone number :"),
                                                   TextFeildNewUser(
-                                                    hintText:
-                                                        "Enter Employee Password",
+                                                    hintText: "Enter Employee Password",
                                                     Controller: _contact01,
                                                     onChanged: (value) {},
                                                     enable: _activeUser,
-                                                    etext: _validateEditUser &&
-                                                            _contact01.text
-                                                                .trim()
-                                                                .isEmpty
+                                                    etext: _validateEditUser && _contact01.text.trim().isEmpty
                                                         ? "Please Enter the Phone Number"
+                                                        : "",
+                                                  ),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  LabelText(text: "Employee Device UUID :"),
+                                                  TextFeildNewUser(
+                                                    hintText: "Enter device UUID",
+                                                    Controller: _uuidEdit,
+                                                    onChanged: (value) {},
+                                                    enable: _activeUser,
+                                                    etext: _validateEditUser && _uuidEdit.text.trim().isEmpty
+                                                        ? "Please Enter the UUID"
                                                         : "",
                                                   ),
                                                   SizedBox(
@@ -856,45 +807,33 @@ class AdminNewUserState extends State<AdminNewUser> {
 
                                                   //----DesignationID---- [DROPDOWN]
                                                   GestureDetector(
-                                                    child:
-                                                        PrimeryDropDownButton(
+                                                    child: PrimeryDropDownButton(
                                                       isEnabled: _activeUser,
                                                       tail: ErrorContainer(
-                                                          show:
-                                                              _validateDropDown,
-                                                          errorMsg:
-                                                              "Please Select the Designation"),
-                                                      mainText:
-                                                          "Select the desgination",
-                                                      text: designation01
-                                                                  .Text !=
-                                                              ""
-                                                          ? designation01
-                                                              .getText
+                                                          show: _validateDropDown,
+                                                          errorMsg: "Please Select the Designation"),
+                                                      mainText: "Select the desgination",
+                                                      text: designation01.Text != ""
+                                                          ? designation01.getText
                                                           : "Select The Designation",
                                                       icon: Icon(
-                                                        Icons
-                                                            .keyboard_arrow_down_sharp,
+                                                        Icons.keyboard_arrow_down_sharp,
                                                         color: darkBg,
                                                       ),
                                                       press: () async {
-                                                        await BottomSheet_Widget(
-                                                            context, [
+                                                        await BottomSheet_Widget(context, [
                                                           Column(
                                                             children: [
                                                               MapListItemBuilder(
-                                                                listItems:
-                                                                    designationRoles,
+                                                                listItems: designationRoles,
                                                                 press: () {},
-                                                                selected:
-                                                                    designation01,
+                                                                selected: designation01,
                                                               )
                                                             ],
                                                           )
                                                         ]);
                                                         setState(() {});
-                                                        printFunc(
-                                                            "Designation Demo ${designation01.obj}");
+                                                        printFunc("Designation Demo ${designation01.obj}");
                                                       },
                                                     ),
                                                   ),
@@ -935,22 +874,16 @@ class AdminNewUserState extends State<AdminNewUser> {
                                           _activeUser
                                               ? Container(
                                                   padding: EdgeInsets.only(
-                                                      top: 15,
-                                                      bottom: 30,
-                                                      left: 15,
-                                                      right: 15),
+                                                      top: 15, bottom: 30, left: 15, right: 15),
                                                   child: FittedBox(
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         manageUserBtn(
                                                             text: "Update",
                                                             onPress: () {
                                                               ValidateEditUser();
-                                                              validateEditDropDown(
-                                                                  designation01);
+                                                              validateEditDropDown(designation01);
                                                               print(
                                                                   "validate edit User : $_validateEditDropDown");
                                                               printFunc(
@@ -959,60 +892,39 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                                   "${!_validateEditUser && !_validateEditDropDown}");
                                                               if (!_validateEditUser &&
                                                                   !_validateEditDropDown) {
-                                                                printFunc(
-                                                                    "Insid if cond");
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
+                                                                printFunc("Insid if cond");
+                                                                ScaffoldMessenger.of(context).showSnackBar(
                                                                   SnackBar(
-                                                                    content:
-                                                                        Row(
+                                                                    content: Row(
                                                                       children: [
                                                                         Icon(
-                                                                          CupertinoIcons
-                                                                              .checkmark_seal_fill,
-                                                                          color:
-                                                                              lightBg,
+                                                                          CupertinoIcons.checkmark_seal_fill,
+                                                                          color: lightBg,
                                                                         ),
                                                                         SizedBox(
-                                                                          width:
-                                                                              15,
+                                                                          width: 15,
                                                                         ),
                                                                         Text(
                                                                           'User Updated Successfully!!',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                lightBg,
-                                                                            fontWeight:
-                                                                                FontWeight.w300,
-                                                                            fontFamily:
-                                                                                baseFont,
-                                                                            fontSize:
-                                                                                22,
+                                                                          style: TextStyle(
+                                                                            color: lightBg,
+                                                                            fontWeight: FontWeight.w300,
+                                                                            fontFamily: baseFont,
+                                                                            fontSize: 22,
                                                                           ),
                                                                         ),
                                                                       ],
                                                                     ),
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        darkBg,
-                                                                    elevation:
-                                                                        5,
-                                                                    margin: EdgeInsets
-                                                                        .all(
-                                                                            16),
-                                                                    duration: Duration(
-                                                                        milliseconds:
-                                                                            800),
+                                                                    behavior: SnackBarBehavior.floating,
+                                                                    backgroundColor: darkBg,
+                                                                    elevation: 5,
+                                                                    margin: EdgeInsets.all(16),
+                                                                    duration: Duration(milliseconds: 800),
                                                                   ),
                                                                 );
                                                                 // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => AdminMain()));
                                                               } else {
-                                                                printFunc(
-                                                                    "Inside else cond");
+                                                                printFunc("Inside else cond");
                                                               }
                                                             }),
                                                         SizedBox(width: 5),
@@ -1020,59 +932,40 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                             text: "Deactive",
                                                             onPress: () {
                                                               setState(() {
-                                                                _activeUser =
-                                                                    false;
+                                                                _activeUser = false;
                                                               });
-                                                              ScaffoldMessenger
-                                                                      .of(context)
-                                                                  .showSnackBar(
+                                                              ScaffoldMessenger.of(context).showSnackBar(
                                                                 SnackBar(
                                                                   content: Row(
                                                                     children: [
                                                                       SizedBox(
-                                                                        width:
-                                                                            20,
+                                                                        width: 20,
                                                                       ),
                                                                       Text(
                                                                         'Employee Deactivted',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              lightBg,
-                                                                          fontWeight:
-                                                                              FontWeight.w300,
-                                                                          fontFamily:
-                                                                              baseFont,
-                                                                          fontSize:
-                                                                              22,
+                                                                        style: TextStyle(
+                                                                          color: lightBg,
+                                                                          fontWeight: FontWeight.w300,
+                                                                          fontFamily: baseFont,
+                                                                          fontSize: 22,
                                                                         ),
                                                                       ),
                                                                     ],
                                                                   ),
-                                                                  behavior:
-                                                                      SnackBarBehavior
-                                                                          .floating,
-                                                                  backgroundColor:
-                                                                      darkBg,
+                                                                  behavior: SnackBarBehavior.floating,
+                                                                  backgroundColor: darkBg,
                                                                   elevation: 5,
                                                                   margin: EdgeInsets.only(
                                                                       left: 16,
                                                                       right: 16,
                                                                       top: 16,
-                                                                      bottom:
-                                                                          21.5),
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
+                                                                      bottom: 21.5),
+                                                                  shape: RoundedRectangleBorder(
                                                                     borderRadius: BorderRadius.only(
-                                                                        bottomLeft:
-                                                                            Radius.circular(
-                                                                                20),
-                                                                        bottomRight:
-                                                                            Radius.circular(20)),
+                                                                        bottomLeft: Radius.circular(20),
+                                                                        bottomRight: Radius.circular(20)),
                                                                   ),
-                                                                  duration: Duration(
-                                                                      milliseconds:
-                                                                          500),
+                                                                  duration: Duration(milliseconds: 500),
                                                                 ),
                                                               );
                                                             })
@@ -1081,17 +974,14 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                   ),
                                                 )
                                               : Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 15, bottom: 30),
+                                                  padding: EdgeInsets.only(top: 15, bottom: 30),
                                                   child: manageUserBtn(
                                                       text: "Active",
                                                       onPress: () {
                                                         setState(() {
                                                           _activeUser = true;
                                                         });
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
+                                                        ScaffoldMessenger.of(context).showSnackBar(
                                                           SnackBar(
                                                             content: Row(
                                                               children: [
@@ -1100,47 +990,26 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                                 ),
                                                                 Text(
                                                                   'Employee Activaited',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color:
-                                                                        lightBg,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w300,
-                                                                    fontFamily:
-                                                                        baseFont,
-                                                                    fontSize:
-                                                                        22,
+                                                                  style: TextStyle(
+                                                                    color: lightBg,
+                                                                    fontWeight: FontWeight.w300,
+                                                                    fontFamily: baseFont,
+                                                                    fontSize: 22,
                                                                   ),
                                                                 ),
                                                               ],
                                                             ),
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            backgroundColor:
-                                                                darkBg,
+                                                            behavior: SnackBarBehavior.floating,
+                                                            backgroundColor: darkBg,
                                                             elevation: 5,
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 16,
-                                                                    right: 16,
-                                                                    top: 16,
-                                                                    bottom:
-                                                                        21.5),
-                                                            shape:
-                                                                RoundedRectangleBorder(
+                                                            margin: EdgeInsets.only(
+                                                                left: 16, right: 16, top: 16, bottom: 21.5),
+                                                            shape: RoundedRectangleBorder(
                                                               borderRadius: BorderRadius.only(
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          20),
-                                                                  bottomRight: Radius
-                                                                      .circular(
-                                                                          20)),
+                                                                  bottomLeft: Radius.circular(20),
+                                                                  bottomRight: Radius.circular(20)),
                                                             ),
-                                                            duration: Duration(
-                                                                milliseconds:
-                                                                    500),
+                                                            duration: Duration(milliseconds: 500),
                                                           ),
                                                         );
                                                       }),
@@ -1170,8 +1039,7 @@ class AdminNewUserState extends State<AdminNewUser> {
     printFunc(
         "name : ${_name.text}\n EmpREGID : ${_empRegId.text}\n email : ${_email.text}\n Contact : ${_contact.text}\n password : ${_password.text} \nRePassword : ${_repassword.text}");
 
-    bool hasEmpty =
-        Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
       validateUser = hasEmpty;
     });
@@ -1196,8 +1064,7 @@ class AdminNewUserState extends State<AdminNewUser> {
       _repassword01,
       */
     ];
-    bool hasEmpty =
-        Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
 
     setState(() {
       _validateEditUser = hasEmpty;
@@ -1291,9 +1158,10 @@ class AdminNewUserState extends State<AdminNewUser> {
         _email01.text = empObj["email"];
         _contact01.text = empObj["phone"];
         designation01.setText = empObj["designation"];
+        _uuidEdit.text = empObj["deviceId"];
 
-        designation01.setobj = designationRoles[empObj[
-            "designation"]]; //Designation.getEmpDetails(int.parse(empObj["designationCode"]));
+        designation01.setobj = designationRoles[
+            empObj["designation"]]; //Designation.getEmpDetails(int.parse(empObj["designationCode"]));
       });
       printFunc("Inside else cond");
       if ((empObj["status"]).toLowerCase() == "active") {

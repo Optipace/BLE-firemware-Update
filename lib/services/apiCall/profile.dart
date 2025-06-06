@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
   List<Map<String, dynamic>> profileList = [{}];
@@ -119,18 +118,17 @@ Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
   return profileList;
 }
 
-Future<List<Map<String, dynamic>>> getProfileByID(BuildContext context, String id) async{
+Future<List<Map<String, dynamic>>> getProfileByID(BuildContext context, String id) async {
   List<Map<String, dynamic>> profileList = [{}];
   List<Map<String, dynamic>> profileByID = [{}];
 
   profileList = await getProfileList(context);
 
-  for(var index in profileList){
-    if(index["id"].toString() == id){
+  for (var index in profileList) {
+    if (index["id"].toString() == id) {
       profileByID = index["profile"];
     }
   }
 
   return profileByID;
 }
-

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/bluetoothMain.dart';
+import 'package:tracker_firmware/modules/factoryUser/batchList/batchList.dart';
 import 'package:tracker_firmware/modules/factoryUser/profiles/profileFactoryManagement.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
@@ -29,11 +30,11 @@ class FactoryMain extends StatelessWidget {
                   ),
                   text: "Firmwares",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => FirmwareFactoryManagement()));
+                    Navigator.of(context)
+                        .push(MaterialPageRoute<void>(builder: (_) => FirmwareFactoryManagement()));
                   }),
               SizedBox(
-                height: 25,
+                height: 15,
               ),
               PrimaryButton(
                   icon: Icon(
@@ -43,13 +44,29 @@ class FactoryMain extends StatelessWidget {
                         24,
                     color: darkBg,
                   ),
-                  text: "Profiles/Service",
+                  text: "Config/Service",
                   onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => ProfileFactoryManagement()));
+                    Navigator.of(context)
+                        .push(MaterialPageRoute<void>(builder: (_) => ProfileFactoryManagement()));
                   }),
               SizedBox(
-                height: 25,
+                height: 15,
+              ),
+              PrimaryButton(
+                  icon: Icon(
+                    Icons.handyman_outlined,
+                    size:
+                        // Image.asset('assets/image/viewLog.png',width: 24,height:
+                        24,
+                    color: darkBg,
+                  ),
+                  text: "Batch/Profile",
+                  onPress: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute<void>(builder: (_) => BatchFactoryManagement()));
+                  }),
+              SizedBox(
+                height: 15,
               ),
               PrimaryButton(
                   icon: Icon(
@@ -63,11 +80,10 @@ class FactoryMain extends StatelessWidget {
                   onPress: () {
                     FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => FlutterBlueApp()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FlutterBlueApp()));
                   }),
               SizedBox(
-                height: 25,
+                height: 15,
               ),
             ],
           ),

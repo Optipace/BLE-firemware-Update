@@ -30,11 +30,8 @@ class Snackbar {
         ? SnackBar(
             content: Text(
               msg,
-              style: TextStyle(
-                  color: lightBg,
-                  fontFamily: baseFont,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 18),
+              style:
+                  TextStyle(color: lightBg, fontFamily: baseFont, fontWeight: FontWeight.w300, fontSize: 18),
             ),
             backgroundColor: darkBg,
             behavior: SnackBarBehavior.floating,
@@ -47,11 +44,8 @@ class Snackbar {
         : SnackBar(
             content: Text(
               msg,
-              style: TextStyle(
-                  color: lightBg,
-                  fontFamily: baseFont,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 18),
+              style:
+                  TextStyle(color: lightBg, fontFamily: baseFont, fontWeight: FontWeight.w300, fontSize: 18),
             ),
             backgroundColor: errorText,
             behavior: SnackBarBehavior.floating,

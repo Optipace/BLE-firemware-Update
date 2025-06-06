@@ -66,8 +66,7 @@ class TextFeildNewUser extends StatelessWidget {
               textAlign: alignemnt ?? TextAlign.left,
               // validator: validator,
               decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: darkBg, width: 0.5),
                       borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -77,21 +76,15 @@ class TextFeildNewUser extends StatelessWidget {
                   focusColor: Colors.black,
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
-                      borderSide: BorderSide(
-                          width: 1,
-                          color: etext == "" ? darkBg : Colors.black)),
+                      borderSide: BorderSide(width: 1, color: etext == "" ? darkBg : Colors.black)),
                   focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
-                      borderSide: BorderSide(
-                          width: 1,
-                          color:
-                              etext == "" ? Colors.black : Color(0xFFFF8A80))),
+                      borderSide:
+                          BorderSide(width: 1, color: etext == "" ? Colors.black : Color(0xFFFF8A80))),
                   errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
-                      borderSide: BorderSide(
-                          width: 1,
-                          color:
-                              etext == "" ? Colors.black : Color(0xFFFF8A80))),
+                      borderSide:
+                          BorderSide(width: 1, color: etext == "" ? Colors.black : Color(0xFFFF8A80))),
                   filled: true,
                   fillColor: enable ? Colors.white : lightBg,
                   hintText: hintText,
