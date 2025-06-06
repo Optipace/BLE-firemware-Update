@@ -1,15 +1,18 @@
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
 class ApiHeaders {
   // Default constructor - no parameters
   ApiHeaders();
 
-  Map<String, String> get header => {
+  Map<String, String> get header =>
+      {
         'Authorization': 'Bearer ${UserData().accessToken}',
         'Content-Type': 'application/json',
       };
 }
+
 class ApiEndpoints {
   static const String _devBaseUrl = 'https://dev.optipace.in';
   static const String _prodBaseUrl = 'https://optipace.in';
@@ -23,7 +26,8 @@ class ApiEndpoints {
 
   static String fullUrl(String endpoint) => '$baseUrl$endpoint';
 }
-String getUrl(String endpoint)=> ApiEndpoints.fullUrl(endpoint);//getUrl(ApiEndpoints.login);
+
+String getUrl(String endpoint) => ApiEndpoints.fullUrl(endpoint); //getUrl(ApiEndpoints.login);
 
 class ApiService {
   static Future<void> callApi({
