@@ -26,6 +26,9 @@ class AdminMainState extends State<AdminMain> {
   TextEditingController _lowerVoltage = TextEditingController();
 
   bool validateUser = false;
+  bool pluss = true;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +42,13 @@ class AdminMainState extends State<AdminMain> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+
                   // View logs
                   PrimaryButton(
                       icon: Image.asset(
                         'assets/image/viewLog.png',
-                        width: 24,
-                        height: 24,
+                        width: 20,
+                        height: 20,
                         color: darkBg,
                       ),
                       text: "View Log",
@@ -52,14 +56,15 @@ class AdminMainState extends State<AdminMain> {
                         Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
                       }),
                   SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
+
                   // Manage users
                   PrimaryButton(
                       icon: Image.asset(
                         'assets/image/modify.png',
-                        width: 24,
-                        height: 24,
+                        width: 20,
+                        height: 20,
                         color: darkBg,
                       ),
                       text: "Modify User",
@@ -67,15 +72,15 @@ class AdminMainState extends State<AdminMain> {
                         Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminNewUser()));
                       }),
                   SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
 
                   //  Firmware
                   PrimaryButton(
                       icon: Image.asset(
                         'assets/image/modify.png',
-                        width: 24,
-                        height: 24,
+                        width: 20,
+                        height: 20,
                         color: darkBg,
                       ),
                       text: "Firmware settings",
@@ -83,14 +88,15 @@ class AdminMainState extends State<AdminMain> {
                         Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AddNewFirmware()));
                       }),
                   SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
-                  // List of Firmware, profiles, batches
+
+                  // List of Firmware, profiles,Battery, batches,
                   PrimaryButton(
                       icon: Image.asset(
                         'assets/image/to-do-list.png',
-                        width: 24,
-                        height: 24,
+                        width: 20,
+                        height: 20,
                         color: darkBg,
                       ),
                       text: "System Overview",
@@ -151,208 +157,189 @@ class AdminMainState extends State<AdminMain> {
           ),*/
                 ],
               ),
-              SizedBox(
-                height: 5,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: size.width / 1.3),
-                child: IconButton(
-                    onPressed: () async {
-                      await showMenu(
-                        context: context,
-                        position: RelativeRect.fromLTRB(
-                          size.width / 2, // adjust based on your icon location
+              SizedBox(height:5,),
+              Container(
+                width: size.width,
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Visibility(
+                      visible: !pluss,
+                      child:
+                      ElevatedButton(
+                        onPressed: () async{
+                          setState(() {
+                            pluss = !pluss;
+                          });
+                          await BottomSheet_Widget(
+                          context,
+                          color : lightBg,
+                          [
+                            Container(
+                              height : size.height/1.5,
+                              width : size.width,
+                              color : lightBg,
+                              child:SingleChildScrollView(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
 
-                          size.height / 1.5, // vertical position from top
-                          90,
-                          size.height / 2, // vertical position from top
-                        ),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                        color: lightBg,
-                        items: [
-                          PopupMenuItem(
-                              value: 'item1',
-                              child: TextButton(
-                                  style: ButtonStyle(
-                                    shape: MaterialStatePropertyAll(
-                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-                                  ),
-                                  onPressed: () async {
-                                    await BottomSheet_Widget(context, color: lightBg, [
-                                      Container(
-                                        height: size.height / 1.5,
-                                        width: size.width,
-                                        color: lightBg,
-                                        child: SingleChildScrollView(
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(vertical: 20),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Enter Battery Details!",
-                                                  style: TextStyle(
-                                                      fontFamily: baseFont,
-                                                      fontWeight: FontWeight.w800,
-                                                      fontSize: 24,
-                                                      color: darkBg,
-                                                      shadows: [
-                                                        Shadow(
-                                                            color: Colors.black,
-                                                            blurRadius: 0.5,
-                                                            offset: Offset(0.5, 0.5))
-                                                      ]),
-                                                ),
-                                                SizedBox(
-                                                  height: 20,
-                                                ),
-
-                                                Container(
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      // Battery Name
-                                                      LabelText(text: "Battery Name :"),
-                                                      TextFeildNewUser(
-                                                        hintText: "Enter Battery Name",
-                                                        Controller: _bname,
-                                                        onChanged: (value) {},
-                                                        enable: true,
-                                                        etext: validateUser && _bname.text.trim().isEmpty
-                                                            ? "Please Enter the Phone Number"
-                                                            : "",
-                                                      ),
-                                                      SizedBox(
-                                                        height: 8,
-                                                      ),
-                                                      // Relase Note
-                                                      LabelText(text: "Relase Date"),
-                                                      TextFeildNewUser(
-                                                        hintText: "Enter Relase Date",
-                                                        Controller: _relaseNote,
-                                                        onChanged: (value) {},
-                                                        enable: true,
-                                                        etext: validateUser && _relaseNote.text.trim().isEmpty
-                                                            ? "Please Enter the Phone Number"
-                                                            : "",
-                                                      ),
-                                                      SizedBox(
-                                                        height: 8,
-                                                      ),
-                                                      // Upper thershold
-                                                      LabelText(text: "Upper Thershold"),
-                                                      TextFeildNewUser(
-                                                        hintText: "Enter Upper Thershold",
-                                                        Controller: _upperThershold,
-                                                        onChanged: (value) {},
-                                                        enable: true,
-                                                        etext: validateUser &&
-                                                                _upperThershold.text.trim().isEmpty
-                                                            ? "Please Enter the Phone Number"
-                                                            : "",
-                                                      ),
-                                                      SizedBox(
-                                                        height: 8,
-                                                      ),
-                                                      // Lower Temp
-                                                      LabelText(text: "Lower Thershold"),
-                                                      TextFeildNewUser(
-                                                        hintText: "Enter Lower Thershold",
-                                                        Controller: _lowerThershold,
-                                                        onChanged: (value) {},
-                                                        enable: true,
-                                                        etext: validateUser &&
-                                                                _lowerThershold.text.trim().isEmpty
-                                                            ? "Please Enter the Phone Number"
-                                                            : "",
-                                                      ),
-                                                      SizedBox(
-                                                        height: 8,
-                                                      ),
-                                                      // Upper Voltage
-                                                      LabelText(text: "Upper Voltage"),
-                                                      TextFeildNewUser(
-                                                        hintText: "Enter Upper Voltage",
-                                                        Controller: _upperVoltage,
-                                                        onChanged: (value) {},
-                                                        enable: true,
-                                                        etext:
-                                                            validateUser && _upperVoltage.text.trim().isEmpty
-                                                                ? "Please Enter the Phone Number"
-                                                                : "",
-                                                      ),
-                                                      SizedBox(
-                                                        height: 8,
-                                                      ),
-                                                      // Lower Voltage
-                                                      LabelText(text: "Lower Voltage"),
-                                                      TextFeildNewUser(
-                                                        hintText: "Enter Lower Voltage",
-                                                        Controller: _lowerVoltage,
-                                                        onChanged: (value) {},
-                                                        enable: true,
-                                                        etext:
-                                                            validateUser && _lowerVoltage.text.trim().isEmpty
-                                                                ? "Please Enter the Phone Number"
-                                                                : "",
-                                                      ),
-                                                      SizedBox(
-                                                        height: 8,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                // Add Btn
-                                                manageUserBtn(
-                                                    text: "Add Battry",
-                                                    onPress: () {
-                                                      ValidateUser();
-                                                      setState(() {});
-                                                    })
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ]);
-                                  },
-                                  child: Row(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        width: 35,
-                                        height: 35,
-                                        decoration: BoxDecoration(
-                                          color: lightBg,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(color: darkBg, width: 1),
-                                        ),
-                                        child: Center(
-                                            child: Icon(
-                                          Icons.battery_charging_full_rounded,
-                                          color: darkBg,
-                                          size: 24,
-                                        )),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "Add Battery",
+                                      Text("Enter Battery Details!",
                                         style: TextStyle(
-                                            color: darkBg,
                                             fontFamily: baseFont,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 22,
-                                            shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 24,
+                                            color: darkBg,
+                                            shadows: [
+                                              Shadow(
+                                                  color: Colors.black,
+                                                  blurRadius: 0.5,
+                                                  offset: Offset(0.5, 0.5))
+                                            ]),
+                                      ),
+                                      SizedBox(height: 20,),
+
+                                      Container(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            // Battery Name
+                                            LabelText(text: "Battery Name :"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Battery Name",
+                                              Controller: _bname,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _bname.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Relase Note
+                                            LabelText(text: "Relase Date"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Relase Date",
+                                              Controller: _relaseNote,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _relaseNote.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Upper thershold
+                                            LabelText(text: "Upper Thershold"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Upper Thershold",
+                                              Controller: _upperThershold,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser&& _upperThershold.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Lower Temp
+                                            LabelText(text: "Lower Thershold"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Lower Thershold",
+                                              Controller: _lowerThershold,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _lowerThershold.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Upper Voltage
+                                            LabelText(text: "Upper Voltage"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Upper Voltage",
+                                              Controller: _upperVoltage,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _upperVoltage.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Lower Voltage
+                                            LabelText(text: "Lower Voltage"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Lower Voltage",
+                                              Controller: _lowerVoltage,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _lowerVoltage.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Add Btn
+                                      manageUserBtn(
+                                          text: "Add Battery",
+                                          onPress: (){
+                                            ValidateUser();
+                                            setState(() {});
+                                          }
                                       )
-                                    ],
-                                  ))),
-                        ],
-                      );
+                                    ],),
+                                ),
+                              ),
+                            )]
+                          );
+
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(lightBg),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(color: darkBg, width: 1),
+                            ),
+                          ),
+                          fixedSize: MaterialStateProperty.all(Size(size.width/3.2, 30))
+
+                        ),
+
+                        child: Text("Add Battery",
+                          style: TextStyle(
+                            color: darkBg,
+                            fontSize: 18,
+                            fontFamily: baseFont,
+                            fontWeight: FontWeight.w600
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                    onPressed: () async{
+                      setState(() {
+                        pluss = !pluss;
+                      });
+
                       setState(() {});
                     },
-                    iconSize: 60,
+                    iconSize: 55,
                     icon: Container(
                       decoration: BoxDecoration(
                         color: darkBg, // background color
@@ -366,12 +353,20 @@ class AdminMainState extends State<AdminMain> {
                         color: lightBg, // icon color
                         size: 26,
                       ),
-                    )),
-              ),
+                    )
+                ),
+                  ],),
+              )
+
+
+
             ],
           ),
-        ));
+        )
+    );
   }
+
+
 
   void ValidateUser() {
     final Controllers = [

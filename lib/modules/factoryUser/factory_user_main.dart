@@ -34,7 +34,7 @@ class FactoryMain extends StatelessWidget {
                         .push(MaterialPageRoute<void>(builder: (_) => FirmwareFactoryManagement()));
                   }),
               SizedBox(
-                height: 25,
+                height: 15,
               ),
               PrimaryButton(
                   icon: Icon(
@@ -50,7 +50,7 @@ class FactoryMain extends StatelessWidget {
                         .push(MaterialPageRoute<void>(builder: (_) => ProfileFactoryManagement()));
                   }),
               SizedBox(
-                height: 25,
+                height: 15,
               ),
               PrimaryButton(
                   icon: Icon(
@@ -66,7 +66,7 @@ class FactoryMain extends StatelessWidget {
                         .push(MaterialPageRoute<void>(builder: (_) => BatchFactoryManagement()));
                   }),
               SizedBox(
-                height: 25,
+                height: 15,
               ),
               PrimaryButton(
                   icon: Icon(
@@ -83,7 +83,7 @@ class FactoryMain extends StatelessWidget {
                     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FlutterBlueApp()));
                   }),
               SizedBox(
-                height: 25,
+                height: 15,
               ),
             ],
           ),

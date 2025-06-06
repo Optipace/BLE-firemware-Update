@@ -26,7 +26,7 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final buttonWidth = width ?? screenWidth * 0.85;
+    final buttonWidth = width ?? screenWidth * 0.65;
 
     return ElevatedButton(
       onPressed: onPress as void Function(),
@@ -44,7 +44,7 @@ class PrimaryButton extends StatelessWidget {
       ),
       child: Container(
         width: buttonWidth,
-        height: height ?? 58,
+        height: height ?? 40,
         padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +68,7 @@ class PrimaryButton extends StatelessWidget {
                 child: Text(
                   text,
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
                     fontFamily: baseFont,
                     shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
@@ -77,10 +77,17 @@ class PrimaryButton extends StatelessWidget {
               ),
             ),
             tailIcon ??
-                Icon(
-                  CupertinoIcons.chevron_right_2,
-                  size: 24,
-                  shadows: [Shadow(color: darkBg, blurRadius: 0.5)],
+                Container(
+                  child:Row(
+                    children: [
+                      SizedBox(width: 5,),
+                      Icon(
+                        CupertinoIcons.chevron_right_2,
+                        size: 20,
+                        shadows: [Shadow(color: darkBg, blurRadius: 0.5)],
+                      )
+                    ],
+                  ),
                 ),
           ],
         ),

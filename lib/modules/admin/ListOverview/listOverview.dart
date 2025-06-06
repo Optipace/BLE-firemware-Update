@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/apiCall/firmware.dart';
 import 'package:tracker_firmware/services/apiCall/profile.dart';
 
@@ -14,6 +15,8 @@ class listOverviewState extends State<listOverview> {
   Map<String, dynamic> batteryList = {};
 
   Map<String, List<Map<String, dynamic>>> profileListMap = {};
+
+  List<Map<String, dynamic>> batchList = [{}];
 
   @override
   void initState() {
@@ -39,8 +42,11 @@ class listOverviewState extends State<listOverview> {
         setState(() {});
       }
       firmList = await getFirmwareList(context);
+      batchList = await getBatchList(context);
+      printFunc("DEMO DEMO DEMO : ${batchList}");
       setState(() {});
     });
+
   }
 
   @override
@@ -345,21 +351,6 @@ class listOverviewState extends State<listOverview> {
                                     shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
                               ),
                             ),
-                            Container(
-                                width: size.width / 5.4,
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 25),
-                                  child: Text(
-                                    "${entry.value["priority"]}",
-                                    style: TextStyle(
-                                        color: darkBg,
-                                        fontSize: 18,
-                                        fontFamily: baseFont,
-                                        fontWeight: FontWeight.w500,
-                                        shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
-                                  ),
-                                )),
                           ],
                         ),
                       );
@@ -477,19 +468,6 @@ class listOverviewState extends State<listOverview> {
                                               shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
                                         ),
                                       ),
-                                      Container(
-                                        width: size.width / 4.5,
-                                        padding: EdgeInsets.symmetric(horizontal: 10),
-                                        child: Text(
-                                          "Name",
-                                          style: TextStyle(
-                                              color: darkBg,
-                                              fontFamily: baseFont,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 20,
-                                              shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 ),
@@ -539,19 +517,7 @@ class listOverviewState extends State<listOverview> {
                                                 shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
                                           ),
                                         ),
-                                        Container(
-                                          width: size.width / 5,
-                                          padding: EdgeInsets.symmetric(vertical: 5),
-                                          child: Text(
-                                            "${profile['name']}",
-                                            style: TextStyle(
-                                                color: darkBg,
-                                                fontFamily: baseFont,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
-                                          ),
-                                        ),
+
                                       ],
                                     ),
                                   );
@@ -560,6 +526,168 @@ class listOverviewState extends State<listOverview> {
                             ),
                           ));
                     }).toList(),
+                  ],
+                ),
+                SizedBox(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Divider(
+                        color: darkBg,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                ),
+
+                // List of Batches
+                ExpansionTile(
+                  backgroundColor: second_lightBg,
+                  collapsedBackgroundColor: Colors.transparent,
+                  iconColor: darkBg,
+                  textColor: Colors.black,
+                  collapsedIconColor: darkBg,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: darkBg, width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  collapsedShape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.transparent, width: 0.3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                  childrenPadding: EdgeInsets.symmetric(horizontal: 35),
+                  title: Text(
+                    "Batches",
+                    style: TextStyle(
+                      color: darkBg,
+                      fontFamily: baseFont,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                    ),
+                  ),
+                  children: [
+                    Divider(color: Colors.grey, thickness: 1),
+                   Column(
+                     children: [
+                       Container(
+                         margin: EdgeInsets.only(left:28),
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Container(
+                               child: Text(
+                                 "Name",
+                                 style: TextStyle(
+                                   color: darkBg,
+                                   fontFamily: baseFont,
+                                   fontSize: 20,
+                                   fontWeight: FontWeight.w600,
+                                   shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                 ),
+                               ),
+                             ),
+                             Container(
+                               margin: EdgeInsets.only(left: 10),
+                               child: Text(
+                                 "Config",
+                                 style: TextStyle(
+                                   color: darkBg,
+                                   fontFamily: baseFont,
+                                   fontSize: 20,
+                                   fontWeight: FontWeight.w600,
+                                   shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                 ),
+                               ),
+                             ),
+                             Container(
+                               child: Text(
+                                 "Firmware",
+                                 style: TextStyle(
+                                   color: darkBg,
+                                   fontFamily: baseFont,
+                                   fontSize: 20,
+                                   fontWeight: FontWeight.w600,
+                                   shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                 ),
+                               ),
+                             ),
+                           ],
+                         ),
+                       ),
+                       SizedBox(
+                         child: Column(
+                           children: [
+                             Divider(color: darkBg, thickness: 1),
+                             SizedBox(
+                               height: 5,
+                             ),
+                           ],
+                         ),
+                       ),
+                       ...batchList.map((batch) {
+                         final name = batch['name'] ?? '';
+                         final firmwareVersion = batch['firmware']?['version'] ?? 'N/A';
+                         final profileName = batch['profile']?['name'] ?? 'N/A';
+
+                         return Container(
+                           padding: EdgeInsets.symmetric(vertical: 10),
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               // Name
+                               Container(
+                                 child: Text(
+                                   name,
+                                   style: TextStyle(
+                                     color: darkBg,
+                                     fontSize: 18,
+                                     fontFamily: baseFont,
+                                     fontWeight: FontWeight.w500,
+                                     shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                   ),
+                                 ),
+                               ),
+                               // Firmware Version
+                               Container(
+                                 child: Text(
+                                   firmwareVersion,
+                                   style: TextStyle(
+                                     color: darkBg,
+                                     fontSize: 18,
+                                     fontFamily: baseFont,
+                                     fontWeight: FontWeight.w500,
+                                     shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                   ),
+                                 ),
+                               ),
+                               // Profile Name
+                               Container(
+                                 child: Text(
+                                   profileName,
+                                   style: TextStyle(
+                                     color: darkBg,
+                                     fontSize: 18,
+                                     fontFamily: baseFont,
+                                     fontWeight: FontWeight.w500,
+                                     shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                   ),
+                                 ),
+                               ),
+                             ],
+                           ),
+                         );
+                       }).toList(),
+                     ],
+                   )
+
                   ],
                 ),
                 SizedBox(
