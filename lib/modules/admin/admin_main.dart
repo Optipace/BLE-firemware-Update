@@ -30,12 +30,13 @@ class AdminMainState extends State<AdminMain> {
   TextEditingController _lowerVoltage = TextEditingController();
 
   bool validateUser = false;
-
+  bool pluss = true;
 
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return Dashboard(
         text: 'ADMIN\nDASH-BOARD',
         userProfile: true,
@@ -164,11 +165,197 @@ class AdminMainState extends State<AdminMain> {
                 ],
               ),
               SizedBox(height:5,),
-              Padding(
-                padding: EdgeInsets.only(left: size.width/1.3),
-                child: IconButton(
+              Container(
+                width: size.width,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Visibility(
+                      visible: !pluss,
+                      child:
+                      ElevatedButton(
+                        onPressed: () async{
+                          setState(() {
+                            pluss = !pluss;
+                          });
+                          await BottomSheet_Widget(
+                          context,
+                          color : lightBg,
+                          [
+                            Container(
+                              height : size.height/1.5,
+                              width : size.width,
+                              color : lightBg,
+                              child:SingleChildScrollView(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
+
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Enter Battery Details!",
+                                        style: TextStyle(
+                                            fontFamily: baseFont,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 24,
+                                            color: darkBg,
+                                            shadows: [
+                                              Shadow(
+                                                  color: Colors.black,
+                                                  blurRadius: 0.5,
+                                                  offset: Offset(0.5, 0.5))
+                                            ]),
+                                      ),
+                                      SizedBox(height: 20,),
+
+                                      Container(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            // Battery Name
+                                            LabelText(text: "Battery Name :"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Battery Name",
+                                              Controller: _bname,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _bname.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Relase Note
+                                            LabelText(text: "Relase Date"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Relase Date",
+                                              Controller: _relaseNote,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _relaseNote.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Upper thershold
+                                            LabelText(text: "Upper Thershold"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Upper Thershold",
+                                              Controller: _upperThershold,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser&& _upperThershold.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Lower Temp
+                                            LabelText(text: "Lower Thershold"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Lower Thershold",
+                                              Controller: _lowerThershold,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _lowerThershold.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Upper Voltage
+                                            LabelText(text: "Upper Voltage"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Upper Voltage",
+                                              Controller: _upperVoltage,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _upperVoltage.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Lower Voltage
+                                            LabelText(text: "Lower Voltage"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Lower Voltage",
+                                              Controller: _lowerVoltage,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: validateUser && _lowerVoltage.text.trim().isEmpty
+                                                  ? "Please Enter the Phone Number"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Add Btn
+                                      manageUserBtn(
+                                          text: "Add Battry",
+                                          onPress: (){
+                                            ValidateUser();
+                                            setState(() {});
+                                          }
+                                      )
+                                    ],),
+                                ),
+                              ),
+                            )]
+                          );
+
+                        },
+
+                        child: Text("Add battery"),
+                      ),
+                    ),
+                    IconButton(
                     onPressed: () async{
-                      await showMenu(
+                      setState(() {
+                        pluss = !pluss;
+                      });
+
+                      setState(() {});
+                    },
+                    iconSize: 60,
+                    icon: Container(
+                      decoration: BoxDecoration(
+                        color: darkBg, // background color
+                        shape: BoxShape.circle, // circular background
+                      ),
+                      width: 60,
+                      height: 60,
+                      // space inside the circle
+                      child: Icon(
+                        Icons.add,
+                        color: lightBg, // icon color
+                        size: 26,
+                      ),
+                    )
+                ),
+                  ],),
+              )
+
+
+
+            ],
+          ),
+        )
+    );
+  }
+
+  /*await showMenu(
                         context: context,
                         position: RelativeRect.fromLTRB(
                           size.width / 2, // adjust based on your icon location
@@ -361,31 +548,7 @@ class AdminMainState extends State<AdminMain> {
                               )
                           ),
                         ],
-                      );
-                      setState(() {});
-                    },
-                    iconSize: 60,
-                    icon: Container(
-                      decoration: BoxDecoration(
-                        color: darkBg, // background color
-                        shape: BoxShape.circle, // circular background
-                      ),
-                      width: 60,
-                      height: 60,
-                      // space inside the circle
-                      child: Icon(
-                        Icons.add,
-                        color: lightBg, // icon color
-                        size: 26,
-                      ),
-                    )
-                ),
-              ),
-            ],
-          ),
-        )
-    );
-  }
+                      );*/
 
   void ValidateUser() {
     final Controllers = [
