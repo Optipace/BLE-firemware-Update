@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 import 'screens/bluetooth_off_screen.dart';
 import 'screens/scan_screen.dart';
 
 class FlutterBlueApp extends StatefulWidget {
-  const FlutterBlueApp({super.key});
+  final DataController ? SelectedBatch;
+  const FlutterBlueApp({super.key, this.SelectedBatch});
 
   @override
   State<FlutterBlueApp> createState() => _FlutterBlueAppState();
@@ -37,6 +40,7 @@ class _FlutterBlueAppState extends State<FlutterBlueApp> {
 
   @override
   Widget build(BuildContext context) {
+    printFunc("Selected Batch : ${widget.SelectedBatch?.getobj.toString()}");
     Widget screen = _adapterState == BluetoothAdapterState.on
         ? const ScanScreen()
         : BluetoothOffScreen(adapterState: _adapterState);

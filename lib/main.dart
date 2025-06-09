@@ -21,14 +21,19 @@ void main() async {
   Hive.registerAdapter(ProfileModelAdapter());
   Hive.registerAdapter(ProfileSeriesModelAdapter());
 
-  await Hive.openBox<BatchModel>('$batchHiveBox');
   Hive.registerAdapter(BatchModelAdapter());
+
+  Hive.registerAdapter(FirmwareModelAdapter());
+  Hive.registerAdapter(FirmwareSeriesModelAdapter());
+
+  await Hive.openBox<BatchModel>('$batchHiveBox');
+  // Hive.registerAdapter(BatchModelAdapter());
 
   await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
 
   // ✅ Register adapters BEFORE using any boxes
-  Hive.registerAdapter(FirmwareModelAdapter());
-  Hive.registerAdapter(FirmwareSeriesModelAdapter());
+  // Hive.registerAdapter(FirmwareModelAdapter());
+  // Hive.registerAdapter(FirmwareSeriesModelAdapter());
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,

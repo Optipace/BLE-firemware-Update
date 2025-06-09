@@ -4,6 +4,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 class PrimaryButton extends StatelessWidget {
+  final  bool? enable;
   final String text;
   final Function onPress;
   final Widget? icon;
@@ -16,6 +17,7 @@ class PrimaryButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPress,
+    this.enable,
     this.icon,
     this.width,
     this.height,
@@ -27,8 +29,10 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final buttonWidth = width ?? screenWidth * 0.65;
+    final activate = enable ?? true;
 
-    return ElevatedButton(
+    if (activate) {
+      return ElevatedButton(
       onPressed: onPress as void Function(),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(color ?? lightBg),
@@ -93,6 +97,9 @@ class PrimaryButton extends StatelessWidget {
         ),
       ),
     );
+    } else {
+      return SizedBox();
+    }
   }
 }
 
