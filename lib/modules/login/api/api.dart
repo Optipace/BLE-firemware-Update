@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
@@ -10,68 +11,62 @@ import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/modules/factoryUser/factory_user_main.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/field_user_main.dart';
 
-Future<bool> logIn(BuildContext context, String phoneNum, String password) async {
-  var data = {
+Future<bool> logInAPICall(BuildContext context, String phoneNum, String password) async {
+  var request = {
     "contact": phoneNum,
     "password": password,
-    "deviceId": sharedPreferences.getString("UUID"),
+    "deviceId": "DEVICE185", // sharedPreferences.getString("UUID"),
   };
   // String endPoint = "";
-  var request = json.encode(data);
+  // var request = json.encode(data);
   print("DEMO REQUEST LOGIN API BODY : $request");
+  await ApiService.callApi(
+      context: context,
+      method: 'POST',
+      endpoint: ApiEndpoints.login,
+      bodyOrParams: request,
+      onSuccess: (data) async {
+        // ShowSnackBarMessage(context, 'Logged out successfully.', true);
+        setTokenInfo(data);
+        sharedPreferences.setBool("user_logged_in", true);
 
-  // var response = "";
+        await setSharedPreference(await getEmployeeDetail(context, phoneNum) ?? {});
 
-  if (/* response.statusCode == 200 */ true) {
-    // var jsonResponse = (json.decode(utf8.decode(response.bodyBytes)));
-    if (/*jsonResponse["response"]["code"].toString]] == 1 */ true) {
-      /*for(var empdata in jsonResponse["data"]){
-        if(empdata["designation_id"]== 1)){
-         //   admin page
-        }else if (empdata["designation_id"] == 2){
-        // factory User page
-        }else if(empdata["designation_id"] == 3){
-        // field user page
-        }
-      }*/
+        await setDeviceId();
+        await setUserData();
+        UserData userData = new UserData();
 
-      await setSharedPreference(await getEmployeeDetail(context, phoneNum) ?? {});
-      sharedPreferences.setBool("user_logged_in", true);
-
-      await setDeviceId();
-      await setUserData();
-      UserData userData = new UserData();
-
-      navigateToDashBoard(context, int.tryParse(userData.designationCode) ?? 1);
-      return true;
-    }
-    //  --else cond --
-    /*else{
-      print("Login Failed");
-    }*/
-  }
-  //--else cond --
-  /*else if(response.statusCode == 198){
-    showAlertDialog(context, "Alert", "Please make sure you have good internet");
-  }else{
-    showAlertDialog(context, "Alert", "Service not Available");
-  }*/
-
+        navigateToDashBoard(context, int.tryParse(userData.designationCode) ?? 1);
+        return true;
+      });
   return false;
 }
 
 Future<Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String contactNumber) async {
   sharedPreferences = await SharedPreferences.getInstance();
 
-  var data = {
+  var request = {
     "contact": contactNumber,
   };
   // String endPoint = "";
-  var request = json.encode(data);
   print("DEMO REQUEST LOGIN API BODY : $request");
 
-  // var response = "";
+  await ApiService.callApi(
+      context: context,
+      method: 'POST',
+      endpoint: ApiEndpoints.getProfileByContact,
+      bodyOrParams: request,
+      onSuccess: (data) async {
+        // ShowSnackBarMessage(context, 'Logged out successfully.', true);
+        setTokenInfo(data);
+        sharedPreferences.setBool("user_logged_in", true);
+        await setDeviceId();
+        await setUserData();
+        UserData userData = new UserData();
 
+        navigateToDashBoard(context, int.tryParse(userData.designationCode) ?? 1);
+        return data;
+      });
   if (/* response.statusCode == 200 */ true) {
     // var jsonResponse = (json.decode(utf8.decode(response.bodyBytes)));
     if (/*jsonResponse["response"]["code"].toString]] == 1 */ true) {
@@ -158,14 +153,6 @@ Future<Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String con
       print("Login Failed");
     }*/
   }
-  //--else cond --
-  /*else if(response.statusCode == 198){
-    showAlertDialog(context, "Alert", "Please make sure you have good internet");
-  }else{
-    showAlertDialog(context, "Alert", "Service not Available");
-  }*/
-
-  return {};
 }
 
 List<Map<String, dynamic>> getFactoryLogs() {

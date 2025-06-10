@@ -5,6 +5,15 @@ import 'package:flutter/material.dart';
 // Dark background
 Color darkBg = Color(0xFF358A94);
 // Color.fromRGBO(58, 80, 153, 1.0);
+// Background Colors
+Color successBg = Color(0xFF2E7D32); // Deep green
+Color errorBg = Color(0xFFB00020); // Deep red
+Color infoBg = Color(0xFF37474F); // Blue-grey
+
+// Text/Icon Colors
+Color successText = Color(0xFFE8F5E9); // Light greenish-white
+Color errorText_msg = Color(0xFFFFEBEE); // Soft red-white
+Color infoText = Color(0xFFECEFF1); // Light grey
 
 // Light background
 Color lightBg = Color.fromRGBO(234, 241, 251, 1.0);

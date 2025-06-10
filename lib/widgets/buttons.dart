@@ -78,9 +78,11 @@ class PrimaryButton extends StatelessWidget {
             ),
             tailIcon ??
                 Container(
-                  child:Row(
+                  child: Row(
                     children: [
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Icon(
                         CupertinoIcons.chevron_right_2,
                         size: 20,

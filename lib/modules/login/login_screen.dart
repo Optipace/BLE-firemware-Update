@@ -134,7 +134,6 @@ class LoginScreenState extends State<LoginScreen> {
                                                   overflow: TextOverflow
                                                       .ellipsis, // Prevent overflow if UUID is too long
                                                 ),
-
                                               ),
                                             )),
                                         //to copu UUID
@@ -371,7 +370,7 @@ class LoginScreenState extends State<LoginScreen> {
                               print("Inside if cond");
                               print("SIZE : $size");
                               // await getEmpDetails(context, phoneNumber.text, _password.text);
-                              await logIn(context, phoneNumber.text, _password.text);
+                              await logInAPICall(context, phoneNumber.text, _password.text);
                             } else {
                               print("inside Else cond");
                             }

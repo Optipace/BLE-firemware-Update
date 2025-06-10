@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
@@ -130,8 +131,21 @@ class OneDecimalInputFormatter extends TextInputFormatter {
   }
 }
 
+Future<dynamic> forceLogOut(BuildContext context) async {
+  sharedPreferences = await SharedPreferences.getInstance();
+
+  sharedPreferences.clear();
+  UserData().clear();
+
+  // Optionally navigate to login screen
+  Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(builder: (_) => const LoginScreen()),
+    (route) => false,
+  );
+}
+
 Future<dynamic> LogOut(BuildContext context) async {
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  sharedPreferences = await SharedPreferences.getInstance();
 
   showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () async {
     sharedPreferences.clear();
@@ -147,8 +161,9 @@ Future<dynamic> LogOut(BuildContext context) async {
     //   await box.close();     // Close the box
     //   await Hive.deleteBoxFromDisk('$firmwareHiveBox'); // Delete box file from disk
 
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => LoginScreen()), // Remove all previous routes
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (route) => false,
     );
   }, () {
     Navigator.pop(context);
