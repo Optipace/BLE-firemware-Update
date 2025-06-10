@@ -41,7 +41,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
       batchList = await getBatchList(context);
       printFunc("Batch list :-> $batchList");
       seriesSixData = await getSeriesData();
-      addBatch(BatchModel.fromJson(batchList[0]));
+      // addBatch(BatchModel.fromJson(batchList[0]));
 
       setState(() {});
     });
@@ -247,7 +247,8 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                   ),
                                   IconButton(
                                       onPressed: () async {
-                                        if (!seriesSixData[index]['saved']) {
+                                        if (!(seriesSixData[index]['saved'] ?? false)) {
+
                                           await addBatch(BatchModel.fromJson(seriesSixData[index]));
 
                                           setState(() {});
