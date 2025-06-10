@@ -248,7 +248,6 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                   IconButton(
                                       onPressed: () async {
                                         if (!(seriesSixData[index]['saved'] ?? false)) {
-
                                           await addBatch(BatchModel.fromJson(seriesSixData[index]));
 
                                           setState(() {});

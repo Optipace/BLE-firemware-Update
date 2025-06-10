@@ -11,8 +11,12 @@ class ApiHeaders {
   // Default constructor - no parameters
   ApiHeaders();
 
-  Map<String, String> get header => {
+  Map<String, String> get authHeader => {
         'Authorization': 'Bearer ${UserData().accessToken}',
+        'Content-Type': 'application/json',
+      };
+
+  Map<String, String> get header => {
         'Content-Type': 'application/json',
       };
 }
@@ -65,11 +69,12 @@ class ApiService {
     required String endpoint,
     Map<String, dynamic>? bodyOrParams,
     bool errorDisplay = true,
+    bool headerAuth = true,
     required Function(dynamic data) onSuccess,
     bool isRetry = false, // prevents infinite loop
   }) async {
     final url = Uri.parse('${ApiEndpoints.baseUrl}$endpoint');
-    final headers = ApiHeaders().header;
+    final headers = headerAuth ? ApiHeaders().authHeader : ApiHeaders().header;
 
     http.Response response;
 
@@ -145,70 +150,68 @@ class ApiService {
     }
   }
 
+  static Future<bool> refreshAccessToken(BuildContext context) async {
+    try {
+      final url = Uri.parse('${ApiEndpoints.baseUrl}${ApiEndpoints.refresh}');
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'refreshToken': UserData().refreshToken}),
+      );
+
+      final responseBody = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && responseBody['response']["code"] == 1) {
+        setTokenInfo(responseBody);
+        return true;
+      } else {
+        ShowSnackBarMessage(context, 'Session expired. Please log in again.', false);
+        return false;
+      }
+    } catch (e) {
+      ShowSnackBarMessage(context, 'Token refresh failed: $e', false);
+      return false;
+    }
+  }
+
+  static Future<void> performLogoutApiCall(BuildContext context) async {
+    final url = Uri.parse(ApiEndpoints.fullUrl(ApiEndpoints.logout));
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'accessToken': UserData.instance.accessToken ?? "",
+          'refreshToken': UserData.instance.refreshToken ?? "",
+        }),
+      );
+
+      if (response.statusCode == 200 && jsonDecode(response.body)['response']["code"] == 1) {
+        // Logout successful
+        ShowSnackBarMessage(context, 'Logged out successfully.', true);
+      } else {
+        ShowSnackBarMessage(context, 'Logout failed.', false);
+      }
+    } catch (e) {
+      ShowSnackBarMessage(context, 'Error logging out: $e', false);
+    } finally {
+      // Clear user data always
+      UserData.instance.clear();
+
+      // Optionally: Navigate to login screen
+      // Navigator.of(context).pushAndRemoveUntil(
+      //   MaterialPageRoute(builder: (_) => LoginScreen()),
+      //   (route) => false,
+      // );
+    }
+  }
+
   static String _encodeParams(Map<String, dynamic>? params) {
     if (params == null || params.isEmpty) return '';
     final query = params.entries
         .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
         .join('&');
     return '?$query';
-  }
-}
-
-Future<bool> refreshAccessToken(BuildContext context) async {
-  try {
-    final url = Uri.parse('${ApiEndpoints.baseUrl}${ApiEndpoints.refresh}');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'refreshToken': UserData().refreshToken}),
-    );
-
-    final responseBody = jsonDecode(response.body);
-
-    if (response.statusCode == 200 && responseBody['response']["code"] == 1) {
-      setTokenInfo(responseBody);
-      return true;
-    } else {
-      ShowSnackBarMessage(context, 'Session expired. Please log in again.', false);
-      return false;
-    }
-  } catch (e) {
-    ShowSnackBarMessage(context, 'Token refresh failed: $e', false);
-    return false;
-  }
-}
-
-Future<void> performLogoutApiCall(BuildContext context) async {
-  final url = Uri.parse(ApiEndpoints.fullUrl(ApiEndpoints.logout));
-
-  try {
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'accessToken': UserData.instance.accessToken,
-        'refreshToken': UserData.instance.refreshToken,
-      }),
-    );
-
-    final responseBody = jsonDecode(response.body);
-
-    if (response.statusCode == 200 && responseBody['response']["code"] == 1) {
-      // Logout successful
-      ShowSnackBarMessage(context, 'Logged out successfully.', true);
-    } else {
-      ShowSnackBarMessage(context, 'Logout failed.', false);
-    }
-  } catch (e) {
-    ShowSnackBarMessage(context, 'Error logging out: $e', false);
-  } finally {
-    // Clear user data always
-    UserData.instance.clear();
-
-    // Optionally: Navigate to login screen
-    // Navigator.of(context).pushAndRemoveUntil(
-    //   MaterialPageRoute(builder: (_) => LoginScreen()),
-    //   (route) => false,
-    // );
   }
 }

@@ -4,7 +4,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 class PrimaryButton extends StatelessWidget {
-  final  bool? enable;
+  final bool? enable;
   final String text;
   final Function onPress;
   final Widget? icon;
@@ -33,72 +33,72 @@ class PrimaryButton extends StatelessWidget {
 
     if (activate) {
       return ElevatedButton(
-      onPressed: onPress as void Function(),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(color ?? lightBg),
-        foregroundColor: MaterialStateProperty.all(darkBg),
-        elevation: MaterialStateProperty.all(5),
-        shadowColor: MaterialStateProperty.all(darkBg),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-            side: BorderSide(color: darkBg, width: 1),
+        onPressed: onPress as void Function(),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(color ?? lightBg),
+          foregroundColor: MaterialStateProperty.all(darkBg),
+          elevation: MaterialStateProperty.all(5),
+          shadowColor: MaterialStateProperty.all(darkBg),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+              side: BorderSide(color: darkBg, width: 1),
+            ),
           ),
         ),
-      ),
-      child: Container(
-        width: buttonWidth,
-        height: height ?? 40,
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            if (icon != null)
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: lightBg,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: darkBg, width: 1),
-                ),
-                child: Center(child: icon),
-              ),
-            if (icon != null) SizedBox(width: 20),
-            Expanded(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: baseFont,
-                    shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
-                  ),
-                ),
-              ),
-            ),
-            tailIcon ??
+        child: Container(
+          width: buttonWidth,
+          height: height ?? 40,
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              if (icon != null)
                 Container(
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Icon(
-                        CupertinoIcons.chevron_right_2,
-                        size: 20,
-                        shadows: [Shadow(color: darkBg, blurRadius: 0.5)],
-                      )
-                    ],
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: lightBg,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: darkBg, width: 1),
+                  ),
+                  child: Center(child: icon),
+                ),
+              if (icon != null) SizedBox(width: 20),
+              Expanded(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: baseFont,
+                      shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
+                    ),
                   ),
                 ),
-          ],
+              ),
+              tailIcon ??
+                  Container(
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          CupertinoIcons.chevron_right_2,
+                          size: 20,
+                          shadows: [Shadow(color: darkBg, blurRadius: 0.5)],
+                        )
+                      ],
+                    ),
+                  ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
     } else {
       return SizedBox();
     }

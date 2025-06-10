@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
+
 // import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
@@ -63,8 +64,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
         backgroundColor: lightBg,
         body: Container(
             child: SingleChildScrollView(
-              child: Column(children: seriesSix()),
-            )));
+          child: Column(children: seriesSix()),
+        )));
   }
 
   List<Widget> seriesSix() {
@@ -246,7 +247,6 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                   IconButton(
                                       onPressed: () async {
                                         if (!(getAllseriesData[index]['saved'] ?? false)) {
-
                                           await addBatch(BatchModel.fromJson(getAllseriesData[index]));
 
                                           setState(() {});
@@ -259,7 +259,7 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                       },
                                       icon: (!(getAllseriesData[index]['saved'] ?? false))
                                           ? Icon(Icons.download_for_offline_outlined,
-                                          color: SuccessCardText, size: 40)
+                                              color: SuccessCardText, size: 40)
                                           : Icon(Icons.download_done_outlined, color: darkBg, size: 40)),
                                 ],
                               ),
@@ -280,7 +280,7 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                 children: [
                                   Text("Config : ",
                                       style:
-                                      CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                                          CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
                                   Text(getAllseriesData[index]["profile"]["name"],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
@@ -300,7 +300,7 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                         ),
                         SizedBox(height: 10),
                         Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 10),
                           child: FittedBox(
                             child: Column(
                               children: [
@@ -346,7 +346,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
 // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_6_bar_outlined, size: 18, color: secondaryText),
+                                            Icon(Icons.battery_6_bar_outlined,
+                                                size: 18, color: secondaryText),
                                             SizedBox(width: 5),
                                             Text(
                                               "${getAllseriesData[index]["profile"]['uV']} V",
@@ -378,7 +379,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
 // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_alert_outlined, size: 18, color: secondaryText),
+                                            Icon(Icons.battery_alert_outlined,
+                                                size: 18, color: secondaryText),
                                             SizedBox(width: 5),
                                             Text(
                                               "${getAllseriesData[index]["profile"]['lT']} V",

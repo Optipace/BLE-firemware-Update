@@ -21,7 +21,7 @@ class FactoryMain extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               PrimaryButton(
-                enable: false,
+                  enable: false,
                   icon: Icon(
                     Icons.system_update_outlined,
                     size:
@@ -38,7 +38,7 @@ class FactoryMain extends StatelessWidget {
                 height: 15,
               ),
               PrimaryButton(
-                enable: false,
+                  enable: false,
                   icon: Icon(
                     Icons.handyman_outlined,
                     size:

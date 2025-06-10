@@ -26,7 +26,4 @@ class DataController {
     Text = "";
     obj = null;
   }
-
-
-
 }

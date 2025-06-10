@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
@@ -144,27 +145,12 @@ Future<dynamic> forceLogOut(BuildContext context) async {
   );
 }
 
-Future<dynamic> LogOut(BuildContext context) async {
+Future<dynamic> LogOutUser(BuildContext context) async {
   sharedPreferences = await SharedPreferences.getInstance();
 
   showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () async {
-    sharedPreferences.clear();
-    UserData().clear();
-
-    // Close all open boxes
-    //   Box box = Hive.box<ProfileSeriesModel>('$serviceHiveBox');
-    //   await box.clear();     // Clear data from box
-    //   await box.close();     // Close the box
-    //   await Hive.deleteBoxFromDisk('$serviceHiveBox');
-    //  box = Hive.box<FirmwareSeriesModel>('$firmwareHiveBox');
-    //   await box.clear();     // Clear data from box
-    //   await box.close();     // Close the box
-    //   await Hive.deleteBoxFromDisk('$firmwareHiveBox'); // Delete box file from disk
-
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
-      (route) => false,
-    );
+    ApiService.performLogoutApiCall(context);
+    await forceLogOut(context);
   }, () {
     Navigator.pop(context);
   });

@@ -9,7 +9,8 @@ import 'screens/bluetooth_off_screen.dart';
 import 'screens/scan_screen.dart';
 
 class FlutterBlueApp extends StatefulWidget {
-  final DataController ? SelectedBatch;
+  final DataController? SelectedBatch;
+
   const FlutterBlueApp({super.key, this.SelectedBatch});
 
   @override
