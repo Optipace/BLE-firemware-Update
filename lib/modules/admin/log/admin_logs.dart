@@ -19,11 +19,43 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
 
 class AdminLogsState extends State<AdminLogs> {
   int selectedbutton = 1;
+  Map<String, dynamic> batteryList = {};
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      batteryList = {
+        "B6": {
+          "id": 1,
+          "name": "B6",
+          "priority": 1,
+          "batches":123
+        },
+        "B9": {
+          "id": 2,
+          "name": "B9",
+          "priority": 2,
+          "batches":124
+        },
+        "B12": {
+          "id": 3,
+          "name": "B12",
+          "priority": 3,
+          "batches":123
+        },
+      };
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     print("Inside Logs Page");
-    print("Inside Logs Page");
+
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -40,6 +72,47 @@ class AdminLogsState extends State<AdminLogs> {
         backgroundColor: lightBg,
         body: Column(
           children: [
+            //Loop for battery list
+
+            Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                child: Column(
+                  children: [
+                    Text("Number of Batches : "),
+                    SizedBox(height: 10,),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+
+                      children: [
+                        for (int i = 0; i < batteryList.length; i += 2)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Container(
+                                  child:Text(batteryList.entries.elementAt(i).value["name"].toString()) ,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Center(
+                                child: (i + 1 < batteryList.length)
+                                    ? Container(
+                                  child:Text(batteryList.entries.elementAt(i + 1).value["name"].toString()) ,
+                                )
+                                    : SizedBox(),
+                              ),
+                            ],
+                          )
+                      ],
+                    ),
+                  ],
+                )
+              )
+            ),
+
             SizedBox(
               height: 5,
             ),
@@ -407,7 +480,7 @@ class AdminLogsState extends State<AdminLogs> {
                                               FontColor: FactoryLogs[index]['status'] == 'Success'
                                                   ? SuccessCardText
                                                   : FailureCardText),
-                                        )
+                                        ),
                                       ],
                                     ),
                                     SizedBox(
