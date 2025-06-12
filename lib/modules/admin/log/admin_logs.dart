@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/admin/log/factory_log.dart';
+import 'package:tracker_firmware/modules/admin/log/field_log.dart';
 import 'package:tracker_firmware/services/apiCall/Admin/logs.dart';
+import 'package:tracker_firmware/services/apiCall/batch.dart';
 
 class AdminLogs extends StatefulWidget {
   @override
@@ -20,34 +23,63 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
 class AdminLogsState extends State<AdminLogs> {
   int selectedbutton = 1;
   Map<String, dynamic> batteryList = {};
+  List<Map<String, dynamic>> batchList = [{}];
+  var factoryLogs;
+  var fieldLogs;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       batteryList = {
         "B6": {
           "id": 1,
           "name": "B6",
           "priority": 1,
-          "batches":123
+          "batches":[]
         },
         "B9": {
           "id": 2,
           "name": "B9",
           "priority": 2,
-          "batches":124
+          "batches":[]
         },
         "B12": {
           "id": 3,
           "name": "B12",
           "priority": 3,
-          "batches":123
+          "batches":[]
         },
       };
+      batchList = await getBatchList(context);
+
+      for(var batch in batchList){
+        if(batch.containsKey("profile") && batch["profile"].containsKey("deviceType")){
+          String type = batch["profile"]["deviceType"];
+          if(batteryList.containsKey(type)){
+            if(batteryList[type]["batches"] is! List){
+              batteryList[type]["batches"] =[];
+            }
+            batteryList[type]["batches"].add(batch);
+          }
+        }
+      }
+      printFunc("Bacthes length : ${batteryList["B6"]["batches"].length}");
+
+
+
+      setState(() {});
     });
+    factoryLogs = getFactoryLogs();
+    fieldLogs = getFeildLogs();
+    setState(() {});
+    printFunc("Logs length : ${factoryLogs.length}");
+
+
+
   }
 
 
@@ -73,18 +105,39 @@ class AdminLogsState extends State<AdminLogs> {
         body: Column(
           children: [
             //Loop for battery list
-
             Center(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                width: size.width,
+                padding: EdgeInsets.symmetric(horizontal: 12,vertical: 20),
+                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                decoration: BoxDecoration(
+                  color: second_lightBg,
+                  border: Border.all(
+                    color: darkBg,
+                    width: 1
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [BoxShadow(
+                    color: darkBg,
+                    blurRadius: 0.8
+                  )]
+
+                ),
+
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Number of Batches : "),
+                    Text("Batches : ",
+                      style: TextStyle(
+                        color: darkBg,
+                        fontFamily: baseFont,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 24
+                      ),
+                    ),
                     SizedBox(height: 10,),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-
                       children: [
                         for (int i = 0; i < batteryList.length; i += 2)
                           Row(
@@ -93,14 +146,74 @@ class AdminLogsState extends State<AdminLogs> {
                             children: [
                               Center(
                                 child: Container(
-                                  child:Text(batteryList.entries.elementAt(i).value["name"].toString()) ,
+                                  margin: EdgeInsets.all(5),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      color: second_lightBg,
+                                      border: Border.all(
+                                          color: darkBg,
+                                          width: 1
+                                      ),
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [BoxShadow(
+                                          color: darkBg,
+                                          blurRadius: 0.8
+                                      )]
+
+                                  ),
+                                  child: Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.battery_std,color: darkBg,shadows: [Shadow(color: darkBg,blurRadius: 0.8)],),
+                                          SizedBox(height: 2,),
+                                          Text(batteryList.entries.elementAt(i).value["name"].toString(),
+                                            style: TextStyle(color: darkBg, fontSize: 20,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                                          ),
+                                          SizedBox(height: 5,),
+                                          Text("No.of Batches : ${(batteryList.entries.elementAt(i).value["batches"] as List?)?.length ?? 0}",
+                                            style: TextStyle(color: darkBg, fontSize: 16,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                                          ),
+                                        ],
+                                      )
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 10),
                               Center(
                                 child: (i + 1 < batteryList.length)
                                     ? Container(
-                                  child:Text(batteryList.entries.elementAt(i + 1).value["name"].toString()) ,
+                                  margin: EdgeInsets.all(5),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      color: second_lightBg,
+                                      border: Border.all(
+                                          color: darkBg,
+                                          width: 1
+                                      ),
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [BoxShadow(
+                                          color: darkBg,
+                                          blurRadius: 0.8
+                                      )]
+
+                                  ),
+                                  child: Center(
+                                    child:  Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.battery_std,color: darkBg,shadows: [Shadow(color: darkBg,blurRadius: 0.8)],),
+                                        SizedBox(height: 2,),
+                                        Text(batteryList.entries.elementAt(i + 1).value["name"].toString(),
+                                          style: TextStyle(color: darkBg, fontSize: 20,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        Text("No.of Batches : ", //${(batteryList.entries.elementAt(i+1).value["batches"] as List?)?.length ?? }
+                                          style: TextStyle(color: darkBg, fontSize: 16,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 )
                                     : SizedBox(),
                               ),
@@ -108,6 +221,7 @@ class AdminLogsState extends State<AdminLogs> {
                           )
                       ],
                     ),
+
                   ],
                 )
               )
@@ -116,7 +230,93 @@ class AdminLogsState extends State<AdminLogs> {
             SizedBox(
               height: 5,
             ),
-            Card(
+
+            GestureDetector(
+              onTap: () {
+                printFunc("Inside Factory user ");
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => FactoryLog()));
+              },
+              child: Container(
+                width: size.width,
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                decoration: BoxDecoration(
+                    color: second_lightBg,
+                    border: Border.all(
+                        color: darkBg,
+                        width: 1
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [BoxShadow(
+                        color: darkBg,
+                        blurRadius: 0.8
+                    )]
+
+                ),
+                child: Column(
+                  children: [
+                    Text("No.of Devices flashed by Factory user :",
+                      style: TextStyle(color: darkBg, fontSize: 18,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                    ),
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.on_device_training_outlined,color: darkBg,shadows: [Shadow(color: darkBg,blurRadius: 0.8)],),
+                        SizedBox(width: 5,),
+                        Text(": ${factoryLogs.length}",
+                          style: TextStyle(color: darkBg, fontSize: 20,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 10,),
+            GestureDetector(
+              onTap: () {
+                printFunc("Inside Field user ");
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => FieldLogs()));
+              },
+              child: Container(
+                width: size.width,
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                decoration: BoxDecoration(
+                    color: second_lightBg,
+                    border: Border.all(
+                        color: darkBg,
+                        width: 1
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [BoxShadow(
+                        color: darkBg,
+                        blurRadius: 0.8
+                    )]
+
+                ),
+                child: Column(
+                  children: [
+                    Text("No.of Devices flashed by Field user :",
+                      style: TextStyle(color: darkBg, fontSize: 18,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                    ),
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.on_device_training_outlined),
+                        SizedBox(width: 5,),
+                        Text(": ${fieldLogs.length}",
+                          style: TextStyle(color: darkBg, fontSize: 20,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            /*Card(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
               shape: RoundedRectangleBorder(
                   side: BorderSide(
@@ -218,6 +418,8 @@ class AdminLogsState extends State<AdminLogs> {
                 ],
               ),
             )),
+
+             */
           ],
         ));
   }
