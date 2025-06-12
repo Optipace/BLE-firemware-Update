@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/ScanBluetooth/bluetoothBatches.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/batchList/fieldBatchUser.dart';
@@ -21,7 +20,7 @@ class FieldMain extends StatelessWidget {
             children: [
               // FirmWares
               PrimaryButton(
-                enable: false,
+                  enable: false,
                   icon: Icon(
                     Icons.system_update_outlined,
                     size:
@@ -41,7 +40,7 @@ class FieldMain extends StatelessWidget {
               ),*/
               // Config/Service
               PrimaryButton(
-                enable: false,
+                  enable: false,
                   icon: Icon(
                     Icons.handyman_outlined,
                     size:
@@ -62,8 +61,8 @@ class FieldMain extends StatelessWidget {
                   icon: Icon(
                     Icons.handyman_outlined,
                     size:
-                    // Image.asset('assets/image/viewLog.png',width: 24,height:
-                    24,
+                        // Image.asset('assets/image/viewLog.png',width: 24,height:
+                        24,
                     color: darkBg,
                   ),
                   text: "Batch/Profile",

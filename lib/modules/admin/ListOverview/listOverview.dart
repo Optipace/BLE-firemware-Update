@@ -46,7 +46,6 @@ class listOverviewState extends State<listOverview> {
       printFunc("DEMO DEMO DEMO : ${batchList}");
       setState(() {});
     });
-
   }
 
   @override
@@ -517,7 +516,6 @@ class listOverviewState extends State<listOverview> {
                                                 shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
                                           ),
                                         ),
-
                                       ],
                                     ),
                                   );
@@ -573,121 +571,120 @@ class listOverviewState extends State<listOverview> {
                   ),
                   children: [
                     Divider(color: Colors.grey, thickness: 1),
-                   Column(
-                     children: [
-                       Container(
-                         margin: EdgeInsets.only(left:28),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             Container(
-                               child: Text(
-                                 "Name",
-                                 style: TextStyle(
-                                   color: darkBg,
-                                   fontFamily: baseFont,
-                                   fontSize: 20,
-                                   fontWeight: FontWeight.w600,
-                                   shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
-                                 ),
-                               ),
-                             ),
-                             Container(
-                               margin: EdgeInsets.only(left: 10),
-                               child: Text(
-                                 "Config",
-                                 style: TextStyle(
-                                   color: darkBg,
-                                   fontFamily: baseFont,
-                                   fontSize: 20,
-                                   fontWeight: FontWeight.w600,
-                                   shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
-                                 ),
-                               ),
-                             ),
-                             Container(
-                               child: Text(
-                                 "Firmware",
-                                 style: TextStyle(
-                                   color: darkBg,
-                                   fontFamily: baseFont,
-                                   fontSize: 20,
-                                   fontWeight: FontWeight.w600,
-                                   shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ),
-                       SizedBox(
-                         child: Column(
-                           children: [
-                             Divider(color: darkBg, thickness: 1),
-                             SizedBox(
-                               height: 5,
-                             ),
-                           ],
-                         ),
-                       ),
-                       ...batchList.map((batch) {
-                         final name = batch['name'] ?? '';
-                         final firmwareVersion = batch['firmware']?['version'] ?? 'N/A';
-                         final profileName = batch['profile']?['name'] ?? 'N/A';
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 28),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Text(
+                                  "Name",
+                                  style: TextStyle(
+                                    color: darkBg,
+                                    fontFamily: baseFont,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  "Config",
+                                  style: TextStyle(
+                                    color: darkBg,
+                                    fontFamily: baseFont,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "Firmware",
+                                  style: TextStyle(
+                                    color: darkBg,
+                                    fontFamily: baseFont,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          child: Column(
+                            children: [
+                              Divider(color: darkBg, thickness: 1),
+                              SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        ),
+                        ...batchList.map((batch) {
+                          final name = batch['name'] ?? '';
+                          final firmwareVersion = batch['firmware']?['version'] ?? 'N/A';
+                          final profileName = batch['profile']?['name'] ?? 'N/A';
 
-                         return Container(
-                           padding: EdgeInsets.symmetric(vertical: 10),
-                           child: Row(
-                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: [
-                               // Name
-                               Container(
-                                 child: Text(
-                                   name,
-                                   style: TextStyle(
-                                     color: darkBg,
-                                     fontSize: 18,
-                                     fontFamily: baseFont,
-                                     fontWeight: FontWeight.w500,
-                                     shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
-                                   ),
-                                 ),
-                               ),
-                               // Firmware Version
-                               Container(
-                                 child: Text(
-                                   firmwareVersion,
-                                   style: TextStyle(
-                                     color: darkBg,
-                                     fontSize: 18,
-                                     fontFamily: baseFont,
-                                     fontWeight: FontWeight.w500,
-                                     shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
-                                   ),
-                                 ),
-                               ),
-                               // Profile Name
-                               Container(
-                                 child: Text(
-                                   profileName,
-                                   style: TextStyle(
-                                     color: darkBg,
-                                     fontSize: 18,
-                                     fontFamily: baseFont,
-                                     fontWeight: FontWeight.w500,
-                                     shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
-                                   ),
-                                 ),
-                               ),
-                             ],
-                           ),
-                         );
-                       }).toList(),
-                     ],
-                   )
-
+                          return Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Name
+                                Container(
+                                  child: Text(
+                                    name,
+                                    style: TextStyle(
+                                      color: darkBg,
+                                      fontSize: 18,
+                                      fontFamily: baseFont,
+                                      fontWeight: FontWeight.w500,
+                                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                    ),
+                                  ),
+                                ),
+                                // Firmware Version
+                                Container(
+                                  child: Text(
+                                    firmwareVersion,
+                                    style: TextStyle(
+                                      color: darkBg,
+                                      fontSize: 18,
+                                      fontFamily: baseFont,
+                                      fontWeight: FontWeight.w500,
+                                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                    ),
+                                  ),
+                                ),
+                                // Profile Name
+                                Container(
+                                  child: Text(
+                                    profileName,
+                                    style: TextStyle(
+                                      color: darkBg,
+                                      fontSize: 18,
+                                      fontFamily: baseFont,
+                                      fontWeight: FontWeight.w500,
+                                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ],
+                    )
                   ],
                 ),
                 SizedBox(

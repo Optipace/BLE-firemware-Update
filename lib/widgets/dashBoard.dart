@@ -284,7 +284,7 @@ UserProfileSlider(context, Function? onlogout) {
               : () async {
                   Navigator.of(context).pop(); // Close the drawer first
                   await Future.delayed(Duration(milliseconds: 300)); // Small delay for smooth UX
-                  await LogOut(context);
+                  await LogOutUser(context);
                 },
         ),
         Padding(

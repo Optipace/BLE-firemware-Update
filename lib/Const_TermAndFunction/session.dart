@@ -36,7 +36,6 @@ Future<void> createSharedPreference() async {
 Future<bool> setUserData() async {
   Map<String, dynamic> userinfo = await getUserData();
   // userinfo["deviceId"]=userinfo["UUID"];
-  UserData().fromJson(userinfo);
 
   return true;
 }
@@ -64,6 +63,15 @@ Future<Map<String, dynamic>> getUserData() async {
     printFunc("Key: $key, Value: $value"); // Print the data
   }
   return allData; //sharedPreferences.getBool('user_logged_in') ?? false;
+}
+
+Future setTokenInfo(responseBody) async {
+  sharedPreferences = await SharedPreferences.getInstance();
+
+  sharedPreferences.setString("accessToken", responseBody['data']['accessToken']);
+  sharedPreferences.setString("refreshToken", responseBody['data']['refreshToken']);
+  UserData.instance.accessToken = responseBody['data']['accessToken'];
+  UserData.instance.refreshToken = responseBody['data']['refreshToken'];
 }
 
 Future setDeviceId() async {

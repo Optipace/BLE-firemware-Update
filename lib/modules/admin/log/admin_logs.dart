@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/modules/login/api/api.dart';
+import 'package:tracker_firmware/services/apiCall/Admin/logs.dart';
 
 class AdminLogs extends StatefulWidget {
   @override
@@ -223,13 +223,13 @@ class AdminLogsState extends State<AdminLogs> {
   }
 
   List<Widget> factoryUserLog() {
-    var FactoryLogs = getFactoryLogs();
-    List<Widget> FactoryUsersList = [];
+    var factoryLogs = getFactoryLogs();
+    List<Widget> factoryUsersList = [];
 
-    for (int index = 0; index < FactoryLogs.length; index++) {
-      printFunc("DEMO DEMO Factory logs : ${FactoryLogs[index]}");
+    for (int index = 0; index < factoryLogs.length; index++) {
+      printFunc("DEMO DEMO Factory logs : ${factoryLogs[index]}");
       ValueNotifier moreInfo = ValueNotifier<bool>(false);
-      FactoryUsersList.add(ValueListenableBuilder(
+      factoryUsersList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
           builder: (ctx, value, child) {
             return Container(
@@ -243,9 +243,9 @@ class AdminLogsState extends State<AdminLogs> {
               child: ExpansionTile(
                 key: ValueKey('factory_$index'),
                 tilePadding: EdgeInsets.all(5),
-                backgroundColor: FactoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+                backgroundColor: factoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
                 collapsedBackgroundColor:
-                    FactoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+                    factoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -270,11 +270,11 @@ class AdminLogsState extends State<AdminLogs> {
                           SizedBox(
                             height: 3,
                           ),
-                          Text(FactoryLogs[index]["Name"],
+                          Text(factoryLogs[index]["Name"],
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 14,
-                                  FontColor: FactoryLogs[index]['status'] == 'Success'
+                                  FontColor: factoryLogs[index]['status'] == 'Success'
                                       ? SuccessCardText
                                       : FailureCardText)),
                         ],
@@ -292,11 +292,11 @@ class AdminLogsState extends State<AdminLogs> {
                             height: 3,
                           ),
                           Text(
-                            FactoryLogs[index]["empId"],
+                            factoryLogs[index]["empId"],
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 14,
-                                FontColor: FactoryLogs[index]['status'] == 'Success'
+                                FontColor: factoryLogs[index]['status'] == 'Success'
                                     ? SuccessCardText
                                     : FailureCardText),
                           ),
@@ -315,11 +315,11 @@ class AdminLogsState extends State<AdminLogs> {
                             height: 3,
                           ),
                           Text(
-                            FactoryLogs[index]['DeviceID'],
+                            factoryLogs[index]['DeviceID'],
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 14,
-                                FontColor: FactoryLogs[index]['status'] == 'Success'
+                                FontColor: factoryLogs[index]['status'] == 'Success'
                                     ? SuccessCardText
                                     : FailureCardText),
                           )
@@ -361,11 +361,11 @@ class AdminLogsState extends State<AdminLogs> {
                                           height: 3,
                                         ),
                                         Text(
-                                          FactoryLogs[index]['phone'],
+                                          factoryLogs[index]['phone'],
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 16,
-                                              FontColor: FactoryLogs[index]['status'] == 'Success'
+                                              FontColor: factoryLogs[index]['status'] == 'Success'
                                                   ? SuccessCardText
                                                   : FailureCardText),
                                         )
@@ -387,11 +387,11 @@ class AdminLogsState extends State<AdminLogs> {
                                         ),
                                         SizedBox(height: 3),
                                         Text(
-                                          FactoryLogs[index]['Battery-profile'],
+                                          factoryLogs[index]['Battery-profile'],
                                           style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor: FactoryLogs[index]['status'] == 'Success'
+                                            FontColor: factoryLogs[index]['status'] == 'Success'
                                                 ? SuccessCardText
                                                 : FailureCardText,
                                           ),
@@ -417,11 +417,11 @@ class AdminLogsState extends State<AdminLogs> {
                                           height: 3,
                                         ),
                                         Text(
-                                          FactoryLogs[index]['firm_version'],
+                                          factoryLogs[index]['firm_version'],
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 16,
-                                              FontColor: FactoryLogs[index]['status'] == 'Success'
+                                              FontColor: factoryLogs[index]['status'] == 'Success'
                                                   ? SuccessCardText
                                                   : FailureCardText),
                                         )
@@ -443,11 +443,11 @@ class AdminLogsState extends State<AdminLogs> {
                                         ),
                                         SizedBox(height: 3),
                                         Text(
-                                          FactoryLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
+                                          factoryLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
                                           style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor: FactoryLogs[index]['status'] == 'Success'
+                                            FontColor: factoryLogs[index]['status'] == 'Success'
                                                 ? SuccessCardText
                                                 : FailureCardText,
                                           ),
@@ -473,11 +473,11 @@ class AdminLogsState extends State<AdminLogs> {
                                           height: 3,
                                         ),
                                         Text(
-                                          FactoryLogs[index]['Battery-Service'],
+                                          factoryLogs[index]['Battery-Service'],
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 16,
-                                              FontColor: FactoryLogs[index]['status'] == 'Success'
+                                              FontColor: factoryLogs[index]['status'] == 'Success'
                                                   ? SuccessCardText
                                                   : FailureCardText),
                                         ),
@@ -499,11 +499,11 @@ class AdminLogsState extends State<AdminLogs> {
                                         ),
                                         SizedBox(height: 3),
                                         Text(
-                                          FactoryLogs[index]['status'],
+                                          factoryLogs[index]['status'],
                                           style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor: FactoryLogs[index]['status'] == 'Success'
+                                            FontColor: factoryLogs[index]['status'] == 'Success'
                                                 ? SuccessCardText
                                                 : FailureCardText,
                                           ),
@@ -714,7 +714,7 @@ class AdminLogsState extends State<AdminLogs> {
     }
 
     setState(() {});
-    return FactoryUsersList;
+    return factoryUsersList;
   }
 
   List<Widget> fieldUserLog() {

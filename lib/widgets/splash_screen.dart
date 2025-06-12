@@ -5,8 +5,8 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
-import 'package:tracker_firmware/modules/login/api/api.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
+import 'package:tracker_firmware/services/apiCall/logIn.dart';
 
 class splashScreen extends StatefulWidget {
   @override

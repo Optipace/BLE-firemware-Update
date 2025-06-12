@@ -5,6 +5,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
+
 // import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/bluetoothMain.dart';
@@ -33,7 +34,7 @@ class BlueetoothBatchesState extends State<BlueetoothBatches> {
   var getAllseriesData;
   var batchBox;
 
-  final DataController BatchSelected =  DataController();
+  final DataController BatchSelected = DataController();
 
   @override
   void initState() {
@@ -69,8 +70,8 @@ class BlueetoothBatchesState extends State<BlueetoothBatches> {
         backgroundColor: lightBg,
         body: Container(
             child: SingleChildScrollView(
-              child: Column(children: seriesSix()),
-            )));
+          child: Column(children: seriesSix()),
+        )));
   }
 
   List<Widget> seriesSix() {
@@ -242,9 +243,7 @@ class BlueetoothBatchesState extends State<BlueetoothBatches> {
                                 children: [
                                   Text(
                                     "Flash",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w300,
-                                        FontColor: SuccessCardText),
+                                    style: CardText(font_Weight: FontWeight.w300, FontColor: SuccessCardText),
                                   ),
                                   SizedBox(
                                     height: 3,
@@ -254,19 +253,19 @@ class BlueetoothBatchesState extends State<BlueetoothBatches> {
                                         printFunc("Which Data is : ${getAllseriesData[index]}");
                                         BatchSelected.cleardata();
                                         var batchObj = getAllseriesData[index];
-                                        setState(() {
-
-                                        });
+                                        setState(() {});
 
                                         BatchSelected.setobj = getAllseriesData[index];
 
-
                                         FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
-                                        Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FlutterBlueApp(SelectedBatch: BatchSelected,)));
+                                        Navigator.of(context).push(MaterialPageRoute<void>(
+                                            builder: (_) => FlutterBlueApp(
+                                                  SelectedBatch: BatchSelected,
+                                                )));
                                         setState(() {});
                                       },
-                                      icon:Icon(Icons.flash_on_outlined, color: darkBg, size: 34)),
+                                      icon: Icon(Icons.flash_on_outlined, color: darkBg, size: 34)),
                                 ],
                               ),
                               SizedBox(
@@ -286,7 +285,7 @@ class BlueetoothBatchesState extends State<BlueetoothBatches> {
                                 children: [
                                   Text("Config : ",
                                       style:
-                                      CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                                          CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
                                   Text(getAllseriesData[index]["profile"]["name"],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
@@ -352,7 +351,8 @@ class BlueetoothBatchesState extends State<BlueetoothBatches> {
 // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_6_bar_outlined, size: 18, color: secondaryText),
+                                            Icon(Icons.battery_6_bar_outlined,
+                                                size: 18, color: secondaryText),
                                             SizedBox(width: 5),
                                             Text(
                                               "${getAllseriesData[index]["profile"]['uV']} V",
@@ -384,7 +384,8 @@ class BlueetoothBatchesState extends State<BlueetoothBatches> {
 // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_alert_outlined, size: 18, color: secondaryText),
+                                            Icon(Icons.battery_alert_outlined,
+                                                size: 18, color: secondaryText),
                                             SizedBox(width: 5),
                                             Text(
                                               "${getAllseriesData[index]["profile"]['lT']} V",
@@ -495,8 +496,6 @@ class BlueetoothBatchesState extends State<BlueetoothBatches> {
         'saved': true,
       });
     });
-
-
 
     return totalBatchList;
   }

@@ -5,6 +5,7 @@ import 'package:tracker_firmware/modules/admin/ListOverview/listOverview.dart';
 import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 import 'package:tracker_firmware/modules/admin/newUser/adminNewUser.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
@@ -28,8 +29,6 @@ class AdminMainState extends State<AdminMain> {
   bool validateUser = false;
   bool pluss = true;
 
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,7 +41,6 @@ class AdminMainState extends State<AdminMain> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
                   // View logs
                   PrimaryButton(
                       icon: Image.asset(
@@ -157,7 +155,9 @@ class AdminMainState extends State<AdminMain> {
           ),*/
                 ],
               ),
-              SizedBox(height:5,),
+              SizedBox(
+                height: 5,
+              ),
               Container(
                 width: size.width,
                 padding: EdgeInsets.symmetric(horizontal: 15),
@@ -166,28 +166,24 @@ class AdminMainState extends State<AdminMain> {
                   children: [
                     Visibility(
                       visible: !pluss,
-                      child:
-                      ElevatedButton(
-                        onPressed: () async{
+                      child: ElevatedButton(
+                        onPressed: () async {
                           setState(() {
                             pluss = !pluss;
                           });
-                          await BottomSheet_Widget(
-                          context,
-                          color : lightBg,
-                          [
+                          await BottomSheet_Widget(context, color: lightBg, [
                             Container(
-                              height : size.height/1.5,
-                              width : size.width,
-                              color : lightBg,
-                              child:SingleChildScrollView(
+                              height: size.height / 1.5,
+                              width: size.width,
+                              color: lightBg,
+                              child: SingleChildScrollView(
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 20),
-
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text("Enter Battery Details!",
+                                      Text(
+                                        "Enter Battery Details!",
                                         style: TextStyle(
                                             fontFamily: baseFont,
                                             fontWeight: FontWeight.w800,
@@ -200,7 +196,9 @@ class AdminMainState extends State<AdminMain> {
                                                   offset: Offset(0.5, 0.5))
                                             ]),
                                       ),
-                                      SizedBox(height: 20,),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
 
                                       Container(
                                         child: Column(
@@ -242,7 +240,7 @@ class AdminMainState extends State<AdminMain> {
                                               Controller: _upperThershold,
                                               onChanged: (value) {},
                                               enable: true,
-                                              etext: validateUser&& _upperThershold.text.trim().isEmpty
+                                              etext: validateUser && _upperThershold.text.trim().isEmpty
                                                   ? "Please Enter the Phone Number"
                                                   : "",
                                             ),
@@ -297,76 +295,64 @@ class AdminMainState extends State<AdminMain> {
                                       // Add Btn
                                       manageUserBtn(
                                           text: "Add Battery",
-                                          onPress: (){
+                                          onPress: () {
                                             ValidateUser();
                                             setState(() {});
-                                          }
-                                      )
-                                    ],),
+                                          })
+                                    ],
+                                  ),
                                 ),
                               ),
-                            )]
-                          );
-
+                            )
+                          ]);
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(lightBg),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(color: darkBg, width: 1),
+                            backgroundColor: MaterialStateProperty.all(lightBg),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: darkBg, width: 1),
+                              ),
                             ),
-                          ),
-                          fixedSize: MaterialStateProperty.all(Size(size.width/3.2, 30))
-
-                        ),
-
-                        child: Text("Add Battery",
+                            fixedSize: MaterialStateProperty.all(Size(size.width / 3.2, 30))),
+                        child: Text(
+                          "Add Battery",
                           style: TextStyle(
-                            color: darkBg,
-                            fontSize: 18,
-                            fontFamily: baseFont,
-                            fontWeight: FontWeight.w600
-                          ),
+                              color: darkBg, fontSize: 18, fontFamily: baseFont, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
                     IconButton(
-                    onPressed: () async{
-                      setState(() {
-                        pluss = !pluss;
-                      });
+                        onPressed: () async {
+                          setState(() {
+                            pluss = !pluss;
+                          });
+                          ShowSnackBarMessage(context, 'User Updated Successfully!!', false);
 
-                      setState(() {});
-                    },
-                    iconSize: 55,
-                    icon: Container(
-                      decoration: BoxDecoration(
-                        color: darkBg, // background color
-                        shape: BoxShape.circle, // circular background
-                      ),
-                      width: 60,
-                      height: 60,
-                      // space inside the circle
-                      child: Icon(
-                        Icons.add,
-                        color: lightBg, // icon color
-                        size: 26,
-                      ),
-                    )
+                          setState(() {});
+                        },
+                        iconSize: 55,
+                        icon: Container(
+                          decoration: BoxDecoration(
+                            color: darkBg, // background color
+                            shape: BoxShape.circle, // circular background
+                          ),
+                          width: 60,
+                          height: 60,
+                          // space inside the circle
+                          child: Icon(
+                            Icons.add,
+                            color: lightBg, // icon color
+                            size: 26,
+                          ),
+                        )),
+                  ],
                 ),
-                  ],),
               )
-
-
-
             ],
           ),
-        )
-    );
+        ));
   }
-
-
 
   void ValidateUser() {
     final Controllers = [
