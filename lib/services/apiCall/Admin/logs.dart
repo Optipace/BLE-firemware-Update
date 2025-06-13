@@ -22,6 +22,28 @@ List<Map<String, dynamic>> getFactoryLogs() {
       "Battery-profile": "P2,B9",
       "Date-Time": "2025-05-26 11:15:00"
     },
+    {
+      "empId": "EMP122",
+      "Name": "Alice mark",
+      "DeviceID": "546",
+      "status": "Failure",
+      "phone": "+91 9876543210",
+      "firm_version": "2.3.0",
+      "Battery-Service": "B9",
+      "Battery-profile": "P2,B9",
+      "Date-Time": "2025-05-26 11:15:00"
+    },
+    {
+      "empId": "EMP122",
+      "Name": "Alice mark",
+      "DeviceID": "546",
+      "status": "Failure",
+      "phone": "+91 9876543210",
+      "firm_version": "2.3.0",
+      "Battery-Service": "B9",
+      "Battery-profile": "P2,B9",
+      "Date-Time": "2025-05-26 11:15:00"
+    },
   ];
   return empLogs;
 }
@@ -49,6 +71,17 @@ List<Map<String, dynamic>> getFeildLogs() {
       "Battery-Service": "B6",
       "Battery-profile": "P4,B6",
       "Date-Time": "2025-05-26 12:45:00"
+    },
+    {
+      "empId": "EMP123",
+      "Name": "David Stone",
+      "DeviceID": "547",
+      "status": "Failure",
+      "phone": "+91 9812345678",
+      "firm_version": "2.3.1",
+      "Battery-Service": "B12",
+      "Battery-profile": "P3,B12",
+      "Date-Time": "2025-05-26 12:00:00"
     },
   ];
   return FeildLogs;
