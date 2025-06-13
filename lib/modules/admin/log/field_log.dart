@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
@@ -35,17 +34,15 @@ List<Widget> fieldUserLog() {
               key: ValueKey('field_$index'),
               tilePadding: EdgeInsets.all(5),
               backgroundColor:
-              FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
+                  FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
               collapsedBackgroundColor:
-              FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
+                  FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
               iconColor: darkBg,
               collapsedIconColor: darkBg,
               collapsedShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  side: BorderSide(color: Colors.black, width: 0.3)),
+                  borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.black, width: 0.3)),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  side: BorderSide(color: Colors.black, width: 0.3)),
+                  borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.black, width: 0.3)),
               title: Container(
                 padding: EdgeInsets.all(5),
                 width: size.width,
@@ -146,8 +143,7 @@ List<Widget> fieldUserLog() {
                                   children: [
                                     Text(
                                       "Phone\nNumber : ",
-                                      style:
-                                      CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                      style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                     ),
                                     SizedBox(
                                       height: 3,
@@ -157,8 +153,7 @@ List<Widget> fieldUserLog() {
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor:
-                                          FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                          FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
                                               ? SuccessCardText
                                               : FailureCardText),
                                     )
@@ -202,8 +197,7 @@ List<Widget> fieldUserLog() {
                                   children: [
                                     Text(
                                       "Firm\nversion : ",
-                                      style:
-                                      CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                      style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                     ),
                                     SizedBox(
                                       height: 3,
@@ -213,8 +207,7 @@ List<Widget> fieldUserLog() {
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor:
-                                          FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                          FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
                                               ? SuccessCardText
                                               : FailureCardText),
                                     )
@@ -259,8 +252,7 @@ List<Widget> fieldUserLog() {
                                   children: [
                                     Text(
                                       "Battery\nService : ",
-                                      style:
-                                      CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                      style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                     ),
                                     SizedBox(
                                       height: 3,
@@ -270,8 +262,7 @@ List<Widget> fieldUserLog() {
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor:
-                                          FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                          FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
                                               ? SuccessCardText
                                               : FailureCardText),
                                     )
@@ -287,8 +278,7 @@ List<Widget> fieldUserLog() {
                                   children: [
                                     Text(
                                       "DeviceID : ",
-                                      style:
-                                      CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                      style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                     ),
                                     SizedBox(
                                       height: 3,
@@ -321,8 +311,7 @@ List<Widget> fieldUserLog() {
   return FieldUsersList;
 }
 
-
-class FieldLogs extends StatelessWidget{
+class FieldLogs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -350,5 +339,4 @@ class FieldLogs extends StatelessWidget{
       ),
     );
   }
-
 }

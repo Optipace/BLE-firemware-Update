@@ -27,7 +27,6 @@ class AdminLogsState extends State<AdminLogs> {
   var factoryLogs;
   var fieldLogs;
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -35,33 +34,18 @@ class AdminLogsState extends State<AdminLogs> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       batteryList = {
-        "B6": {
-          "id": 1,
-          "name": "B6",
-          "priority": 1,
-          "batches":[]
-        },
-        "B9": {
-          "id": 2,
-          "name": "B9",
-          "priority": 2,
-          "batches":[]
-        },
-        "B12": {
-          "id": 3,
-          "name": "B12",
-          "priority": 3,
-          "batches":[]
-        },
+        "B6": {"id": 1, "name": "B6", "priority": 1, "batches": []},
+        "B9": {"id": 2, "name": "B9", "priority": 2, "batches": []},
+        "B12": {"id": 3, "name": "B12", "priority": 3, "batches": []},
       };
       batchList = await getBatchList(context);
 
-      for(var batch in batchList){
-        if(batch.containsKey("profile") && batch["profile"].containsKey("deviceType")){
+      for (var batch in batchList) {
+        if (batch.containsKey("profile") && batch["profile"].containsKey("deviceType")) {
           String type = batch["profile"]["deviceType"];
-          if(batteryList.containsKey(type)){
-            if(batteryList[type]["batches"] is! List){
-              batteryList[type]["batches"] =[];
+          if (batteryList.containsKey(type)) {
+            if (batteryList[type]["batches"] is! List) {
+              batteryList[type]["batches"] = [];
             }
             batteryList[type]["batches"].add(batch);
           }
@@ -69,20 +53,13 @@ class AdminLogsState extends State<AdminLogs> {
       }
       printFunc("Bacthes length : ${batteryList["B6"]["batches"].length}");
 
-
-
       setState(() {});
     });
     factoryLogs = getFactoryLogs();
     fieldLogs = getFeildLogs();
     setState(() {});
     printFunc("Logs length : ${factoryLogs.length}");
-
-
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -106,126 +83,136 @@ class AdminLogsState extends State<AdminLogs> {
           children: [
             //Loop for battery list
             Center(
-              child: Container(
-                width: size.width,
-                padding: EdgeInsets.symmetric(horizontal: 12,vertical: 20),
-                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                decoration: BoxDecoration(
-                  color: second_lightBg,
-                  border: Border.all(
-                    color: darkBg,
-                    width: 1
-                  ),
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [BoxShadow(
-                    color: darkBg,
-                    blurRadius: 0.8
-                  )]
-
-                ),
-
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Batches : ",
-                      style: TextStyle(
-                        color: darkBg,
-                        fontFamily: baseFont,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 24
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Column(
+                child: Container(
+                    width: size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: second_lightBg,
+                        border: Border.all(color: darkBg, width: 1),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [BoxShadow(color: darkBg, blurRadius: 0.8)]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        for (int i = 0; i < batteryList.length; i += 2)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Center(
-                                child: Container(
-                                  margin: EdgeInsets.all(5),
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      color: second_lightBg,
-                                      border: Border.all(
-                                          color: darkBg,
-                                          width: 1
-                                      ),
-                                      borderRadius: BorderRadius.circular(15),
-                                      boxShadow: [BoxShadow(
-                                          color: darkBg,
-                                          blurRadius: 0.8
-                                      )]
-
-                                  ),
-                                  child: Center(
-                                      child: Column(
+                        Text(
+                          "Batches : ",
+                          style: TextStyle(
+                              color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500, fontSize: 24),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Column(
+                          children: [
+                            for (int i = 0; i < batteryList.length; i += 2)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      margin: EdgeInsets.all(5),
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          color: second_lightBg,
+                                          border: Border.all(color: darkBg, width: 1),
+                                          borderRadius: BorderRadius.circular(15),
+                                          boxShadow: [BoxShadow(color: darkBg, blurRadius: 0.8)]),
+                                      child: Center(
+                                          child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.battery_std,color: darkBg,shadows: [Shadow(color: darkBg,blurRadius: 0.8)],),
-                                          SizedBox(height: 2,),
-                                          Text(batteryList.entries.elementAt(i).value["name"].toString(),
-                                            style: TextStyle(color: darkBg, fontSize: 20,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                                          Icon(
+                                            Icons.battery_std,
+                                            color: darkBg,
+                                            shadows: [Shadow(color: darkBg, blurRadius: 0.8)],
                                           ),
-                                          SizedBox(height: 5,),
-                                          Text("No.of Batches : ${(batteryList.entries.elementAt(i).value["batches"] as List?)?.length ?? 0}",
-                                            style: TextStyle(color: darkBg, fontSize: 16,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                                          SizedBox(
+                                            height: 2,
+                                          ),
+                                          Text(
+                                            batteryList.entries.elementAt(i).value["name"].toString(),
+                                            style: TextStyle(
+                                                color: darkBg,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: baseFont),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "No.of Batches : ${(batteryList.entries.elementAt(i).value["batches"] as List?)?.length ?? 0}",
+                                            style: TextStyle(
+                                                color: darkBg,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: baseFont),
                                           ),
                                         ],
-                                      )
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Center(
-                                child: (i + 1 < batteryList.length)
-                                    ? Container(
-                                  margin: EdgeInsets.all(5),
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      color: second_lightBg,
-                                      border: Border.all(
-                                          color: darkBg,
-                                          width: 1
-                                      ),
-                                      borderRadius: BorderRadius.circular(15),
-                                      boxShadow: [BoxShadow(
-                                          color: darkBg,
-                                          blurRadius: 0.8
-                                      )]
-
-                                  ),
-                                  child: Center(
-                                    child:  Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.battery_std,color: darkBg,shadows: [Shadow(color: darkBg,blurRadius: 0.8)],),
-                                        SizedBox(height: 2,),
-                                        Text(batteryList.entries.elementAt(i + 1).value["name"].toString(),
-                                          style: TextStyle(color: darkBg, fontSize: 20,fontWeight: FontWeight.w500,fontFamily: baseFont),
-                                        ),
-                                        SizedBox(height: 5,),
-                                        Text("No.of Batches : ", //${(batteryList.entries.elementAt(i+1).value["batches"] as List?)?.length ?? }
-                                          style: TextStyle(color: darkBg, fontSize: 16,fontWeight: FontWeight.w500,fontFamily: baseFont),
-                                        ),
-                                      ],
+                                      )),
                                     ),
                                   ),
-                                )
-                                    : SizedBox(),
-                              ),
-                            ],
-                          )
+                                  SizedBox(width: 10),
+                                  Center(
+                                    child: (i + 1 < batteryList.length)
+                                        ? Container(
+                                            margin: EdgeInsets.all(5),
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                                color: second_lightBg,
+                                                border: Border.all(color: darkBg, width: 1),
+                                                borderRadius: BorderRadius.circular(15),
+                                                boxShadow: [BoxShadow(color: darkBg, blurRadius: 0.8)]),
+                                            child: Center(
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.battery_std,
+                                                    color: darkBg,
+                                                    shadows: [Shadow(color: darkBg, blurRadius: 0.8)],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 2,
+                                                  ),
+                                                  Text(
+                                                    batteryList.entries
+                                                        .elementAt(i + 1)
+                                                        .value["name"]
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        color: darkBg,
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontFamily: baseFont),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    "No.of Batches : ",
+                                                    //${(batteryList.entries.elementAt(i+1).value["batches"] as List?)?.length ?? }
+                                                    style: TextStyle(
+                                                        color: darkBg,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontFamily: baseFont),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        : SizedBox(),
+                                  ),
+                                ],
+                              )
+                          ],
+                        ),
                       ],
-                    ),
-
-                  ],
-                )
-              )
-            ),
+                    ))),
 
             SizedBox(
               height: 5,
@@ -238,34 +225,38 @@ class AdminLogsState extends State<AdminLogs> {
               },
               child: Container(
                 width: size.width,
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
                     color: second_lightBg,
-                    border: Border.all(
-                        color: darkBg,
-                        width: 1
-                    ),
+                    border: Border.all(color: darkBg, width: 1),
                     borderRadius: BorderRadius.circular(15),
-                    boxShadow: [BoxShadow(
-                        color: darkBg,
-                        blurRadius: 0.8
-                    )]
-
-                ),
+                    boxShadow: [BoxShadow(color: darkBg, blurRadius: 0.8)]),
                 child: Column(
                   children: [
-                    Text("No.of Devices flashed by Factory user :",
-                      style: TextStyle(color: darkBg, fontSize: 18,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                    Text(
+                      "No.of Devices flashed by Factory user :",
+                      style: TextStyle(
+                          color: darkBg, fontSize: 18, fontWeight: FontWeight.w500, fontFamily: baseFont),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.on_device_training_outlined,color: darkBg,shadows: [Shadow(color: darkBg,blurRadius: 0.8)],),
-                        SizedBox(width: 5,),
-                        Text(": ${factoryLogs.length}",
-                          style: TextStyle(color: darkBg, fontSize: 20,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                        Icon(
+                          Icons.on_device_training_outlined,
+                          color: darkBg,
+                          shadows: [Shadow(color: darkBg, blurRadius: 0.8)],
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          ": ${factoryLogs.length}",
+                          style: TextStyle(
+                              color: darkBg, fontSize: 20, fontWeight: FontWeight.w500, fontFamily: baseFont),
                         )
                       ],
                     )
@@ -273,7 +264,9 @@ class AdminLogsState extends State<AdminLogs> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             GestureDetector(
               onTap: () {
                 printFunc("Inside Field user ");
@@ -281,34 +274,34 @@ class AdminLogsState extends State<AdminLogs> {
               },
               child: Container(
                 width: size.width,
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
                     color: second_lightBg,
-                    border: Border.all(
-                        color: darkBg,
-                        width: 1
-                    ),
+                    border: Border.all(color: darkBg, width: 1),
                     borderRadius: BorderRadius.circular(15),
-                    boxShadow: [BoxShadow(
-                        color: darkBg,
-                        blurRadius: 0.8
-                    )]
-
-                ),
+                    boxShadow: [BoxShadow(color: darkBg, blurRadius: 0.8)]),
                 child: Column(
                   children: [
-                    Text("No.of Devices flashed by Field user :",
-                      style: TextStyle(color: darkBg, fontSize: 18,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                    Text(
+                      "No.of Devices flashed by Field user :",
+                      style: TextStyle(
+                          color: darkBg, fontSize: 18, fontWeight: FontWeight.w500, fontFamily: baseFont),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.on_device_training_outlined),
-                        SizedBox(width: 5,),
-                        Text(": ${fieldLogs.length}",
-                          style: TextStyle(color: darkBg, fontSize: 20,fontWeight: FontWeight.w500,fontFamily: baseFont),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          ": ${fieldLogs.length}",
+                          style: TextStyle(
+                              color: darkBg, fontSize: 20, fontWeight: FontWeight.w500, fontFamily: baseFont),
                         )
                       ],
                     )

@@ -34,16 +34,13 @@ List<Widget> factoryUserLog() {
               key: ValueKey('factory_$index'),
               tilePadding: EdgeInsets.all(5),
               backgroundColor: factoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
-              collapsedBackgroundColor:
-              factoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+              collapsedBackgroundColor: factoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
               iconColor: darkBg,
               collapsedIconColor: darkBg,
               collapsedShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  side: BorderSide(color: Colors.black, width: 0.3)),
+                  borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.black, width: 0.3)),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  side: BorderSide(color: Colors.black, width: 0.3)),
+                  borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.black, width: 0.3)),
               title: Container(
                 padding: EdgeInsets.all(5),
                 width: size.width,
@@ -144,8 +141,8 @@ List<Widget> factoryUserLog() {
                                     children: [
                                       Text(
                                         "Phone\nNumber : ",
-                                        style: CardText(
-                                            font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                        style:
+                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -200,8 +197,8 @@ List<Widget> factoryUserLog() {
                                     children: [
                                       Text(
                                         "Firm\nversion : ",
-                                        style: CardText(
-                                            font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                        style:
+                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -256,8 +253,8 @@ List<Widget> factoryUserLog() {
                                     children: [
                                       Text(
                                         "Battery\nService : ",
-                                        style: CardText(
-                                            font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                        style:
+                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -316,7 +313,7 @@ List<Widget> factoryUserLog() {
   return factoryUsersList;
 }
 
-class FactoryLog extends StatelessWidget{
+class FactoryLog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -341,8 +338,7 @@ class FactoryLog extends StatelessWidget{
             ],
           ),
         ),
-      ) ,
+      ),
     );
   }
-
 }
