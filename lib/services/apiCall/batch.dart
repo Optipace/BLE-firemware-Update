@@ -2,6 +2,18 @@ import 'package:flutter/cupertino.dart';
 
 Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
   List<Map<String, dynamic>> batchList = [{}];
+  // sharedPreferences.setString("accessToken", sharedPreferences.getStringList("accessToken").toString()+"d");
+  // await ApiService.callApi(
+  //     context: context,
+  //     method: 'GET',
+  //     endpoint: ApiEndpoints.getAllBatchDetails,
+  //     headerAuth: true,
+  //     onSuccess: (data) async {
+  //       printFunc("Batch data : $data");
+  //
+  //       printFunc("User data required : $batchList");
+  //
+  //     });
 
   batchList = [
     {

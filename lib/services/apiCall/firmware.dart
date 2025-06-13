@@ -1,8 +1,21 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 Future<Map<String, dynamic>> getFirmwareList(BuildContext context) async {
   Map<String, dynamic> firmwareList = {};
 
+  await ApiService.callApi(
+      context: context,
+      method: 'GET',
+      endpoint: ApiEndpoints.getAllBatchDetails,
+      headerAuth: true,
+      onSuccess: (data) async {
+        printFunc("Batch data : $data");
+
+        printFunc("User data required : $firmwareList");
+      });
+  return firmwareList;
   firmwareList = {
     "2.0.3": {
       "id": 1234,

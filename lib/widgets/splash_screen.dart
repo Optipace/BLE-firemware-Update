@@ -35,7 +35,7 @@ class splashScreenState extends State<splashScreen> with SingleTickerProviderSta
         isSession = await checkSession();
         if (isSession) {
           printFunc("Yes Session is active");
-          printFunc(await getUserData());
+          printFunc(await getUserDataFromSharedPref());
           await setUserData();
 
           UserData userData = new UserData();

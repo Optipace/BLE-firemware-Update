@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
@@ -53,11 +53,13 @@ class ApiEndpoints {
   static const String saveProfile = '/api/non-auth/hardware/save_profile';
   static const String getHardwareNumber =
       '/api/non-auth/hardware/getnumber/'; // append ID like getHardwareNumber + "5"
-  static const String saveClient = '/api/non-auth/hardware/save_client';
   static const String getAllFirmwareDetails = '/api/non-auth/hardware/getAllFirmwareDetails';
   static const String getAllProfileDetails = '/api/non-auth/hardware/getAllProfileDetails';
   static const String saveBatch = '/api/non-auth/hardware/save_batch';
   static const String getAllBatchDetails = '/api/non-auth/hardware/getAllBatchDetails';
+
+  static const String saveClient = '/api/non-auth/hardware/save_client';
+  static const String yetToDevelop = '/api/non-auth/hardware/underProgress';
 }
 
 String getUrl(String endpoint) => ApiEndpoints.fullUrl(endpoint); //getUrl(ApiEndpoints.login);
@@ -70,15 +72,26 @@ class ApiService {
     Map<String, dynamic>? bodyOrParams,
     bool errorDisplay = true,
     bool headerAuth = true,
+    bool showLoader = true,
     required Function(dynamic data) onSuccess,
     bool isRetry = false, // prevents infinite loop
   }) async {
     final url = Uri.parse('${ApiEndpoints.baseUrl}$endpoint');
-    final headers = headerAuth ? ApiHeaders().authHeader : ApiHeaders().header;
+
+    Map<String, String> headers = {}; // placeholder, assign later
 
     http.Response response;
 
     try {
+      if (showLoader) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => loadingDialog(),
+        );
+      }
+      headers = headerAuth ? ApiHeaders().authHeader : ApiHeaders().header;
+
       if (method.toUpperCase() == 'POST') {
         response = await http.post(
           url,
@@ -99,14 +112,22 @@ class ApiService {
       } else {
         throw Exception('Unsupported HTTP method: $method');
       }
-
-      if (response.statusCode == 401 && !isRetry) {
+      if (showLoader && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+      final responseBody = jsonDecode(response.body);
+      printFunc(
+          "API CALL DETAIL ________________________\nUrl : $url\nBody :$bodyOrParams \nMethod: $method\nHeader : $headers\nResponce code : ${response.statusCode}\nResponce : \n ${jsonDecode(response.body)}\n--------------------------\n");
+      if (response.statusCode == 401 && !isRetry && headerAuth) {
         //
         // && jsonDecode(response.body)['response']==-5) {
         // Unauthorized: try to refresh token
         bool success = await refreshAccessToken(context);
         if (success) {
           // Retry once with new token
+          printFunc("Recall same api $endpoint");
+          headers = headerAuth ? ApiHeaders().authHeader : ApiHeaders().header;
+
           await callApi(
             context: context,
             method: method,
@@ -127,9 +148,6 @@ class ApiService {
           await forceLogOut(context);
         }
       }
-
-      final responseBody = jsonDecode(response.body);
-
       if (response.statusCode == 200 && responseBody['response']["code"] == 1) {
         onSuccess(responseBody['data']);
       } else {
@@ -140,7 +158,7 @@ class ApiService {
             false,
           );
         }
-        printFunc('API call failed: ${responseBody['message'] ?? 'Unknown error'}');
+        printFunc('API call failed s : ${responseBody['message'] ?? 'Unknown error'}');
       }
     } catch (e) {
       printFunc('Error in API call: $e');
@@ -160,8 +178,12 @@ class ApiService {
       );
 
       final responseBody = jsonDecode(response.body);
+      printFunc("Refresh token : ${response.statusCode}");
+      printFunc("Refresh token url: ${url}");
+      printFunc("Refresh token responseBody : ${responseBody}");
+      if (response.statusCode == 200) {
+        //&& responseBody['response']["code"] == 1) {
 
-      if (response.statusCode == 200 && responseBody['response']["code"] == 1) {
         setTokenInfo(responseBody);
         return true;
       } else {

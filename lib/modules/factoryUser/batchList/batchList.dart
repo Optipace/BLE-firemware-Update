@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 
 // import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/batch/methods.dart';
 
@@ -38,8 +41,12 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
       // await batchBox.clear();
+      sharedPreferences = await SharedPreferences.getInstance();
+      UserData.instance.accessToken = "sdncondscpd";
+      await sharedPreferences.setString("accessToken", "sdncondscpd");
+
       batchList = await getBatchList(context);
-      printFunc("Batch list :-> $batchList");
+      printFunc("Batch list  ss :-> $batchList");
       seriesSixData = await getSeriesData();
       // addBatch(BatchModel.fromJson(batchList[0]));
 

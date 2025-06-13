@@ -149,9 +149,11 @@ Future<dynamic> LogOutUser(BuildContext context) async {
   sharedPreferences = await SharedPreferences.getInstance();
 
   showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () async {
+    Navigator.of(context, rootNavigator: true).pop();
+
     ApiService.performLogoutApiCall(context);
     await forceLogOut(context);
   }, () {
-    Navigator.pop(context);
+    Navigator.of(context, rootNavigator: true).pop();
   });
 }

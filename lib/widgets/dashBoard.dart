@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
+import 'package:tracker_firmware/services/apiCall/logIn.dart';
 
 class Dashboard extends StatelessWidget {
   final String text;
@@ -151,7 +153,7 @@ UserProfileSlider(context, Function? onlogout) {
         ),
 
         // Name
-        Text("${sharedPreferences.getString("name")}",
+        Text("${UserData().name}",
             style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w900,
@@ -174,7 +176,7 @@ UserProfileSlider(context, Function? onlogout) {
                       child: Row(
                         children: [
                           Text(
-                            "${sharedPreferences.getString("designation")}",
+                            "${UserData().designation}",
                             style: TextStyle(
                                 fontFamily: baseFont,
                                 color: darkBg,
@@ -203,7 +205,7 @@ UserProfileSlider(context, Function? onlogout) {
                           ),
                           SizedBox(width: 10),
                           Text(
-                            "${sharedPreferences.getString("phone")}",
+                            "${UserData().phone}",
                             style: TextStyle(
                                 fontFamily: baseFont,
                                 color: darkBg,
@@ -232,7 +234,7 @@ UserProfileSlider(context, Function? onlogout) {
                             width: 10,
                           ),
                           Text(
-                            "${sharedPreferences.getString("email")}",
+                            "${UserData().email}",
                             style: TextStyle(
                                 fontFamily: baseFont,
                                 color: darkBg,
@@ -264,25 +266,42 @@ UserProfileSlider(context, Function? onlogout) {
               color: darkBg,
               size: 28,
               shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))]),
-          title: Text(
-            "Logout",
-            style: TextStyle(
-                fontFamily: baseFont,
-                color: darkBg,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                shadows: [
-                  Shadow(
-                    color: Colors.black,
-                    blurRadius: 0.3,
-                    offset: Offset(0.5, 0.4),
-                  )
-                ]),
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "Logout",
+                  style: TextStyle(
+                      fontFamily: baseFont,
+                      color: darkBg,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 0.3,
+                          offset: Offset(0.5, 0.4),
+                        )
+                      ]),
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
+                  await setSharedPreference(await getEmployeeDetail(context, UserData().phone));
+                  await setUserData();
+                },
+                icon: Icon(Icons.refresh_outlined,
+                    color: darkBg,
+                    size: 28,
+                    shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))]),
+              )
+            ],
           ),
           onTap: onlogout != null
               ? onlogout as void Function()
               : () async {
-                  Navigator.of(context).pop(); // Close the drawer first
+                  Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
                   await Future.delayed(Duration(milliseconds: 300)); // Small delay for smooth UX
                   await LogOutUser(context);
                 },

@@ -8,6 +8,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/admin_main.dart';
+import 'package:tracker_firmware/services/apiCall/deviceType.dart';
 import 'package:tracker_firmware/services/apiCall/firmware.dart';
 import 'package:tracker_firmware/services/apiCall/profile.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
@@ -34,10 +35,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
   bool _validateDropDown = false;
 
   //Password Validation
-  bool _passwordNotSame = false;
 
-  //Profile visibilty
-  bool _visibleProfile = false;
+  //Config visibilty
+  bool _visibleConfig = false;
 
   //----- Controllers for new Entry
   TextEditingController _versionCode = TextEditingController();
@@ -51,38 +51,22 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
   TextEditingController _upperTreshold = TextEditingController();
   TextEditingController _upperVoltage = TextEditingController();
   TextEditingController _description = TextEditingController();
-  TextEditingController _profileName = TextEditingController();
+  TextEditingController _configName = TextEditingController();
   DataController _batterySeries = DataController();
   DataController _firmware = DataController();
-  DataController _profile = DataController();
+  DataController _config = DataController();
 
-  //------- Controllers for Editing Entry
-  TextEditingController _name01 = TextEditingController();
-  TextEditingController _empRegId01 = TextEditingController();
-  TextEditingController _email01 = TextEditingController();
-  TextEditingController _contact01 = TextEditingController();
-  DataController designation01 = DataController();
+  List<Map<String, dynamic>> configList = [{}];
+  List configallList = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      batteryList = {
-        "B6": {
-          "id": 1,
-          "name": "B6",
-          "priority": 1,
-        },
-        "B9": {
-          "id": 2,
-          "name": "B9",
-          "priority": 2,
-        },
-        "B12": {"id": 3, "name": "B12", "priority": 3},
-      };
+      batteryList = await getDeviceTypes(context);
       firmwareList = await getFirmwareList(context);
-      // profileList = await getProfileByID(context,);
+      // configList = await getConfigByID(context,);
     });
   }
 
@@ -177,7 +161,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                     ),
                             ),
                           )),
-                      //New profile
+                      //New config
                       InkWell(
                         onTap: () {
                           setState(() {
@@ -304,7 +288,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
             if (selectedbutton == 1)
               newFirmware(context)
             else if (selectedbutton == 2)
-              newService(context)
+              newConfiguration(context)
             else
               newBatch(context)
           ],
@@ -464,7 +448,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                     onPress: () {
                       ValidateFirmwareFields();
                       validateDropDown(_batterySeries);
-                      validatePassword();
 
                       if (!firmwareValidator && !_validateDropDown) {
                         printFunc("Inside IF COND");
@@ -480,7 +463,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                   width: 15,
                                 ),
                                 Text(
-                                  'User Added Successfully!!',
+                                  'Firmware Added Successfully!!',
                                   style: TextStyle(
                                     color: lightBg,
                                     fontWeight: FontWeight.w300,
@@ -508,7 +491,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     );
   }
 
-  Widget newService(context) {
+  Widget newConfiguration(context) {
     return Card(
       elevation: 5,
       margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
@@ -552,15 +535,15 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         height: 20,
                       ),
                       //----2.0.3-----
-                      // ---- Profile name ------
-                      LabelText(text: "Profile Name :"),
+                      // ---- Config name ------
+                      LabelText(text: "Config Name :"),
                       TextFeildNewUser(
-                        hintText: "Enter Profile Name  ",
-                        Controller: _profileName,
+                        hintText: "Enter Config Name  ",
+                        Controller: _configName,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _profileName.text.trim().isEmpty
-                            ? "Please Enter the Profile Name"
+                        etext: firmwareValidator && _configName.text.trim().isEmpty
+                            ? "Please Enter the Config Name"
                             : "",
                       ),
                       SizedBox(
@@ -694,9 +677,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     );
   }
 
-  List<Map<String, dynamic>> profileList = [{}];
-  List profileallList = [];
-
   Widget newBatch(context) {
     return Card(
       elevation: 5,
@@ -745,10 +725,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       LabelText(text: "Batch Name :"),
                       TextFeildNewUser(
                         hintText: "Enter Batch Name  ",
-                        Controller: _profileName,
+                        Controller: _configName,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _profileName.text.trim().isEmpty
+                        etext: firmwareValidator && _configName.text.trim().isEmpty
                             ? "Please Enter the batch Name"
                             : "",
                       ),
@@ -813,7 +793,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             color: darkBg,
                           ),
                           press: () async {
-                            _profile.cleardata();
+                            _config.cleardata();
                             await BottomSheet_Widget(context, [
                               MapListItemBuilder(
                                 listItems: batteryList,
@@ -823,7 +803,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             ]);
                             setState(() {});
                             setState(() {
-                              _visibleProfile = true;
+                              _visibleConfig = true;
                             });
                           },
                         ),
@@ -832,38 +812,37 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         height: 8,
                       ),
 
-                      // ----- Profile[DropDown] -----
+                      // ----- Config[DropDown] -----
                       Visibility(
-                        visible: _visibleProfile,
+                        visible: _visibleConfig,
                         child: GestureDetector(
                           child: PrimeryDropDownButton(
                             isEnabled: true,
-                            tail: ErrorContainer(
-                                show: _validateDropDown, errorMsg: "Please Select the Profile"),
-                            mainText: "Profile",
-                            text: _profile.Text != "" ? _profile.getText : "select Profile",
+                            tail:
+                                ErrorContainer(show: _validateDropDown, errorMsg: "Please Select the Config"),
+                            mainText: "Config",
+                            text: _config.Text != "" ? _config.getText : "select Config",
                             icon: Icon(
                               Icons.keyboard_arrow_down_sharp,
                               color: darkBg,
                             ),
                             press: () async {
-                              profileList =
-                                  await getProfileByID(context, _batterySeries.obj["id"].toString());
-                              printFunc("DEMO DEMO DEMO : ${profileList}");
+                              configList = await getProfileByID(context, _batterySeries.obj["id"].toString());
+                              printFunc("DEMO DEMO DEMO : ${configList}");
                               Map<String, Map<String, dynamic>> deviceMap = {
-                                for (var item in profileList) item['name']: item
+                                for (var item in configList) item['name']: item
                               };
 
                               await BottomSheet_Widget(context, [
                                 MapListItemBuilder(
                                   listItems: deviceMap,
                                   press: () {},
-                                  selected: _profile,
+                                  selected: _config,
                                 )
                               ]);
                               setState(() {});
                               printFunc(
-                                  "DEMO DATACONTROLER \n  battery ${_batterySeries.getText} \n${_batterySeries.obj["id"]}\n firmware ${_firmware.getText}\n${_firmware.getobj} \n profile ${_profile.getText}\n${_profile.getobj}");
+                                  "DEMO DATACONTROLER \n  battery ${_batterySeries.getText} \n${_batterySeries.obj["id"]}\n firmware ${_firmware.getText}\n${_firmware.getobj} \n config ${_config.getText}\n${_config.getobj}");
                             },
                           ),
                         ),
@@ -904,20 +883,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     Future.delayed(Duration(seconds: 3), () {
       setState(() {
         firmwareValidator = false;
-      });
-    });
-  }
-
-  void validatePassword() {
-    print("Demo validatePassword ${_passwordNotSame}");
-    if (_password.text != _repassword.text!) {
-      setState(() {
-        _passwordNotSame = true;
-      });
-    }
-    Future.delayed(Duration(seconds: 3), () {
-      setState(() {
-        _passwordNotSame = false;
       });
     });
   }
