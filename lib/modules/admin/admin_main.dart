@@ -327,7 +327,7 @@ class AdminMainState extends State<AdminMain> {
                           setState(() {
                             pluss = !pluss;
                           });
-                          ShowSnackBarMessage(context, 'User Updated Successfully!!', false);
+                          ShowSnackBarMessage(context, 'User Updated Successfully!!', null);
 
                           setState(() {});
                         },

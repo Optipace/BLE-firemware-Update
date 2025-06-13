@@ -48,7 +48,7 @@ Future<Map<String, dynamic>?> getEmployeeDetail(BuildContext context, String con
     "contact": contactNumber,
   };
   // String endPoint = "";
-  print("DEMO REQUEST LOGIN API BODY : $request");
+  print("DEMO REQUEST LOGIN API BODY 2: $request");
 
   await ApiService.callApi(
       context: context,

@@ -7,6 +7,7 @@ import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/services/apiCall/logIn.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
@@ -407,35 +408,7 @@ class AdminNewUserState extends State<AdminNewUser> {
 
                               if (!validateUser && !_validateDropDown) {
                                 printFunc("Inside IF COND");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Row(
-                                      children: [
-                                        Icon(
-                                          CupertinoIcons.checkmark_seal_fill,
-                                          color: lightBg,
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          'User Added Successfully!!',
-                                          style: TextStyle(
-                                            color: lightBg,
-                                            fontWeight: FontWeight.w300,
-                                            fontFamily: baseFont,
-                                            fontSize: 22,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    behavior: SnackBarBehavior.floating,
-                                    backgroundColor: darkBg,
-                                    elevation: 5,
-                                    margin: EdgeInsets.all(16),
-                                    duration: Duration(seconds: 3),
-                                  ),
-                                );
+                                ShowSnackBarMessage(context,'User Added Successfully!!',null);
                                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
                               }
                             }),
@@ -889,35 +862,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                               if (!_validateEditUser &&
                                                                   !_validateEditDropDown) {
                                                                 printFunc("Insid if cond");
-                                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                                  SnackBar(
-                                                                    content: Row(
-                                                                      children: [
-                                                                        Icon(
-                                                                          CupertinoIcons.checkmark_seal_fill,
-                                                                          color: lightBg,
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width: 15,
-                                                                        ),
-                                                                        Text(
-                                                                          'User Updated Successfully!!',
-                                                                          style: TextStyle(
-                                                                            color: lightBg,
-                                                                            fontWeight: FontWeight.w300,
-                                                                            fontFamily: baseFont,
-                                                                            fontSize: 22,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    behavior: SnackBarBehavior.floating,
-                                                                    backgroundColor: darkBg,
-                                                                    elevation: 5,
-                                                                    margin: EdgeInsets.all(16),
-                                                                    duration: Duration(milliseconds: 800),
-                                                                  ),
-                                                                );
+                                                                ShowSnackBarMessage(context,'User Updated Successfully!!',null);
                                                                 // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => AdminMain()));
                                                               } else {
                                                                 printFunc("Inside else cond");
@@ -930,40 +875,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                               setState(() {
                                                                 _activeUser = false;
                                                               });
-                                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                                SnackBar(
-                                                                  content: Row(
-                                                                    children: [
-                                                                      SizedBox(
-                                                                        width: 20,
-                                                                      ),
-                                                                      Text(
-                                                                        'Employee Deactivted',
-                                                                        style: TextStyle(
-                                                                          color: lightBg,
-                                                                          fontWeight: FontWeight.w300,
-                                                                          fontFamily: baseFont,
-                                                                          fontSize: 22,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  behavior: SnackBarBehavior.floating,
-                                                                  backgroundColor: darkBg,
-                                                                  elevation: 5,
-                                                                  margin: EdgeInsets.only(
-                                                                      left: 16,
-                                                                      right: 16,
-                                                                      top: 16,
-                                                                      bottom: 21.5),
-                                                                  shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.only(
-                                                                        bottomLeft: Radius.circular(20),
-                                                                        bottomRight: Radius.circular(20)),
-                                                                  ),
-                                                                  duration: Duration(milliseconds: 500),
-                                                                ),
-                                                              );
+                                                              ShowSnackBarMessage(context,'Employee Deactivted',null);
                                                             })
                                                       ],
                                                     ),
@@ -977,37 +889,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                         setState(() {
                                                           _activeUser = true;
                                                         });
-                                                        ScaffoldMessenger.of(context).showSnackBar(
-                                                          SnackBar(
-                                                            content: Row(
-                                                              children: [
-                                                                SizedBox(
-                                                                  width: 20,
-                                                                ),
-                                                                Text(
-                                                                  'Employee Activaited',
-                                                                  style: TextStyle(
-                                                                    color: lightBg,
-                                                                    fontWeight: FontWeight.w300,
-                                                                    fontFamily: baseFont,
-                                                                    fontSize: 22,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            behavior: SnackBarBehavior.floating,
-                                                            backgroundColor: darkBg,
-                                                            elevation: 5,
-                                                            margin: EdgeInsets.only(
-                                                                left: 16, right: 16, top: 16, bottom: 21.5),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.only(
-                                                                  bottomLeft: Radius.circular(20),
-                                                                  bottomRight: Radius.circular(20)),
-                                                            ),
-                                                            duration: Duration(milliseconds: 500),
-                                                          ),
-                                                        );
+                                                        ShowSnackBarMessage(context,'Employee Activaited',null);
                                                       }),
                                                 )
                                         ],

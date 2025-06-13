@@ -12,6 +12,7 @@ import 'package:tracker_firmware/services/apiCall/firmware.dart';
 import 'package:tracker_firmware/services/apiCall/profile.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
@@ -468,35 +469,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       if (!firmwareValidator && !_validateDropDown) {
                         printFunc("Inside IF COND");
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Row(
-                              children: [
-                                Icon(
-                                  CupertinoIcons.checkmark_seal_fill,
-                                  color: lightBg,
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  'User Added Successfully!!',
-                                  style: TextStyle(
-                                    color: lightBg,
-                                    fontWeight: FontWeight.w300,
-                                    fontFamily: baseFont,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            behavior: SnackBarBehavior.floating,
-                            backgroundColor: darkBg,
-                            elevation: 5,
-                            margin: EdgeInsets.all(16),
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
+                        ShowSnackBarMessage(context,'User Added Successfully!!', null);
                         Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
                       }
                     }),
