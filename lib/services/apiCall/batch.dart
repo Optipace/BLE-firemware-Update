@@ -76,8 +76,8 @@ Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
       },
     },
     {
-      "id": "125",
-      "name": "B2C2F2",
+      "id": "126",
+      "name": "B2C2F3",
       "description": "abcwer",
       "firmware": {
         "id": 21234,
@@ -102,7 +102,63 @@ Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
         "saved": false,
         "deviceType": "B6"
       }
-    }
+    },
+    {
+      "id": "127",
+      "name": "B2C2F4",
+      "description": "abcwer",
+      "firmware": {
+        "id": 21234,
+        "version": "1.0.3",
+        "releaseNote": "01/03/2025",
+        "versionName": "b6 2.0.3",
+        "deviceTypeId": "2",
+        "file": "Base64Data",
+        "saved": false,
+        "deviceType": "B6"
+      },
+      "profile": {
+        "id": 1236,
+        "name": "B6P3",
+        "releaseNote": "26/05/2025",
+        "uT": "4.30",
+        "uV": "4.20",
+        "lT": "3.10",
+        "lV": "3.15",
+        "deviceTypeId": "1",
+        "file": "Base64Data",
+        "saved": false,
+        "deviceType": "B6"
+      }
+    },
+    {
+      "id": "128",
+      "name": "B2C2F5",
+      "description": "abcwer",
+      "firmware": {
+        "id": 21234,
+        "version": "1.0.3",
+        "releaseNote": "01/03/2025",
+        "versionName": "b6 2.0.3",
+        "deviceTypeId": "2",
+        "file": "Base64Data",
+        "saved": false,
+        "deviceType": "B6"
+      },
+      "profile": {
+        "id": 1236,
+        "name": "B6P3",
+        "releaseNote": "26/05/2025",
+        "uT": "4.30",
+        "uV": "4.20",
+        "lT": "3.10",
+        "lV": "3.15",
+        "deviceTypeId": "1",
+        "file": "Base64Data",
+        "saved": false,
+        "deviceType": "B6"
+      }
+    },
   ];
 
   return batchList;

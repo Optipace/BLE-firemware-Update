@@ -143,7 +143,7 @@ Future<Map<String, dynamic>> getEmployeeDetail(BuildContext context, String cont
 //         'status': 'Active',
 //         'deviceId': 'ahdsjsdhvdshviu',
 //       };
-        printFunc("empData data required : $empData");
+        printFunc("User data required : $empData");
       });
   return empData;
 }

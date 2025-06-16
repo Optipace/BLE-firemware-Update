@@ -28,11 +28,13 @@ void printLog(var str) {
 }
 
 void requestPermission() async {
-  if (await Permission.storage.request().isGranted) {
-  } else {
+  if (await Permission.storage
+      .request()
+      .isGranted) {} else {
     await Permission.storage.request();
-    if (await Permission.storage.request().isGranted) {
-    } else {
+    if (await Permission.storage
+        .request()
+        .isGranted) {} else {
       await Permission.storage.request();
     }
   }
@@ -107,13 +109,29 @@ Future<int> checkInternet(context) async {
 }
 
 getSize(BuildContext context) {
-  size = MediaQuery.of(context).size;
+  size = MediaQuery
+      .of(context)
+      .size;
 
-  if (MediaQuery.of(context).size.width <= MediaQuery.of(context).size.height) {
-    size = MediaQuery.of(context).size;
+  if (MediaQuery
+      .of(context)
+      .size
+      .width <= MediaQuery
+      .of(context)
+      .size
+      .height) {
+    size = MediaQuery
+        .of(context)
+        .size;
   } else {
-    size.width = MediaQuery.of(context).size.width / 2;
-    size.height = MediaQuery.of(context).size.height;
+    size.width = MediaQuery
+        .of(context)
+        .size
+        .width / 2;
+    size.height = MediaQuery
+        .of(context)
+        .size
+        .height;
   }
 }
 
@@ -121,10 +139,8 @@ class OneDecimalInputFormatter extends TextInputFormatter {
   final RegExp _regExp = RegExp(r'^\d{0,2}(\.\d{0,1})?$'); // Adjust digits as needed
 
   @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue,) {
     if (_regExp.hasMatch(newValue.text)) {
       return newValue;
     }
@@ -141,7 +157,7 @@ Future<dynamic> forceLogOut(BuildContext context) async {
   // Optionally navigate to login screen
   Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute(builder: (_) => const LoginScreen()),
-    (route) => false,
+        (route) => false,
   );
 }
 
