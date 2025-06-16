@@ -34,15 +34,16 @@ Future<void> createSharedPreference() async {
 }
 
 Future<bool> setUserData() async {
-  Map<String, dynamic> userinfo = await getUserData();
+  printFunc("setUserData : ");
+  Map<String, dynamic> userinfo = await getUserDataFromSharedPref();
   // userinfo["deviceId"]=userinfo["UUID"];
-
+  UserData().fromJson(userinfo);
   return true;
 }
 
 Future<bool> setSharedPreference(Map<String, dynamic> userinfo) async {
   sharedPreferences = await SharedPreferences.getInstance();
-
+  printFunc("Set Shared preference data : $userinfo");
   userinfo.forEach((key, value) {
     sharedPreferences.setString(key, value.toString().trim());
   });
@@ -50,7 +51,7 @@ Future<bool> setSharedPreference(Map<String, dynamic> userinfo) async {
   return true;
 }
 
-Future<Map<String, dynamic>> getUserData() async {
+Future<Map<String, dynamic>> getUserDataFromSharedPref() async {
   sharedPreferences = await SharedPreferences.getInstance();
   // Get all keys
   final keys = sharedPreferences.getKeys();
@@ -60,18 +61,22 @@ Future<Map<String, dynamic>> getUserData() async {
   for (String key in keys) {
     dynamic value = sharedPreferences.get(key);
     allData[key] = value;
+
     printFunc("Key: $key, Value: $value"); // Print the data
   }
+  printFunc("getUserData : $allData");
+
   return allData; //sharedPreferences.getBool('user_logged_in') ?? false;
 }
 
 Future setTokenInfo(responseBody) async {
+  printFunc("New Token refresh : $responseBody");
   sharedPreferences = await SharedPreferences.getInstance();
 
-  sharedPreferences.setString("accessToken", responseBody['data']['accessToken']);
-  sharedPreferences.setString("refreshToken", responseBody['data']['refreshToken']);
-  UserData.instance.accessToken = responseBody['data']['accessToken'];
-  UserData.instance.refreshToken = responseBody['data']['refreshToken'];
+  sharedPreferences.setString("accessToken", responseBody['accessToken']);
+  sharedPreferences.setString("refreshToken", responseBody['refreshToken']);
+  UserData.instance.accessToken = responseBody['accessToken'];
+  UserData.instance.refreshToken = responseBody['refreshToken'];
 }
 
 Future setDeviceId() async {
