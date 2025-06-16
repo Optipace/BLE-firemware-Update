@@ -133,7 +133,7 @@ Future<Map<String, dynamic>> getEmployeeDetail(BuildContext context, String cont
 
 //required format
 // {
-//   'userId': 'U12345',
+//         'userId': 'U12345',
 //         'name': 'John Doe',
 //         'email': 'john.doe@example.com',
 //         'phone': '+91$contactNumber',
@@ -143,19 +143,31 @@ Future<Map<String, dynamic>> getEmployeeDetail(BuildContext context, String cont
 //         'status': 'Active',
 //         'deviceId': 'ahdsjsdhvdshviu',
 //       };
-        printFunc("User data required : $empData");
+        printFunc("empData data required : $empData");
       });
   return empData;
 }
 
 void navigateToDashBoard(BuildContext context, int designation_id) {
   if (designation_id == 1) {
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminMain()));
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => AdminMain()),
+      (route) => false,
+    );
+    // Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminMain()));
   } else if (designation_id == 2) {
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FactoryMain()));
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => FactoryMain()),
+      (route) => false,
+    );
+    // Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FactoryMain()));
     return;
   } else if (designation_id == 3) {
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FieldMain()));
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => FieldMain()),
+      (route) => false,
+    );
+    // Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FieldMain()));
     return;
   }
 }

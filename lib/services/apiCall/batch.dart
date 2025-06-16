@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
 Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
   List<Map<String, dynamic>> batchList = [{}];
@@ -119,4 +121,34 @@ Future<List<Map<String, dynamic>>> getBatchByID(BuildContext context, String id)
   }
 
   return batchByID;
+}
+
+Future<bool> addNewBatch(
+  BuildContext context, {
+  required String config,
+  required String firmware,
+  required String batchName,
+  required String description,
+}) async {
+  final body = {
+    "firmwareId": firmware,
+    "profileId": config,
+    "discription": description,
+    "batchName": batchName
+  };
+
+  bool isSuccess = false;
+
+  await ApiService.callApi(
+    context: context,
+    method: 'POST',
+    endpoint: ApiEndpoints.saveBatch,
+    bodyOrParams: body,
+    onSuccess: (data) {
+      ShowSnackBarMessage(context, 'Batch Created successfully!', true);
+      isSuccess = true;
+    },
+  );
+
+  return isSuccess;
 }

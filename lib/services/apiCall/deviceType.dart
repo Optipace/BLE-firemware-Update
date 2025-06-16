@@ -17,19 +17,23 @@ Future<Map<String, Map<String, Object>>> getDeviceTypes(BuildContext context) as
     "B12": {"id": 3, "name": "B12", "priority": 3},
   };
 
-  return deviceTypes;
-
+  // return deviceTypes;
+  deviceTypes.clear();
   await ApiService.callApi(
       context: context,
       method: 'GET',
-      endpoint: ApiEndpoints.yetToDevelop,
+      endpoint: ApiEndpoints.getAllDeviceTypes,
       headerAuth: true,
       errorDisplay: false,
       onSuccess: (data) async {
         printFunc("Devcie Types responce :$data");
         deviceTypes.clear();
         for (Map device in data) {
-          deviceTypes[device["name"]] = data;
+          deviceTypes[device["deviceName"]] = {
+            "id": device["id"],
+            "name": device["deviceName"],
+            "deviceName": device["deviceName"],
+          };
         }
       });
 

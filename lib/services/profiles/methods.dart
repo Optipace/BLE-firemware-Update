@@ -7,24 +7,24 @@ Future<void> saveProfileListToHive(List<Map<String, dynamic>> profileList) async
   final profileBox = await Hive.openBox<ProfileSeriesModel>('$serviceHiveBox');
 
   for (var series in profileList) {
-    List<ProfileModel> profileModels = (series['profile'] as List).map((f) {
+    List<ProfileModel> profileModels = (series['configuration'] as List).map((f) {
       return ProfileModel(
         id: f['id'] ?? 0,
         name: f['name'] ?? '',
-        releaseNote: f['releaseNote'] ?? '',
-        uT: f['uT'] ?? '',
-        uV: f['uV'] ?? '',
-        lT: f['lT'] ?? '',
-        lV: f['lV'] ?? '',
+        releaseNote: f['discription'] ?? '',
+        uT: f['upperThreshold'] ?? '',
+        uV: f['upperVoltage'] ?? '',
+        lT: f['lowerThreshold'] ?? '',
+        lV: f['lowerVoltage'] ?? '',
         saved: true,
-        deviceTypeId: f['deviceTypeId'] ?? '',
+        deviceTypeId: f['deviceId'] ?? '',
         deviceType: f['deviceType'] ?? '',
       );
     }).toList();
 
     var seriesModel = ProfileSeriesModel(
       id: series['id'],
-      name: series['name'],
+      name: series['deviceName'],
       profile: profileModels,
     );
 

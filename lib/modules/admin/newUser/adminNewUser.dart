@@ -860,6 +860,11 @@ class AdminNewUserState extends State<AdminNewUser> {
         _passwordNotSame = false;
       });
     }
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        _passwordNotSame = false;
+      });
+    });
   }
 
   void validatePhn() {

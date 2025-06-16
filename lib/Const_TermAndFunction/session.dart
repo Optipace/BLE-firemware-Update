@@ -75,8 +75,12 @@ Future setTokenInfo(responseBody) async {
 
   sharedPreferences.setString("accessToken", responseBody['accessToken']);
   sharedPreferences.setString("refreshToken", responseBody['refreshToken']);
+  UserData().accessToken = responseBody['accessToken'];
+  UserData().refreshToken = responseBody['refreshToken'];
+
   UserData.instance.accessToken = responseBody['accessToken'];
   UserData.instance.refreshToken = responseBody['refreshToken'];
+  printFunc("user token after update ${UserData.instance.accessToken}\n${UserData.instance.refreshToken}");
 }
 
 Future setDeviceId() async {

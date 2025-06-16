@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/modules/admin/admin_main.dart';
-import 'package:tracker_firmware/services/apiCall/deviceType.dart';
+import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/apiCall/firmware.dart';
 import 'package:tracker_firmware/services/apiCall/profile.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
@@ -26,12 +25,13 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
   int selectedbutton = 1;
 
   Map<String, dynamic> batteryList = {};
-  String? fileBase64;
+  String? firmwareFileBase64;
 
   Map<String, dynamic> firmwareList = {};
 
   // -- New user
   bool firmwareValidator = false;
+  bool configValidator = false;
   bool _validateDropDown = false;
 
   //Password Validation
@@ -40,12 +40,13 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
   bool _visibleConfig = false;
 
   //----- Controllers for new Entry
+  String? selectedFileName;
+  int? selectedFileSizeInBytes;
+
   TextEditingController _versionCode = TextEditingController();
   TextEditingController _releaseNote = TextEditingController();
   TextEditingController _firmWareVersionName = TextEditingController();
-  TextEditingController _contact = TextEditingController();
-  TextEditingController _password = TextEditingController();
-  TextEditingController _repassword = TextEditingController();
+
   TextEditingController _lowerVoltage = TextEditingController();
   TextEditingController _lowerTreshold = TextEditingController();
   TextEditingController _upperTreshold = TextEditingController();
@@ -56,7 +57,15 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
   DataController _firmware = DataController();
   DataController _config = DataController();
 
+//--------Batch --------------
+  TextEditingController _batchName = TextEditingController();
+  TextEditingController _batchDescription = TextEditingController();
+  bool _validateFirmware = false;
+  bool _validateConfig = false;
+  bool _validatedeviceType = false;
+  bool batchValidator = false;
   List<Map<String, dynamic>> configList = [{}];
+  List<Map<String, dynamic>> allConfigList = [{}];
   List configallList = [];
 
   @override
@@ -64,9 +73,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      batteryList = await getDeviceTypes(context);
+      // batteryList = await getDeviceTypes(context);
       firmwareList = await getFirmwareList(context);
-      // configList = await getConfigByID(context,);
+      allConfigList = await getAllConfigurationList(context);
+      batteryList = {for (var item in allConfigList) item['deviceName']: item};
     });
   }
 
@@ -330,7 +340,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                   ),
                 ),
               ),
-              // Text fields
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
@@ -375,112 +384,77 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       //B5 v 2.0.3
                       // Version name
-                      LabelText(text: "Version Name :"),
-                      TextFeildNewUser(
-                        hintText: "Enter Version Name",
-                        Controller: _firmWareVersionName,
-                        onChanged: (value) {},
-                        enable: true,
-                        etext: firmwareValidator && _firmWareVersionName.text.trim().isEmpty
-                            ? "Please Enter the Version Name"
-                            : "",
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-
-                      //----Battery series---- [DROPDOWN]
-                      /*
-                      GestureDetector(
-                        child: PrimeryDropDownButton(
-                          isEnabled: true,
-                          tail: ErrorContainer(
-                              show: _validateDropDown,
-                              errorMsg: "Please Select the Battery Series"),
-                          mainText: "Select Battery Series",
-                          text: _batterySeries.Text != ""
-                              ? _batterySeries.getText
-                              : "Battery Series",
-                          icon: Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: darkBg,
-                          ),
-                          press: () async {
-                            await BottomSheet_Widget(context, [
-                              MapListItemBuilder(
-                                listItems: batteryList,
-                                press: () {},
-                                selected: _batterySeries,
-                              )
-                            ]);
-                            setState(() {});
-                          },
+                      // LabelText(text: "Version Name :"),
+                      // TextFeildNewUser(
+                      //   hintText: "Enter Version Name",
+                      //   Controller: _firmWareVersionName,
+                      //   onChanged: (value) {},
+                      //   enable: true,
+                      //   etext: firmwareValidator && _firmWareVersionName.text.trim().isEmpty
+                      //       ? "Please Enter the Version Name"
+                      //       : "",
+                      // ),
+                      // SizedBox(
+                      //   height: 8,
+                      // ),
+                      LabelText(text: "Select Firmware :"),
+                      Center(
+                        child: Column(
+                          children: [
+                            PrimaryButton(
+                              width: size.width / 2.5,
+                              height: 40,
+                              tailIcon: Icon(
+                                CupertinoIcons.arrow_up_doc,
+                                shadows: [Shadow(color: darkBg, blurRadius: 0.5)],
+                              ),
+                              text: "Select file",
+                              onPress: pickPdfAndConvertToBase64,
+                            ),
+                            SizedBox(height: 10),
+                            if (selectedFileName != null && selectedFileSizeInBytes != null)
+                              Text(
+                                "Selected File: $selectedFileName (${(selectedFileSizeInBytes! / 1024).toStringAsFixed(2)} KB)",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: baseFont,
+                                  color: darkBg,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
+
                       SizedBox(
                         height: 8,
                       ),
-                       */
                     ],
                   )),
 
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               // add firmware btn
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: PrimaryButton(
-                  width: size.width / 2.5,
-                  height: 40,
-                  tailIcon: Icon(CupertinoIcons.arrow_up_doc,
-                      // color: darkBg,
-                      shadows: [Shadow(color: darkBg, blurRadius: 0.5)]),
-                  text: "ADD Firmware",
-                  onPress: pickPdfAndConvertToBase64,
-                ),
-              ),
+
               // upload btn
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: manageUserBtn(
                     text: "Upload Firmware",
-                    onPress: () {
+                    onPress: () async {
                       ValidateFirmwareFields();
-                      validateDropDown(_batterySeries);
 
-                      if (!firmwareValidator && !_validateDropDown) {
+                      if (!firmwareValidator && firmwareFileBase64 != null && firmwareFileBase64 != "") {
                         printFunc("Inside IF COND");
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Row(
-                              children: [
-                                Icon(
-                                  CupertinoIcons.checkmark_seal_fill,
-                                  color: lightBg,
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  'Firmware Added Successfully!!',
-                                  style: TextStyle(
-                                    color: lightBg,
-                                    fontWeight: FontWeight.w300,
-                                    fontFamily: baseFont,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            behavior: SnackBarBehavior.floating,
-                            backgroundColor: darkBg,
-                            elevation: 5,
-                            margin: EdgeInsets.all(16),
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
+                        if (await addNewFirmware(context,
+                            versionName: '${_firmWareVersionName.text}',
+                            versionCode: '${_versionCode.text}',
+                            releaseNote: '${_releaseNote.text}',
+                            // firmwareFile: '$firmwareFileBase64'))
+                            firmwareFile: '$selectedFileName')) {
+                          clearFirmware();
+                          // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                        }
                       }
                     }),
               ),
@@ -542,7 +516,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _configName,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _configName.text.trim().isEmpty
+                        etext: configValidator && _configName.text.trim().isEmpty
                             ? "Please Enter the Config Name"
                             : "",
                       ),
@@ -550,15 +524,82 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         height: 10,
                       ),
 
-                      //update on bluetooth conectivity
-                      // ---- Description -----
+                      // ----- Upper threshold -------
+                      const LabelText(text: "Upper Threshold :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Upper Threshold",
+                        inputFormatters: [OneDecimalInputFormatter()],
+                        type: TextInputType.number,
+                        Controller: _upperTreshold,
+                        onChanged: (value) {},
+                        enable: true,
+                        etext: configValidator && _upperTreshold.text.trim().isEmpty
+                            ? "Please Enter the Upper Threshold"
+                            : "",
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+
+                      // -------- Upper Voltage--------
+                      const LabelText(text: "Upper Voltage :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Upper Voltage",
+                        inputFormatters: [OneDecimalInputFormatter()],
+                        // Correct
+                        type: TextInputType.number,
+
+                        Controller: _upperVoltage,
+                        onChanged: (value) {},
+                        enable: true,
+                        etext: configValidator && _upperVoltage.text.trim().isEmpty
+                            ? "Please Enter the Upper Voltage"
+                            : "",
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+
+                      // ---------- Lower Threshold ----------
+                      const LabelText(text: "Lower Threshold :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Lower Threshold",
+                        inputFormatters: [OneDecimalInputFormatter()],
+                        type: TextInputType.number,
+                        Controller: _lowerTreshold,
+                        onChanged: (value) {},
+                        enable: true,
+                        etext: configValidator && _lowerTreshold.text.trim().isEmpty
+                            ? "Please Enter the Lower Threshold"
+                            : "",
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+
+                      // ---------- Lower Voltage -------
+                      const LabelText(text: "Lower Voltage :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Lower Voltage",
+                        inputFormatters: [OneDecimalInputFormatter()],
+                        type: TextInputType.number,
+                        Controller: _lowerVoltage,
+                        onChanged: (value) {},
+                        enable: true,
+                        etext: configValidator && _lowerVoltage.text.trim().isEmpty
+                            ? "Please Enter the Lower Voltage"
+                            : "",
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ), // ---- Description -----
                       LabelText(text: "Description :"),
                       TextFeildNewUser(
                         hintText: "Description",
                         Controller: _description,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _description.text.trim().isEmpty
+                        etext: configValidator && _description.text.trim().isEmpty
                             ? "Please Enter the Description"
                             : "",
                       ),
@@ -593,82 +634,33 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       SizedBox(
                         height: 8,
                       ),
-
-                      // ----- Upper threshold -------
-                      const LabelText(text: "Upper Threshold :"),
-                      TextFeildNewUser(
-                        hintText: "Enter Upper Threshold",
-                        inputFormatters: [OneDecimalInputFormatter()],
-                        type: TextInputType.number,
-                        Controller: _upperTreshold,
-                        onChanged: (value) {},
-                        enable: true,
-                        etext: firmwareValidator && _upperTreshold.text.trim().isEmpty
-                            ? "Please Enter the Upper Threshold"
-                            : "",
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-
-                      // -------- Upper Voltage--------
-                      const LabelText(text: "Upper Voltage :"),
-                      TextFeildNewUser(
-                        hintText: "Enter Upper Voltage",
-                        inputFormatters: [OneDecimalInputFormatter()],
-                        // Correct
-                        type: TextInputType.number,
-
-                        Controller: _upperVoltage,
-                        onChanged: (value) {},
-                        enable: true,
-                        etext: firmwareValidator && _upperVoltage.text.trim().isEmpty
-                            ? "Please Enter the Upper Voltage"
-                            : "",
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-
-                      // ---------- Lower Threshold ----------
-                      const LabelText(text: "Lower Threshold :"),
-                      TextFeildNewUser(
-                        hintText: "Enter Lower Threshold",
-                        inputFormatters: [OneDecimalInputFormatter()],
-                        type: TextInputType.number,
-                        Controller: _lowerTreshold,
-                        onChanged: (value) {},
-                        enable: true,
-                        etext: firmwareValidator && _lowerTreshold.text.trim().isEmpty
-                            ? "Please Enter the Lower Threshold"
-                            : "",
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-
-                      // ---------- Lower Voltage -------
-                      const LabelText(text: "Lower Voltage :"),
-                      TextFeildNewUser(
-                        hintText: "Enter Lower Voltage",
-                        inputFormatters: [OneDecimalInputFormatter()],
-                        type: TextInputType.number,
-                        Controller: _lowerVoltage,
-                        onChanged: (value) {},
-                        enable: true,
-                        etext: firmwareValidator && _lowerVoltage.text.trim().isEmpty
-                            ? "Please Enter the Lower Voltage"
-                            : "",
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
                     ],
                   )),
               //Upload btn
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
-                child: manageUserBtn(text: "Upload Config", onPress: () {}),
+                child: manageUserBtn(
+                    text: "Upload Config",
+                    onPress: () async {
+                      ValidateConfigFields();
+                      validateDropDown(_batterySeries);
+                      if (!configValidator && !_validateDropDown) {
+                        printFunc("Inside IF COND");
+                        if (await addNewConfig(
+                          context,
+                          configName: _configName.text.trim(),
+                          upperThreshold: _upperTreshold.text.trim(),
+                          upperVoltage: _upperVoltage.text.trim(),
+                          lowerThreshold: _lowerTreshold.text.trim(),
+                          lowerVoltage: _lowerVoltage.text.trim(),
+                          description: _description.text.trim(),
+                          batterySeriesId: (_batterySeries.obj["id"]).toString(),
+                        )) {
+                          clearConfig();
+                          // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                        }
+                      }
+                    }),
               ),
             ],
           ),
@@ -725,10 +717,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       LabelText(text: "Batch Name :"),
                       TextFeildNewUser(
                         hintText: "Enter Batch Name  ",
-                        Controller: _configName,
+                        Controller: _batchName,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _configName.text.trim().isEmpty
+                        etext: batchValidator && _batchName.text.trim().isEmpty
                             ? "Please Enter the batch Name"
                             : "",
                       ),
@@ -741,10 +733,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       LabelText(text: "Description :"),
                       TextFeildNewUser(
                         hintText: "Description",
-                        Controller: _description,
+                        Controller: _batchDescription,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _description.text.trim().isEmpty
+                        etext: batchValidator && _batchDescription.text.trim().isEmpty
                             ? "Please Enter the Description"
                             : "",
                       ),
@@ -757,7 +749,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: PrimeryDropDownButton(
                           isEnabled: true,
                           tail:
-                              ErrorContainer(show: _validateDropDown, errorMsg: "Please Select the firmware"),
+                              ErrorContainer(show: _validateFirmware, errorMsg: "Please Select the firmware"),
                           mainText: "Firmware",
                           text: _firmware.Text != "" ? _firmware.getText : "Select the firmware",
                           icon: Icon(
@@ -785,7 +777,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: PrimeryDropDownButton(
                           isEnabled: true,
                           tail: ErrorContainer(
-                              show: _validateDropDown, errorMsg: "Please Select the Battery Series"),
+                              show: _validatedeviceType, errorMsg: "Please Select the Battery Series"),
                           mainText: "Select Battery Series",
                           text: _batterySeries.Text != "" ? _batterySeries.getText : "Battery Series",
                           icon: Icon(
@@ -818,8 +810,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: GestureDetector(
                           child: PrimeryDropDownButton(
                             isEnabled: true,
-                            tail:
-                                ErrorContainer(show: _validateDropDown, errorMsg: "Please Select the Config"),
+                            tail: ErrorContainer(show: _validateConfig, errorMsg: "Please Select the Config"),
                             mainText: "Config",
                             text: _config.Text != "" ? _config.getText : "select Config",
                             icon: Icon(
@@ -827,10 +818,11 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                               color: darkBg,
                             ),
                             press: () async {
-                              configList = await getProfileByID(context, _batterySeries.obj["id"].toString());
-                              printFunc("DEMO DEMO DEMO : ${configList}");
+                              final selectedBatteryConfigList = _batterySeries.obj['configuration'];
+
                               Map<String, Map<String, dynamic>> deviceMap = {
-                                for (var item in configList) item['name']: item
+                                for (var config in selectedBatteryConfigList)
+                                  if (config['active'].toString().toUpperCase() == 'Y') config['name']: config
                               };
 
                               await BottomSheet_Widget(context, [
@@ -855,7 +847,32 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
               // ----- Upload btn
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
-                child: manageUserBtn(text: "Upload Batch", onPress: () {}),
+                child: manageUserBtn(
+                    text: "Upload Batch",
+                    onPress: () async {
+                      ValidateBatchFields();
+
+                      validateBatchDropDown(
+                          _batterySeries, (val) => setState(() => _validatedeviceType = val));
+                      validateBatchDropDown(_config, (val) => setState(() => _validatedeviceType = val));
+                      validateBatchDropDown(_firmware, (val) => setState(() => _validateFirmware = val));
+                      if (!batchValidator &&
+                          !_validatedeviceType &&
+                          !_validatedeviceType &&
+                          !_validateFirmware) {
+                        printFunc("Inside IF COND");
+                        if (await addNewBatch(
+                          context,
+                          config: _config.obj["id"].toString().trim(),
+                          firmware: _firmware.obj["id"].toString().trim(),
+                          batchName: _batchDescription.text.trim(),
+                          description: _batchDescription.text.trim(),
+                        )) {
+                          clearBatch();
+                          // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                        }
+                      }
+                    }),
               ),
             ],
           ),
@@ -868,21 +885,64 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     final Controllers = [
       _versionCode,
       _releaseNote,
-      _firmWareVersionName,
+      // _firmWareVersionName,
     ];
 
-    printFunc(
-        "_versionCode : ${_versionCode.text}\n _versionCode : ${_versionCode.text}\n _firmWareVersionName : ${_firmWareVersionName.text}\n Contact : ${_contact.text}\n password : ${_password.text} \nRePassword : ${_repassword.text}");
     bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
       firmwareValidator = hasEmpty;
     });
-
+    printFunc("firmware validatot : $firmwareValidator");
     // Future Delayed
 
     Future.delayed(Duration(seconds: 3), () {
       setState(() {
         firmwareValidator = false;
+      });
+    });
+  }
+
+  void ValidateConfigFields() {
+    final Controllers = [
+      _configName,
+      _upperTreshold,
+      _upperVoltage,
+      _lowerTreshold,
+      _lowerVoltage,
+      _description,
+    ];
+
+    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    setState(() {
+      configValidator = hasEmpty;
+    });
+
+    printFunc("firmwareValidator: $configValidator");
+
+    // Reset validation flags after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        configValidator = false;
+        printFunc("firmwareValidator seconds: 3 : $configValidator");
+      });
+    });
+  }
+
+  void ValidateBatchFields() {
+    final Controllers = [
+      _batchName,
+      _batchDescription,
+    ];
+
+    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    setState(() {
+      batchValidator = hasEmpty;
+    });
+
+    // Reset validation flags after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        batchValidator = false;
       });
     });
   }
@@ -903,6 +963,18 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     });
   }
 
+  void validateBatchDropDown(DataController variable, void Function(bool) setValidator) {
+    if (variable.getText == "") {
+      setValidator(true);
+    } else {
+      setValidator(false);
+    }
+
+    Future.delayed(Duration(seconds: 3), () {
+      setValidator(false);
+    });
+  }
+
   Future<void> pickPdfAndConvertToBase64() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -912,14 +984,59 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     if (result != null && result.files.single.path != null) {
       File file = File(result.files.single.path!);
       List<int> fileBytes = await file.readAsBytes();
-      setState(() {
-        fileBase64 = base64Encode(fileBytes);
-      });
 
-      print('PDF converted to Base64:\n$fileBase64');
+      setState(() {
+        firmwareFileBase64 = base64Encode(fileBytes);
+        selectedFileName = result.files.single.name;
+        selectedFileSizeInBytes = fileBytes.length;
+      });
+      print('PDF converted to Base64:\n$firmwareFileBase64');
     } else {
       // User canceled the picker
       print('No file selected.');
     }
+  }
+
+  void clearFirmware() {
+    _versionCode.clear();
+    _firmWareVersionName.clear();
+    _releaseNote.clear();
+    firmwareFileBase64 = "";
+    selectedFileName = null;
+    selectedFileSizeInBytes = null;
+  }
+
+  void clearConfig() {
+    // Clear text controllers
+    _configName.clear();
+    _upperTreshold.clear();
+    _upperVoltage.clear();
+    _lowerTreshold.clear();
+    _lowerVoltage.clear();
+    _description.clear();
+
+    // Clear dropdown
+    _batterySeries.cleardata();
+
+    // Clear validation flags
+    _validateDropDown = false;
+    configValidator = false;
+
+    // Optional: Force UI update
+    setState(() {});
+  }
+
+  void clearBatch() {
+    // Clear text controllers
+    _config.cleardata();
+    _batterySeries.cleardata();
+    _firmware.cleardata();
+    _batchName.clear();
+    _batchDescription.clear();
+    _validateDropDown = false;
+    configValidator = false;
+
+    // Optional: Force UI update
+    setState(() {});
   }
 }

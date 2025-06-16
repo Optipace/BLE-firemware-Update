@@ -12,7 +12,7 @@ class ApiHeaders {
   ApiHeaders();
 
   Map<String, String> get authHeader => {
-        'Authorization': 'Bearer ${UserData().accessToken}',
+        'Authorization': 'Bearer ${UserData.instance.accessToken}',
         'Content-Type': 'application/json',
       };
 
@@ -59,6 +59,8 @@ class ApiEndpoints {
   static const String getAllBatchDetails = '/api/non-auth/hardware/getAllBatchDetails';
 
   static const String saveClient = '/api/non-auth/hardware/save_client';
+  static const String getAllDesignations = 'api/non-auth/getAllDesignations';
+  static const String getAllDeviceTypes = '/api/non-auth/hardware/getAllDeviceTypes';
   static const String yetToDevelop = '/api/non-auth/hardware/underProgress';
 }
 
@@ -127,7 +129,7 @@ class ApiService {
           // Retry once with new token
           printFunc("Recall same api $endpoint");
           headers = headerAuth ? ApiHeaders().authHeader : ApiHeaders().header;
-
+          printFunc("user token after refresh token :$headers");
           await callApi(
             context: context,
             method: method,
@@ -176,15 +178,15 @@ class ApiService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'refreshToken': UserData().refreshToken}),
       );
-
+      printFunc("Refresh token url: ${url}");
+      printFunc("Refresh token body: ${jsonEncode({'refreshToken': UserData().refreshToken})}");
       final responseBody = jsonDecode(response.body);
       printFunc("Refresh token : ${response.statusCode}");
-      printFunc("Refresh token url: ${url}");
       printFunc("Refresh token responseBody : ${responseBody}");
       if (response.statusCode == 200) {
         //&& responseBody['response']["code"] == 1) {
 
-        setTokenInfo(responseBody);
+        await setTokenInfo(responseBody["data"]);
         return true;
       } else {
         ShowSnackBarMessage(context, 'Session expired. Please log in again.', false);

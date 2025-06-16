@@ -1,4 +1,132 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
+
+Future<List<Map<String, dynamic>>> getAllConfigurationList(BuildContext context) async {
+  List<Map<String, dynamic>> configurationList = [
+    {
+      "id": 1,
+      "deviceName": "Series-6",
+      "discription": "Series",
+      "configuration": [
+        {
+          "id": 1,
+          "name": " Profile",
+          "upperVoltage": 220,
+          "upperThreshold": 230,
+          "lowerVoltage": 180,
+          "lowerThreshold": 190,
+          "discription": "Profile for voltage range protection",
+          "deviceId": 1,
+          "active": "Y"
+        },
+        {
+          "id": 5,
+          "name": " Profile5",
+          "upperVoltage": 420,
+          "upperThreshold": 290,
+          "lowerVoltage": 220,
+          "lowerThreshold": 100,
+          "discription": "Profile for voltage range protection",
+          "deviceId": 1,
+          "active": "Y"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "deviceName": "Series-9",
+      "discription": "Series9",
+      "configuration": [
+        {
+          "id": 2,
+          "name": " Profile1",
+          "upperVoltage": 290,
+          "upperThreshold": 240,
+          "lowerVoltage": 170,
+          "lowerThreshold": 180,
+          "discription": "Profile for voltage range protection",
+          "deviceId": 2,
+          "active": "Y"
+        },
+        {
+          "id": 3,
+          "name": " Profile3",
+          "upperVoltage": 300,
+          "upperThreshold": 250,
+          "lowerVoltage": 160,
+          "lowerThreshold": 180,
+          "discription": "Profile for voltage range protection",
+          "deviceId": 2,
+          "active": "Y"
+        },
+        {
+          "id": 4,
+          "name": " Profile4",
+          "upperVoltage": 400,
+          "upperThreshold": 240,
+          "lowerVoltage": 190,
+          "lowerThreshold": 140,
+          "discription": "Profile for voltage range protection",
+          "deviceId": 2,
+          "active": "Y"
+        },
+        {
+          "id": 6,
+          "name": " Profile6",
+          "upperVoltage": 520,
+          "upperThreshold": 290,
+          "lowerVoltage": 120,
+          "lowerThreshold": 100,
+          "discription": "Profile for voltage range protection",
+          "deviceId": 2,
+          "active": "Y"
+        },
+        {
+          "id": 7,
+          "name": "2323",
+          "upperVoltage": 23,
+          "upperThreshold": 23,
+          "lowerVoltage": 22,
+          "lowerThreshold": 22,
+          "discription": "fhhv",
+          "deviceId": 2,
+          "active": "Y"
+        },
+        {
+          "id": 8,
+          "name": "2323",
+          "upperVoltage": 23,
+          "upperThreshold": 23,
+          "lowerVoltage": 22,
+          "lowerThreshold": 22,
+          "discription": "fhhv",
+          "deviceId": 2,
+          "active": "Y"
+        }
+      ]
+    },
+    {"id": 3, "deviceName": "Series-12", "discription": "Series12", "configuration": []}
+  ];
+
+  await ApiService.callApi(
+      context: context,
+      method: 'GET',
+      endpoint: ApiEndpoints.getAllProfileDetails,
+      headerAuth: true,
+      onSuccess: (data) async {
+        printFunc("Configuration data : $data");
+        configurationList.clear();
+
+        for (Map<String, dynamic> config in data) {
+          configurationList.add(config);
+        }
+
+        printFunc("Configuration required : $configurationList");
+      });
+  return configurationList;
+}
 
 Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
   List<Map<String, dynamic>> profileList = [{}];
@@ -131,4 +259,40 @@ Future<List<Map<String, dynamic>>> getProfileByID(BuildContext context, String i
   }
 
   return profileByID;
+}
+
+Future<bool> addNewConfig(
+  BuildContext context, {
+  required String configName,
+  required String upperThreshold,
+  required String upperVoltage,
+  required String lowerThreshold,
+  required String lowerVoltage,
+  required String description,
+  required String batterySeriesId,
+}) async {
+  final body = {
+    "name": configName,
+    "upperVoltage": upperVoltage,
+    "upperThreshold": upperThreshold,
+    "lowerVoltage": lowerVoltage,
+    "lowerThreshold": lowerThreshold,
+    "discription": description,
+    "deviceId": batterySeriesId
+  };
+
+  bool isSuccess = false;
+
+  await ApiService.callApi(
+    context: context,
+    method: 'POST',
+    endpoint: ApiEndpoints.saveProfile,
+    bodyOrParams: body,
+    onSuccess: (data) {
+      ShowSnackBarMessage(context, 'Configuration uploaded successfully!', true);
+      isSuccess = true;
+    },
+  );
+
+  return isSuccess;
 }

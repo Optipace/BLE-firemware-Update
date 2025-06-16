@@ -69,20 +69,20 @@ class TextFeildNewUser extends StatelessWidget {
                   contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: darkBg, width: 0.5),
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
                   disabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black, width: 1),
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
                   focusColor: Colors.black,
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
                       borderSide: BorderSide(width: 1, color: etext == "" ? darkBg : Colors.black)),
                   focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
                       borderSide:
                           BorderSide(width: 1, color: etext == "" ? Colors.black : Color(0xFFFF8A80))),
                   errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
                       borderSide:
                           BorderSide(width: 1, color: etext == "" ? Colors.black : Color(0xFFFF8A80))),
                   filled: true,

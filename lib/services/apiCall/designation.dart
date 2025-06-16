@@ -17,17 +17,18 @@ Future<Map<String, Map<String, Object>>> getDesignation(BuildContext context) as
     "Field User": {"id": 3, "name": "Field User", "priority": 3},
   };
 
-  return designationList;
-
+  // return designationList;
+  designationList.clear();
   await ApiService.callApi(
       context: context,
       method: 'GET',
-      endpoint: ApiEndpoints.yetToDevelop,
+      endpoint: ApiEndpoints.getAllDesignations,
       headerAuth: true,
       errorDisplay: false,
       onSuccess: (data) async {
         printFunc("Designation responce :$data");
         designationList.clear();
+
         for (Map desig in data) {
           designationList[desig["name"]] = data;
         }

@@ -84,9 +84,10 @@ class PrimeryDropDownButton extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(
+              left: 10,
               top: 5.0,
             ),
-            padding: EdgeInsets.only(left: 22),
+            padding: EdgeInsets.only(left: 18),
             decoration: BoxDecoration(
                 color: isEnabled ? color ?? Colors.white : lightBg,
                 borderRadius: BorderRadius.circular(15),

@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
-
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
-
 // import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/bluetoothMain.dart';
-import 'package:tracker_firmware/services/apiCall/batch.dart';
-import 'package:tracker_firmware/services/batch/methods.dart';
 
 class BlueetoothBatches extends StatefulWidget {
   const BlueetoothBatches({super.key});
