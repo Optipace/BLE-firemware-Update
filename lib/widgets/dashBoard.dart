@@ -5,6 +5,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/services/apiCall/logIn.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class Dashboard extends StatelessWidget {
   final String text;
@@ -26,96 +27,98 @@ class Dashboard extends StatelessWidget {
     printFunc("DEMO IN DASHBOARD : ${sharedPreferences.toString()}");
     // TODO: implement build
     return Scaffold(
-      // Createing Key
-      key: _scaffoldKey,
-      drawer: UserProfileSlider(context, onLogout),
-      body: Column(
-        children: [
-          Container(
-            height: size.height / 3.5 + 30,
-            child: Stack(
-              children: [
-                Container(
-                  color: lightBg,
-                ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    height: size.height / 3.5,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: darkBg,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(300),
-                          bottomRight: Radius.circular(300),
-                        ),
-                        border: Border.all(color: Colors.black, width: 0.5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: darkBg,
-                            blurRadius: 30,
-                          )
-                        ]),
+        // Createing Key
+        key: _scaffoldKey,
+        drawer: UserProfileSlider(context, onLogout),
+        body: InternetStatusWatcher(
+          child: Column(
+          children: [
+            Container(
+              height: size.height / 3.5 + 30,
+              child: Stack(
+                children: [
+                  Container(
+                    color: lightBg,
                   ),
-                ),
-
-                // View Profile
-                userProfile == true
-                    ? Positioned(
-                        top: size.height * 0.05,
-                        left: 10,
-                        child: IconButton(
-                            onPressed: () {
-                              // Useing key
-                              _scaffoldKey.currentState?.openDrawer();
-                            },
-                            icon: Icon(
-                              CupertinoIcons.line_horizontal_3_decrease_circle_fill,
-                              size: 40,
-                              color: lightBg,
-                              shadows: [
-                                Shadow(
-                                  color: Colors.black,
-                                  blurRadius: 2.5,
-                                )
-                              ],
-                            )))
-                    : SizedBox(),
-                Container(
-                  padding: EdgeInsets.only(top: size.height * 0.1),
-                  width: size.width,
-                  child: Center(
-                      child: Column(
-                    children: [
-                      Text(
-                        text,
-                        style: TextStyle(
-                          fontSize: 34,
-                          color: lightBg,
-                          fontFamily: baseFont,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 1.1,
-                          backgroundColor: darkBg,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 2,
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: size.height / 3.5,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: darkBg,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(300),
+                            bottomRight: Radius.circular(300),
+                          ),
+                          border: Border.all(color: Colors.black, width: 0.5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: darkBg,
+                              blurRadius: 30,
                             )
-                          ],
+                          ]),
+                    ),
+                  ),
+
+                  // View Profile
+                  userProfile == true
+                      ? Positioned(
+                          top: size.height * 0.05,
+                          left: 10,
+                          child: IconButton(
+                              onPressed: () {
+                                // Useing key
+                                _scaffoldKey.currentState?.openDrawer();
+                              },
+                              icon: Icon(
+                                CupertinoIcons.line_horizontal_3_decrease_circle_fill,
+                                size: 40,
+                                color: lightBg,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black,
+                                    blurRadius: 2.5,
+                                  )
+                                ],
+                              )))
+                      : SizedBox(),
+                  Container(
+                    padding: EdgeInsets.only(top: size.height * 0.1),
+                    width: size.width,
+                    child: Center(
+                        child: Column(
+                      children: [
+                        Text(
+                          text,
+                          style: TextStyle(
+                            fontSize: 34,
+                            color: lightBg,
+                            fontFamily: baseFont,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.1,
+                            backgroundColor: darkBg,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2,
+                              )
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  )),
-                ),
-              ],
+                      ],
+                    )),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-              child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  color: lightBg,
-                  child: SingleChildScrollView(child: child)))
-        ],
+            Expanded(
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    color: lightBg,
+                    child: SingleChildScrollView(child: child)))
+          ],
+        ),
       ),
     );
   }
