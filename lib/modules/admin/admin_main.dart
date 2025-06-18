@@ -158,7 +158,8 @@ class AdminMainState extends State<AdminMain> {
               SizedBox(
                 height: 5,
               ),
-              Container(
+              // Plus symbol
+              /*Container(
                 width: size.width,
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
@@ -348,7 +349,7 @@ class AdminMainState extends State<AdminMain> {
                         )),
                   ],
                 ),
-              )
+              )*/
             ],
           ),
         ));

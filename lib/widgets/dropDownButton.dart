@@ -138,9 +138,12 @@ class MapListItemBuilder extends StatefulWidget {
   final Function()? press;
   final DataController? selected;
   final bool searchEnable;
+  final bool BtnEnable;
+  final Function()? btnFunction;
+  final String? btnTitle;
 
   const MapListItemBuilder(
-      {Key? key, required this.listItems, this.press, this.selected, this.searchEnable = false})
+      {Key? key, required this.listItems, this.press, this.selected, this.searchEnable = false,this.BtnEnable = false,this.btnFunction,this.btnTitle})
       : super(key: key);
 
   @override
@@ -166,6 +169,7 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(
           height: 1.0,
@@ -314,6 +318,47 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
         SizedBox(
           height: 15.0,
         ),
+        GestureDetector(
+          onTap: widget.btnFunction,
+          child: Container(
+            margin: EdgeInsets.only(right: 20),
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white70),
+              borderRadius: BorderRadius.circular(10)
+            ),
+            
+            child: Padding(
+                padding: EdgeInsets.only( right: 5, left: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+
+                        Text(widget.btnTitle.toString(),
+                          style:TextStyle(
+                              color: Colors.white,
+                              fontFamily: baseFont,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              shadows: [
+                                Shadow(
+                                    color: Colors.black26,
+                                    blurRadius: 0.4
+                                )
+                              ]
+                          ),
+                        ),
+                      ],
+                    ),
+                    Icon(Icons.double_arrow_outlined,color: Colors.white,),
+                  ],
+                )
+            ),
+          ),
+        )
+
       ],
     );
   }

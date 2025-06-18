@@ -91,7 +91,6 @@ class PieChartViewState extends State<PieChartView> {
     final total = widget.total ?? widget.categories.fold<double>(0.0, (sum, c) => sum + c.amount);
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black26),

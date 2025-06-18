@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
 import 'package:tracker_firmware/services/apiCall/Admin/logs.dart';
 
 TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
@@ -14,10 +15,11 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
 
 List<Widget> fieldUserLog() {
   var FeildUserLogs = getFeildLogs();
+  var SortedLogs = sortByStatus(FeildUserLogs);
   List<Widget> FieldUsersList = [];
 
-  for (int index = 0; index < FeildUserLogs.length; index++) {
-    printFunc("DEMO DEMO Factory logs : ${FeildUserLogs[index]}");
+  for (int index = 0; index < SortedLogs.length; index++) {
+    printFunc("DEMO DEMO Factory logs : ${SortedLogs[index]}");
     ValueNotifier moreInfo = ValueNotifier<bool>(false);
     FieldUsersList.add(ValueListenableBuilder(
         valueListenable: moreInfo,
@@ -34,9 +36,9 @@ List<Widget> fieldUserLog() {
               key: ValueKey('field_$index'),
               tilePadding: EdgeInsets.all(5),
               backgroundColor:
-                  FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
+                  SortedLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
               collapsedBackgroundColor:
-                  FeildUserLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
+                  SortedLogs[index]['status'].toLowerCase() == 'success' ? SuccessCard : FailureCard,
               iconColor: darkBg,
               collapsedIconColor: darkBg,
               collapsedShape: RoundedRectangleBorder(
@@ -59,11 +61,11 @@ List<Widget> fieldUserLog() {
                         SizedBox(
                           height: 3,
                         ),
-                        Text(FeildUserLogs[index]["Name"],
+                        Text(SortedLogs[index]["Name"],
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 14,
-                                FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                FontColor: SortedLogs[index]['status'].toLowerCase() == 'success'
                                     ? SuccessCardText
                                     : FailureCardText)),
                       ],
@@ -81,11 +83,11 @@ List<Widget> fieldUserLog() {
                           height: 3,
                         ),
                         Text(
-                          FeildUserLogs[index]["empId"],
+                          SortedLogs[index]["empId"],
                           style: CardText(
                               font_Weight: FontWeight.w800,
                               size: 14,
-                              FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'Success'
+                              FontColor: SortedLogs[index]['status'].toLowerCase() == 'Success'
                                   ? SuccessCardText
                                   : FailureCardText),
                         ),
@@ -104,11 +106,11 @@ List<Widget> fieldUserLog() {
                         ),
                         SizedBox(height: 3),
                         Text(
-                          FeildUserLogs[index]['status'],
+                          SortedLogs[index]['status'],
                           style: CardText(
                             font_Weight: FontWeight.w800,
                             size: 14,
-                            FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                            FontColor: SortedLogs[index]['status'].toLowerCase() == 'success'
                                 ? SuccessCardText
                                 : FailureCardText,
                           ),
@@ -149,11 +151,11 @@ List<Widget> fieldUserLog() {
                                       height: 3,
                                     ),
                                     Text(
-                                      FeildUserLogs[index]['phone'],
+                                      SortedLogs[index]['phone'],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                          FontColor: SortedLogs[index]['status'].toLowerCase() == 'success'
                                               ? SuccessCardText
                                               : FailureCardText),
                                     )
@@ -175,11 +177,11 @@ List<Widget> fieldUserLog() {
                                     ),
                                     SizedBox(height: 3),
                                     Text(
-                                      FeildUserLogs[index]['Battery-profile'],
+                                      SortedLogs[index]['Battery-profile'],
                                       style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 16,
-                                        FontColor: FeildUserLogs[index]['status'] == 'Success'
+                                        FontColor: SortedLogs[index]['status'] == 'Success'
                                             ? SuccessCardText
                                             : FailureCardText,
                                       ),
@@ -203,11 +205,11 @@ List<Widget> fieldUserLog() {
                                       height: 3,
                                     ),
                                     Text(
-                                      FeildUserLogs[index]['firm_version'],
+                                      SortedLogs[index]['firm_version'],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                          FontColor: SortedLogs[index]['status'].toLowerCase() == 'success'
                                               ? SuccessCardText
                                               : FailureCardText),
                                     )
@@ -229,11 +231,11 @@ List<Widget> fieldUserLog() {
                                     ),
                                     SizedBox(height: 3),
                                     Text(
-                                      FeildUserLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
+                                      SortedLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
                                       style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 16,
-                                        FontColor: FeildUserLogs[index]['status'] == 'Success'
+                                        FontColor: SortedLogs[index]['status'] == 'Success'
                                             ? SuccessCardText
                                             : FailureCardText,
                                       ),
@@ -258,11 +260,11 @@ List<Widget> fieldUserLog() {
                                       height: 3,
                                     ),
                                     Text(
-                                      FeildUserLogs[index]['Battery-Service'],
+                                      SortedLogs[index]['Battery-Service'],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor: FeildUserLogs[index]['status'].toLowerCase() == 'success'
+                                          FontColor: SortedLogs[index]['status'].toLowerCase() == 'success'
                                               ? SuccessCardText
                                               : FailureCardText),
                                     )
@@ -284,11 +286,11 @@ List<Widget> fieldUserLog() {
                                       height: 3,
                                     ),
                                     Text(
-                                      FeildUserLogs[index]['DeviceID'],
+                                      SortedLogs[index]['DeviceID'],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 14,
-                                          FontColor: FeildUserLogs[index]['status'] == 'Success'
+                                          FontColor: SortedLogs[index]['status'] == 'Success'
                                               ? SuccessCardText
                                               : FailureCardText),
                                     )
