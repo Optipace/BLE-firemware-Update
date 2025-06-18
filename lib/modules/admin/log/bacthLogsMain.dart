@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/log/batchLogs.dart';
+import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
 
 class BatchLogsMain extends StatelessWidget {
   List<Map<String, dynamic>> batchList = [{}];
@@ -21,8 +22,10 @@ class BatchLogsMain extends StatelessWidget {
     return count;
   }
 
+  var sortedBatchLogs;
   @override
   Widget build(BuildContext context) {
+    sortedBatchLogs = sortByStatus(batchList);
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -59,6 +62,7 @@ class BatchLogsMain extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [

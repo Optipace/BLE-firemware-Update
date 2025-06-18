@@ -69,6 +69,16 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
   List<Map<String, dynamic>> allConfigList = [{}];
   List configallList = [];
 
+  // Controleers for New Battery
+  TextEditingController _newbname = TextEditingController();
+  TextEditingController _newrelaseNote = TextEditingController();
+  TextEditingController _newupperThershold = TextEditingController();
+  TextEditingController _newlowerThershold = TextEditingController();
+  TextEditingController _newupperVoltage = TextEditingController();
+  TextEditingController _newlowerVoltage = TextEditingController();
+  bool batteryValidator = false;
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -621,11 +631,154 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             color: darkBg,
                           ),
                           press: () async {
-                            await BottomSheet_Widget(context, [
+                            await BottomSheet_Widget(
+                                context, [
                               MapListItemBuilder(
                                 listItems: batteryList,
                                 press: () {},
                                 selected: _batterySeries,
+                                BtnEnable: true,
+                                btnTitle: "ADD BATTERY SERIES ",
+                                btnFunction: () async{
+                                  await BottomSheet_Widget(context, color: lightBg, [
+                                    Container(
+                                      height: size.height / 1.5,
+                                      width: size.width,
+                                      color: lightBg,
+                                      child: SingleChildScrollView(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(vertical: 20),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Enter Battery Details!",
+                                                style: TextStyle(
+                                                    fontFamily: baseFont,
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 24,
+                                                    color: darkBg,
+                                                    shadows: [
+                                                      Shadow(
+                                                          color: Colors.black,
+                                                          blurRadius: 0.5,
+                                                          offset: Offset(0.5, 0.5))
+                                                    ]),
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+
+                                              Container(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    // Battery Name
+                                                    LabelText(text: "Battery Name :"),
+                                                    TextFeildNewUser(
+                                                      hintText: "Enter Battery Name",
+                                                      Controller: _newbname,
+                                                      onChanged: (value) {},
+                                                      enable: true,
+                                                      etext: batteryValidator && _newbname.text.trim().isEmpty
+                                                          ? "Please Enter the Phone Number"
+                                                          : "",
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    // Relase Note
+                                                    LabelText(text: "Relase Date"),
+                                                    TextFeildNewUser(
+                                                      hintText: "Enter Relase Date",
+                                                      Controller: _newrelaseNote,
+                                                      onChanged: (value) {},
+                                                      enable: true,
+                                                      etext: batteryValidator && _newrelaseNote.text.trim().isEmpty
+                                                          ? "Please Enter the Phone Number"
+                                                          : "",
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    // Upper thershold
+                                                    LabelText(text: "Upper Thershold"),
+                                                    TextFeildNewUser(
+                                                      hintText: "Enter Upper Thershold",
+                                                      Controller: _newupperThershold,
+                                                      onChanged: (value) {},
+                                                      enable: true,
+                                                      etext: batteryValidator && _newupperThershold.text.trim().isEmpty
+                                                          ? "Please Enter the Phone Number"
+                                                          : "",
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    // Lower Temp
+                                                    LabelText(text: "Lower Thershold"),
+                                                    TextFeildNewUser(
+                                                      hintText: "Enter Lower Thershold",
+                                                      Controller: _newlowerThershold,
+                                                      onChanged: (value) {},
+                                                      enable: true,
+                                                      etext: batteryValidator && _newlowerThershold.text.trim().isEmpty
+                                                          ? "Please Enter the Phone Number"
+                                                          : "",
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    // Upper Voltage
+                                                    LabelText(text: "Upper Voltage"),
+                                                    TextFeildNewUser(
+                                                      hintText: "Enter Upper Voltage",
+                                                      Controller: _upperVoltage,
+                                                      onChanged: (value) {},
+                                                      enable: true,
+                                                      etext: batteryValidator && _upperVoltage.text.trim().isEmpty
+                                                          ? "Please Enter the Phone Number"
+                                                          : "",
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    // Lower Voltage
+                                                    LabelText(text: "Lower Voltage"),
+                                                    TextFeildNewUser(
+                                                      hintText: "Enter Lower Voltage",
+                                                      Controller: _lowerVoltage,
+                                                      onChanged: (value) {},
+                                                      enable: true,
+                                                      etext: batteryValidator && _lowerVoltage.text.trim().isEmpty
+                                                          ? "Please Enter the Phone Number"
+                                                          : "",
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              // Add Btn
+                                              manageUserBtn(
+                                                  text: "Add Battery",
+                                                  onPress: () {
+                                                    printFunc("DEMODEMO");
+                                                    printFunc(batteryValidator);
+                                                    printFunc(_newbname.text.trim().isEmpty);
+                                                    ValidateBatteryFields();
+                                                    setState(() {});
+                                                  })
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ]);
+
+                                },
                               )
                             ]);
                             setState(() {});
@@ -903,6 +1056,30 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     });
   }
 
+  void ValidateBatteryFields() {
+    final Controllers = [
+      _newbname,
+      _newrelaseNote,
+      _newupperThershold,
+      _newupperVoltage,
+      _newlowerThershold,
+      _newlowerVoltage,
+    ];
+
+    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    printFunc("has Next : $hasEmpty");
+    setState(() {
+      batteryValidator = hasEmpty;
+    });
+    // Future Delayed
+    printFunc("DEMOMMOMO : ${batteryValidator}");
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        batteryValidator = false;
+      });
+    });
+  }
+
   void ValidateConfigFields() {
     final Controllers = [
       _configName,
@@ -947,7 +1124,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       });
     });
   }
-
+  
+  
   void validateDropDown(DataController variable) {
     if (variable.getText == "") {
       setState(() {
@@ -1040,4 +1218,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     // Optional: Force UI update
     setState(() {});
   }
+
+
 }

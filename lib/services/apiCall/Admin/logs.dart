@@ -117,7 +117,7 @@ List<Map<String, dynamic>> getAllLogs() {
       "empId": "EMP125",
       "Name": "Emma Clark",
       "DeviceID": "548",
-      "status": "Success",
+      "status": "Failure",
       "phone": "+91 9765432109",
       "firm_version": "2.2.9",
       "Battery-Service": "B6",

@@ -91,8 +91,6 @@ class AdminLogsState extends State<AdminLogs> {
 
   @override
   Widget build(BuildContext context) {
-    print("Inside Logs Page");
-
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -110,50 +108,78 @@ class AdminLogsState extends State<AdminLogs> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: 5,
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 5),
+                      child: Text("User Logs : ",
+                        style: TextStyle(
+                            color: darkBg,
+                            fontFamily: baseFont,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 20,
+                            shadows: [Shadow(
+                                color: Colors.black,
+                                blurRadius: 0.5
+                            )],
+                         ),
+                      ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                      child: Center(
+                        child: PieChartView(
+                          categories: UserLogs,
+                          colors: UserColor,
+                          onTap: () {
+                            printFunc("User Logs");
+                            Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserLogsMain()));
+                          },
+                        ),
+                      ),
+                  ),
+                ],
               ),
-              // Center(
-              //   child:  PieChartView(
-              //       categories: sampleCategories,
-              //     colors: kNeumorphicColors,
-              //     onTap: (){
-              //         printFunc("HEY BUDD");
-              //     },
-              //
-              //   ),
-              // ),
-              SizedBox(
-                height: 5,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
+                    child: Text("Batch Logs : ",
+                      style: TextStyle(
+                        color: darkBg,
+                        fontFamily: baseFont,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                        shadows: [Shadow(
+                            color: Colors.black,
+                            blurRadius: 0.5
+                        )],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                    child: Center(
+                      child: PieChartView(
+                        categories: BatchLogs,
+                        colors: BatchColors,
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => BatchLogsMain(
+                                batchList: batchList,
+                                allLogs: allLogs,
+                              )));
+                        },
+                        total: batchList.length,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Center(
-                child: PieChartView(
-                  categories: UserLogs,
-                  colors: UserColor,
-                  onTap: () {
-                    printFunc("User Logs");
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserLogsMain()));
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Center(
-                child: PieChartView(
-                  categories: BatchLogs,
-                  colors: BatchColors,
-                  onTap: () {
-                    printFunc("HEY BUDD");
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => BatchLogsMain(
-                              batchList: batchList,
-                              allLogs: allLogs,
-                            )));
-                  },
-                  total: batchList.length,
-                ),
-              ),
+
             ],
           ),
         ));

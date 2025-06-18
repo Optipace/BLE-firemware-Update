@@ -3,6 +3,8 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/services/apiCall/Admin/logs.dart';
 
+import 'sortByStatus.dart';
+
 TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
@@ -14,12 +16,14 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
 
 List<Widget> allLogs() {
   var allLogs = getAllLogs();
+  var sortedAllLogs = sortByStatus(allLogs);
   List<Widget> allLogsList = [];
 
-  for (int index = 0; index < allLogs.length; index++) {
-    printFunc("DEMO DEMO Factory logs : ${allLogs[index]}");
+  for (int index = 0; index < sortedAllLogs.length; index++) {
+    printFunc("DEMO DEMO Factory logs : ${sortedAllLogs[index]}");
     ValueNotifier moreInfo = ValueNotifier<bool>(false);
-    allLogsList.add(ValueListenableBuilder(
+    allLogsList.add(
+        ValueListenableBuilder(
         valueListenable: moreInfo,
         builder: (ctx, value, child) {
           return Container(
@@ -33,8 +37,8 @@ List<Widget> allLogs() {
             child: ExpansionTile(
               key: ValueKey('factory_$index'),
               tilePadding: EdgeInsets.all(5),
-              backgroundColor: allLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
-              collapsedBackgroundColor: allLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+              backgroundColor: sortedAllLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+              collapsedBackgroundColor: sortedAllLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
               iconColor: darkBg,
               collapsedIconColor: darkBg,
               collapsedShape: RoundedRectangleBorder(
@@ -57,11 +61,11 @@ List<Widget> allLogs() {
                         SizedBox(
                           height: 3,
                         ),
-                        Text(allLogs[index]["Name"],
+                        Text(sortedAllLogs[index]["Name"],
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 14,
-                                FontColor: allLogs[index]['status'] == 'Success'
+                                FontColor: sortedAllLogs[index]['status'] == 'Success'
                                     ? SuccessCardText
                                     : FailureCardText)),
                       ],
@@ -79,35 +83,37 @@ List<Widget> allLogs() {
                           height: 3,
                         ),
                         Text(
-                          allLogs[index]["empId"],
+                          sortedAllLogs[index]["empId"],
                           style: CardText(
                               font_Weight: FontWeight.w800,
                               size: 14,
                               FontColor:
-                                  allLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText),
+                                  sortedAllLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText),
                         ),
                       ],
                     ),
-                    // DeviceID
+                    // Status
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "DeviceID : ",
-                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
-                        ),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          allLogs[index]['DeviceID'],
+                          "Status:",
                           style: CardText(
-                              font_Weight: FontWeight.w800,
-                              size: 14,
-                              FontColor:
-                                  allLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText),
-                        )
+                            font_Weight: FontWeight.w300,
+                            FontColor: secondaryText,
+                          ),
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          sortedAllLogs[index]['status'],
+                          style: CardText(
+                            font_Weight: FontWeight.w800,
+                            size: 16,
+                            FontColor: sortedAllLogs[index]['status'] == 'Success'
+                                ? SuccessCardText
+                                : FailureCardText,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -146,11 +152,11 @@ List<Widget> allLogs() {
                                         height: 3,
                                       ),
                                       Text(
-                                        allLogs[index]['phone'],
+                                        sortedAllLogs[index]['phone'],
                                         style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor: allLogs[index]['status'] == 'Success'
+                                            FontColor: sortedAllLogs[index]['status'] == 'Success'
                                                 ? SuccessCardText
                                                 : FailureCardText),
                                       )
@@ -159,12 +165,12 @@ List<Widget> allLogs() {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  //Service-Profile
+                                  // Date-Time
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Service\nProfile:",
+                                        "Date Time:",
                                         style: CardText(
                                           font_Weight: FontWeight.w300,
                                           FontColor: secondaryText,
@@ -172,11 +178,11 @@ List<Widget> allLogs() {
                                       ),
                                       SizedBox(height: 3),
                                       Text(
-                                        allLogs[index]['Battery-profile'],
+                                        sortedAllLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
                                         style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor: allLogs[index]['status'] == 'Success'
+                                          FontColor: sortedAllLogs[index]['status'] == 'Success'
                                               ? SuccessCardText
                                               : FailureCardText,
                                         ),
@@ -202,11 +208,11 @@ List<Widget> allLogs() {
                                         height: 3,
                                       ),
                                       Text(
-                                        allLogs[index]['firm_version'],
+                                        sortedAllLogs[index]['firm_version'],
                                         style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor: allLogs[index]['status'] == 'Success'
+                                            FontColor: sortedAllLogs[index]['status'] == 'Success'
                                                 ? SuccessCardText
                                                 : FailureCardText),
                                       )
@@ -215,12 +221,12 @@ List<Widget> allLogs() {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  // Date-Time
+                                  //Batch
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Date\nTime:",
+                                        "Batch : ",
                                         style: CardText(
                                           font_Weight: FontWeight.w300,
                                           FontColor: secondaryText,
@@ -228,17 +234,18 @@ List<Widget> allLogs() {
                                       ),
                                       SizedBox(height: 3),
                                       Text(
-                                        allLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
+                                        sortedAllLogs[index]['Batch'],
                                         style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor: allLogs[index]['status'] == 'Success'
+                                          FontColor: sortedAllLogs[index]['status'] == 'Success'
                                               ? SuccessCardText
                                               : FailureCardText,
                                         ),
                                       ),
                                     ],
                                   ),
+
                                 ],
                               ),
                               Column(
@@ -258,11 +265,11 @@ List<Widget> allLogs() {
                                         height: 3,
                                       ),
                                       Text(
-                                        allLogs[index]['Battery-Service'],
+                                        sortedAllLogs[index]['Battery-Service'],
                                         style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor: allLogs[index]['status'] == 'Success'
+                                            FontColor: sortedAllLogs[index]['status'] == 'Success'
                                                 ? SuccessCardText
                                                 : FailureCardText),
                                       ),
@@ -271,30 +278,29 @@ List<Widget> allLogs() {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  // Status
+                                  // DeviceID
                                   Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Status:",
-                                        style: CardText(
-                                          font_Weight: FontWeight.w300,
-                                          FontColor: secondaryText,
-                                        ),
+                                        "DeviceID : ",
+                                        style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
-                                      SizedBox(height: 3),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
                                       Text(
-                                        allLogs[index]['status'],
+                                        sortedAllLogs[index]['DeviceID'],
                                         style: CardText(
-                                          font_Weight: FontWeight.w800,
-                                          size: 16,
-                                          FontColor: allLogs[index]['status'] == 'Success'
-                                              ? SuccessCardText
-                                              : FailureCardText,
-                                        ),
-                                      ),
+                                            font_Weight: FontWeight.w800,
+                                            size: 14,
+                                            FontColor:
+                                            sortedAllLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText),
+                                      )
                                     ],
                                   ),
+
                                 ],
                               ),
                             ],

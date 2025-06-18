@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
 import 'package:tracker_firmware/services/apiCall/Admin/logs.dart';
 
 TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
@@ -14,10 +15,11 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
 
 List<Widget> factoryUserLog() {
   var factoryLogs = getFactoryLogs();
+  var sortedFactoryLogs = sortByStatus(factoryLogs);
   List<Widget> factoryUsersList = [];
 
-  for (int index = 0; index < factoryLogs.length; index++) {
-    printFunc("DEMO DEMO Factory logs : ${factoryLogs[index]}");
+  for (int index = 0; index < sortedFactoryLogs.length; index++) {
+    printFunc("DEMO DEMO Factory logs : ${sortedFactoryLogs[index]}");
     ValueNotifier moreInfo = ValueNotifier<bool>(false);
     factoryUsersList.add(ValueListenableBuilder(
         valueListenable: moreInfo,
@@ -33,8 +35,8 @@ List<Widget> factoryUserLog() {
             child: ExpansionTile(
               key: ValueKey('factory_$index'),
               tilePadding: EdgeInsets.all(5),
-              backgroundColor: factoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
-              collapsedBackgroundColor: factoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+              backgroundColor: sortedFactoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+              collapsedBackgroundColor: sortedFactoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
               iconColor: darkBg,
               collapsedIconColor: darkBg,
               collapsedShape: RoundedRectangleBorder(
@@ -57,11 +59,11 @@ List<Widget> factoryUserLog() {
                         SizedBox(
                           height: 3,
                         ),
-                        Text(factoryLogs[index]["Name"],
+                        Text(sortedFactoryLogs[index]["Name"],
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 14,
-                                FontColor: factoryLogs[index]['status'] == 'Success'
+                                FontColor: sortedFactoryLogs[index]['status'] == 'Success'
                                     ? SuccessCardText
                                     : FailureCardText)),
                       ],
@@ -79,37 +81,38 @@ List<Widget> factoryUserLog() {
                           height: 3,
                         ),
                         Text(
-                          factoryLogs[index]["empId"],
+                          sortedFactoryLogs[index]["empId"],
                           style: CardText(
                               font_Weight: FontWeight.w800,
                               size: 14,
-                              FontColor: factoryLogs[index]['status'] == 'Success'
+                              FontColor: sortedFactoryLogs[index]['status'] == 'Success'
                                   ? SuccessCardText
                                   : FailureCardText),
                         ),
                       ],
                     ),
-                    // DeviceID
+                    // Status
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "DeviceID : ",
-                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
-                        ),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          factoryLogs[index]['DeviceID'],
+                          "Status:",
                           style: CardText(
-                              font_Weight: FontWeight.w800,
-                              size: 14,
-                              FontColor: factoryLogs[index]['status'] == 'Success'
-                                  ? SuccessCardText
-                                  : FailureCardText),
-                        )
+                            font_Weight: FontWeight.w300,
+                            FontColor: secondaryText,
+                          ),
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          sortedFactoryLogs[index]['status'],
+                          style: CardText(
+                            font_Weight: FontWeight.w800,
+                            size: 16,
+                            FontColor: sortedFactoryLogs[index]['status'] == 'Success'
+                                ? SuccessCardText
+                                : FailureCardText,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -148,11 +151,11 @@ List<Widget> factoryUserLog() {
                                         height: 3,
                                       ),
                                       Text(
-                                        factoryLogs[index]['phone'],
+                                        sortedFactoryLogs[index]['phone'],
                                         style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor: factoryLogs[index]['status'] == 'Success'
+                                            FontColor: sortedFactoryLogs[index]['status'] == 'Success'
                                                 ? SuccessCardText
                                                 : FailureCardText),
                                       )
@@ -174,11 +177,11 @@ List<Widget> factoryUserLog() {
                                       ),
                                       SizedBox(height: 3),
                                       Text(
-                                        factoryLogs[index]['Battery-profile'],
+                                        sortedFactoryLogs[index]['Battery-profile'],
                                         style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor: factoryLogs[index]['status'] == 'Success'
+                                          FontColor: sortedFactoryLogs[index]['status'] == 'Success'
                                               ? SuccessCardText
                                               : FailureCardText,
                                         ),
@@ -204,11 +207,11 @@ List<Widget> factoryUserLog() {
                                         height: 3,
                                       ),
                                       Text(
-                                        factoryLogs[index]['firm_version'],
+                                        sortedFactoryLogs[index]['firm_version'],
                                         style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor: factoryLogs[index]['status'] == 'Success'
+                                            FontColor: sortedFactoryLogs[index]['status'] == 'Success'
                                                 ? SuccessCardText
                                                 : FailureCardText),
                                       )
@@ -230,11 +233,11 @@ List<Widget> factoryUserLog() {
                                       ),
                                       SizedBox(height: 3),
                                       Text(
-                                        factoryLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
+                                        sortedFactoryLogs[index]['Date-Time'].replaceFirst(' ', '\n'),
                                         style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
-                                          FontColor: factoryLogs[index]['status'] == 'Success'
+                                          FontColor: sortedFactoryLogs[index]['status'] == 'Success'
                                               ? SuccessCardText
                                               : FailureCardText,
                                         ),
@@ -260,11 +263,11 @@ List<Widget> factoryUserLog() {
                                         height: 3,
                                       ),
                                       Text(
-                                        factoryLogs[index]['Battery-Service'],
+                                        sortedFactoryLogs[index]['Battery-Service'],
                                         style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor: factoryLogs[index]['status'] == 'Success'
+                                            FontColor: sortedFactoryLogs[index]['status'] == 'Success'
                                                 ? SuccessCardText
                                                 : FailureCardText),
                                       ),
@@ -273,30 +276,30 @@ List<Widget> factoryUserLog() {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  // Status
+                                  // DeviceID
                                   Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Status:",
-                                        style: CardText(
-                                          font_Weight: FontWeight.w300,
-                                          FontColor: secondaryText,
-                                        ),
+                                        "DeviceID : ",
+                                        style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
-                                      SizedBox(height: 3),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
                                       Text(
-                                        factoryLogs[index]['status'],
+                                        sortedFactoryLogs[index]['DeviceID'],
                                         style: CardText(
-                                          font_Weight: FontWeight.w800,
-                                          size: 16,
-                                          FontColor: factoryLogs[index]['status'] == 'Success'
-                                              ? SuccessCardText
-                                              : FailureCardText,
-                                        ),
-                                      ),
+                                            font_Weight: FontWeight.w800,
+                                            size: 14,
+                                            FontColor: sortedFactoryLogs[index]['status'] == 'Success'
+                                                ? SuccessCardText
+                                                : FailureCardText),
+                                      )
                                     ],
                                   ),
+
                                 ],
                               ),
                             ],
