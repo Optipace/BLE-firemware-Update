@@ -56,11 +56,7 @@ class UserLogsMain extends StatelessWidget {
                         Text(
                           "All Logs ",
                           style: TextStyle(
-                              color: darkBg,
-                              fontFamily: baseFont,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 20
-                          ),
+                              color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 20),
                         ),
                         SizedBox(
                           height: 10,
@@ -102,14 +98,12 @@ class UserLogsMain extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-
-
           GestureDetector(
             onTap: () {
               printFunc("Inside Factory user ");
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => FactoryLog()));
             },
-            child:Container(
+            child: Container(
                 width: size.width,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -127,11 +121,7 @@ class UserLogsMain extends StatelessWidget {
                         Text(
                           "Factory User Logs ",
                           style: TextStyle(
-                              color: darkBg,
-                              fontFamily: baseFont,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 20
-                          ),
+                              color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 20),
                         ),
                         SizedBox(
                           height: 10,
@@ -168,14 +158,11 @@ class UserLogsMain extends StatelessWidget {
                       size: 28,
                     )
                   ],
-                )
-            ),
+                )),
           ),
           SizedBox(
             height: 5,
           ),
-
-
           GestureDetector(
             onTap: () {
               printFunc("Inside Field user ");
@@ -199,11 +186,7 @@ class UserLogsMain extends StatelessWidget {
                         Text(
                           "Field User Logs ",
                           style: TextStyle(
-                              color: darkBg,
-                              fontFamily: baseFont,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 20
-                          ),
+                              color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 20),
                         ),
                         SizedBox(
                           height: 10,
@@ -240,8 +223,7 @@ class UserLogsMain extends StatelessWidget {
                       size: 28,
                     )
                   ],
-                )
-            ),
+                )),
           ),
           SizedBox(
             height: 5,

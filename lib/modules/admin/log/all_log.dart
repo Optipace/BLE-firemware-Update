@@ -22,8 +22,7 @@ List<Widget> allLogs() {
   for (int index = 0; index < sortedAllLogs.length; index++) {
     printFunc("DEMO DEMO Factory logs : ${sortedAllLogs[index]}");
     ValueNotifier moreInfo = ValueNotifier<bool>(false);
-    allLogsList.add(
-        ValueListenableBuilder(
+    allLogsList.add(ValueListenableBuilder(
         valueListenable: moreInfo,
         builder: (ctx, value, child) {
           return Container(
@@ -38,7 +37,8 @@ List<Widget> allLogs() {
               key: ValueKey('factory_$index'),
               tilePadding: EdgeInsets.all(5),
               backgroundColor: sortedAllLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
-              collapsedBackgroundColor: sortedAllLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+              collapsedBackgroundColor:
+                  sortedAllLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
               iconColor: darkBg,
               collapsedIconColor: darkBg,
               collapsedShape: RoundedRectangleBorder(
@@ -87,8 +87,9 @@ List<Widget> allLogs() {
                           style: CardText(
                               font_Weight: FontWeight.w800,
                               size: 14,
-                              FontColor:
-                                  sortedAllLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText),
+                              FontColor: sortedAllLogs[index]['status'] == 'Success'
+                                  ? SuccessCardText
+                                  : FailureCardText),
                         ),
                       ],
                     ),
@@ -245,7 +246,6 @@ List<Widget> allLogs() {
                                       ),
                                     ],
                                   ),
-
                                 ],
                               ),
                               Column(
@@ -285,7 +285,8 @@ List<Widget> allLogs() {
                                     children: [
                                       Text(
                                         "DeviceID : ",
-                                        style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                        style:
+                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -295,12 +296,12 @@ List<Widget> allLogs() {
                                         style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 14,
-                                            FontColor:
-                                            sortedAllLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText),
+                                            FontColor: sortedAllLogs[index]['status'] == 'Success'
+                                                ? SuccessCardText
+                                                : FailureCardText),
                                       )
                                     ],
                                   ),
-
                                 ],
                               ),
                             ],

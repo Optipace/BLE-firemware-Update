@@ -4,11 +4,8 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/ListOverview/listOverview.dart';
 import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 import 'package:tracker_firmware/modules/admin/newUser/adminNewUser.dart';
-import 'package:tracker_firmware/widgets/BottomSheet.dart';
-import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
-import 'package:tracker_firmware/widgets/textFields.dart';
 
 import 'FirmwareSettings/addFirmware.dart';
 

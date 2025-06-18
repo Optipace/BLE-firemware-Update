@@ -27,11 +27,11 @@ class Dashboard extends StatelessWidget {
     printFunc("DEMO IN DASHBOARD : ${sharedPreferences.toString()}");
     // TODO: implement build
     return Scaffold(
-        // Createing Key
-        key: _scaffoldKey,
-        drawer: UserProfileSlider(context, onLogout),
-        body: InternetStatusWatcher(
-          child: Column(
+      // Createing Key
+      key: _scaffoldKey,
+      drawer: UserProfileSlider(context, onLogout),
+      body: InternetStatusWatcher(
+        child: Column(
           children: [
             Container(
               height: size.height / 3.5 + 30,

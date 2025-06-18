@@ -108,37 +108,34 @@ class AdminLogsState extends State<AdminLogs> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                      padding: EdgeInsets.fromLTRB(20, 20, 20, 5),
-                      child: Text("User Logs : ",
-                        style: TextStyle(
-                            color: darkBg,
-                            fontFamily: baseFont,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 20,
-                            shadows: [Shadow(
-                                color: Colors.black,
-                                blurRadius: 0.5
-                            )],
-                         ),
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 5),
+                    child: Text(
+                      "User Logs : ",
+                      style: TextStyle(
+                        color: darkBg,
+                        fontFamily: baseFont,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                        shadows: [Shadow(color: Colors.black, blurRadius: 0.5)],
                       ),
+                    ),
                   ),
                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                      child: Center(
-                        child: PieChartView(
-                          categories: UserLogs,
-                          colors: UserColor,
-                          onTap: () {
-                            printFunc("User Logs");
-                            Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserLogsMain()));
-                          },
-                        ),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Center(
+                      child: PieChartView(
+                        categories: UserLogs,
+                        colors: UserColor,
+                        onTap: () {
+                          printFunc("User Logs");
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserLogsMain()));
+                        },
                       ),
+                    ),
                   ),
                 ],
               ),
@@ -147,21 +144,19 @@ class AdminLogsState extends State<AdminLogs> {
                 children: [
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
-                    child: Text("Batch Logs : ",
+                    child: Text(
+                      "Batch Logs : ",
                       style: TextStyle(
                         color: darkBg,
                         fontFamily: baseFont,
                         fontWeight: FontWeight.w800,
                         fontSize: 20,
-                        shadows: [Shadow(
-                            color: Colors.black,
-                            blurRadius: 0.5
-                        )],
+                        shadows: [Shadow(color: Colors.black, blurRadius: 0.5)],
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: Center(
                       child: PieChartView(
                         categories: BatchLogs,
@@ -169,9 +164,9 @@ class AdminLogsState extends State<AdminLogs> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => BatchLogsMain(
-                                batchList: batchList,
-                                allLogs: allLogs,
-                              )));
+                                    batchList: batchList,
+                                    allLogs: allLogs,
+                                  )));
                         },
                         total: batchList.length,
                       ),
@@ -179,7 +174,6 @@ class AdminLogsState extends State<AdminLogs> {
                   ),
                 ],
               ),
-
             ],
           ),
         ));

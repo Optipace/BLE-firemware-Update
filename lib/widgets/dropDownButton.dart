@@ -143,7 +143,14 @@ class MapListItemBuilder extends StatefulWidget {
   final String? btnTitle;
 
   const MapListItemBuilder(
-      {Key? key, required this.listItems, this.press, this.selected, this.searchEnable = false,this.BtnEnable = false,this.btnFunction,this.btnTitle})
+      {Key? key,
+      required this.listItems,
+      this.press,
+      this.selected,
+      this.searchEnable = false,
+      this.BtnEnable = false,
+      this.btnFunction,
+      this.btnTitle})
       : super(key: key);
 
   @override
@@ -324,41 +331,33 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
             margin: EdgeInsets.only(right: 20),
             padding: EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white70),
-              borderRadius: BorderRadius.circular(10)
-            ),
-            
+                border: Border.all(color: Colors.white70), borderRadius: BorderRadius.circular(10)),
             child: Padding(
-                padding: EdgeInsets.only( right: 5, left: 15),
+                padding: EdgeInsets.only(right: 5, left: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-
-                        Text(widget.btnTitle.toString(),
-                          style:TextStyle(
+                        Text(
+                          widget.btnTitle.toString(),
+                          style: TextStyle(
                               color: Colors.white,
                               fontFamily: baseFont,
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
-                              shadows: [
-                                Shadow(
-                                    color: Colors.black26,
-                                    blurRadius: 0.4
-                                )
-                              ]
-                          ),
+                              shadows: [Shadow(color: Colors.black26, blurRadius: 0.4)]),
                         ),
                       ],
                     ),
-                    Icon(Icons.double_arrow_outlined,color: Colors.white,),
+                    Icon(
+                      Icons.double_arrow_outlined,
+                      color: Colors.white,
+                    ),
                   ],
-                )
-            ),
+                )),
           ),
         )
-
       ],
     );
   }

@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 
 class InternetStatusWatcher extends StatefulWidget {
   final Widget child;
