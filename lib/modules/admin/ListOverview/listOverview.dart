@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/admin/FirmwareSettings/addFirmware.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/apiCall/firmware.dart';
 import 'package:tracker_firmware/services/apiCall/profile.dart';
@@ -601,7 +602,6 @@ class listOverviewState extends State<listOverview> {
                     ),
                   ),
                   children: [
-
                     ...batchList.map((batch) {
                       printFunc("DEMO BATCH : ${batch}");
                       // batch
@@ -839,16 +839,56 @@ class listOverviewState extends State<listOverview> {
                                         ),
                                       ],
                                     ),
-                                  )
+                                  ),
                             ],
                           ),
-                          SizedBox(height: 10,)
+                          SizedBox(height: 10,),
+
 
                         ],
                       );
                     }).toList(),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AddNewFirmware(selectedBtn: 3,)));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 20),
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white70),
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Padding(
+                            padding: EdgeInsets.only( right: 5, left: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
 
-
+                                    Text("ADD BATCH",
+                                      style:TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: baseFont,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black26,
+                                                blurRadius: 0.4
+                                            )
+                                          ]
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Icon(Icons.double_arrow_outlined,color: Colors.white,),
+                              ],
+                            )
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(
