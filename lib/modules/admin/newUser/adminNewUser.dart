@@ -36,6 +36,7 @@ class AdminNewUserState extends State<AdminNewUser> {
   bool _validateEditUser = false;
   bool _validateEditDropDown = false;
 
+
   //----- Controllers for new Entry
   TextEditingController _name = TextEditingController();
   TextEditingController _empRegId = TextEditingController();
@@ -484,12 +485,17 @@ class AdminNewUserState extends State<AdminNewUser> {
                       text: "Search",
                       onPress: () {
                         validatePhn();
-                        setState(() {});
+                        setState(() {
+                          _userFound = false;
+                        });
                         if (!_validatePhn) {
                           setEmpDetails();
                         }
                         printFunc("DEMO VALIDATE USER : $_validatePhn");
                         printFunc("DEMO SetEMp Detials : $_userFound");
+                        printFunc("DEMODEMODEMO1 : ${validateUser}  ${_userFound}");
+                        printFunc("DEMODEMODEMO1 : ${_userFound }");
+
                         //api call and store in a bool var so then if the bool is true then olny set the userFound to true otherwise set to false
 
                         if (_searchPhn.text.trim().length == 10) {
@@ -501,6 +507,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                             _userFound = false;
                           });
                         }
+                        printFunc("DEMODEMODEMO2 : ${validateUser}  ${_userFound}");
+                        printFunc("DEMODEMODEMO2 : ${_userFound }");
+
                       },
                       icon: Icon(
                         CupertinoIcons.search,
@@ -509,13 +518,16 @@ class AdminNewUserState extends State<AdminNewUser> {
                     ),
                   )),
 
-              Visibility(
-                visible: _userFound && !_validatePhn,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
+
+
+                    Visibility(
+
+                      visible: _userFound,
+                        child:  Column(
+                          children: [
+                              Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Column(
                         // mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -722,7 +734,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                           email: _email01.text.trim(),
                                                           contact: _contact01.text.trim(),
                                                           password: _password.text.trim(),
-                                                          designationId: designation01.obj["id"].toString(),
+                                                          designationId:designation01.obj != null
+                                                        ? designation01.obj!["id"]?.toString() ?? ''
+                                                          : '',
+
                                                           deviveId: _uuidEdit.text.trim(),
                                                         );
 
@@ -732,6 +747,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                       } else {
                                                         printFunc("Inside else cond");
                                                       }
+                                                      setState(() {
+                                                        _userFound=false;
+                                                      });
                                                     }),
                                                 SizedBox(width: 5),
                                                 manageUserBtn(
@@ -770,8 +788,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                     ),
                   ],
                 ),
-              ),
-            ]))));
+                    ),
+            ]
+                ))));
   }
 
   void clearNewUserFields() {
@@ -871,7 +890,7 @@ class AdminNewUserState extends State<AdminNewUser> {
     final phn = _searchPhn.text.trim();
     printFunc("DEMO DEMO : ${_searchPhn.text.trim().length}");
     printFunc("DEMO DEMO DEMO : ${phn.length != 10}");
-    if (phn.length != 10) {
+    if (phn.length != 10 ) {
       setState(() {
         _validatePhn = true;
       });
@@ -918,7 +937,7 @@ class AdminNewUserState extends State<AdminNewUser> {
     var empObj = await getEmployeeDetail(context, _searchPhn.text);
     printFunc("DEMO EMP OBJ : $empObj \n name : ${empObj?["name"]}");
 
-    if (empObj == null) {
+    if (empObj == null || empObj.isEmpty) {
       printFunc("Inside is cond");
       setState(() {
         _userFound = false;
@@ -932,7 +951,7 @@ class AdminNewUserState extends State<AdminNewUser> {
         _name01.text = empObj["name"];
         _empRegId01.text = empObj["empRegisteredId"];
         _email01.text = empObj["email"];
-        _contact01.text = empObj["phone"];
+        _contact01.text = empObj["phone"]??'';
         designation01.setText = empObj["designation"];
         _uuidEdit.text = empObj["deviceId"];
 

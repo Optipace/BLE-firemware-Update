@@ -176,6 +176,7 @@ class AdminLogsState extends State<AdminLogs> {
               ),
             ],
           ),
-        ));
+        )
+    );
   }
 }
