@@ -13,19 +13,18 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
       shadows: [Shadow(color: Colors.black)]);
 }
 
-List<Widget> batchLogsList(String? name){
+List<Widget> batchLogsList(String? name) {
   var batchLogs = getAllLogs();
   var sortedBatchLogs = sortByStatus(batchLogs);
 
   List<Widget> batchLogsList = [];
 
-  for(int index = 0;index<sortedBatchLogs.length;index++){
-
-    if (name == sortedBatchLogs[index]["Batch"]){
+  for (int index = 0; index < sortedBatchLogs.length; index++) {
+    if (name == sortedBatchLogs[index]["Batch"]) {
       ValueNotifier moreInfo = ValueNotifier<bool>(false);
       batchLogsList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
-          builder: (ctx, value, child){
+          builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
@@ -38,13 +37,16 @@ List<Widget> batchLogsList(String? name){
                 key: ValueKey('batchlog_${sortedBatchLogs[index]["empId"]}'),
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: sortedBatchLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
-                collapsedBackgroundColor: sortedBatchLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+                collapsedBackgroundColor:
+                    sortedBatchLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.black, width: 0.3)),
+                    borderRadius: BorderRadius.circular(15),
+                    side: BorderSide(color: Colors.black, width: 0.3)),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.black, width: 0.3)),
+                    borderRadius: BorderRadius.circular(15),
+                    side: BorderSide(color: Colors.black, width: 0.3)),
                 title: Container(
                   padding: EdgeInsets.all(5),
                   width: size.width,
@@ -56,7 +58,8 @@ List<Widget> batchLogsList(String? name){
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Name : ", style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                          Text("Name : ",
+                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
                           SizedBox(
                             height: 3,
                           ),
@@ -64,7 +67,9 @@ List<Widget> batchLogsList(String? name){
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 14,
-                                  FontColor: sortedBatchLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText)),
+                                  FontColor: sortedBatchLogs[index]['status'] == 'Success'
+                                      ? SuccessCardText
+                                      : FailureCardText)),
                         ],
                       ),
                       // EmpID
@@ -84,7 +89,9 @@ List<Widget> batchLogsList(String? name){
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 14,
-                                FontColor: sortedBatchLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText),
+                                FontColor: sortedBatchLogs[index]['status'] == 'Success'
+                                    ? SuccessCardText
+                                    : FailureCardText),
                           ),
                         ],
                       ),
@@ -105,8 +112,9 @@ List<Widget> batchLogsList(String? name){
                             style: CardText(
                               font_Weight: FontWeight.w800,
                               size: 16,
-                              FontColor:
-                              sortedBatchLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText,
+                              FontColor: sortedBatchLogs[index]['status'] == 'Success'
+                                  ? SuccessCardText
+                                  : FailureCardText,
                             ),
                           ),
                         ],
@@ -140,7 +148,8 @@ List<Widget> batchLogsList(String? name){
                                       children: [
                                         Text(
                                           "Phone\nNumber : ",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300, FontColor: secondaryText),
                                         ),
                                         SizedBox(
                                           height: 3,
@@ -176,8 +185,9 @@ List<Widget> batchLogsList(String? name){
                                           style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor:
-                                            sortedBatchLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText,
+                                            FontColor: sortedBatchLogs[index]['status'] == 'Success'
+                                                ? SuccessCardText
+                                                : FailureCardText,
                                           ),
                                         ),
                                       ],
@@ -194,7 +204,8 @@ List<Widget> batchLogsList(String? name){
                                       children: [
                                         Text(
                                           "Firm\nversion : ",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300, FontColor: secondaryText),
                                         ),
                                         SizedBox(
                                           height: 3,
@@ -230,13 +241,13 @@ List<Widget> batchLogsList(String? name){
                                           style: CardText(
                                             font_Weight: FontWeight.w800,
                                             size: 16,
-                                            FontColor:
-                                            sortedBatchLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText,
+                                            FontColor: sortedBatchLogs[index]['status'] == 'Success'
+                                                ? SuccessCardText
+                                                : FailureCardText,
                                           ),
                                         ),
                                       ],
                                     ),
-
                                   ],
                                 ),
                                 Column(
@@ -249,7 +260,8 @@ List<Widget> batchLogsList(String? name){
                                       children: [
                                         Text(
                                           "Battery\nService : ",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300, FontColor: secondaryText),
                                         ),
                                         SizedBox(
                                           height: 3,
@@ -275,7 +287,8 @@ List<Widget> batchLogsList(String? name){
                                       children: [
                                         Text(
                                           "DeviceID : ",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300, FontColor: secondaryText),
                                         ),
                                         SizedBox(
                                           height: 3,
@@ -285,11 +298,12 @@ List<Widget> batchLogsList(String? name){
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 14,
-                                              FontColor: sortedBatchLogs[index]['status'] == 'Success' ? SuccessCardText : FailureCardText),
+                                              FontColor: sortedBatchLogs[index]['status'] == 'Success'
+                                                  ? SuccessCardText
+                                                  : FailureCardText),
                                         )
                                       ],
                                     ),
-
                                   ],
                                 ),
                               ],
@@ -300,9 +314,7 @@ List<Widget> batchLogsList(String? name){
                 ],
               ),
             );
-          }
-        )
-      );
+          }));
     }
   }
   return batchLogsList;
@@ -310,31 +322,32 @@ List<Widget> batchLogsList(String? name){
 
 class BatchLogs extends StatelessWidget {
   Map<String, dynamic> item;
+
   BatchLogs(this.item);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: lightBg),
-        title: Text(
-          "${item["name"]} Logs",
-          style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: lightBg),
+          title: Text(
+            "${item["name"]} Logs",
+            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+          ),
+          toolbarHeight: size.height / 11.5,
+          backgroundColor: darkBg,
+          elevation: 5,
+          shadowColor: darkBg,
         ),
-        toolbarHeight: size.height / 11.5,
-        backgroundColor: darkBg,
-        elevation: 5,
-        shadowColor: darkBg,
-      ),
-      backgroundColor: lightBg,
-      body: SafeArea(
-        child: Column(
-          children: [
-            ...batchLogsList(item["name"]),
-          ],
-        ),
-      )
-    );
+        backgroundColor: lightBg,
+        body: SafeArea(
+          child: Column(
+            children: [
+              ...batchLogsList(item["name"]),
+            ],
+          ),
+        ));
   }
 }
 

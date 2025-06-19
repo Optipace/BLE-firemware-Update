@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
 Future<Map<String, Map<String, Object>>> getDeviceTypes(BuildContext context) async {
   var deviceTypes = {
@@ -38,4 +39,27 @@ Future<Map<String, Map<String, Object>>> getDeviceTypes(BuildContext context) as
       });
 
   return deviceTypes;
+}
+
+Future<bool> addNewDeviceType(
+  BuildContext context, {
+  required String name,
+  required String description,
+}) async {
+  final body = {"deviceName": name, "discription": description};
+
+  bool isSuccess = false;
+
+  await ApiService.callApi(
+    context: context,
+    method: 'POST',
+    endpoint: ApiEndpoints.saveDeviceTypes,
+    bodyOrParams: body,
+    onSuccess: (data) {
+      ShowSnackBarMessage(context, 'New Series added successfully!', true);
+      isSuccess = true;
+    },
+  );
+
+  return isSuccess;
 }

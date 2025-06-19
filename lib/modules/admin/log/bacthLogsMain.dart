@@ -23,6 +23,7 @@ class BatchLogsMain extends StatelessWidget {
   }
 
   var sortedBatchLogs;
+
   @override
   Widget build(BuildContext context) {
     sortedBatchLogs = sortByStatus(batchList);

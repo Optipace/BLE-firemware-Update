@@ -81,7 +81,11 @@ final newBatch = BatchModel(
   file: "Base64Data",
 );
  */
-Future<List<Map<String, dynamic>>> getAllBatch() async {
+// Future<List<Map<String, dynamic>>> getAllBatch() async
+// {
+//
+// }
+Future<List<Map<String, dynamic>>> getAllBatchFromHive() async {
   final box = await Hive.openBox<BatchModel>('$batchHiveBox');
 
   return box.values.map((series) {

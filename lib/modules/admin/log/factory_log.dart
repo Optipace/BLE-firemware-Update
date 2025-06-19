@@ -36,7 +36,8 @@ List<Widget> factoryUserLog() {
               key: ValueKey('factory_$index'),
               tilePadding: EdgeInsets.all(5),
               backgroundColor: sortedFactoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
-              collapsedBackgroundColor: sortedFactoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
+              collapsedBackgroundColor:
+                  sortedFactoryLogs[index]['status'] == 'Success' ? SuccessCard : FailureCard,
               iconColor: darkBg,
               collapsedIconColor: darkBg,
               collapsedShape: RoundedRectangleBorder(
@@ -283,7 +284,8 @@ List<Widget> factoryUserLog() {
                                     children: [
                                       Text(
                                         "DeviceID : ",
-                                        style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                        style:
+                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -299,7 +301,6 @@ List<Widget> factoryUserLog() {
                                       )
                                     ],
                                   ),
-
                                 ],
                               ),
                             ],
