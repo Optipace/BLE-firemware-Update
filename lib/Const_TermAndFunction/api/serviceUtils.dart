@@ -59,7 +59,7 @@ class ApiEndpoints {
   static const String getAllBatchDetails = '/api/non-auth/hardware/getAllBatchDetails';
 
   static const String saveClient = '/api/non-auth/hardware/save_client';
-  static const String getAllDesignations = 'api/non-auth/getAllDesignations';
+  static const String getAllDesignations = '/api/non-auth/getAllDesignations';
   static const String getAllDeviceTypes = '/api/non-auth/hardware/getAllDeviceTypes';
   static const String yetToDevelop = '/api/non-auth/hardware/underProgress';
 }

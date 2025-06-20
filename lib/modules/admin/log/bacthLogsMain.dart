@@ -47,7 +47,7 @@ class BatchLogsMain extends StatelessWidget {
             for (int i = 0; i < batchList.length; i++)
               GestureDetector(
                 onTap: () {
-                  printFunc("Inside ${batchList[i]["name"]} ");
+                  printFunc("Inside ${batchList[i]["batchName"]} ");
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => BatchLogs(batchList[i])));
                 },
                 child: Container(
@@ -79,7 +79,7 @@ class BatchLogsMain extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  batchList[i]["name"]??"",
+                                  batchList[i]["batchName"]??"",
                                   style: TextStyle(
                                       color: darkBg,
                                       fontFamily: baseFont,

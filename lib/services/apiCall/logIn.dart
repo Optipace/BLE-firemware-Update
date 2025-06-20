@@ -17,8 +17,8 @@ Future<bool> logInAPICall(BuildContext context, String phoneNum, String password
     "deviceId": "DEVICE185", // sharedPreferences.getString("UUID"),
   };
 
-  request = {"mobileNumber": "9455555513", "password": "abc@123", "deviceId": "DEVICE185"};
-  phoneNum = "9455555513";
+  // request = {"mobileNumber": "9455555513", "password": "abc@123", "deviceId": "DEVICE185"};
+  // phoneNum = "9455555513";
 
   printFunc("DEMO REQUEST LOGIN API BODY : $request");
   await ApiService.callApi(

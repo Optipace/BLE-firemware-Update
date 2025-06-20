@@ -440,11 +440,17 @@ class listOverviewState extends State<listOverview> {
                                         ),
                                       ],
                                     ),
-                                    Container(
-                                        width: size.width * 0.4,
-                                        child: Divider(
-                                          color: darkBg,
-                                        )),
+                                    SizedBox(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 5,),
+                                          Divider(
+                                            color: darkBg,
+                                          ),
+                                          SizedBox(height: 5,),
+                                        ],
+                                      ),
+                                    ),
                                     Column(
                                       children: [
                                         Text(
@@ -824,6 +830,17 @@ class listOverviewState extends State<listOverview> {
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: [
                                                               // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                                              Text(
+                                                                "U. Threshold",
+                                                                style: CardText(
+                                                                  font_Weight: FontWeight.w800,
+                                                                  size: 16,
+                                                                  FontColor: SuccessCardText,
+                                                                ),
+                                                              ),
+
+                                                              // Upper Threshold
+                                                              SizedBox(height: 5),
                                                               Row(
                                                                 children: [
                                                                   Icon(Icons.battery_charging_full_outlined,
@@ -839,17 +856,7 @@ class listOverviewState extends State<listOverview> {
                                                                   ),
                                                                 ],
                                                               ),
-                                                              // Upper Threshold
-                                                              SizedBox(height: 5),
 
-                                                              Text(
-                                                                "U. Threshold",
-                                                                style: CardText(
-                                                                  font_Weight: FontWeight.w800,
-                                                                  size: 16,
-                                                                  FontColor: SuccessCardText,
-                                                                ),
-                                                              ),
                                                             ],
                                                           ),
                                                           SizedBox(width: 20),
@@ -857,6 +864,16 @@ class listOverviewState extends State<listOverview> {
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: [
                                                               // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                                              Text(
+                                                                "U.Volt",
+                                                                style: CardText(
+                                                                  font_Weight: FontWeight.w800,
+                                                                  size: 16,
+                                                                  FontColor: SuccessCardText,
+                                                                ),
+                                                              ),
+                                                              // Upper Voltage
+                                                              SizedBox(height: 5),
                                                               Row(
                                                                 children: [
                                                                   Icon(Icons.battery_6_bar_outlined,
@@ -872,17 +889,7 @@ class listOverviewState extends State<listOverview> {
                                                                   ),
                                                                 ],
                                                               ),
-                                                              // Upper Voltage
-                                                              SizedBox(height: 5),
 
-                                                              Text(
-                                                                "U.Volt",
-                                                                style: CardText(
-                                                                  font_Weight: FontWeight.w800,
-                                                                  size: 16,
-                                                                  FontColor: SuccessCardText,
-                                                                ),
-                                                              )
                                                             ],
                                                           ),
                                                           SizedBox(width: 20),
@@ -890,6 +897,16 @@ class listOverviewState extends State<listOverview> {
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: [
                                                               // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                                              Text(
+                                                                "L.Threshold",
+                                                                style: CardText(
+                                                                  font_Weight: FontWeight.w800,
+                                                                  size: 16,
+                                                                  FontColor: SuccessCardText,
+                                                                ),
+                                                              ),
+                                                              // Lower Threshold
+                                                              SizedBox(height: 5),
                                                               Row(
                                                                 children: [
                                                                   Icon(Icons.battery_alert_outlined,
@@ -905,17 +922,7 @@ class listOverviewState extends State<listOverview> {
                                                                   ),
                                                                 ],
                                                               ),
-                                                              // Lower Threshold
-                                                              SizedBox(height: 5),
 
-                                                              Text(
-                                                                "L.Threshold",
-                                                                style: CardText(
-                                                                  font_Weight: FontWeight.w800,
-                                                                  size: 16,
-                                                                  FontColor: SuccessCardText,
-                                                                ),
-                                                              )
                                                             ],
                                                           ),
                                                           SizedBox(width: 20),
@@ -923,6 +930,15 @@ class listOverviewState extends State<listOverview> {
                                                             // crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: [
                                                               // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
+                                                              Text(
+                                                                "L. Volt",
+                                                                style: CardText(
+                                                                  font_Weight: FontWeight.w800,
+                                                                  size: 16,
+                                                                  FontColor: SuccessCardText,
+                                                                ),
+                                                              ),
+                                                              SizedBox(height: 5),
                                                               Row(
                                                                 children: [
                                                                   Icon(Icons.battery_1_bar_rounded,
@@ -938,16 +954,7 @@ class listOverviewState extends State<listOverview> {
                                                                   ),
                                                                 ],
                                                               ),
-                                                              SizedBox(height: 5),
-// Lower Voltage
-                                                              Text(
-                                                                "L. Volt",
-                                                                style: CardText(
-                                                                  font_Weight: FontWeight.w800,
-                                                                  size: 16,
-                                                                  FontColor: SuccessCardText,
-                                                                ),
-                                                              )
+
                                                             ],
                                                           ),
                                                         ],
@@ -1066,23 +1073,26 @@ class listOverviewState extends State<listOverview> {
                       printFunc("DEMO BATCH : ${batch}");
                       // batch
                       final batchId = batch['id'] ?? '';
-                      final batchname = batch['name'] ?? '';
+                      final batchname = batch['batchName'] ?? '';
+                      final batchActive = batch['active'].toString().toUpperCase() == 'Y' ? "Active" : "Inactive";
 
                       // Profile
-                      final profileId = batch['profile']?['id'] ?? 'N/A';
-                      final profileName = batch['profile']?['name'] ?? 'N/A';
-                      final profileRealseNote = batch['profile']?['releaseNote'] ?? 'N/A';
+                      final configName = batch['configuration']?['name'] ?? 'N/A';
+                      final configUpThershold = batch['configuration']?['upperThreshold'] ?? 'N/A';
+                      final configLowThershold = batch['configuration']?['lowerThreshold'] ?? 'N/A';
+                      final configUpVolt = batch['configuration']?['upperVoltage'] ?? 'N/A';
+                      final configLowVolt = batch['configuration']?['lowerVoltage'] ?? 'N/A';
 
                       // Firmware
                       final firmwareId = batch['firmware']?['id'] ?? 'N/A';
-                      final firmwareVersion = batch['firmware']?['version'] ?? 'N/A';
-                      final firmwareRelaseNote = batch['firmware']?['releaseNote'] ?? 'N/A';
+                      final firmwareVersion = batch['firmware']?['versionName'] ?? 'N/A';
+                      final firmwareRelaseNote = batch['firmware']?['versionReleasedDate'].split("T")[0] ?? 'N/A';
 
                       return Column(
                         children: [
                           ExpansionTile(
-                            backgroundColor: second_lightBg,
-                            collapsedBackgroundColor: Colors.transparent,
+                            backgroundColor: Colors.white,
+                            collapsedBackgroundColor: second_lightBg,
                             iconColor: darkBg,
                             textColor: Colors.black,
                             collapsedIconColor: darkBg,
@@ -1166,7 +1176,7 @@ class listOverviewState extends State<listOverview> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "  Id : ",
+                                                    "Id : ",
                                                     style: titleTileStyle,
                                                   ),
                                                   SizedBox(
@@ -1192,101 +1202,28 @@ class listOverviewState extends State<listOverview> {
                                                     style: tileTextStyle,
                                                   )
                                                 ],
-                                              )
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    "Status : ",
+                                                    style: titleTileStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 2,
+                                                  ),
+                                                  Text(
+                                                    "${batchActive}",
+                                                    style: tileTextStyle,
+                                                  )
+                                                ],
+                                              ),
                                             ],
                                           ),
                                         ],
                                       ),
                                     ),
 
-                                    Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10),
-                                      child: Column(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.memory, color: darkBg, size: 18, weight: 50),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    "Config Details ",
-                                                    style: TextStyle(
-                                                        color: darkBg,
-                                                        fontFamily: baseFont,
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.w700,
-                                                        shadows: [
-                                                          Shadow(color: Colors.black, blurRadius: 0.2)
-                                                        ]),
-                                                  ),
-                                                ],
-                                              ),
-                                              Divider(
-                                                color: darkBg,
-                                                thickness: 0.8,
-                                              ),
-                                              SizedBox(
-                                                height: 2,
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "  Id : ",
-                                                    style: titleTileStyle,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 2,
-                                                  ),
-                                                  Text(
-                                                    "${profileId}",
-                                                    style: tileTextStyle,
-                                                  )
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "Name : ",
-                                                    style: titleTileStyle,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 2,
-                                                  ),
-                                                  Text(
-                                                    "${profileName}",
-                                                    style: tileTextStyle,
-                                                  )
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "Relase Date : ",
-                                                    style: titleTileStyle,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 2,
-                                                  ),
-                                                  Text(
-                                                    "${profileRealseNote}",
-                                                    style: tileTextStyle,
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                     Container(
                                       padding: EdgeInsets.symmetric(vertical: 10),
                                       child: Column(
@@ -1356,6 +1293,7 @@ class listOverviewState extends State<listOverview> {
                                                   )
                                                 ],
                                               ),
+                                              //Release Note
                                               Column(
                                                 children: [
                                                   Text(
@@ -1373,6 +1311,158 @@ class listOverviewState extends State<listOverview> {
                                               )
                                             ],
                                           ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(vertical: 10),
+                                      child: Column(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.memory, color: darkBg, size: 18, weight: 50),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    "Config : ${configName} ",
+                                                    style: TextStyle(
+                                                        color: darkBg,
+                                                        fontFamily: baseFont,
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w700,
+                                                        shadows: [
+                                                          Shadow(color: Colors.black, blurRadius: 0.2)
+                                                        ]),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(
+                                                color: darkBg,
+                                                thickness: 0.8,
+                                              ),
+                                              SizedBox(
+                                                height: 2,
+                                              )
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 3.0, right: 3),
+                                            child: FittedBox(
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                                          Text(
+                                                            "U. Threshold",
+                                                            style: titleTileStyle,
+                                                          ),
+
+                                                          // Upper Threshold
+                                                          SizedBox(height: 5),
+                                                          Row(
+                                                            children: [
+                                                              Icon(Icons.battery_charging_full_outlined,
+                                                                  size: 18, color: darkBg),
+                                                              SizedBox(width: 5),
+                                                              Text(
+                                                                "${configUpThershold} V",
+                                                                style: tileTextStyle,
+                                                              ),
+                                                            ],
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                      SizedBox(width: 20),
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                                          Text(
+                                                            "U.Volt",
+                                                            style: titleTileStyle,
+                                                          ),
+                                                          // Upper Voltage
+                                                          SizedBox(height: 5),
+                                                          Row(
+                                                            children: [
+                                                              Icon(Icons.battery_6_bar_outlined,
+                                                                  size: 18, color: darkBg),
+                                                              SizedBox(width: 5),
+                                                              Text(
+                                                                "${configUpVolt} V",
+                                                                style: tileTextStyle,
+                                                              ),
+                                                            ],
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                      SizedBox(width: 20),
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                                          Text(
+                                                            "L.Threshold",
+                                                            style: titleTileStyle,
+                                                          ),
+                                                          // Lower Threshold
+                                                          SizedBox(height: 5),
+                                                          Row(
+                                                            children: [
+                                                              Icon(Icons.battery_alert_outlined,
+                                                                  size: 18, color: darkBg),
+                                                              SizedBox(width: 5),
+                                                              Text(
+                                                                "${configLowThershold} V",
+                                                                style: tileTextStyle,
+                                                              ),
+                                                            ],
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                      SizedBox(width: 20),
+                                                      Column(
+                                                        // crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
+                                                          Text(
+                                                            "L. Volt",
+                                                            style: titleTileStyle,
+                                                          ),
+                                                          SizedBox(height: 5),
+                                                          Row(
+                                                            children: [
+                                                              Icon(Icons.battery_1_bar_rounded,
+                                                                  size: 18, color: darkBg),
+                                                              SizedBox(width: 5),
+                                                              Text(
+                                                                "${configLowVolt} V",
+                                                                style: tileTextStyle,
+                                                              ),
+                                                            ],
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+
                                         ],
                                       ),
                                     ),

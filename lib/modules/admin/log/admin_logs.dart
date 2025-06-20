@@ -45,9 +45,9 @@ class AdminLogsState extends State<AdminLogs> {
       // BACTH LOGS PIE CHART
       BatchLogs = [
         for (int i = 0; i < batchList.length; i++)
-          Category(batchList![i]["name"].toString(), false, amount: countLogs(batchList[i]).toDouble())
+          Category(batchList![i]["batchName"].toString(), false, amount: countLogs(batchList[i]).toDouble())
       ];
-      printFunc("BatchList : $batchList");
+
       BatchColors = generateBrightColors(batchList.length);
       // Printing Batch logs
       /*
@@ -132,7 +132,7 @@ class AdminLogsState extends State<AdminLogs> {
                         categories: UserLogs,
                         colors: UserColor,
                         onTap: () {
-                          printFunc("User Logs");
+                          printFunc("User Logs ${UserLogs[1].name}");
                           Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserLogsMain()));
                         },
                       ),
@@ -163,6 +163,7 @@ class AdminLogsState extends State<AdminLogs> {
                         categories: BatchLogs,
                         colors: BatchColors,
                         onTap: () {
+
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => BatchLogsMain(
                                     batchList: batchList,

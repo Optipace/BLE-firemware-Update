@@ -12,7 +12,8 @@ Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
       headerAuth: true,
       onSuccess: (data) async {
         printFunc("Batch data : $data");
-        batchList = data;
+        batchList = List<Map<String, dynamic>>.from(
+            (data as List).map((e) => Map<String, dynamic>.from(e)),);
         //       printFunc("User data required : $batchList");
         //
       });
