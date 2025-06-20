@@ -160,7 +160,7 @@ Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
   //     }
   //   },
   // ];
-
+  printFunc("Demo Batch List : $batchList");
   return batchList;
 }
 

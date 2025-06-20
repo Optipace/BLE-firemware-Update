@@ -171,6 +171,7 @@ class LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 50,
                     ),
+
                     Center(
                         child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

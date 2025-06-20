@@ -491,11 +491,6 @@ class AdminNewUserState extends State<AdminNewUser> {
                         if (!_validatePhn) {
                           setEmpDetails();
                         }
-                        printFunc("DEMO VALIDATE USER : $_validatePhn");
-                        printFunc("DEMO SetEMp Detials : $_userFound");
-                        printFunc("DEMODEMODEMO1 : ${validateUser}  ${_userFound}");
-                        printFunc("DEMODEMODEMO1 : ${_userFound }");
-
                         //api call and store in a bool var so then if the bool is true then olny set the userFound to true otherwise set to false
 
                         if (_searchPhn.text.trim().length == 10) {
@@ -507,9 +502,6 @@ class AdminNewUserState extends State<AdminNewUser> {
                             _userFound = false;
                           });
                         }
-                        printFunc("DEMODEMODEMO2 : ${validateUser}  ${_userFound}");
-                        printFunc("DEMODEMODEMO2 : ${_userFound }");
-
                       },
                       icon: Icon(
                         CupertinoIcons.search,
