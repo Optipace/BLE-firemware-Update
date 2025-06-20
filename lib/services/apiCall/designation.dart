@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
-Future<Map<String, Map<String, Object>>> getDesignation(BuildContext context) async {
-  var designationList = {
+Future<Map<String, dynamic>> getDesignation(BuildContext context) async {
+  Map<String, dynamic> designationList = {
     "Admin": {
       "id": 1,
       "name": "admin",
@@ -29,10 +29,11 @@ Future<Map<String, Map<String, Object>>> getDesignation(BuildContext context) as
         printFunc("Designation responce :$data");
         designationList.clear();
 
-        for (Map desig in data) {
-          designationList[desig["name"]] = data;
+        for (var desig in data) {
+          printFunc(" Designation -> $desig -> ${desig["name"]}");
+          designationList[desig["name"]] = desig;
         }
       });
-
+  printFunc("designationList : $designationList");
   return designationList;
 }

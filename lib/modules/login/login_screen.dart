@@ -355,13 +355,12 @@ class LoginScreenState extends State<LoginScreen> {
                                   errorPassMsg = null;
                                 }
                               }
-                              ;
-                              Future.delayed(Duration(seconds: 3), () {
-                                setState(() {
-                                  errorPhnMsg = null;
-                                  errorPassMsg = null;
-                                });
-                              });
+                              // Future.delayed(Duration(seconds: 3), () {
+                              //   setState(() {
+                              //     errorPhnMsg = null;
+                              //     errorPassMsg = null;
+                              //   });
+                              // });
                             });
                             print(
                                 "DEMO DEMO ${checkPhnNum(phoneNumber.toString()) && checkPass(_password.toString())}");

@@ -329,6 +329,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                             color: darkBg,
                           ),
                           press: () async {
+                            designationRoles = await getDesignation(context);
+
                             await BottomSheet_Widget(context, [
                               Column(
                                 children: [

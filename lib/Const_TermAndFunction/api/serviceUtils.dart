@@ -59,7 +59,7 @@ class ApiEndpoints {
   static const String getAllBatchDetails = '/api/non-auth/hardware/getAllBatchDetails';
 
   static const String saveClient = '/api/non-auth/hardware/save_client';
-  static const String getAllDesignations = 'api/non-auth/getAllDesignations';
+  static const String getAllDesignations = '/api/non-auth/getAllDesignations';
   static const String getAllDeviceTypes = '/api/non-auth/hardware/getAllDeviceTypes';
   static const String yetToDevelop = '/api/non-auth/hardware/underProgress';
 }
@@ -210,8 +210,9 @@ class ApiService {
           'refreshToken': UserData.instance.refreshToken ?? "",
         }),
       );
-
-      if (response.statusCode == 200 && jsonDecode(response.body)['response']["code"] == 1) {
+      printFunc("response.statusCode : ${response.statusCode}");
+      printFunc("response.body : ${jsonDecode(response.body)}");
+      if (response.statusCode == 200 && jsonDecode(response.body)['response']["code"] == 2) {
         // Logout successful
         ShowSnackBarMessage(context, 'Logged out successfully.', true);
       } else {
