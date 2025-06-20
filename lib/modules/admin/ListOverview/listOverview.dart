@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/admin/FirmwareSettings/addFirmware.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
+import 'package:tracker_firmware/services/apiCall/deviceType.dart';
 import 'package:tracker_firmware/services/apiCall/firmware.dart';
 import 'package:tracker_firmware/services/apiCall/profile.dart';
+import 'package:tracker_firmware/widgets/BottomSheet.dart';
+import 'package:tracker_firmware/widgets/buttons.dart';
+import 'package:tracker_firmware/widgets/dropDownButton.dart';
+import 'package:tracker_firmware/widgets/textFields.dart';
 
 TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
@@ -43,6 +49,11 @@ class listOverviewState extends State<listOverview> {
 
   bool _showInfo = false;
   List<Map<String, dynamic>> batchList = [{}];
+
+  // Controleers for New Battery
+  TextEditingController _newbname = TextEditingController();
+  TextEditingController _batteryDescription = TextEditingController();
+  bool batteryValidator = false;
 
   @override
   void initState() {
@@ -266,6 +277,52 @@ class listOverviewState extends State<listOverview> {
                           ],
                         );
                       }).toList(),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute<void>(
+                              builder: (_) => AddNewFirmware(
+                                    selectedBtn: 1,
+                                  )));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                              padding: EdgeInsets.only(right: 5, left: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.add_rounded,
+                                        color: darkBg,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "ADD FIRMWARE",
+                                        style: TextStyle(
+                                            color: darkBg,
+                                            fontFamily: baseFont,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                            shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                     ],
                   ),
                 ),
@@ -420,6 +477,140 @@ class listOverviewState extends State<listOverview> {
                         ],
                       );
                     }).toList(),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        await BottomSheet_Widget(context, color: lightBg, [
+                          Container(
+                            height: size.height / 1.5,
+                            width: size.width,
+                            color: lightBg,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Enter Battery Details!",
+                                      style: TextStyle(
+                                          fontFamily: baseFont,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 24,
+                                          color: darkBg,
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black,
+                                                blurRadius: 0.5,
+                                                offset: Offset(0.5, 0.5))
+                                          ]),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+
+                                    Container(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          // Battery Name
+                                          LabelText(text: "Battery Name :"),
+                                          TextFeildNewUser(
+                                            hintText: "Enter Battery Name",
+                                            Controller: _newbname,
+                                            onChanged: (value) {},
+                                            enable: true,
+                                            etext: batteryValidator && _newbname.text.trim().isEmpty
+                                                ? "Please Enter Battery Name"
+                                                : "",
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          // Relase Note
+                                          LabelText(text: "Description"),
+                                          TextFeildNewUser(
+                                            hintText: "Enter Information",
+                                            Controller: _batteryDescription,
+                                            onChanged: (value) {},
+                                            enable: true,
+                                            etext: batteryValidator && _batteryDescription.text.trim().isEmpty
+                                                ? "Please Enter Information"
+                                                : "",
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // Add Btn
+                                    manageUserBtn(
+                                        text: "Add Battery",
+                                        onPress: () async {
+                                          printFunc("DEMODEMO");
+                                          printFunc(batteryValidator);
+                                          printFunc(_newbname.text.trim().isEmpty);
+                                          ValidateBatteryFields();
+
+                                          if (!batteryValidator) {
+                                            printFunc("Inside IF COND");
+                                            if (await addNewDeviceType(
+                                              context,
+                                              name: _newbname.text.trim(),
+                                              description: _batteryDescription.text.trim(),
+                                            )) {
+                                              clearConfig();
+                                              // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                                            }
+                                          }
+
+                                          setState(() {});
+                                        })
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        ]);
+                        setState(() {});
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                            padding: EdgeInsets.only(right: 5, left: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add_rounded,
+                                      color: darkBg,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "ADD BATTERY",
+                                      style: TextStyle(
+                                          color: darkBg,
+                                          fontFamily: baseFont,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w500,
+                                          shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -801,6 +992,52 @@ class listOverviewState extends State<listOverview> {
                         ],
                       );
                     }).toList(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (_) => AddNewFirmware(
+                                  selectedBtn: 2,
+                                )));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                            padding: EdgeInsets.only(right: 5, left: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add_rounded,
+                                      color: darkBg,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "ADD CONFIG",
+                                      style: TextStyle(
+                                          color: darkBg,
+                                          fontFamily: baseFont,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w500,
+                                          shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -1171,6 +1408,52 @@ class listOverviewState extends State<listOverview> {
                         ],
                       );
                     }).toList(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (_) => AddNewFirmware(
+                                  selectedBtn: 3,
+                                )));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                            padding: EdgeInsets.only(right: 5, left: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add_rounded,
+                                      color: darkBg,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "ADD BATCH",
+                                      style: TextStyle(
+                                          color: darkBg,
+                                          fontFamily: baseFont,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                          shadows: [Shadow(color: Colors.black26, blurRadius: 0.4)]),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -1192,6 +1475,31 @@ class listOverviewState extends State<listOverview> {
             ),
           ),
         ));
+  }
+
+  void ValidateBatteryFields() {
+    final Controllers = [
+      _newbname,
+      _batteryDescription,
+    ];
+
+    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    printFunc("has Next : $hasEmpty");
+    setState(() {
+      batteryValidator = hasEmpty;
+    });
+    // Future Delayed
+    printFunc("DEMOMMOMO : ${batteryValidator}");
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        batteryValidator = false;
+      });
+    });
+  }
+
+  void clearConfig() {
+    _batteryDescription.clear();
+    _newbname.clear();
   }
 }
 

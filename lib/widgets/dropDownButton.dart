@@ -325,39 +325,41 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
         SizedBox(
           height: 15.0,
         ),
-        GestureDetector(
-          onTap: widget.btnFunction,
-          child: Container(
-            margin: EdgeInsets.only(right: 20),
-            padding: EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.white70), borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-                padding: EdgeInsets.only(right: 5, left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          widget.btnTitle.toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: baseFont,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              shadows: [Shadow(color: Colors.black26, blurRadius: 0.4)]),
-                        ),
-                      ],
-                    ),
-                    Icon(
-                      Icons.double_arrow_outlined,
-                      color: Colors.white,
-                    ),
-                  ],
-                )),
-          ),
-        )
+        widget.BtnEnable
+            ? GestureDetector(
+                onTap: widget.btnFunction,
+                child: Container(
+                  margin: EdgeInsets.only(right: 20),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white70), borderRadius: BorderRadius.circular(10)),
+                  child: Padding(
+                      padding: EdgeInsets.only(right: 5, left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                widget.btnTitle.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: baseFont,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    shadows: [Shadow(color: Colors.black26, blurRadius: 0.4)]),
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            Icons.double_arrow_outlined,
+                            color: Colors.white,
+                          ),
+                        ],
+                      )),
+                ),
+              )
+            : SizedBox()
       ],
     );
   }

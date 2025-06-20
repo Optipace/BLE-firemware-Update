@@ -47,6 +47,7 @@ class AdminLogsState extends State<AdminLogs> {
         for (int i = 0; i < batchList.length; i++)
           Category(batchList![i]["name"].toString(), false, amount: countLogs(batchList[i]).toDouble())
       ];
+      printFunc("BatchList : $batchList");
       BatchColors = generateBrightColors(batchList.length);
       // Printing Batch logs
       /*

@@ -486,12 +486,12 @@ class AdminNewUserState extends State<AdminNewUser> {
                       text: "Search",
                       onPress: () {
                         validatePhn();
-                        setState(() {});
+                        setState(() {
+                          _userFound = false;
+                        });
                         if (!_validatePhn) {
                           setEmpDetails();
                         }
-                        printFunc("DEMO VALIDATE USER : $_validatePhn");
-                        printFunc("DEMO SetEMp Detials : $_userFound");
                         //api call and store in a bool var so then if the bool is true then olny set the userFound to true otherwise set to false
 
                         if (_searchPhn.text.trim().length == 10) {
@@ -512,7 +512,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                   )),
 
               Visibility(
-                visible: _userFound && !_validatePhn,
+                visible: _userFound,
                 child: Column(
                   children: [
                     Padding(
@@ -724,7 +724,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                           email: _email01.text.trim(),
                                                           contact: _contact01.text.trim(),
                                                           password: _password.text.trim(),
-                                                          designationId: designation01.obj["id"].toString(),
+                                                          designationId: designation01.obj != null
+                                                              ? designation01.obj!["id"]?.toString() ?? ''
+                                                              : '',
+
                                                           deviveId: _uuidEdit.text.trim(),
                                                         );
 
@@ -734,6 +737,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                       } else {
                                                         printFunc("Inside else cond");
                                                       }
+                                                      setState(() {
+                                                        _userFound = false;
+                                                      });
                                                     }),
                                                 SizedBox(width: 5),
                                                 manageUserBtn(
@@ -920,7 +926,7 @@ class AdminNewUserState extends State<AdminNewUser> {
     var empObj = await getEmployeeDetail(context, _searchPhn.text);
     printFunc("DEMO EMP OBJ : $empObj \n name : ${empObj?["name"]}");
 
-    if (empObj == null) {
+    if (empObj == null || empObj.isEmpty) {
       printFunc("Inside is cond");
       setState(() {
         _userFound = false;
@@ -934,7 +940,7 @@ class AdminNewUserState extends State<AdminNewUser> {
         _name01.text = empObj["name"];
         _empRegId01.text = empObj["empRegisteredId"];
         _email01.text = empObj["email"];
-        _contact01.text = empObj["phone"];
+        _contact01.text = empObj["phone"] ?? '';
         designation01.setText = empObj["designation"];
         _uuidEdit.text = empObj["deviceId"];
 

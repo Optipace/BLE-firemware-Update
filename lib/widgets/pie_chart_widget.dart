@@ -97,7 +97,7 @@ class PieChartViewState extends State<PieChartView> {
         color: second_lightBg,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Stack(
             alignment: Alignment.center,
@@ -126,7 +126,6 @@ class PieChartViewState extends State<PieChartView> {
               ),
             ],
           ),
-          SizedBox(width: 20),
           Container(
             height: widget.radius / 1.8,
             child: Theme(

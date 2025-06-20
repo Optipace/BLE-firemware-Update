@@ -18,12 +18,16 @@ import 'package:tracker_firmware/widgets/dropDownButton.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
 class AddNewFirmware extends StatefulWidget {
+  final int? selectedBtn;
+
+  AddNewFirmware({this.selectedBtn});
+
   @override
   State<AddNewFirmware> createState() => AddNewFirmwareState();
 }
 
 class AddNewFirmwareState extends State<AddNewFirmware> {
-  int selectedbutton = 1;
+  int? selectedbutton;
 
   Map<String, dynamic> batteryList = {};
   String? firmwareFileBase64;
@@ -79,10 +83,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      selectedbutton = widget.selectedBtn ?? 1;
       // batteryList = await getDeviceTypes(context);
       firmwareList = await getFirmwareList(context);
       allConfigList = await getAllConfigurationList(context);
       batteryList = {for (var item in allConfigList) item['deviceName']: item};
+      setState(() {});
     });
   }
 
@@ -897,7 +903,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             ]);
                             setState(() {});
                             setState(() {
-                              _visibleConfig = true;
+                              if (_batterySeries.Text != "") _visibleConfig = true;
                             });
                           },
                         ),
