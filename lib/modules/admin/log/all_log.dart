@@ -10,7 +10,7 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,
       fontFamily: baseFont,
-      fontSize: size ?? 16,
+      fontSize: size ?? 14,
       shadows: [Shadow(color: Colors.black)]);
 }
 
@@ -57,17 +57,20 @@ List<Widget> allLogs() {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Name : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                            style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText)),
                         SizedBox(
                           height: 3,
                         ),
-                        Text(sortedAllLogs[index]["Name"],
-                            style: CardText(
-                                font_Weight: FontWeight.w800,
-                                size: 14,
-                                FontColor: sortedAllLogs[index]['status'] == 'Success'
-                                    ? SuccessCardText
-                                    : FailureCardText)),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(sortedAllLogs[index]["Name"],
+                              style: CardText(
+                                  font_Weight: FontWeight.w800,
+                                  size: 16,
+                                  FontColor: sortedAllLogs[index]['status'] == 'Success'
+                                      ? SuccessCardText
+                                      : FailureCardText)),
+                        ),
                       ],
                     ),
                     // EmpID
@@ -77,20 +80,23 @@ List<Widget> allLogs() {
                       children: [
                         Text(
                           "EmpID : ",
-                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                          style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
                         ),
                         SizedBox(
                           height: 3,
                         ),
-                        Text(
-                          sortedAllLogs[index]["empId"],
-                          style: CardText(
-                              font_Weight: FontWeight.w800,
-                              size: 14,
-                              FontColor: sortedAllLogs[index]['status'] == 'Success'
-                                  ? SuccessCardText
-                                  : FailureCardText),
-                        ),
+                       FittedBox(
+                         fit: BoxFit.scaleDown,
+                         child:  Text(
+                           sortedAllLogs[index]["empId"],
+                           style: CardText(
+                               font_Weight: FontWeight.w800,
+                               size: 16,
+                               FontColor: sortedAllLogs[index]['status'] == 'Success'
+                                   ? SuccessCardText
+                                   : FailureCardText),
+                         ),
+                       ),
                       ],
                     ),
                     // Status
@@ -100,19 +106,22 @@ List<Widget> allLogs() {
                         Text(
                           "Status:",
                           style: CardText(
-                            font_Weight: FontWeight.w300,
+                            font_Weight: FontWeight.w500,
                             FontColor: secondaryText,
                           ),
                         ),
                         SizedBox(height: 3),
-                        Text(
-                          sortedAllLogs[index]['status'],
-                          style: CardText(
-                            font_Weight: FontWeight.w800,
-                            size: 16,
-                            FontColor: sortedAllLogs[index]['status'] == 'Success'
-                                ? SuccessCardText
-                                : FailureCardText,
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            sortedAllLogs[index]['status'],
+                            style: CardText(
+                              font_Weight: FontWeight.w800,
+                              size: 16,
+                              FontColor: sortedAllLogs[index]['status'] == 'Success'
+                                  ? SuccessCardText
+                                  : FailureCardText,
+                            ),
                           ),
                         ),
                       ],
@@ -147,7 +156,7 @@ List<Widget> allLogs() {
                                       Text(
                                         "Phone\nNumber : ",
                                         style:
-                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                            CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -173,7 +182,7 @@ List<Widget> allLogs() {
                                       Text(
                                         "Date Time:",
                                         style: CardText(
-                                          font_Weight: FontWeight.w300,
+                                          font_Weight: FontWeight.w500,
                                           FontColor: secondaryText,
                                         ),
                                       ),
@@ -203,7 +212,7 @@ List<Widget> allLogs() {
                                       Text(
                                         "Firm\nversion : ",
                                         style:
-                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                            CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -229,7 +238,7 @@ List<Widget> allLogs() {
                                       Text(
                                         "Batch : ",
                                         style: CardText(
-                                          font_Weight: FontWeight.w300,
+                                          font_Weight: FontWeight.w500,
                                           FontColor: secondaryText,
                                         ),
                                       ),
@@ -259,7 +268,7 @@ List<Widget> allLogs() {
                                       Text(
                                         "Battery\nService : ",
                                         style:
-                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                            CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -286,7 +295,7 @@ List<Widget> allLogs() {
                                       Text(
                                         "DeviceID : ",
                                         style:
-                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                            CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,

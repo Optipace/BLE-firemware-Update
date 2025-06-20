@@ -21,15 +21,21 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
 }
 
 TextStyle tileTextStyle =
-    TextStyle(color: darkBg, fontFamily: baseFont, fontSize: 18, fontWeight: FontWeight.w800, shadows: [
-  Shadow(
-    color: Colors.black,
-    blurRadius: 0.2,
-  )
-]);
+    TextStyle(
+        color: darkBg,
+        fontFamily: baseFont,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        shadows: [
+        Shadow(
+          color: Colors.black,
+          blurRadius: 0.2,
+        )
+      ]
+    );
 
 TextStyle titleTileStyle =
-    TextStyle(color: darkBg, fontFamily: baseFont, fontSize: 16, fontWeight: FontWeight.w500, shadows: [
+    TextStyle(color: darkBg, fontFamily: baseFont, fontSize: 14, fontWeight: FontWeight.w500, shadows: [
   Shadow(
     color: Colors.black,
     blurRadius: 0.2,
@@ -135,8 +141,8 @@ class listOverviewState extends State<listOverview> {
                         return Column(
                           children: [
                             ExpansionTile(
-                              backgroundColor: second_lightBg,
-                              collapsedBackgroundColor: Colors.transparent,
+                              backgroundColor: Colors.white,
+                              collapsedBackgroundColor: second_lightBg,
                               iconColor: darkBg,
                               textColor: Colors.black,
                               collapsedIconColor: darkBg,
@@ -277,28 +283,37 @@ class listOverviewState extends State<listOverview> {
                           ],
                         );
                       }).toList(),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AddNewFirmware(selectedBtn: 1,)));
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute<void>(
+                              builder: (_) => AddNewFirmware(
+                                    selectedBtn: 1,
+                                  )));
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
-                              border: Border.all(color: darkBg),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
+                              border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
                           child: Padding(
-                              padding: EdgeInsets.only( right: 5, left: 15),
+                              padding: EdgeInsets.only(right: 5, left: 15),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.add_rounded,color: darkBg,),
-                                      SizedBox(width: 10,),
-                                      Text("ADD FIRMWARE",
-                                        style:TextStyle(
+                                      Icon(
+                                        Icons.add_rounded,
+                                        color: darkBg,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "ADD FIRMWARE",
+                                        style: TextStyle(
                                             color: darkBg,
                                             fontFamily: baseFont,
                                             fontSize: 22,
@@ -307,13 +322,13 @@ class listOverviewState extends State<listOverview> {
                                       ),
                                     ],
                                   ),
-
                                 ],
-                              )
-                          ),
+                              )),
                         ),
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                     ],
                   ),
                 ),
@@ -365,8 +380,8 @@ class listOverviewState extends State<listOverview> {
                       return Column(
                         children: [
                           ExpansionTile(
-                            backgroundColor: second_lightBg,
-                            collapsedBackgroundColor: Colors.transparent,
+                            backgroundColor: Colors.white,
+                            collapsedBackgroundColor: second_lightBg,
                             iconColor: darkBg,
                             textColor: Colors.black,
                             collapsedIconColor: darkBg,
@@ -407,7 +422,7 @@ class listOverviewState extends State<listOverview> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Column(
                                           children: [
@@ -474,7 +489,9 @@ class listOverviewState extends State<listOverview> {
                         ],
                       );
                     }).toList(),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     GestureDetector(
                       onTap: () async {
                         await BottomSheet_Widget(context, color: lightBg, [
@@ -532,8 +549,7 @@ class listOverviewState extends State<listOverview> {
                                             Controller: _batteryDescription,
                                             onChanged: (value) {},
                                             enable: true,
-                                            etext: batteryValidator &&
-                                                _batteryDescription.text.trim().isEmpty
+                                            etext: batteryValidator && _batteryDescription.text.trim().isEmpty
                                                 ? "Please Enter Information"
                                                 : "",
                                           ),
@@ -574,20 +590,24 @@ class listOverviewState extends State<listOverview> {
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                            border: Border.all(color: darkBg),
-                            borderRadius: BorderRadius.circular(10)
-                        ),
+                            border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
                         child: Padding(
-                            padding: EdgeInsets.only( right: 5, left: 15),
+                            padding: EdgeInsets.only(right: 5, left: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.add_rounded,color: darkBg,),
-                                    SizedBox(width: 10,),
-                                    Text("ADD BATTERY",
-                                      style:TextStyle(
+                                    Icon(
+                                      Icons.add_rounded,
+                                      color: darkBg,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "ADD BATTERY",
+                                      style: TextStyle(
                                           color: darkBg,
                                           fontFamily: baseFont,
                                           fontSize: 22,
@@ -596,13 +616,13 @@ class listOverviewState extends State<listOverview> {
                                     ),
                                   ],
                                 ),
-
                               ],
-                            )
-                        ),
+                            )),
                       ),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -701,8 +721,8 @@ class listOverviewState extends State<listOverview> {
                                         Padding(
                                           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                           child: ExpansionTile(
-                                            backgroundColor: second_lightBg,
-                                            collapsedBackgroundColor: Colors.transparent,
+                                            backgroundColor: Colors.white,
+                                            collapsedBackgroundColor: second_lightBg,
                                             iconColor: darkBg,
                                             textColor: Colors.black,
                                             collapsedIconColor: darkBg,
@@ -789,10 +809,18 @@ class listOverviewState extends State<listOverview> {
                                                 ],
                                               ),
                                               SizedBox(
-                                                height: 15,
+                                                height: 10,
                                               ),
-                                              Divider(
-                                                color: Colors.black26,
+                                              SizedBox(
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(height: 5,),
+                                                    Divider(
+                                                      color: Colors.black26,
+                                                    ),
+                                                    SizedBox(height: 5,)
+                                                  ],
+                                                ),
                                               ),
                                               Column(
                                                 children: [
@@ -815,8 +843,16 @@ class listOverviewState extends State<listOverview> {
                                                 ],
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                               ),
-                                              Divider(
-                                                color: Colors.black26,
+                                              SizedBox(
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(height: 5,),
+                                                    Divider(
+                                                      color: Colors.black26,
+                                                    ),
+                                                    SizedBox(height: 5,)
+                                                  ],
+                                                ),
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 3.0, right: 3),
@@ -832,11 +868,7 @@ class listOverviewState extends State<listOverview> {
                                                               // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
                                                               Text(
                                                                 "U. Threshold",
-                                                                style: CardText(
-                                                                  font_Weight: FontWeight.w800,
-                                                                  size: 16,
-                                                                  FontColor: SuccessCardText,
-                                                                ),
+                                                                style:titleTileStyle
                                                               ),
 
                                                               // Upper Threshold
@@ -848,11 +880,7 @@ class listOverviewState extends State<listOverview> {
                                                                   SizedBox(width: 5),
                                                                   Text(
                                                                     "${profile['upperThreshold']} V",
-                                                                    style: CardText(
-                                                                      font_Weight: FontWeight.w800,
-                                                                      size: 18,
-                                                                      FontColor: SuccessCardText,
-                                                                    ),
+                                                                    style: tileTextStyle,
                                                                   ),
                                                                 ],
                                                               ),
@@ -866,11 +894,7 @@ class listOverviewState extends State<listOverview> {
                                                               // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                                               Text(
                                                                 "U.Volt",
-                                                                style: CardText(
-                                                                  font_Weight: FontWeight.w800,
-                                                                  size: 16,
-                                                                  FontColor: SuccessCardText,
-                                                                ),
+                                                                style: titleTileStyle,
                                                               ),
                                                               // Upper Voltage
                                                               SizedBox(height: 5),
@@ -881,11 +905,7 @@ class listOverviewState extends State<listOverview> {
                                                                   SizedBox(width: 5),
                                                                   Text(
                                                                     "${profile['upperVoltage']} V",
-                                                                    style: CardText(
-                                                                      font_Weight: FontWeight.w800,
-                                                                      size: 18,
-                                                                      FontColor: SuccessCardText,
-                                                                    ),
+                                                                    style: tileTextStyle
                                                                   ),
                                                                 ],
                                                               ),
@@ -899,11 +919,7 @@ class listOverviewState extends State<listOverview> {
                                                               // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                                               Text(
                                                                 "L.Threshold",
-                                                                style: CardText(
-                                                                  font_Weight: FontWeight.w800,
-                                                                  size: 16,
-                                                                  FontColor: SuccessCardText,
-                                                                ),
+                                                                style: titleTileStyle,
                                                               ),
                                                               // Lower Threshold
                                                               SizedBox(height: 5),
@@ -914,11 +930,7 @@ class listOverviewState extends State<listOverview> {
                                                                   SizedBox(width: 5),
                                                                   Text(
                                                                     "${profile['lowerThreshold']} V",
-                                                                    style: CardText(
-                                                                      font_Weight: FontWeight.w800,
-                                                                      size: 18,
-                                                                      FontColor: SuccessCardText,
-                                                                    ),
+                                                                    style: tileTextStyle,
                                                                   ),
                                                                 ],
                                                               ),
@@ -932,11 +944,7 @@ class listOverviewState extends State<listOverview> {
                                                               // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
                                                               Text(
                                                                 "L. Volt",
-                                                                style: CardText(
-                                                                  font_Weight: FontWeight.w800,
-                                                                  size: 16,
-                                                                  FontColor: SuccessCardText,
-                                                                ),
+                                                                style: titleTileStyle,
                                                               ),
                                                               SizedBox(height: 5),
                                                               Row(
@@ -946,11 +954,7 @@ class listOverviewState extends State<listOverview> {
                                                                   SizedBox(width: 5),
                                                                   Text(
                                                                     "${profile['lowerVoltage']} V",
-                                                                    style: CardText(
-                                                                      font_Weight: FontWeight.w800,
-                                                                      size: 18,
-                                                                      FontColor: SuccessCardText,
-                                                                    ),
+                                                                    style: tileTextStyle,
                                                                   ),
                                                                 ],
                                                               ),
@@ -985,28 +989,37 @@ class listOverviewState extends State<listOverview> {
                         ],
                       );
                     }).toList(),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AddNewFirmware(selectedBtn: 2,)));
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (_) => AddNewFirmware(
+                                  selectedBtn: 2,
+                                )));
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                            border: Border.all(color: darkBg),
-                            borderRadius: BorderRadius.circular(10)
-                        ),
+                            border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
                         child: Padding(
-                            padding: EdgeInsets.only( right: 5, left: 15),
+                            padding: EdgeInsets.only(right: 5, left: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.add_rounded,color: darkBg,),
-                                    SizedBox(width: 10,),
-                                    Text("ADD CONFIG",
-                                      style:TextStyle(
+                                    Icon(
+                                      Icons.add_rounded,
+                                      color: darkBg,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "ADD CONFIG",
+                                      style: TextStyle(
                                           color: darkBg,
                                           fontFamily: baseFont,
                                           fontSize: 22,
@@ -1015,14 +1028,13 @@ class listOverviewState extends State<listOverview> {
                                     ),
                                   ],
                                 ),
-
                               ],
-                            )
-                        ),
+                            )),
                       ),
                     ),
-                    SizedBox(height: 10,),
-
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -1073,20 +1085,20 @@ class listOverviewState extends State<listOverview> {
                       printFunc("DEMO BATCH : ${batch}");
                       // batch
                       final batchId = batch['id'] ?? '';
-                      final batchname = batch['batchName'] ?? '';
+                      final batchname = batch['name'] ?? '';
                       final batchActive = batch['active'].toString().toUpperCase() == 'Y' ? "Active" : "Inactive";
 
                       // Profile
-                      final configName = batch['configuration']?['name'] ?? 'N/A';
-                      final configUpThershold = batch['configuration']?['upperThreshold'] ?? 'N/A';
-                      final configLowThershold = batch['configuration']?['lowerThreshold'] ?? 'N/A';
-                      final configUpVolt = batch['configuration']?['upperVoltage'] ?? 'N/A';
-                      final configLowVolt = batch['configuration']?['lowerVoltage'] ?? 'N/A';
+                      final configName = batch['profile']?['name'] ?? 'N/A';
+                      final configUpThershold = batch['profile']?['uT'] ?? 'N/A';
+                      final configLowThershold = batch['profile']?['lT'] ?? 'N/A';
+                      final configUpVolt = batch['profile']?['uV'] ?? 'N/A';
+                      final configLowVolt = batch['profile']?['lV'] ?? 'N/A';
 
                       // Firmware
                       final firmwareId = batch['firmware']?['id'] ?? 'N/A';
                       final firmwareVersion = batch['firmware']?['versionName'] ?? 'N/A';
-                      final firmwareRelaseNote = batch['firmware']?['versionReleasedDate'].split("T")[0] ?? 'N/A';
+                      final firmwareRelaseNote = batch['firmware']?['releaseDate'].toString().split("T")[0] ?? 'N/A';
 
                       return Column(
                         children: [
@@ -1223,7 +1235,6 @@ class listOverviewState extends State<listOverview> {
                                         ],
                                       ),
                                     ),
-
                                     Container(
                                       padding: EdgeInsets.symmetric(vertical: 10),
                                       child: Column(
@@ -1477,50 +1488,52 @@ class listOverviewState extends State<listOverview> {
                         ],
                       );
                     }).toList(),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AddNewFirmware(selectedBtn: 3,)));
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (_) => AddNewFirmware(
+                                  selectedBtn: 3,
+                                )));
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                            border: Border.all(color: darkBg),
-                            borderRadius: BorderRadius.circular(10)
-                        ),
+                            border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
                         child: Padding(
-                            padding: EdgeInsets.only( right: 5, left: 15),
+                            padding: EdgeInsets.only(right: 5, left: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.add_rounded,color: darkBg,),
-                                    SizedBox(width: 10,),
-                                    Text("ADD BATCH",
-                                      style:TextStyle(
+                                    Icon(
+                                      Icons.add_rounded,
+                                      color: darkBg,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "ADD BATCH",
+                                      style: TextStyle(
                                           color: darkBg,
                                           fontFamily: baseFont,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w700,
-                                          shadows: [
-                                            Shadow(
-                                                color: Colors.black26,
-                                                blurRadius: 0.4
-                                            )
-                                          ]
-                                      ),
+                                          shadows: [Shadow(color: Colors.black26, blurRadius: 0.4)]),
                                     ),
                                   ],
                                 ),
-
                               ],
-                            )
-                        ),
+                            )),
                       ),
                     ),
-                    SizedBox(height: 10,),
-
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -1543,6 +1556,7 @@ class listOverviewState extends State<listOverview> {
           ),
         ));
   }
+
   void ValidateBatteryFields() {
     final Controllers = [
       _newbname,
@@ -1567,10 +1581,6 @@ class listOverviewState extends State<listOverview> {
     _batteryDescription.clear();
     _newbname.clear();
   }
-
-
-
-
 }
 
 // Battery LIst

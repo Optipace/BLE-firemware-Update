@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
-Future<Map<String, Map<String, Object>>> getDesignation(BuildContext context) async {
-  var designationList = {
+Future<Map<String, dynamic>> getDesignation(BuildContext context) async {
+  Map<String, dynamic> designationList = {
     "Admin": {
       "id": 1,
       "name": "admin",
@@ -11,10 +12,10 @@ Future<Map<String, Map<String, Object>>> getDesignation(BuildContext context) as
     },
     "Factory User": {
       "id": 2,
-      "name": "Factory User",
+      "name": " Field User",
       "priority": 2,
     },
-    "Field User": {"id": 3, "name": "Field User", "priority": 3},
+    "Field User": {"id": 3, "name": "Factory User", "priority": 3},
   };
 
   // return designationList;
@@ -29,10 +30,33 @@ Future<Map<String, Map<String, Object>>> getDesignation(BuildContext context) as
         printFunc("Designation responce :$data");
         designationList.clear();
 
-        for (Map desig in data) {
-          designationList[desig["name"]] = data;
+        for (var desig in data) {
+          printFunc(" Designation -> $desig -> ${desig["name"]}");
+          designationList[desig["name"]] = desig;
         }
       });
-
+  printFunc("designationList : $designationList");
   return designationList;
+}
+
+Future<bool> addNewDesgination(
+BuildContext context,{
+required String name,
+required int priority
+}) async {
+  final body = {"name":name, "priority" : priority};
+  bool isSuccess = false;
+
+  await ApiService.callApi(
+      context: context,
+      method: 'POST',
+      endpoint: ApiEndpoints.saveDesignation,
+      bodyOrParams: body,
+      onSuccess: (data) {
+        ShowSnackBarMessage(context, 'New Designation added successfully!', true);
+        Navigator.of(context).pop();
+        isSuccess = true;
+      }
+  );
+  return isSuccess;
 }

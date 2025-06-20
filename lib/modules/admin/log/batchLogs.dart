@@ -332,7 +332,7 @@ class BatchLogs extends StatelessWidget {
         appBar: AppBar(
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
-            "${item["batchName"]} Logs",
+            "${item["name"]} Logs",
             style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
           ),
           toolbarHeight: size.height / 11.5,

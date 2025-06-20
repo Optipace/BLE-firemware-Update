@@ -4,7 +4,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
 Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
-  List<Map<String, dynamic>> batchList = [{}];
+  List<Map<String, dynamic>> batchList = [];
   await ApiService.callApi(
       context: context,
       method: 'GET',
@@ -12,10 +12,47 @@ Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
       headerAuth: true,
       onSuccess: (data) async {
         printFunc("Batch data : $data");
-        batchList = List<Map<String, dynamic>>.from(
-            (data as List).map((e) => Map<String, dynamic>.from(e)),);
-        //       printFunc("User data required : $batchList");
-        //
+
+        for (var item in data) {
+          final firmware = item['firmware'] ?? {};
+          final config = item['configuration'] ?? {};
+
+          Map<String, dynamic> formatted = {
+            "id": item['id'].toString(),
+            "name": item['batchName'] ?? '',
+            "description": item['discription'] ?? '',
+            "active": item['active'] ?? '',
+            "saved": false,
+            "profile": {
+              "id": config['id'],
+              "name": config['name'] ?? '',
+              "releaseNote": '', // fill if needed
+              "uT": config['upperThreshold']?.toString() ?? '',
+              "uV": config['upperVoltage']?.toString() ?? '',
+              "lT": config['lowerThreshold']?.toString() ?? '',
+              "lV": config['lowerVoltage']?.toString() ?? '',
+              "deviceTypeId": config['deviceId']?.toString() ?? '',
+              "file": "Base64Data",
+              "saved": false,
+              "deviceType": config['deviceId']?.toString() ?? '',
+            },
+            "firmware": {
+              "id": firmware['id'],
+              "version": firmware['versionName'] ?? '',
+              "releaseDate": firmware['versionReleasedDate'] ?? '',
+              "versionName": firmware['versionName'] ?? '',
+              "deviceTypeId": firmware['deviceTypeId']?.toString() ?? config['deviceId']?.toString() ?? '',
+              "file": "Base64Data",
+              "saved": false,
+              "deviceType": firmware['deviceTypeId']?.toString() ?? '',
+            }
+          };
+
+          batchList.add(formatted);
+          printFunc("Formatted data : $formatted");
+        }
+
+        printFunc("Formatted data list : $batchList");
       });
 
   // batchList = [
@@ -161,7 +198,8 @@ Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
   //     }
   //   },
   // ];
-  printFunc("Demo Batch List : $batchList");
+  printFunc("Farmated data  list : $batchList");
+
   return batchList;
 }
 

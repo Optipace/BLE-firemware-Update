@@ -45,10 +45,12 @@ class AdminLogsState extends State<AdminLogs> {
       // BACTH LOGS PIE CHART
       BatchLogs = [
         for (int i = 0; i < batchList.length; i++)
-          Category(batchList![i]["batchName"].toString(), false, amount: countLogs(batchList[i]).toDouble())
+          Category(batchList![i]["name"].toString(), false, amount: countLogs(batchList[i]).toDouble())
       ];
 
       BatchColors = generateBrightColors(batchList.length);
+      printFunc("demo batch ${batchList[1]['name']}");
+
       // Printing Batch logs
       /*
       printFunc("Batch Logs : ${BatchLogs.toString()}");
@@ -178,7 +180,6 @@ class AdminLogsState extends State<AdminLogs> {
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 }

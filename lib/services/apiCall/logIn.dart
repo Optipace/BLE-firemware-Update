@@ -157,14 +157,14 @@ void navigateToDashBoard(BuildContext context, int designation_id) {
     // Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminMain()));
   } else if (designation_id == 2) {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => FactoryMain()),
+      MaterialPageRoute(builder: (_) => FieldMain()),
       (route) => false,
     );
     // Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FactoryMain()));
     return;
   } else if (designation_id == 3) {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => FieldMain()),
+      MaterialPageRoute(builder: (_) =>FactoryMain() ),
       (route) => false,
     );
     // Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FieldMain()));

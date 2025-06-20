@@ -79,7 +79,7 @@ class BatchLogsMain extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  batchList[i]["batchName"]??"",
+                                  batchList[i]["name"] ?? "",
                                   style: TextStyle(
                                       color: darkBg,
                                       fontFamily: baseFont,

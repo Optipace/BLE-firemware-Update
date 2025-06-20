@@ -27,7 +27,7 @@ class AddNewFirmware extends StatefulWidget {
 }
 
 class AddNewFirmwareState extends State<AddNewFirmware> {
-  int ?selectedbutton;
+  int? selectedbutton;
 
   Map<String, dynamic> batteryList = {};
   String? firmwareFileBase64;
@@ -88,7 +88,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       firmwareList = await getFirmwareList(context);
       allConfigList = await getAllConfigurationList(context);
       batteryList = {for (var item in allConfigList) item['deviceName']: item};
-      setState(() { });
+      setState(() {});
     });
   }
 
@@ -719,7 +719,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                         name: _newbname.text.trim(),
                                                         description: _batteryDescription.text.trim(),
                                                       )) {
-                                                        clearConfig();
+                                                        clearBattery();
                                                         // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                                                       }
                                                     }
@@ -903,8 +903,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             ]);
                             setState(() {});
                             setState(() {
-                              if(_batterySeries.Text != ""  )
-                                _visibleConfig = true;
+                              if (_batterySeries.Text != "") _visibleConfig = true;
                             });
                           },
                         ),
@@ -915,7 +914,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       // ----- Config[DropDown] -----
                       Visibility(
-                        visible: _visibleConfig ,
+                        visible: _visibleConfig,
                         child: GestureDetector(
                           child: PrimeryDropDownButton(
                             isEnabled: true,
@@ -1147,11 +1146,22 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     // Clear dropdown
     _batterySeries.cleardata();
 
+    // New Battery
+    _newbname.clear();
+    _batteryDescription.clear();
+
     // Clear validation flags
     _validateDropDown = false;
     configValidator = false;
 
     // Optional: Force UI update
+    setState(() {});
+  }
+
+  void clearBattery(){
+    // New Battery
+    _newbname.clear();
+    _batteryDescription.clear();
     setState(() {});
   }
 

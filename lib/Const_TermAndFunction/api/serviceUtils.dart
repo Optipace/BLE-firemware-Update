@@ -210,8 +210,9 @@ class ApiService {
           'refreshToken': UserData.instance.refreshToken ?? "",
         }),
       );
-
-      if (response.statusCode == 200 && jsonDecode(response.body)['response']["code"] == 1) {
+      printFunc("response.statusCode : ${response.statusCode}");
+      printFunc("response.body : ${jsonDecode(response.body)}");
+      if (response.statusCode == 200 && jsonDecode(response.body)['response']["code"] == 2) {
         // Logout successful
         ShowSnackBarMessage(context, 'Logged out successfully.', true);
       } else {
