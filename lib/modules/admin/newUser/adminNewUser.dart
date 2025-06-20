@@ -232,7 +232,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                     "ENTER THE DETAILS",
                     style: TextStyle(
                         fontFamily: baseFont,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         fontSize: 24,
                         color: darkBg,
                         shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))]),

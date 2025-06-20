@@ -42,7 +42,7 @@ Color FailureCard = Color.fromRGBO(245, 235, 250, 1.0); // soft lavender/grayish
 
 Color FailureCardText = Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text/icon)
 
-String baseFont = 'Crimson';
+String baseFont = '';
 String serviceHiveBox = 'ServiceBox';
 String firmwareHiveBox = 'firmwareBox';
 String batchHiveBox = 'batchBox';
