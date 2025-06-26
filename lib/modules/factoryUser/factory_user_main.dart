@@ -11,6 +11,8 @@ import 'package:tracker_firmware/widgets/dashBoard.dart';
 import 'firmwares/firmwareFactoryManagement.dart';
 
 class FactoryMain extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

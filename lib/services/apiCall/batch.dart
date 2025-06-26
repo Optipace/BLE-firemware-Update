@@ -3,11 +3,18 @@ import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
-Future<List<Map<String, dynamic>>> getBatchList(BuildContext context) async {
+Future<List<Map<String, dynamic>>> getBatchList(
+    BuildContext context,{
+      required String Status,
+}) async {
   List<Map<String, dynamic>> batchList = [];
+  final requestBody  = {
+    "active" : Status,
+  };
   await ApiService.callApi(
       context: context,
-      method: 'GET',
+      method: 'POST',
+      bodyOrParams: requestBody,
       endpoint: ApiEndpoints.getAllBatchDetails,
       headerAuth: true,
       onSuccess: (data) async {
@@ -207,7 +214,7 @@ Future<List<Map<String, dynamic>>> getBatchByID(BuildContext context, String id)
   List<Map<String, dynamic>> batchList = [{}];
   List<Map<String, dynamic>> batchByID = [{}];
 
-  batchList = await getBatchList(context);
+  batchList = await getBatchList(context,Status: "A");
 
   for (var index in batchList) {
     if (index["id"].toString() == id) {

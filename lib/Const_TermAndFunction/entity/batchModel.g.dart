@@ -50,5 +50,7 @@ class BatchModelAdapter extends TypeAdapter<BatchModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BatchModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is BatchModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

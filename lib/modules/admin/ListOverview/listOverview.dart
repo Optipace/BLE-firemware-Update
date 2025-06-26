@@ -65,10 +65,10 @@ class listOverviewState extends State<listOverview> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      firmList = await getFirmwareList(context);
-      final allConfigList = await getAllConfigurationList(context);
+      firmList = await getFirmwareList(context,active: "A");
+      final allConfigList = await getAllConfigurationList(context,active: "A");
       batteryList = {for (var item in allConfigList) item['deviceName']: item};
-      batchList = await getBatchList(context);
+      batchList = await getBatchList(context,Status: "A");
       printFunc("batteryList $batteryList");
       for (var key in batteryList.keys) {
         int batteryId = batteryList[key]!["id"];

@@ -85,8 +85,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       selectedbutton = widget.selectedBtn ?? 1;
       // batteryList = await getDeviceTypes(context);
-      firmwareList = await getFirmwareList(context);
-      allConfigList = await getAllConfigurationList(context);
+      firmwareList = await getFirmwareList(context,active: "Y");
+      allConfigList = await getAllConfigurationList(context,active: "Y");
       batteryList = {for (var item in allConfigList) item['deviceName']: item};
       setState(() {});
     });
@@ -409,6 +409,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       // SizedBox(
                       //   height: 8,
                       // ),
+
+
                       LabelText(text: "Select Firmware :"),
                       Center(
                         child: Column(
@@ -469,6 +471,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                         }
                       }
+
                     }),
               ),
             ],
@@ -671,43 +674,41 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                  height: 20,
                                                ),
 
-                                               Container(
-                                                 child: Column(
-                                                   mainAxisAlignment: MainAxisAlignment.start,
-                                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                                   children: [
-                                                     // Battery Name
-                                                     LabelText(text: "Battery Name :"),
-                                                     TextFeildNewUser(
-                                                       hintText: "Enter Battery Name",
-                                                       Controller: _newbname,
-                                                       onChanged: (value) {},
-                                                       enable: true,
-                                                       etext: batteryValidator && _newbname.text.trim().isEmpty
-                                                           ? "Please Enter Battery Name"
-                                                           : "",
-                                                     ),
-                                                     SizedBox(
-                                                       height: 8,
-                                                     ),
-                                                     // Relase Note
-                                                     LabelText(text: "Description"),
-                                                     TextFeildNewUser(
-                                                       hintText: "Enter Information",
-                                                       Controller: _batteryDescription,
-                                                       onChanged: (value) {},
-                                                       enable: true,
-                                                       etext: batteryValidator &&
-                                                           _batteryDescription.text.trim().isEmpty
-                                                           ? "Please Enter Information"
-                                                           : "",
-                                                     ),
-                                                     SizedBox(
-                                                       height: 8,
-                                                     ),
+                                               Column(
+                                                 mainAxisAlignment: MainAxisAlignment.start,
+                                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                                 children: [
+                                                   // Battery Name
+                                                   LabelText(text: "Battery Name :"),
+                                                   TextFeildNewUser(
+                                                     hintText: "Enter Battery Name",
+                                                     Controller: _newbname,
+                                                     onChanged: (value) {},
+                                                     enable: true,
+                                                     etext: batteryValidator && _newbname.text.trim().isEmpty
+                                                         ? "Please Enter Battery Name"
+                                                         : "",
+                                                   ),
+                                                   SizedBox(
+                                                     height: 8,
+                                                   ),
+                                                   // Relase Note
+                                                   LabelText(text: "Description"),
+                                                   TextFeildNewUser(
+                                                     hintText: "Enter Information",
+                                                     Controller: _batteryDescription,
+                                                     onChanged: (value) {},
+                                                     enable: true,
+                                                     etext: batteryValidator &&
+                                                         _batteryDescription.text.trim().isEmpty
+                                                         ? "Please Enter Information"
+                                                         : "",
+                                                   ),
+                                                   SizedBox(
+                                                     height: 8,
+                                                   ),
 
-                                                   ],
-                                                 ),
+                                                 ],
                                                ),
                                                // Add Btn
                                                manageUserBtn(

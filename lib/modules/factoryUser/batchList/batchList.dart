@@ -45,13 +45,19 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
       UserData.instance.accessToken = "sdncondscpd";
       await sharedPreferences.setString("accessToken", "sdncondscpd");
 
-      batchList = await getBatchList(context);
+      // Add request
+      batchList = await getBatchList(context,Status: "Y");
       printFunc("Batch list  ss :-> $batchList");
       seriesSixData = await getSeriesData();
+      print("SERIES DATA : $seriesSixData");
       // addBatch(BatchModel.fromJson(batchList[0]));
 
       setState(() {});
     });
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -117,42 +123,50 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // Name
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Batch : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(seriesSixData[index]["name"].toString(),
+                      Container(
+                        width: 90,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Batch : ",
+                                style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Text(seriesSixData[index]["name"].toString(),
+                                style: CardText(
+                                    font_Weight: FontWeight.w800,
+                                    size: 19,
+                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                softWrap: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                      // EmpID
+                      Container(
+                        width: 90,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Description : ",
+                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Text(
+                              seriesSixData[index]["description"].toString(),
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText)),
-                        ],
-                      ),
-                      // EmpID
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Description : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            seriesSixData[index]["description"].toString(),
-                            style: CardText(
-                                font_Weight: FontWeight.w800,
-                                size: 19,
-                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                          ),
-                        ],
+                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                            ),
+                          ],
+                        ),
                       ),
                       // DeviceID
                       Column(

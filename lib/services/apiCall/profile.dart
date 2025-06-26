@@ -3,7 +3,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
-Future<List<Map<String, dynamic>>> getAllConfigurationList(BuildContext context) async {
+Future<List<Map<String, dynamic>>> getAllConfigurationList(BuildContext context,{required String active}) async {
   List<Map<String, dynamic>> configurationList = [
     {
       "id": 1,
@@ -110,11 +110,16 @@ Future<List<Map<String, dynamic>>> getAllConfigurationList(BuildContext context)
     {"id": 3, "deviceName": "Series-12", "discription": "Series12", "configuration": []}
   ];
 
+  final requestBody = {
+    "active":active,
+  };
+
   await ApiService.callApi(
       context: context,
-      method: 'GET',
+      method: 'POST',
       endpoint: ApiEndpoints.getAllProfileDetails,
       headerAuth: true,
+      bodyOrParams: requestBody,
       onSuccess: (data) async {
         printFunc("Configuration data : $data");
         configurationList.clear();

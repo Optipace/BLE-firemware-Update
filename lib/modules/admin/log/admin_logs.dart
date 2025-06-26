@@ -41,7 +41,7 @@ class AdminLogsState extends State<AdminLogs> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      batchList = await getBatchList(context);
+      batchList = await getBatchList(context,Status: "A");
       // BACTH LOGS PIE CHART
       BatchLogs = [
         for (int i = 0; i < batchList.length; i++)

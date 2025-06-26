@@ -521,7 +521,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                         }
                         // Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
                       }
-                    }),
+                    }
+                    ),
               )
             ],
           ),

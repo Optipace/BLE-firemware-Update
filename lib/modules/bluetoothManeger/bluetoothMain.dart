@@ -10,8 +10,9 @@ import 'screens/scan_screen.dart';
 
 class FlutterBlueApp extends StatefulWidget {
   final DataController? SelectedBatch;
+  final Map<String, dynamic>? allClients;
 
-  const FlutterBlueApp({super.key, this.SelectedBatch});
+  const FlutterBlueApp({super.key, this.SelectedBatch,this.allClients});
 
   @override
   State<FlutterBlueApp> createState() => _FlutterBlueAppState();
@@ -43,7 +44,8 @@ class _FlutterBlueAppState extends State<FlutterBlueApp> {
   Widget build(BuildContext context) {
     printFunc("Selected Batch : ${widget.SelectedBatch?.getobj.toString()}");
     Widget screen = _adapterState == BluetoothAdapterState.on
-        ? const ScanScreen()
+        ? ScanScreen(SelectedBatch: widget.SelectedBatch,
+    allClients: widget.allClients,)
         : BluetoothOffScreen(adapterState: _adapterState);
 
     return MaterialApp(

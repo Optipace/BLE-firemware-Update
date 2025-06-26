@@ -2,17 +2,24 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/utils/extra.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/utils/snackbar.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/widgets/characteristic_tile.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/widgets/descriptor_tile.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/widgets/service_tile.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/hardWareNumber.dart';
+import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
 
 class DeviceScreen extends StatefulWidget {
   final BluetoothDevice device;
+  final DataController? SelectedBatch;
+  final Map<String, dynamic>? allClients;
 
-  const DeviceScreen({super.key, required this.device});
+
+  const DeviceScreen({super.key, required this.device,this.SelectedBatch,this.allClients});
 
   @override
   State<DeviceScreen> createState() => _DeviceScreenState();
@@ -228,14 +235,15 @@ class _DeviceScreenState extends State<DeviceScreen> {
         ),
         IconButton(
           icon: SizedBox(
-            width: 18.0,
-            height: 18.0,
+            width: 10.0,
+            height: 10.0,
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(darkBg),
             ),
           ),
           onPressed: null,
-        )
+        ),
+
       ],
     );
   }
@@ -299,13 +307,44 @@ class _DeviceScreenState extends State<DeviceScreen> {
           child: Column(
             children: <Widget>[
               buildRemoteId(context),
-              ListTile(
-                leading: buildRssiTile(context),
-                title: Text(
-                  'Device is ${_connectionState.toString().split('.')[1]}.',
-                  style: TextStyle(color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500),
-                ),
-                trailing: buildGetServices(context),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  buildRssiTile(context),
+                  Text(
+                    'Device is ${_connectionState.toString().split('.')[1]}.',
+                    style: TextStyle(color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500),
+                  ),Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      buildGetServices(context),
+                      UserData().designationCode == '3' ?
+                      TextButton(
+                        onPressed: () async {
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => BluetoothHardwareNumber(
+                              SelectedBatch: widget.SelectedBatch,
+                              allclients: widget.allClients,
+                            )),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size(0, 0),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          "ADD",
+                          style: TextStyle(
+                              color: Colors.blue, fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 15),
+                        ),
+                      )
+                          :
+                      SizedBox()
+                    ],),
+                ],
               ),
               buildMtuTile(context),
               ..._buildServiceTiles(context, widget.device),

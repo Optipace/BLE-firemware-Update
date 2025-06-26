@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/screens/device_screen.dart';
@@ -11,7 +12,10 @@ import 'package:tracker_firmware/modules/bluetoothManeger/widgets/scan_result_ti
 import 'package:tracker_firmware/modules/bluetoothManeger/widgets/system_device_tile.dart';
 
 class ScanScreen extends StatefulWidget {
-  const ScanScreen({super.key});
+  final DataController? SelectedBatch;
+  final Map<String, dynamic>? allClients;
+
+  const ScanScreen({super.key,this.SelectedBatch,this.allClients});
 
   @override
   State<ScanScreen> createState() => _ScanScreenState();
@@ -23,6 +27,8 @@ class _ScanScreenState extends State<ScanScreen> {
   bool _isScanning = false;
   late StreamSubscription<List<ScanResult>> _scanResultsSubscription;
   late StreamSubscription<bool> _isScanningSubscription;
+
+
 
   @override
   void initState() {
@@ -108,7 +114,11 @@ class _ScanScreenState extends State<ScanScreen> {
       Snackbar.show(ABC.c, prettyException("Connect Error:", e), success: false);
     });
     MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => DeviceScreen(device: device), settings: RouteSettings(name: '/DeviceScreen'));
+        builder: (context) => DeviceScreen(
+            device: device,
+            SelectedBatch: widget.SelectedBatch,
+          allClients: widget.allClients,
+        ), settings: RouteSettings(name: '/DeviceScreen'));
     Navigator.of(context).push(route);
   }
 
@@ -163,7 +173,11 @@ class _ScanScreenState extends State<ScanScreen> {
             device: d,
             onOpen: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => DeviceScreen(device: d),
+                builder: (context) => DeviceScreen(
+                    device: d,
+                    SelectedBatch: widget.SelectedBatch,
+                  allClients: widget.allClients,
+                ),
                 settings: RouteSettings(name: '/DeviceScreen'),
               ),
             ),
@@ -211,52 +225,58 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldMessenger(
-      key: Snackbar.snackBarKeyB,
-      child: Scaffold(
-          appBar: AppBar(
-            title: Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text(
-                'Find Devices',
-                style: TextStyle(
-                    color: lightBg, fontFamily: baseFont, fontWeight: FontWeight.w600, fontSize: 25),
+    return WillPopScope(
+        child: ScaffoldMessenger(
+          key: Snackbar.snackBarKeyB,
+          child: Scaffold(
+              appBar: AppBar(
+                title: Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(
+                    'Find Devices',
+                    style: TextStyle(
+                        color: lightBg, fontFamily: baseFont, fontWeight: FontWeight.w600, fontSize: 25),
+                  ),
+                ),
+                toolbarHeight: 75,
+                backgroundColor: darkBg,
+                actions: [buildScanButton(), const SizedBox(width: 15)],
               ),
-            ),
-            toolbarHeight: 75,
-            backgroundColor: darkBg,
-            actions: [buildScanButton(), const SizedBox(width: 15)],
-          ),
-          body: isLoaded
-              ? Container(
-                  color: second_lightBg,
-                  child: RefreshIndicator(
-                    onRefresh: onRefresh,
-                    child: ListView(
+              body: isLoaded
+                  ? Container(
+                color: second_lightBg,
+                child: RefreshIndicator(
+                  onRefresh: onRefresh,
+                  child: ListView(
+                    children: <Widget>[
+                      ..._buildSystemDeviceTiles(),
+                      ..._buildScanResultTiles(),
+                    ],
+                  ),
+                ),
+              )
+                  : Container(
+                color: second_lightBg,
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        ..._buildSystemDeviceTiles(),
-                        ..._buildScanResultTiles(),
+                        buildBluetoothOffIcon(context),
+                        buildTitle(context),
                       ],
                     ),
                   ),
-                )
-              : Container(
-                  color: second_lightBg,
-                  child: Scaffold(
-                    backgroundColor: Colors.transparent,
-                    body: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          buildBluetoothOffIcon(context),
-                          buildTitle(context),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-          // floatingActionButton: buildScanButton(context),
+                ),
+              )
+            // floatingActionButton: buildScanButton(context),
           ),
-    );
+        ),
+        onWillPop: ()async{
+          Navigator.of(context).pop();
+          return false;
+        });
+
   }
 }
