@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace "com.example.tracker_firmware"
-    compileSdkVersion 33
+    compileSdkVersion 34
 //    flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 

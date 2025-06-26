@@ -37,7 +37,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       firmwareBox = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
       // await firmwareBox.clear();
-      firmwareList = await getFirmwareList(context);
+      firmwareList = await getFirmwareList(context, active: "Y");
       printFunc("Firmware list :-> $firmwareList");
       seriesSixData = await getSeriesData(1);
       seriesNineData = await getSeriesData(2);

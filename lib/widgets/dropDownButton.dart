@@ -55,7 +55,7 @@ class PrimeryDropDownButton extends StatelessWidget {
                       Text(
                         "${mainText.toString()} ",
                         style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: darkBg,
                             fontFamily: baseFont,
@@ -105,11 +105,11 @@ class PrimeryDropDownButton extends StatelessWidget {
                         child: Text(
                           text!,
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: isEnabled ? darkBg : Colors.black87,
                               //Color(0xFF9AC4C9),
                               fontFamily: baseFont,
-                              fontWeight: FontWeight.w300),
+                              fontWeight: FontWeight.w500),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
@@ -259,7 +259,12 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
                 children: [
                   TextButton(
                     child: Container(
-                      width: size.width * 0.7,
+                      width: size.width * 0.8,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 0.2),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      padding: EdgeInsets.all(10),
                       child: Text(
                         entry.key.trim(),
                         textAlign: TextAlign.start,

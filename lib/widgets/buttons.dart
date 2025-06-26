@@ -49,10 +49,11 @@ class PrimaryButton extends StatelessWidget {
         child: Container(
           width: buttonWidth,
           height: height ?? 40,
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: EdgeInsets.symmetric(
+            vertical: 4,
+          ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               if (icon != null)
                 Container(
@@ -67,15 +68,17 @@ class PrimaryButton extends StatelessWidget {
                 ),
               if (icon != null) SizedBox(width: 20),
               Expanded(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: baseFont,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
+                child: Center(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      text,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: baseFont,
+                        shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
+                      ),
                     ),
                   ),
                 ),

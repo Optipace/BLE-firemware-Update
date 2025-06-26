@@ -46,6 +46,7 @@ String baseFont = '';
 String serviceHiveBox = 'ServiceBox';
 String firmwareHiveBox = 'firmwareBox';
 String batchHiveBox = 'batchBox';
+String getNumberHiveBox = 'numberBox';
 // String baseFont = 'Roboto';
 // String baseFont = 'Inter  ';
 // String baseFont = 'Poppins ';

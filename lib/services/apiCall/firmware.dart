@@ -4,14 +4,18 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 import '../../widgets/alertBoxes.dart';
 
-Future<Map<String, dynamic>> getFirmwareList(BuildContext context) async {
+Future<Map<String, dynamic>> getFirmwareList(BuildContext context, {required String active}) async {
   Map<String, dynamic> firmwareList = {};
+  final requestBody = {
+    "active": active,
+  };
 
   await ApiService.callApi(
       context: context,
-      method: 'GET',
+      method: 'POST',
       endpoint: ApiEndpoints.getAllFirmwareDetails,
       headerAuth: true,
+      bodyOrParams: requestBody,
       onSuccess: (data) async {
         printFunc("Firmware data : $data");
         firmwareList.clear();

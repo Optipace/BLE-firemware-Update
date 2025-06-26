@@ -36,7 +36,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
       // await batchBox.clear();
-      batchList = await getBatchList(context);
+      // Add request
+      batchList = await getBatchList(context, Status: "Y");
       printFunc("Batch list :-> $batchList");
       getAllseriesData = await getSeriesData();
       addBatch(BatchModel.fromJson(batchList[0]));

@@ -57,9 +57,11 @@ Future<bool> addNewDeviceType(
     bodyOrParams: body,
     onSuccess: (data) {
       ShowSnackBarMessage(context, 'New Series added successfully!', true);
+      Navigator.of(context).pop();
       isSuccess = true;
     },
   );
+  printFunc("DEMODEMO : $isSuccess");
 
   return isSuccess;
 }

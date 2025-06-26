@@ -4,15 +4,17 @@ import 'dart:io';
 import 'package:android_intent/android_intent.dart';
 import 'package:android_intent/flag.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:nordic_dfu/nordic_dfu.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
+import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
 
 class DfuHomePage extends StatefulWidget {
-  const DfuHomePage({super.key});
-
+  const DfuHomePage({super.key, required this.SelectedBatch, required this.allClients});
+  final DataController SelectedBatch;
+  final Map<String, dynamic> allClients;
   @override
   State<DfuHomePage> createState() => _DfuHomePageState();
 }
@@ -69,20 +71,22 @@ class _DfuHomePageState extends State<DfuHomePage> {
     setState(() {});
   }
 
-  Future<void> startDfu(ScanResult device, {bool first = true, var oldFile = null, String oldId = ""}) async {
+  Future<void> startDfu(ScanResult device, {bool first = true,  String oldId = ""}) async {
     await stopScan();
     await Future.delayed(const Duration(milliseconds: 1000)); // ✅ Allow BLE stack to settle
     // await Wakelock.enable();
-    var file;
-    if (first) {
-      file = await FilePicker.platform.pickFiles();
-      if (file == null || file.files.single.path == null) return;
-    } else {
-      file = oldFile;
-    }
+
+    String file=widget.SelectedBatch.obj["firmware"]["file"];
+    // if (first) {
+    //   file = await FilePicker.platform.pickFiles();
+    //   if (file == null || file.files.single.path == null) return;
+    // } else {
+    //   file = oldFile;
+    // }
+    debugPrint("🔄 SelectedBatch: ${widget.SelectedBatch.obj}");
+
     final handler = DfuEventHandler(
       onDeviceConnecting: (address) {
-        debugPrint("🔄 Connecting to device: $address");
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔄 Connecting to $address")));
       },
       onDeviceConnected: (address) {
@@ -101,11 +105,11 @@ class _DfuHomePageState extends State<DfuHomePage> {
             .showSnackBar(SnackBar(content: Text("🛠️ Enabling DFU mode on $address")));
         if (first) {
           await Future.delayed(const Duration(milliseconds: 2000)); // ✅ Allow BLE stack to settle
-          await NordicDfu().abortDfu();
+          await NordicDfu().abortDfu(address:address);
           ScanResult dfuDevice = await startScanSecondTime(device);
           // results.clear();
           // results.add(dfuDevice);
-          await startDfu(dfuDevice, first: false, oldFile: file, oldId: device.device.remoteId.str);
+          await startDfu(dfuDevice, first: false, oldId: device.device.remoteId.str);
 
           debugPrint("🛠️ DFU Aborted: $device");
         }
@@ -140,6 +144,14 @@ class _DfuHomePageState extends State<DfuHomePage> {
           SnackBar(content: Text('✅ DFU completed: $address'), duration: Duration(seconds: 10)),
         );
         setState(() => progressMap[first ? address : oldId] = 101);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BluetoothHardwareNumber(
+                SelectedBatch: widget.SelectedBatch,
+                allclients: widget.allClients,
+              )),
+        );
       },
       onError: (address, err, type, msg) {
         // ScaffoldMessenger.of(context).showSnackBar(
@@ -151,7 +163,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
     try {
       await NordicDfu().startDfu(
         device.device.remoteId.str,
-        file.files.single.path!,
+        file,//file.files.single.path!,
         dfuEventHandler: handler,
         forceDfu: true,
         numberOfPackets: 4,

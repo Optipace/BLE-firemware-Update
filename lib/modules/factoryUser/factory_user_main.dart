@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-import 'package:tracker_firmware/modules/bluetoothManeger/bluetoothMain.dart';
 import 'package:tracker_firmware/modules/factoryUser/batchList/batchList.dart';
 import 'package:tracker_firmware/modules/factoryUser/profiles/profileFactoryManagement.dart';
+import 'package:tracker_firmware/modules/fieldOfficer/ScanBluetooth/bluetoothBatches.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
 
@@ -82,7 +82,7 @@ class FactoryMain extends StatelessWidget {
                   onPress: () {
                     FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FlutterBlueApp()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => SavedBatches()));
                   }),
               SizedBox(
                 height: 15,
