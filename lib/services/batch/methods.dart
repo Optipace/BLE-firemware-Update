@@ -52,7 +52,6 @@ Future<bool> addBatch(BatchModel newBatch) async {
   final batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
 
   newBatch.saved = true;
-
   // batch doesn't exist, create it
   BatchModel batch = BatchModel(
     batchId: newBatch.batchId,

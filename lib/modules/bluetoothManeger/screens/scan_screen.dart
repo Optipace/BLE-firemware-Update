@@ -1,3 +1,5 @@
+
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ import 'package:tracker_firmware/modules/bluetoothManeger/utils/extra.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/utils/snackbar.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/widgets/scan_result_tile.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/widgets/system_device_tile.dart';
+
+import 'methods.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -28,9 +32,24 @@ class _ScanScreenState extends State<ScanScreen> {
   void initState() {
     super.initState();
 
-    _scanResultsSubscription = FlutterBluePlus.scanResults.listen((results) {
+    _scanResultsSubscription = FlutterBluePlus.scanResults.listen((results) async{
       if (mounted) {
-        setState(() => _scanResults = results);
+        for (ScanResult result in results) {
+          // Check if the device is already in the list, update it if it exists or add if new
+          if (result.advertisementData.advName == "EIONIC" ||result.advertisementData.advName == "opti-1"||result.advertisementData.advName == "opti-2") {
+
+            int index = _scanResults.indexWhere((element) => element.device.id == result.device.id);
+            if (index >= 0) {
+              _scanResults[index] = result; // Update existing device data
+            } else {
+              _scanResults.add(result); // Add new device
+            }
+          }
+        }
+        setState(() {
+
+        });
+        // setState(() => _scanResults = results);
       }
     }, onError: (e) {
       Snackbar.show(ABC.b, prettyException("Scan Error:", e), success: false);
@@ -40,6 +59,12 @@ class _ScanScreenState extends State<ScanScreen> {
       if (mounted) {
         setState(() => _isScanning = state);
       }
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await onScanPressed;
+      setState(() {
+
+      });
     });
   }
 
@@ -174,6 +199,8 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Iterable<Widget> _buildScanResultTiles() {
+
+
     printFunc("Inside _buildScanResultTiles");
     return _scanResults.map((r) => Padding(
         padding: EdgeInsets.all(5),
@@ -234,7 +261,7 @@ class _ScanScreenState extends State<ScanScreen> {
                     onRefresh: onRefresh,
                     child: ListView(
                       children: <Widget>[
-                        ..._buildSystemDeviceTiles(),
+                        // ..._buildSystemDeviceTiles(),
                         ..._buildScanResultTiles(),
                       ],
                     ),

@@ -158,7 +158,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
                                       Text(
                                         "Release Note : ",
                                         style:
-                                        CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -183,7 +183,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
                                       Text(
                                         "Version Name",
                                         style:
-                                        CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -209,7 +209,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
                                       Text(
                                         "Series : ",
                                         style:
-                                        CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                            CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -287,8 +287,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
-                    'b6_${index}_${seriesSixData[index]['id'].toString()}_${seriesSixData[index]['saved']
-                        .toString()}'),
+                    'b6_${index}_${seriesSixData[index]['id'].toString()}_${seriesSixData[index]['saved'].toString()}'),
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
@@ -449,7 +448,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
                                       },
                                       icon: (!seriesSixData[index]['saved'])
                                           ? Icon(Icons.download_for_offline_outlined,
-                                          color: SuccessCardText, size: 40)
+                                              color: SuccessCardText, size: 40)
                                           : Icon(Icons.download_done_outlined, color: darkBg, size: 40)),
                                   SizedBox(
                                     height: 3,
@@ -506,8 +505,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
-                    'b6_${index}_${seriesNineData[index]['id'].toString()}_${seriesNineData[index]['saved']
-                        .toString()}'),
+                    'b6_${index}_${seriesNineData[index]['id'].toString()}_${seriesNineData[index]['saved'].toString()}'),
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
@@ -668,7 +666,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
                                       },
                                       icon: (!seriesNineData[index]['saved'])
                                           ? Icon(Icons.download_for_offline_outlined,
-                                          color: SuccessCardText, size: 40)
+                                              color: SuccessCardText, size: 40)
                                           : Icon(Icons.download_done_outlined, color: darkBg, size: 40)),
                                   SizedBox(
                                     height: 3,
@@ -725,8 +723,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
-                    'b6_${index}_${seriesTwelveData[index]['id']
-                        .toString()}_${seriesTwelveData[index]['saved'].toString()}'),
+                    'b6_${index}_${seriesTwelveData[index]['id'].toString()}_${seriesTwelveData[index]['saved'].toString()}'),
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
@@ -887,7 +884,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
                                       },
                                       icon: (!seriesTwelveData[index]['saved'])
                                           ? Icon(Icons.download_for_offline_outlined,
-                                          color: SuccessCardText, size: 40)
+                                              color: SuccessCardText, size: 40)
                                           : Icon(Icons.download_done_outlined, color: darkBg, size: 40)),
                                   SizedBox(
                                     height: 3,

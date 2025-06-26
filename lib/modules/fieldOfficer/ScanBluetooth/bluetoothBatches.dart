@@ -8,11 +8,11 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/bluetoothMain.dart';
 
-class BlueetoothBatches extends StatefulWidget {
-  const BlueetoothBatches({super.key});
+class SavedBatches extends StatefulWidget {
+  const SavedBatches({super.key});
 
   @override
-  State<BlueetoothBatches> createState() => BlueetoothBatchesState();
+  State<SavedBatches> createState() => SavedBatchesState();
 }
 
 TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
@@ -24,7 +24,7 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
       shadows: [Shadow(color: Colors.black)]);
 }
 
-class BlueetoothBatchesState extends State<BlueetoothBatches> {
+class SavedBatchesState extends State<SavedBatches> {
   int selectedbutton = 1;
   List<BatchModel> batchList = [];
   var getAllseriesData;

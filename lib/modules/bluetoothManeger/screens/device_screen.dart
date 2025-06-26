@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/modules/bluetoothManeger/screens/methods.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/utils/extra.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/utils/snackbar.dart';
 import 'package:tracker_firmware/modules/bluetoothManeger/widgets/characteristic_tile.dart';
@@ -315,4 +316,119 @@ class _DeviceScreenState extends State<DeviceScreen> {
       ),
     );
   }
+}
+String getManufacturerData(ScanResult result) {
+  var manufacturerData = result.advertisementData.manufacturerData;
+
+  print("manufacturerData : -> \n${manufacturerData}");
+  // if (result.advertisementData.manufacturerData.isNotEmpty) {
+  //   return result.advertisementData.manufacturerData.values
+  //       .map((bytes) => bytes.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join(':'))
+  //       .join(', ');
+  // }
+  // return 'N/A';
+  String payload1 = "";
+
+  if (manufacturerData.isNotEmpty) {
+    //       print("Whole data : ${manufacturerData}");
+
+    // Convert the byte array to a hexadecimal string
+    String manufacturerDataString = result.advertisementData.manufacturerData.values
+        .map((bytes) => bytes.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join(' '))
+        .join(', ');
+    var data = deviceDataList[result.device.remoteId.toString()];
+    print("data value----->$data");
+    String cleanedPayload = manufacturerDataString.replaceAll(' ', '');
+    print("sub string :$cleanedPayload");
+
+    String protocolId = cleanedPayload.substring(0, 2);
+    String payloadId = cleanedPayload.substring(2, 4);
+    if (data == "null" || data == "" || data == null) {
+      deviceDataList[result.device.remoteId.toString()] = payload_class_data(
+          result.device.remoteId.toString(),
+          result.advertisementData.advName,
+          manufacturerDataString,
+          "N/A",
+          "N/A",
+          protocolId,
+          payloadId,
+          "N/A",
+          -99,
+          -99,
+          "N/A",
+          -99,
+          -99,
+          -99,
+          -99,
+          "N/A");
+      print("hello----------$data");
+    } else if (manufacturerDataString.substring(3, 5).contains("01")) {
+      //pay load type 1
+      payload1 = manufacturerDataString;
+      print("pay load 1 :${payload1}");
+      print("cleanData->$cleanedPayload");
+      print(
+          "empty data->${data.payload2}||${data.liveBattery}||${data.masterTimer}||${data.lastChargeTime}||${data.lastDischargeTime}||${data.batteryLifeCycles}");
+      print(
+          "empty data->${data.payload1}||${data.serialNumber}||${data.batterySerialNumber}||${data.maximumBattery}||${data.notificationStatus}||${data.batteryLifeCycles}");
+
+      //  serialNumber = cleanedPayload.substring(4, 6);
+      String serialNumber = cleanedPayload.substring(4, 6);
+      int batterySerialNumber = int.parse(cleanedPayload.substring(6, 14), radix: 16);
+      double maximumBattery = int.parse(cleanedPayload.substring(14, 18), radix: 16) / 10;
+      String notificationStatus = cleanedPayload.substring(18, 20);
+      // return "";
+      deviceDataList[result.device.remoteId.toString()] = payload_class_data(
+          result.device.remoteId.toString(),
+          result.advertisementData.advName,
+          manufacturerDataString,
+          manufacturerDataString,
+          data.payload2.toString(),
+          protocolId,
+          payloadId,
+          serialNumber,
+          batterySerialNumber,
+          maximumBattery,
+          notificationStatus,
+          data.liveBattery,
+          data.masterTimer,
+          data.lastChargeTime,
+          data.lastDischargeTime,
+          data.batteryLifeCycles.toString());
+    } else if (manufacturerDataString.substring(3, 5).contains("02")) {
+      double liveBattery = int.parse(cleanedPayload.substring(4, 6), radix: 16) / 10;
+      int masterTimer = int.parse(cleanedPayload.substring(6, 12), radix: 16);
+      int lastChargeTime = int.parse(cleanedPayload.substring(12, 18), radix: 16);
+      int lastDischargeTime = int.parse(cleanedPayload.substring(18, 24), radix: 16);
+      String batteryLifeCycles = cleanedPayload.substring(24, 28);
+      // return "";
+      deviceDataList[result.device.remoteId.toString()] = payload_class_data(
+          result.device.remoteId.toString(),
+          result.advertisementData.advName,
+          manufacturerDataString,
+          data.payload1.toString(),
+          manufacturerDataString,
+          protocolId,
+          payloadId,
+          data.serialNumber,
+          data.batterySerialNumber,
+          data.maximumBattery,
+          data.notificationStatus,
+          liveBattery,
+          masterTimer,
+          lastChargeTime,
+          lastDischargeTime,
+          batteryLifeCycles);
+    }
+  } else {
+    print("No Manufacturer Data");
+  }
+  print(
+      "data from device :\n\n--------------------------------\n${deviceDataList[result.device.remoteId.toString()]}\n---------------------------------\n");
+  if (result.advertisementData.manufacturerData.isNotEmpty) {
+    return result.advertisementData.manufacturerData.values
+        .map((bytes) => bytes.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join(':'))
+        .join(', ');
+  }
+  return 'N/A';
 }
