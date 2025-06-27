@@ -238,20 +238,23 @@ UserProfileSlider(context, Function? onlogout) {
                           ),
                           FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: Text(
-                              "${UserData().email}",
-                              style: TextStyle(
-                                  fontFamily: baseFont,
-                                  color: darkBg,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black,
-                                      blurRadius: 0.3,
-                                      offset: Offset(0.5, 0.4),
-                                    )
-                                  ]),
+                            child: Container(
+                              width: size.width * 0.52,
+                              child: Text(
+                                "${UserData().email}",
+                                style: TextStyle(
+                                    fontFamily: baseFont,
+                                    color: darkBg,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [
+                                      Shadow(
+                                        color: Colors.black,
+                                        blurRadius: 0.3,
+                                        offset: Offset(0.5, 0.4),
+                                      )
+                                    ]),
+                              ),
                             ),
                           )
                         ],
