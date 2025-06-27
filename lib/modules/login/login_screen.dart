@@ -67,7 +67,7 @@ class LoginScreenState extends State<LoginScreen> {
           ),
           child: Center(
             child: Container(
-                height: size.height / 2.1,
+                height: size.height / 2.01,
                 width: size.width / 1.15,
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(208, 209, 206, 0.2),

@@ -42,8 +42,12 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
       getAllseriesData = await getSeriesData();
       addBatch(BatchModel.fromJson(batchList[0]));
 
+
       setState(() {});
     });
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -109,42 +113,48 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // Name
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Batch : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(getAllseriesData[index]["name"].toString(),
+                      Container(
+                        width: 90,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Batch : ",
+                                style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Text(getAllseriesData[index]["name"].toString(),
+                                style: CardText(
+                                    font_Weight: FontWeight.w800,
+                                    size: 19,
+                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText)),
+                          ],
+                        ),
+                      ),
+                      // EmpID
+                      Container(
+                        width: 90,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Description : ",
+                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Text(
+                              getAllseriesData[index]["description"].toString(),
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText)),
-                        ],
-                      ),
-                      // EmpID
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Description : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            getAllseriesData[index]["description"].toString(),
-                            style: CardText(
-                                font_Weight: FontWeight.w800,
-                                size: 19,
-                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                          ),
-                        ],
+                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                            ),
+                          ],
+                        ),
                       ),
                       // DeviceID
                       Column(

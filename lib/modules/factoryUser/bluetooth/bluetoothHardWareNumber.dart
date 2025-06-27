@@ -191,8 +191,8 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber>{
                                   Icons.keyboard_arrow_down_sharp,
                                   color: darkBg,
                                 ),
-                                press: () async {
-                                  await BottomSheet_Widget(context, [
+                                press: ()  {
+                                   BottomSheet_Widget(context, [
                                     MapListItemBuilder(
                                         listItems: widget.allclients!,
                                         press: () {
@@ -220,7 +220,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber>{
                             printFunc("DEMo ${ClientName.Text}");
                             ValidateDropDown(HardWareNumber,ClientName);
                             await deleteByHardWareNumber();
-                            Navigator.of(context).pop();
                           }
                       ),
                     )
