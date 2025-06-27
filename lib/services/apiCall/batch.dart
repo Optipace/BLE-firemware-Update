@@ -4,12 +4,12 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
 Future<List<Map<String, dynamic>>> getBatchList(
-    BuildContext context,{
-      required String Status,
+  BuildContext context, {
+  required String Status,
 }) async {
   List<Map<String, dynamic>> batchList = [];
-  final requestBody  = {
-    "active" : Status,
+  final requestBody = {
+    "active": Status,
   };
   await ApiService.callApi(
       context: context,
@@ -49,7 +49,7 @@ Future<List<Map<String, dynamic>>> getBatchList(
               "releaseDate": firmware['versionReleasedDate'] ?? '',
               "versionName": firmware['versionName'] ?? '',
               "deviceTypeId": firmware['deviceTypeId']?.toString() ?? config['deviceId']?.toString() ?? '',
-              "file": "Base64Data",
+              "file": firmware['file'],
               "saved": false,
               "deviceType": firmware['deviceTypeId']?.toString() ?? '',
             }
@@ -214,7 +214,7 @@ Future<List<Map<String, dynamic>>> getBatchByID(BuildContext context, String id)
   List<Map<String, dynamic>> batchList = [{}];
   List<Map<String, dynamic>> batchByID = [{}];
 
-  batchList = await getBatchList(context,Status: "A");
+  batchList = await getBatchList(context, Status: "A");
 
   for (var index in batchList) {
     if (index["id"].toString() == id) {

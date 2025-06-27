@@ -3,7 +3,8 @@ import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
-Future<List<Map<String, dynamic>>> getAllConfigurationList(BuildContext context,{required String active}) async {
+Future<List<Map<String, dynamic>>> getAllConfigurationList(BuildContext context,
+    {required String active}) async {
   List<Map<String, dynamic>> configurationList = [
     {
       "id": 1,
@@ -111,7 +112,7 @@ Future<List<Map<String, dynamic>>> getAllConfigurationList(BuildContext context,
   ];
 
   final requestBody = {
-    "active":active,
+    "active": active,
   };
 
   await ApiService.callApi(

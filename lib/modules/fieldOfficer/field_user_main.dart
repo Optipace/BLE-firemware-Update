@@ -86,7 +86,7 @@ class FieldMain extends StatelessWidget {
                   onPress: () {
                     // FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => BlueetoothBatches()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => SavedBatches()));
                   }),
               SizedBox(
                 height: 25,

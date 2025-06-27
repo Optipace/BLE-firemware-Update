@@ -36,9 +36,6 @@ void main() async {
 
   Hive.registerAdapter(GetNumberModelAdapter());
   await Hive.openBox<GetNumberModel>('$getNumberHiveBox');
-  
-
-
 
   // ✅ Register adapters BEFORE using any boxes
   // Hive.registerAdapter(FirmwareModelAdapter());

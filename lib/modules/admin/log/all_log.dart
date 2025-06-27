@@ -85,18 +85,18 @@ List<Widget> allLogs() {
                         SizedBox(
                           height: 3,
                         ),
-                       FittedBox(
-                         fit: BoxFit.scaleDown,
-                         child:  Text(
-                           sortedAllLogs[index]["empId"],
-                           style: CardText(
-                               font_Weight: FontWeight.w800,
-                               size: 16,
-                               FontColor: sortedAllLogs[index]['status'] == 'Success'
-                                   ? SuccessCardText
-                                   : FailureCardText),
-                         ),
-                       ),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            sortedAllLogs[index]["empId"],
+                            style: CardText(
+                                font_Weight: FontWeight.w800,
+                                size: 16,
+                                FontColor: sortedAllLogs[index]['status'] == 'Success'
+                                    ? SuccessCardText
+                                    : FailureCardText),
+                          ),
+                        ),
                       ],
                     ),
                     // Status

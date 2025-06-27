@@ -8,7 +8,6 @@ import 'package:tracker_firmware/services/apiCall/designation.dart';
 import 'package:tracker_firmware/services/apiCall/logIn.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
-import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
@@ -63,7 +62,6 @@ class AdminNewUserState extends State<AdminNewUser> {
   TextEditingController _newDesgination = TextEditingController();
   TextEditingController _designationPriority = TextEditingController();
   bool designationValidator = false;
-
 
   @override
   void initState() {
@@ -349,7 +347,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     btnTitle: "Add Designation",
                                     btnFunction: () async {
                                       await BottomSheet_Widget(context, color: lightBg, [
-                                        StatefulBuilder(builder: (thisLowerContext, CheckDesignationState){
+                                        StatefulBuilder(builder: (thisLowerContext, CheckDesignationState) {
                                           return Container(
                                             height: size.height / 1.5,
                                             width: size.width,
@@ -390,7 +388,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                             Controller: _newDesgination,
                                                             onChanged: (value) {},
                                                             enable: true,
-                                                            etext: designationValidator && _newDesgination.text.trim().isEmpty
+                                                            etext: designationValidator &&
+                                                                    _newDesgination.text.trim().isEmpty
                                                                 ? "Please Enter Designation"
                                                                 : "",
                                                           ),
@@ -405,14 +404,13 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                             onChanged: (value) {},
                                                             enable: true,
                                                             etext: designationValidator &&
-                                                                _designationPriority.text.trim().isEmpty
+                                                                    _designationPriority.text.trim().isEmpty
                                                                 ? "Please Enter Priority"
                                                                 : "",
                                                           ),
                                                           SizedBox(
                                                             height: 8,
                                                           ),
-
                                                         ],
                                                       ),
                                                     ),
@@ -420,11 +418,11 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                     manageUserBtn(
                                                         text: "Add Designation",
                                                         onPress: () async {
-                                                          CheckDesignationState((){
+                                                          CheckDesignationState(() {
                                                             ValidateDesignationFields();
                                                           });
                                                           Future.delayed(Duration(seconds: 3)).then((_) {
-                                                            CheckDesignationState((){
+                                                            CheckDesignationState(() {
                                                               designationValidator = false;
                                                             });
                                                           });
@@ -434,9 +432,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                             if (await addNewDesgination(
                                                               context,
                                                               name: _newDesgination.text.trim(),
-                                                              priority: int.tryParse(_designationPriority.text)??0,
+                                                              priority:
+                                                                  int.tryParse(_designationPriority.text) ??
+                                                                      0,
                                                             )) {
-
                                                               clearConfig();
                                                               // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                                                             }
@@ -451,7 +450,6 @@ class AdminNewUserState extends State<AdminNewUser> {
                                         })
                                       ]);
                                     },
-
                                   )
                                 ],
                               )
@@ -521,8 +519,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                         }
                         // Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
                       }
-                    }
-                    ),
+                    }),
               )
             ],
           ),
@@ -1080,14 +1077,11 @@ class AdminNewUserState extends State<AdminNewUser> {
   void clearConfig() {
     _newDesgination.clear();
     _designationPriority.clear();
-    setState(() { });
+    setState(() {});
   }
 
   void ValidateDesignationFields() {
-    final Controllers = [
-      _newDesgination,
-      _designationPriority
-    ];
+    final Controllers = [_newDesgination, _designationPriority];
 
     bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
     printFunc("has Next : $hasEmpty");
@@ -1102,6 +1096,4 @@ class AdminNewUserState extends State<AdminNewUser> {
       });
     });
   }
-
-
 }

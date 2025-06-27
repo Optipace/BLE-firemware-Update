@@ -49,7 +49,9 @@ class PrimaryButton extends StatelessWidget {
         child: Container(
           width: buttonWidth,
           height: height ?? 40,
-          padding: EdgeInsets.symmetric(vertical: 4, ),
+          padding: EdgeInsets.symmetric(
+            vertical: 4,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

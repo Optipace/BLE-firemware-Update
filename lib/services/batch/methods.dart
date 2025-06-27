@@ -1,15 +1,14 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-
 
 // --------------------- This is not Used ------------------------------
 Future<void> saveBatchListToHive(List<Map<String, dynamic>> batchList) async {
@@ -19,9 +18,8 @@ Future<void> saveBatchListToHive(List<Map<String, dynamic>> batchList) async {
     var firmware = series["firmware"];
     var profile = series["profile"];
 
-    printFunc("DEMODEMODEMO path : ${ firmware['file']}");
+    printFunc("DEMODEMODEMO path : ${firmware['file']}");
     // Convert base64 into Zip
-
 
     FirmwareModel firmwareModel = FirmwareModel(
         id: firmware['id'],
@@ -63,15 +61,15 @@ Future<bool> addBatch(BatchModel newBatch) async {
   printFunc("Batch model : \n${newBatch.toJson()}");
   final batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
 
-
   // Convertion of base 64 to zip
-  String zipPath = await ConvertionBase64ToZip(newBatch.firmware.file, newBatch.batchName);
+  String zipPath = await saveBase64ZipToFile(newBatch.firmware.file, newBatch.batchName);
   printFunc("DEMO ZIP_PATH : $zipPath");
-
+  if (zipPath == "" || zipPath == null) {
+    return false;
+  }
   newBatch.firmware.file = zipPath;
 
   newBatch.saved = true;
-
   // batch doesn't exist, create it
   BatchModel batch = BatchModel(
     batchId: newBatch.batchId,
@@ -84,30 +82,35 @@ Future<bool> addBatch(BatchModel newBatch) async {
 
   // Save to box
   await batchBox.put(newBatch.batchId, batch);
-  print("Series ${newBatch.batchId} created and batch ${newBatch.batchName} added. ${newBatch.firmware.file}");
+  print(
+      "Series ${newBatch.batchId} created and batch ${newBatch.batchName} added. ${newBatch.firmware.file}");
 
   return true;
 }
 
-Future<String> ConvertionBase64ToZip(String base64String, String fileName) async {
-  try{
-    Uint8List bytes = base64Decode(base64String);
+Future<String> saveBase64ZipToFile(String base64String, String fileName) async {
+  try {
+    // Decode Base64 to bytes
+    printFunc("base 64 data : -> $base64String");
 
-    Directory appDocDir = await getApplicationDocumentsDirectory();
+    Uint8List zipBytes = base64Decode(base64String);
+    // Get the app's document directory
+    Directory dir = await getApplicationDocumentsDirectory();
 
-    String filePath = '${appDocDir.path}/$fileName.zip';
+    // Construct the full path
+    String filePath = '${dir.path}/$fileName.zip';
 
-    File file = File(filePath);
+    // Write bytes to file
+    File zipFile = File(filePath);
+    await zipFile.writeAsBytes(zipBytes);
 
-    await file.writeAsBytes(bytes);
-
+    print('✅ ZIP saved to: $filePath');
     return filePath;
-  }catch(e){
-    return 'e';
+  } catch (e) {
+    print('❌ Error saving ZIP: $e');
+    return "";
   }
 }
-
-
 
 // to add one by one
 /*

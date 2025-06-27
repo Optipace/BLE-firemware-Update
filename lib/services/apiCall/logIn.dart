@@ -164,7 +164,7 @@ void navigateToDashBoard(BuildContext context, int designation_id) {
     return;
   } else if (designation_id == 3) {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) =>FactoryMain() ),
+      MaterialPageRoute(builder: (_) => FactoryMain()),
       (route) => false,
     );
     // Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FieldMain()));

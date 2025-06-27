@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
-
 // import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
@@ -37,7 +36,7 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
       batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
       // await batchBox.clear();
       // Add request
-      batchList = await getBatchList(context,Status: "Y");
+      batchList = await getBatchList(context, Status: "Y");
       printFunc("Batch list :-> $batchList");
       getAllseriesData = await getSeriesData();
       addBatch(BatchModel.fromJson(batchList[0]));

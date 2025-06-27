@@ -41,7 +41,7 @@ class AdminLogsState extends State<AdminLogs> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      batchList = await getBatchList(context,Status: "A");
+      batchList = await getBatchList(context, Status: "A");
       // BACTH LOGS PIE CHART
       BatchLogs = [
         for (int i = 0; i < batchList.length; i++)
@@ -165,7 +165,6 @@ class AdminLogsState extends State<AdminLogs> {
                         categories: BatchLogs,
                         colors: BatchColors,
                         onTap: () {
-
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => BatchLogsMain(
                                     batchList: batchList,

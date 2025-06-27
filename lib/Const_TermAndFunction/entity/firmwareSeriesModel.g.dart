@@ -41,7 +41,5 @@ class FirmwareSeriesModelAdapter extends TypeAdapter<FirmwareSeriesModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FirmwareSeriesModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is FirmwareSeriesModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

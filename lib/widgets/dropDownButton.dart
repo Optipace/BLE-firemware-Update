@@ -261,7 +261,7 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
                     child: Container(
                       width: size.width * 0.8,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white,width: 0.2),
+                        border: Border.all(color: Colors.white, width: 0.2),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       padding: EdgeInsets.all(10),

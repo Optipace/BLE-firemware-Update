@@ -21,18 +21,12 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
 }
 
 TextStyle tileTextStyle =
-    TextStyle(
-        color: darkBg,
-        fontFamily: baseFont,
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        shadows: [
-        Shadow(
-          color: Colors.black,
-          blurRadius: 0.2,
-        )
-      ]
-    );
+    TextStyle(color: darkBg, fontFamily: baseFont, fontSize: 16, fontWeight: FontWeight.w600, shadows: [
+  Shadow(
+    color: Colors.black,
+    blurRadius: 0.2,
+  )
+]);
 
 TextStyle titleTileStyle =
     TextStyle(color: darkBg, fontFamily: baseFont, fontSize: 14, fontWeight: FontWeight.w500, shadows: [
@@ -65,10 +59,10 @@ class listOverviewState extends State<listOverview> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      firmList = await getFirmwareList(context,active: "A");
-      final allConfigList = await getAllConfigurationList(context,active: "A");
+      firmList = await getFirmwareList(context, active: "A");
+      final allConfigList = await getAllConfigurationList(context, active: "A");
       batteryList = {for (var item in allConfigList) item['deviceName']: item};
-      batchList = await getBatchList(context,Status: "A");
+      batchList = await getBatchList(context, Status: "A");
       printFunc("batteryList $batteryList");
       for (var key in batteryList.keys) {
         int batteryId = batteryList[key]!["id"];
@@ -458,11 +452,15 @@ class listOverviewState extends State<listOverview> {
                                     SizedBox(
                                       child: Column(
                                         children: [
-                                          SizedBox(height: 5,),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
                                           Divider(
                                             color: darkBg,
                                           ),
-                                          SizedBox(height: 5,),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -495,7 +493,7 @@ class listOverviewState extends State<listOverview> {
                     GestureDetector(
                       onTap: () async {
                         await BottomSheet_Widget(context, color: lightBg, [
-                          StatefulBuilder(builder: (thisLowerContext, checkListBatteryState){
+                          StatefulBuilder(builder: (thisLowerContext, checkListBatteryState) {
                             return Container(
                               height: size.height / 1.5,
                               width: size.width,
@@ -550,15 +548,15 @@ class listOverviewState extends State<listOverview> {
                                               Controller: _batteryDescription,
                                               onChanged: (value) {},
                                               enable: true,
-                                              etext: batteryValidator && _batteryDescription.text.trim().isEmpty
-                                                  ? "Please Enter Information"
-                                                  : "",
+                                              etext:
+                                                  batteryValidator && _batteryDescription.text.trim().isEmpty
+                                                      ? "Please Enter Information"
+                                                      : "",
                                             ),
 
                                             SizedBox(
                                               height: 8,
                                             ),
-
                                           ],
                                         ),
                                       ),
@@ -569,11 +567,11 @@ class listOverviewState extends State<listOverview> {
                                             printFunc("DEMODEMO");
                                             printFunc(batteryValidator);
                                             printFunc(_newbname.text.trim().isEmpty);
-                                            checkListBatteryState((){
+                                            checkListBatteryState(() {
                                               ValidateBatteryFields();
                                             });
                                             Future.delayed(Duration(seconds: 3)).then((_) {
-                                              checkListBatteryState((){
+                                              checkListBatteryState(() {
                                                 batteryValidator = false;
                                               });
                                             });
@@ -828,11 +826,15 @@ class listOverviewState extends State<listOverview> {
                                               SizedBox(
                                                 child: Column(
                                                   children: [
-                                                    SizedBox(height: 5,),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
                                                     Divider(
                                                       color: Colors.black26,
                                                     ),
-                                                    SizedBox(height: 5,)
+                                                    SizedBox(
+                                                      height: 5,
+                                                    )
                                                   ],
                                                 ),
                                               ),
@@ -860,11 +862,15 @@ class listOverviewState extends State<listOverview> {
                                               SizedBox(
                                                 child: Column(
                                                   children: [
-                                                    SizedBox(height: 5,),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
                                                     Divider(
                                                       color: Colors.black26,
                                                     ),
-                                                    SizedBox(height: 5,)
+                                                    SizedBox(
+                                                      height: 5,
+                                                    )
                                                   ],
                                                 ),
                                               ),
@@ -880,10 +886,7 @@ class listOverviewState extends State<listOverview> {
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: [
                                                               // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
-                                                              Text(
-                                                                "U. Threshold",
-                                                                style:titleTileStyle
-                                                              ),
+                                                              Text("U. Threshold", style: titleTileStyle),
 
                                                               // Upper Threshold
                                                               SizedBox(height: 5),
@@ -898,7 +901,6 @@ class listOverviewState extends State<listOverview> {
                                                                   ),
                                                                 ],
                                                               ),
-
                                                             ],
                                                           ),
                                                           SizedBox(width: 20),
@@ -917,13 +919,10 @@ class listOverviewState extends State<listOverview> {
                                                                   Icon(Icons.battery_6_bar_outlined,
                                                                       size: 18, color: secondaryText),
                                                                   SizedBox(width: 5),
-                                                                  Text(
-                                                                    "${profile['upperVoltage']} V",
-                                                                    style: tileTextStyle
-                                                                  ),
+                                                                  Text("${profile['upperVoltage']} V",
+                                                                      style: tileTextStyle),
                                                                 ],
                                                               ),
-
                                                             ],
                                                           ),
                                                           SizedBox(width: 20),
@@ -948,7 +947,6 @@ class listOverviewState extends State<listOverview> {
                                                                   ),
                                                                 ],
                                                               ),
-
                                                             ],
                                                           ),
                                                           SizedBox(width: 20),
@@ -972,7 +970,6 @@ class listOverviewState extends State<listOverview> {
                                                                   ),
                                                                 ],
                                                               ),
-
                                                             ],
                                                           ),
                                                         ],
@@ -1100,7 +1097,8 @@ class listOverviewState extends State<listOverview> {
                       // batch
                       final batchId = batch['id'] ?? '';
                       final batchname = batch['name'] ?? '';
-                      final batchActive = batch['active'].toString().toUpperCase() == 'Y' ? "Active" : "Inactive";
+                      final batchActive =
+                          batch['active'].toString().toUpperCase() == 'Y' ? "Active" : "Inactive";
 
                       // Profile
                       final configName = batch['profile']?['name'] ?? 'N/A';
@@ -1112,7 +1110,8 @@ class listOverviewState extends State<listOverview> {
                       // Firmware
                       final firmwareId = batch['firmware']?['id'] ?? 'N/A';
                       final firmwareVersion = batch['firmware']?['versionName'] ?? 'N/A';
-                      final firmwareRelaseNote = batch['firmware']?['releaseDate'].toString().split("T")[0] ?? 'N/A';
+                      final firmwareRelaseNote =
+                          batch['firmware']?['releaseDate'].toString().split("T")[0] ?? 'N/A';
 
                       return Column(
                         children: [
@@ -1404,7 +1403,6 @@ class listOverviewState extends State<listOverview> {
                                                               ),
                                                             ],
                                                           ),
-
                                                         ],
                                                       ),
                                                       SizedBox(width: 20),
@@ -1429,7 +1427,6 @@ class listOverviewState extends State<listOverview> {
                                                               ),
                                                             ],
                                                           ),
-
                                                         ],
                                                       ),
                                                       SizedBox(width: 20),
@@ -1454,7 +1451,6 @@ class listOverviewState extends State<listOverview> {
                                                               ),
                                                             ],
                                                           ),
-
                                                         ],
                                                       ),
                                                       SizedBox(width: 20),
@@ -1478,7 +1474,6 @@ class listOverviewState extends State<listOverview> {
                                                               ),
                                                             ],
                                                           ),
-
                                                         ],
                                                       ),
                                                     ],
@@ -1487,7 +1482,6 @@ class listOverviewState extends State<listOverview> {
                                               ),
                                             ),
                                           ),
-
                                         ],
                                       ),
                                     ),

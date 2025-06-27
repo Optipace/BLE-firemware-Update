@@ -52,7 +52,7 @@ class ApiEndpoints {
   static const String saveHardware = '/api/non-auth/hardware/save_hardware';
   static const String saveProfile = '/api/non-auth/hardware/save_profile';
   static const String getHardwareNumber =
-      '/api/non-auth/hardware/getnumber?count=10';// append ID like getHardwareNumber + "5"
+      '/api/non-auth/hardware/getnumber?count=10'; // append ID like getHardwareNumber + "5"
   static const String getAllClients = '/api/non-auth/hardware/getAllClients';
 
   static const String getAllFirmwareDetails = '/api/non-auth/hardware/getAllFirmwareDetails';

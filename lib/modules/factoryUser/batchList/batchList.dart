@@ -10,6 +10,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/batch/methods.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
 class BatchFactoryManagement extends StatefulWidget {
   const BatchFactoryManagement({super.key});
@@ -46,7 +47,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
       await sharedPreferences.setString("accessToken", "sdncondscpd");
 
       // Add request
-      batchList = await getBatchList(context,Status: "Y");
+      batchList = await getBatchList(context, Status: "Y");
       printFunc("Batch list  ss :-> $batchList");
       seriesSixData = await getSeriesData();
       print("SERIES DATA : $seriesSixData");
@@ -134,12 +135,13 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                             SizedBox(
                               height: 3,
                             ),
-                            Text(seriesSixData[index]["name"].toString(),
-                                style: CardText(
-                                    font_Weight: FontWeight.w800,
-                                    size: 19,
-                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                                softWrap: true,
+                            Text(
+                              seriesSixData[index]["name"].toString(),
+                              style: CardText(
+                                  font_Weight: FontWeight.w800,
+                                  size: 19,
+                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                              softWrap: true,
                             ),
                           ],
                         ),
@@ -269,7 +271,8 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                   IconButton(
                                       onPressed: () async {
                                         if (!(seriesSixData[index]['saved'] ?? false)) {
-                                          await addBatch(BatchModel.fromJson(seriesSixData[index]));
+                                          if (!(await addBatch(BatchModel.fromJson(seriesSixData[index]))))
+                                            ShowSnackBarMessage(context, "Failed to save Batch", false);
 
                                           setState(() {});
                                         }
