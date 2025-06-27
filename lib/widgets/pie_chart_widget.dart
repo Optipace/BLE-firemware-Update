@@ -162,7 +162,7 @@ class PieChartViewState extends State<PieChartView> {
                               SizedBox(width: 5),
                               Container(
                                 width: 80,
-                                child: Text(
+                                child: Text(//
                                   widget.categories[index].name,
                                   style: TextStyle(fontSize: 12),
                                 ),
