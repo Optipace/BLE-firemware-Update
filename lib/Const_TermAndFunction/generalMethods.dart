@@ -137,7 +137,7 @@ Future<dynamic> forceLogOut(BuildContext context) async {
 
   sharedPreferences.clear();
   UserData().clear();
-
+  await setDeviceId();
   // Optionally navigate to login screen
   Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute(builder: (_) => const LoginScreen()),

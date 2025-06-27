@@ -9,7 +9,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
 // --------------------- This is not Used ------------------------------
 Future<void> saveBatchListToHive(List<Map<String, dynamic>> batchList) async {
@@ -65,10 +64,9 @@ Future<bool> addBatch(BatchModel newBatch) async {
   // Convertion of base 64 to zip
   String zipPath = await saveBase64ZipToFile(newBatch.firmware.file, newBatch.batchName);
   printFunc("DEMO ZIP_PATH : $zipPath");
-if(zipPath==""||zipPath==null){
-  return false;
-
-}
+  if (zipPath == "" || zipPath == null) {
+    return false;
+  }
   newBatch.firmware.file = zipPath;
 
   newBatch.saved = true;
@@ -89,7 +87,6 @@ if(zipPath==""||zipPath==null){
 
   return true;
 }
-
 
 Future<String> saveBase64ZipToFile(String base64String, String fileName) async {
   try {

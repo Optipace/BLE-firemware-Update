@@ -27,6 +27,7 @@ class LoginScreenState extends State<LoginScreen> {
     setDeviceId();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       sharedPreferences = await SharedPreferences.getInstance();
+      await setDeviceId();
 
       _uuid = (await sharedPreferences.getString("UUID")) ?? "";
     });

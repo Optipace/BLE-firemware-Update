@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:android_intent/android_intent.dart';
 import 'package:android_intent/flag.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:nordic_dfu/nordic_dfu.dart';
@@ -13,8 +12,10 @@ import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWare
 
 class DfuHomePage extends StatefulWidget {
   const DfuHomePage({super.key, required this.SelectedBatch, required this.allClients});
+
   final DataController SelectedBatch;
   final Map<String, dynamic> allClients;
+
   @override
   State<DfuHomePage> createState() => _DfuHomePageState();
 }
@@ -71,12 +72,12 @@ class _DfuHomePageState extends State<DfuHomePage> {
     setState(() {});
   }
 
-  Future<void> startDfu(ScanResult device, {bool first = true,  String oldId = ""}) async {
+  Future<void> startDfu(ScanResult device, {bool first = true, String oldId = ""}) async {
     await stopScan();
     await Future.delayed(const Duration(milliseconds: 1000)); // ✅ Allow BLE stack to settle
     // await Wakelock.enable();
 
-    String file=widget.SelectedBatch.obj["firmware"]["file"];
+    String file = widget.SelectedBatch.obj["firmware"]["file"];
     // if (first) {
     //   file = await FilePicker.platform.pickFiles();
     //   if (file == null || file.files.single.path == null) return;
@@ -105,7 +106,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
             .showSnackBar(SnackBar(content: Text("🛠️ Enabling DFU mode on $address")));
         if (first) {
           await Future.delayed(const Duration(milliseconds: 2000)); // ✅ Allow BLE stack to settle
-          await NordicDfu().abortDfu(address:address);
+          await NordicDfu().abortDfu(address: address);
           ScanResult dfuDevice = await startScanSecondTime(device);
           // results.clear();
           // results.add(dfuDevice);
@@ -148,9 +149,9 @@ class _DfuHomePageState extends State<DfuHomePage> {
           context,
           MaterialPageRoute(
               builder: (context) => BluetoothHardwareNumber(
-                SelectedBatch: widget.SelectedBatch,
-                allclients: widget.allClients,
-              )),
+                    SelectedBatch: widget.SelectedBatch,
+                    allclients: widget.allClients,
+                  )),
         );
       },
       onError: (address, err, type, msg) {
@@ -163,7 +164,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
     try {
       await NordicDfu().startDfu(
         device.device.remoteId.str,
-        file,//file.files.single.path!,
+        file, //file.files.single.path!,
         dfuEventHandler: handler,
         forceDfu: true,
         numberOfPackets: 4,
