@@ -7,6 +7,8 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/dfuModule/dfuModule.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/hardWareNumber.dart';
+import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
+import 'package:tracker_firmware/widgets/buttons.dart';
 
 class SavedBatches extends StatefulWidget {
   const SavedBatches({super.key});
@@ -81,8 +83,9 @@ class BlueetoothBatchesState extends State<SavedBatches> {
         backgroundColor: lightBg,
         body: Container(
             child: SingleChildScrollView(
-          child: Column(children: seriesSix()),
-        )));
+
+              child:Column(children: seriesSix()),
+            )));
   }
 
   List<Widget> seriesSix() {
