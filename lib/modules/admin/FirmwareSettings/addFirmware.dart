@@ -118,8 +118,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(22))),
                 color: lightBg,
                 child: Container(
-                  height: size.height / 9,
-                  width: size.width,
+                  height: screenSize.height / 9,
+                  width: screenSize.width,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -131,7 +131,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             });
                           },
                           child: Container(
-                            width: selectedbutton == 1 ? size.width / 1.85 : (size.width / 2) / 2.2,
+                            width: selectedbutton == 1 ? screenSize.width / 1.85 : (screenSize.width / 2) / 2.2,
                             height: 120,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
@@ -191,7 +191,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           });
                         },
                         child: Container(
-                          width: selectedbutton == 2 ? size.width / 2 : (size.width / 2) / 2.7,
+                          width: selectedbutton == 2 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
                           height: 120,
                           decoration: BoxDecoration(
                               color: selectedbutton == 2 ? darkBg : Colors.white,
@@ -251,7 +251,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           });
                         },
                         child: Container(
-                          width: selectedbutton == 3 ? size.width / 2 : (size.width / 2) / 2.7,
+                          width: selectedbutton == 3 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
                           height: 120,
                           decoration: BoxDecoration(
                               color: selectedbutton == 3 ? darkBg : Colors.white,
@@ -415,7 +415,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: Column(
                           children: [
                             PrimaryButton(
-                              width: size.width / 2.5,
+                              width: screenSize.width / 2.5,
                               height: 40,
                               tailIcon: Icon(
                                 CupertinoIcons.arrow_up_doc,
@@ -645,8 +645,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                   await BottomSheet_Widget(context, color: lightBg, [
                                     StatefulBuilder(builder: (thisLowerContext, checkBoxState) {
                                       return Container(
-                                        height: size.height / 1.5,
-                                        width: size.width,
+                                        height: screenSize.height / 1.5,
+                                        width: screenSize.width,
                                         color: lightBg,
                                         child: SingleChildScrollView(
                                           child: Container(

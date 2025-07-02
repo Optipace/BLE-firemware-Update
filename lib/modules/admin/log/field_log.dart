@@ -47,7 +47,7 @@ List<Widget> fieldUserLog() {
                   borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.black, width: 0.3)),
               title: Container(
                 padding: EdgeInsets.all(5),
-                width: size.width,
+                width: screenSize.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -123,7 +123,7 @@ List<Widget> fieldUserLog() {
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  width: size.width,
+                  width: screenSize.width,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -324,7 +324,7 @@ class FieldLogs extends StatelessWidget {
           "Field Logs",
           style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
         ),
-        toolbarHeight: size.height / 11.5,
+        toolbarHeight: screenSize.height / 11.5,
         backgroundColor: darkBg,
         elevation: 5,
         shadowColor: darkBg,

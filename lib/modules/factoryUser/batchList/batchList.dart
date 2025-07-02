@@ -72,7 +72,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
             "Batch's",
             style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
           ),
-          toolbarHeight: size.height / 11.5,
+          toolbarHeight: screenSize.height / 11.5,
           backgroundColor: darkBg,
           elevation: 5,
           shadowColor: darkBg,
@@ -298,7 +298,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                           height: 10,
                         ),
                         Container(
-                          width: size.width * 0.8,
+                          width: screenSize.width * 0.8,
                           child: Row(
                             children: [
                               Row(

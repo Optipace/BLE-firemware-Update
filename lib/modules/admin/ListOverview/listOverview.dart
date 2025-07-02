@@ -87,7 +87,7 @@ class listOverviewState extends State<listOverview> {
             "List Overview",
             style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
           ),
-          toolbarHeight: size.height / 13,
+          toolbarHeight: screenSize.height / 13,
           backgroundColor: darkBg,
           elevation: 5,
           shadowColor: darkBg,
@@ -102,7 +102,7 @@ class listOverviewState extends State<listOverview> {
               children: [
                 // List of firmware
                 Container(
-                  width: size.width,
+                  width: screenSize.width,
                   child: ExpansionTile(
                     backgroundColor: second_lightBg,
                     collapsedBackgroundColor: Colors.transparent,
@@ -495,8 +495,8 @@ class listOverviewState extends State<listOverview> {
                         await BottomSheet_Widget(context, color: lightBg, [
                           StatefulBuilder(builder: (thisLowerContext, checkListBatteryState) {
                             return Container(
-                              height: size.height / 1.5,
-                              width: size.width,
+                              height: screenSize.height / 1.5,
+                              width: screenSize.width,
                               color: lightBg,
                               child: SingleChildScrollView(
                                 child: Container(

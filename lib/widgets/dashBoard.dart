@@ -34,7 +34,7 @@ class Dashboard extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: size.height / 3.5 + 30,
+              height: screenSize.height / 3.5 + 30,
               child: Stack(
                 children: [
                   Container(
@@ -43,7 +43,7 @@ class Dashboard extends StatelessWidget {
                   Align(
                     alignment: Alignment.topCenter,
                     child: Container(
-                      height: size.height / 3.5,
+                      height: screenSize.height / 3.5,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                           color: darkBg,
@@ -64,7 +64,7 @@ class Dashboard extends StatelessWidget {
                   // View Profile
                   userProfile == true
                       ? Positioned(
-                          top: size.height * 0.05,
+                          top: screenSize.height * 0.05,
                           left: 10,
                           child: IconButton(
                               onPressed: () {
@@ -84,8 +84,8 @@ class Dashboard extends StatelessWidget {
                               )))
                       : SizedBox(),
                   Container(
-                    padding: EdgeInsets.only(top: size.height * 0.1),
-                    width: size.width,
+                    padding: EdgeInsets.only(top: screenSize.height * 0.1),
+                    width: screenSize.width,
                     child: Center(
                         child: Column(
                       children: [
@@ -126,7 +126,7 @@ class Dashboard extends StatelessWidget {
 
 UserProfileSlider(context, Function? onlogout) {
   return Drawer(
-    width: size.width * 0.75,
+    width: screenSize.width * 0.75,
     elevation: 20,
     backgroundColor: lightBg,
     child: SafeArea(
@@ -134,7 +134,7 @@ UserProfileSlider(context, Function? onlogout) {
       children: [
         // Icon
         Padding(
-            padding: EdgeInsets.only(top: size.height * 0.05),
+            padding: EdgeInsets.only(top: screenSize.height * 0.05),
             child: CircleAvatar(
               radius: 50,
               backgroundColor: darkBg,
@@ -239,7 +239,7 @@ UserProfileSlider(context, Function? onlogout) {
                           FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Container(
-                              width: size.width * 0.52,
+                              width: screenSize.width * 0.52,
                               child: Text(
                                 "${UserData().email}",
                                 style: TextStyle(

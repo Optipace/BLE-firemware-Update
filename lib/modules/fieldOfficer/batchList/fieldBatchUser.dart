@@ -60,7 +60,7 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
             "Batch's",
             style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
           ),
-          toolbarHeight: size.height / 11.5,
+          toolbarHeight: screenSize.height / 11.5,
           backgroundColor: darkBg,
           elevation: 5,
           shadowColor: darkBg,
@@ -283,7 +283,7 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                           height: 10,
                         ),
                         Container(
-                          width: size.width * 0.8,
+                          width: screenSize.width * 0.8,
                           child: Row(
                             children: [
                               Row(

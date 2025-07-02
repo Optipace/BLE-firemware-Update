@@ -98,8 +98,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                   borderRadius: BorderRadius.all(Radius.circular(22))),
               color: lightBg,
               child: Container(
-                height: size.height / 9,
-                width: size.width,
+                height: screenSize.height / 9,
+                width: screenSize.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -111,7 +111,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                         });
                       },
                       child: Container(
-                        width: size.width * 0.49,
+                        width: screenSize.width * 0.49,
                         height: 120,
                         decoration: BoxDecoration(
                             color: selectedbutton == 1 ? darkBg : lightBg,
@@ -161,7 +161,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                         });
                       },
                       child: Container(
-                        width: size.width * 0.48,
+                        width: screenSize.width * 0.48,
                         height: 120,
                         decoration: BoxDecoration(
                             color: selectedbutton == 2 ? darkBg : lightBg,
@@ -349,8 +349,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                                       await BottomSheet_Widget(context, color: lightBg, [
                                         StatefulBuilder(builder: (thisLowerContext, CheckDesignationState) {
                                           return Container(
-                                            height: size.height / 1.5,
-                                            width: size.width,
+                                            height: screenSize.height / 1.5,
+                                            width: screenSize.width,
                                             color: lightBg,
                                             child: SingleChildScrollView(
                                               child: Container(
@@ -591,7 +591,7 @@ class AdminNewUserState extends State<AdminNewUser> {
               Padding(
                   padding: EdgeInsets.only(bottom: 20),
                   child: SizedBox(
-                    width: size.width / 3,
+                    width: screenSize.width / 3,
                     // Set your desired width
                     height: 40,
                     child: manageUserBtn(

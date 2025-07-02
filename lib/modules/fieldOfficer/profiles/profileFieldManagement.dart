@@ -57,7 +57,7 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
             "Profiles",
             style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
           ),
-          toolbarHeight: size.height / 11.5,
+          toolbarHeight: screenSize.height / 11.5,
           backgroundColor: darkBg,
           elevation: 5,
           shadowColor: darkBg,
@@ -87,7 +87,7 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                       });
                     },
                     child: Container(
-                      width: size.width * 0.32,
+                      width: screenSize.width * 0.32,
                       height: 60,
                       decoration: BoxDecoration(
                           color: selectedbutton == 1 ? darkBg : lightBg,
@@ -167,7 +167,7 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                       });
                     },
                     child: Container(
-                      width: size.width * 0.3,
+                      width: screenSize.width * 0.3,
                       height: 60,
                       decoration: BoxDecoration(
                           color: selectedbutton == 3 ? darkBg : lightBg,

@@ -100,5 +100,12 @@ showAlertDialog(
     },
   );
 }
-
+TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
+  return TextStyle(
+      color: FontColor ?? darkBg,
+      fontWeight: font_Weight,
+      fontFamily: baseFont,
+      fontSize: size ?? 16,
+      shadows: [Shadow(color: Colors.black)]);
+}
 final appVersion = "1.0.0";

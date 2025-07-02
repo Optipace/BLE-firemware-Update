@@ -46,7 +46,7 @@ List<Widget> factoryUserLog() {
                   borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.black, width: 0.3)),
               title: Container(
                 padding: EdgeInsets.all(5),
-                width: size.width,
+                width: screenSize.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -122,7 +122,7 @@ List<Widget> factoryUserLog() {
               children: [
                 Container(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    width: size.width,
+                    width: screenSize.width,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -328,7 +328,7 @@ class FactoryLog extends StatelessWidget {
           "Factory Logs",
           style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
         ),
-        toolbarHeight: size.height / 11.5,
+        toolbarHeight: screenSize.height / 11.5,
         backgroundColor: darkBg,
         elevation: 5,
         shadowColor: darkBg,

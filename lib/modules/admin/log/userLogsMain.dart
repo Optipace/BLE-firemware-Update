@@ -22,7 +22,7 @@ class UserLogsMain extends StatelessWidget {
           "Logs",
           style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
         ),
-        toolbarHeight: size.height / 11.5,
+        toolbarHeight: screenSize.height / 11.5,
         backgroundColor: darkBg,
         elevation: 5,
         shadowColor: darkBg,
@@ -39,7 +39,7 @@ class UserLogsMain extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => all_Logs()));
             },
             child: Container(
-                width: size.width,
+                width: screenSize.width,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
@@ -104,7 +104,7 @@ class UserLogsMain extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => FactoryLog()));
             },
             child: Container(
-                width: size.width,
+                width: screenSize.width,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
@@ -169,7 +169,7 @@ class UserLogsMain extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => FieldLogs()));
             },
             child: Container(
-                width: size.width,
+                width: screenSize.width,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(

@@ -11,7 +11,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
-var size;
+var screenSize;
 
 void printFunc(var str) {
   // if(isTesting)
@@ -107,13 +107,13 @@ Future<int> checkInternet(context) async {
 }
 
 getSize(BuildContext context) {
-  size = MediaQuery.of(context).size;
+  screenSize = MediaQuery.of(context).size;
 
   if (MediaQuery.of(context).size.width <= MediaQuery.of(context).size.height) {
-    size = MediaQuery.of(context).size;
+    screenSize = MediaQuery.of(context).size;
   } else {
-    size.width = MediaQuery.of(context).size.width / 2;
-    size.height = MediaQuery.of(context).size.height;
+    screenSize.width = MediaQuery.of(context).size.width / 2;
+    screenSize.height = MediaQuery.of(context).size.height;
   }
 }
 

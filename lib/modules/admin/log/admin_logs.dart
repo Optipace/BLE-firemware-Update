@@ -12,14 +12,7 @@ class AdminLogs extends StatefulWidget {
   State<AdminLogs> createState() => AdminLogsState();
 }
 
-TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
-  return TextStyle(
-      color: FontColor ?? darkBg,
-      fontWeight: font_Weight,
-      fontFamily: baseFont,
-      fontSize: size ?? 16,
-      shadows: [Shadow(color: Colors.black)]);
-}
+
 
 class AdminLogsState extends State<AdminLogs> {
   List<Map<String, dynamic>> batchList = [{}];
@@ -102,7 +95,7 @@ class AdminLogsState extends State<AdminLogs> {
             "Logs",
             style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
           ),
-          toolbarHeight: size.height / 11.5,
+          toolbarHeight: screenSize.height / 11.5,
           backgroundColor: darkBg,
           elevation: 5,
           shadowColor: darkBg,
