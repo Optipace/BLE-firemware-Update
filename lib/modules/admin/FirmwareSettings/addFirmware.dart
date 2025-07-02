@@ -19,8 +19,10 @@ import 'package:tracker_firmware/widgets/textFields.dart';
 
 class AddNewFirmware extends StatefulWidget {
   final int? selectedBtn;
+  final DataController? batterySeries ;
 
-  AddNewFirmware({this.selectedBtn});
+
+  AddNewFirmware({this.selectedBtn, this.batterySeries});
 
   @override
   State<AddNewFirmware> createState() => AddNewFirmwareState();
@@ -84,6 +86,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       selectedbutton = widget.selectedBtn ?? 1;
+      _batterySeries.setText = widget.batterySeries?.Text;
+      _batterySeries.setobj = widget.batterySeries?.obj;
       // batteryList = await getDeviceTypes(context);
       firmwareList = await getFirmwareList(context, active: "Y");
       allConfigList = await getAllConfigurationList(context, active: "Y");
@@ -94,6 +98,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
   @override
   Widget build(BuildContext context) {
+    printFunc("DEMO BATTERY = ${_batterySeries.getText!}");
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -623,12 +628,15 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       //----Battery series---- [DROPDOWN]
                       GestureDetector(
+                        onTap: (){
+                          printFunc("DEMO _batterySeries : ${_batterySeries.getText} && ${_batterySeries.getobj.toString()}");
+                        },
                         child: PrimeryDropDownButton(
                           isEnabled: true,
                           tail: ErrorContainer(
                               show: _validateDropDown, errorMsg: "Please Select the Battery Series"),
                           mainText: "Select Battery Series",
-                          text: _batterySeries.Text != "" ? _batterySeries.getText : "Battery Series",
+                          text: _batterySeries.Text != ""  && _batterySeries.Text != null ? _batterySeries.getText : "Battery Series",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,

@@ -20,6 +20,7 @@ class FactoryMain extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              //Firmware[Not in used]
               PrimaryButton(
                   enable: false,
                   icon: Icon(
@@ -37,6 +38,7 @@ class FactoryMain extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
+              //Config/profile [Not in used]
               PrimaryButton(
                   enable: false,
                   icon: Icon(
@@ -54,6 +56,7 @@ class FactoryMain extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
+              //Batch Download [ not in used]
               PrimaryButton(
                   icon: Icon(
                     Icons.handyman_outlined,
@@ -70,6 +73,7 @@ class FactoryMain extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
+              //Scan Device
               PrimaryButton(
                   icon: Icon(
                     Icons.bluetooth_audio_outlined,

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/FirmwareSettings/addFirmware.dart';
@@ -11,7 +13,8 @@ import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
-TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText(
+    {required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,
@@ -20,21 +23,29 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
       shadows: [Shadow(color: Colors.black)]);
 }
 
-TextStyle tileTextStyle =
-    TextStyle(color: darkBg, fontFamily: baseFont, fontSize: 16, fontWeight: FontWeight.w600, shadows: [
-  Shadow(
-    color: Colors.black,
-    blurRadius: 0.2,
-  )
-]);
+TextStyle tileTextStyle = TextStyle(
+    color: darkBg,
+    fontFamily: baseFont,
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    shadows: [
+      Shadow(
+        color: Colors.black,
+        blurRadius: 0.2,
+      )
+    ]);
 
-TextStyle titleTileStyle =
-    TextStyle(color: darkBg, fontFamily: baseFont, fontSize: 14, fontWeight: FontWeight.w500, shadows: [
-  Shadow(
-    color: Colors.black,
-    blurRadius: 0.2,
-  )
-]);
+TextStyle titleTileStyle = TextStyle(
+    color: darkBg,
+    fontFamily: baseFont,
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    shadows: [
+      Shadow(
+        color: Colors.black,
+        blurRadius: 0.2,
+      )
+    ]);
 
 class listOverview extends StatefulWidget {
   @override
@@ -54,6 +65,10 @@ class listOverviewState extends State<listOverview> {
   TextEditingController _newbname = TextEditingController();
   TextEditingController _batteryDescription = TextEditingController();
   bool batteryValidator = false;
+
+  // DataController for New configure
+  DataController _batterySeries = DataController();
+
 
   @override
   void initState() {
@@ -85,7 +100,11 @@ class listOverviewState extends State<listOverview> {
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
             "List Overview",
-            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+            style: TextStyle(
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 24,
+                color: lightBg),
           ),
           toolbarHeight: size.height / 13,
           backgroundColor: darkBg,
@@ -104,7 +123,7 @@ class listOverviewState extends State<listOverview> {
                 Container(
                   width: size.width,
                   child: ExpansionTile(
-                    backgroundColor: second_lightBg,
+                    backgroundColor: Colors.white,
                     collapsedBackgroundColor: Colors.transparent,
                     iconColor: darkBg,
                     textColor: Colors.black,
@@ -131,10 +150,305 @@ class listOverviewState extends State<listOverview> {
                       ),
                     ),
                     children: [
+                      Divider(
+                        color: Colors.grey,
+                        thickness: 2,
+                      ),
                       ...firmList.entries.map((entry) {
                         return Column(
                           children: [
-                            ExpansionTile(
+                            GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15),
+                                          side: BorderSide(
+                                            width: 0.5,
+                                            color: darkBg
+                                          )
+                                        ),
+                                        child: Container(
+                                          width: size.width * 0.8,
+                                          height: size.height / 2,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              //Title
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10),
+                                                child: Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 20),
+                                                      child: Text(
+                                                        "Firmware Details",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                baseFont,
+                                                            fontWeight:
+                                                                FontWeight.w800,
+                                                            fontSize: 28,
+                                                            color: darkBg),
+                                                      ),
+                                                    ),
+                                                    Divider(
+                                                      color: darkBg,
+                                                      thickness: 1.5,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              //main content
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 20,
+                                                    vertical: 10),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                              width: 60,
+                                                              child: Text(
+                                                                  "Id :",
+                                                                  style:
+                                                                      titleTileStyle)),
+                                                          Container(
+                                                              width:
+                                                                  size.width *
+                                                                      0.4,
+                                                              child: Text(
+                                                                  "${entry.value["id"]}",
+                                                                  style:
+                                                                      tileTextStyle)),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                            width: 60,
+                                                            child: Text(
+                                                              "Name :",
+                                                              style:
+                                                                  titleTileStyle,
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            width: size.width *
+                                                                0.4,
+                                                            child: Text(
+                                                              "${entry.value["version"]}",
+                                                              style:
+                                                                  tileTextStyle,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                            width: 60,
+                                                            child: Text(
+                                                              "Active : ",
+                                                              style:
+                                                                  titleTileStyle,
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            width: size.width *
+                                                                0.4,
+                                                            child: Text(
+                                                              "${entry.value["active"]}",
+                                                              style:
+                                                                  tileTextStyle,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Align(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "Relase Note : ",
+                                                              style:
+                                                                  titleTileStyle,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                          15,
+                                                                          0,
+                                                                          0,
+                                                                          0),
+                                                              child: Text(
+                                                                "${entry.value["releaseNote"]}",
+                                                                style:
+                                                                    tileTextStyle,
+                                                                softWrap: true,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .visible,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              //Btns
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        backgroundColor: MaterialStateProperty.all(darkBg),
+                                                        minimumSize: MaterialStateProperty.all(Size(100, 40)), // width: 80, height: 40
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text(
+                                                        "Back",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily:
+                                                                baseFont,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            shadows: [
+                                                              Shadow(
+                                                                color: Colors
+                                                                    .white,
+                                                                blurRadius: 0.2,
+                                                              )
+                                                            ]),
+                                                      )),
+                                                  ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        backgroundColor: MaterialStateProperty.all(darkBg),
+                                                        minimumSize: MaterialStateProperty.all(Size(100, 40)), // width: 80, height: 40
+                                                      ),
+                                                      onPressed: () {},
+                                                      child: Text("Deactive",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily:
+                                                            baseFont,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                            FontWeight.w500,
+                                                            shadows: [
+                                                              Shadow(
+                                                                color: Colors
+                                                                    .white,
+                                                                blurRadius: 0.2,
+                                                              )
+                                                            ]),
+                                                      ),
+                                                  ),
+
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(1.5),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: darkBg),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.folder_open_outlined,
+                                          color: darkBg,
+                                          size: 22,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "${entry.value["version"]}",
+                                          style: TextStyle(
+                                              color: darkBg,
+                                              fontSize: 20,
+                                              fontFamily: baseFont,
+                                              fontWeight: FontWeight.w500,
+                                              shadows: [
+                                                Shadow(
+                                                    color: Colors.black,
+                                                    blurRadius: 0.2)
+                                              ]),
+                                        ),
+                                      ],
+                                    ),
+                                    Icon(
+                                      CupertinoIcons.chevron_right_2,
+                                      color: darkBg,
+                                      weight: 40,
+                                      size: 28,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            /*ExpansionTile(
                               backgroundColor: Colors.white,
                               collapsedBackgroundColor: second_lightBg,
                               iconColor: darkBg,
@@ -270,7 +584,7 @@ class listOverviewState extends State<listOverview> {
                                   ),
                                 )
                               ],
-                            ),
+                            ), */
                             SizedBox(
                               height: 10,
                             )
@@ -290,11 +604,13 @@ class listOverviewState extends State<listOverview> {
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
-                              border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
+                              border: Border.all(color: darkBg),
+                              borderRadius: BorderRadius.circular(10)),
                           child: Padding(
                               padding: EdgeInsets.only(right: 5, left: 15),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -312,7 +628,11 @@ class listOverviewState extends State<listOverview> {
                                             fontFamily: baseFont,
                                             fontSize: 22,
                                             fontWeight: FontWeight.w500,
-                                            shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                            shadows: [
+                                              Shadow(
+                                                  color: Colors.black,
+                                                  blurRadius: 0.2)
+                                            ]),
                                       ),
                                     ],
                                   ),
@@ -380,11 +700,14 @@ class listOverviewState extends State<listOverview> {
                             textColor: Colors.black,
                             collapsedIconColor: darkBg,
                             collapsedShape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), side: BorderSide(color: darkBg)),
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: darkBg)),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), side: BorderSide(color: darkBg)),
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: darkBg)),
                             tilePadding: EdgeInsets.symmetric(horizontal: 20),
-                            childrenPadding: EdgeInsets.symmetric(horizontal: 5),
+                            childrenPadding:
+                                EdgeInsets.symmetric(horizontal: 5),
                             title: Row(
                               children: [
                                 Icon(
@@ -402,7 +725,11 @@ class listOverviewState extends State<listOverview> {
                                       fontSize: 20,
                                       fontFamily: baseFont,
                                       fontWeight: FontWeight.w500,
-                                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.2)
+                                      ]),
                                 )
                               ],
                             ),
@@ -411,12 +738,14 @@ class listOverviewState extends State<listOverview> {
                                 color: darkBg,
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 10),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Column(
                                           children: [
@@ -438,7 +767,8 @@ class listOverviewState extends State<listOverview> {
                                                 style: titleTileStyle,
                                               ),
                                               onTap: () {
-                                                printFunc("Selectged value of Batery: ${entry.value}");
+                                                printFunc(
+                                                    "Selectged value of Batery: ${entry.value}");
                                               },
                                             ),
                                             Text(
@@ -493,7 +823,8 @@ class listOverviewState extends State<listOverview> {
                     GestureDetector(
                       onTap: () async {
                         await BottomSheet_Widget(context, color: lightBg, [
-                          StatefulBuilder(builder: (thisLowerContext, checkListBatteryState) {
+                          StatefulBuilder(builder:
+                              (thisLowerContext, checkListBatteryState) {
                             return Container(
                               height: size.height / 1.5,
                               width: size.width,
@@ -524,8 +855,10 @@ class listOverviewState extends State<listOverview> {
 
                                       Container(
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             // Battery Name
                                             LabelText(text: "Battery Name :"),
@@ -534,7 +867,10 @@ class listOverviewState extends State<listOverview> {
                                               Controller: _newbname,
                                               onChanged: (value) {},
                                               enable: true,
-                                              etext: batteryValidator && _newbname.text.trim().isEmpty
+                                              etext: batteryValidator &&
+                                                      _newbname.text
+                                                          .trim()
+                                                          .isEmpty
                                                   ? "Please Enter Battery Name"
                                                   : "",
                                             ),
@@ -548,10 +884,12 @@ class listOverviewState extends State<listOverview> {
                                               Controller: _batteryDescription,
                                               onChanged: (value) {},
                                               enable: true,
-                                              etext:
-                                                  batteryValidator && _batteryDescription.text.trim().isEmpty
-                                                      ? "Please Enter Information"
-                                                      : "",
+                                              etext: batteryValidator &&
+                                                      _batteryDescription.text
+                                                          .trim()
+                                                          .isEmpty
+                                                  ? "Please Enter Information"
+                                                  : "",
                                             ),
 
                                             SizedBox(
@@ -566,11 +904,13 @@ class listOverviewState extends State<listOverview> {
                                           onPress: () async {
                                             printFunc("DEMODEMO");
                                             printFunc(batteryValidator);
-                                            printFunc(_newbname.text.trim().isEmpty);
+                                            printFunc(
+                                                _newbname.text.trim().isEmpty);
                                             checkListBatteryState(() {
                                               ValidateBatteryFields();
                                             });
-                                            Future.delayed(Duration(seconds: 3)).then((_) {
+                                            Future.delayed(Duration(seconds: 3))
+                                                .then((_) {
                                               checkListBatteryState(() {
                                                 batteryValidator = false;
                                               });
@@ -581,7 +921,9 @@ class listOverviewState extends State<listOverview> {
                                               if (await addNewDeviceType(
                                                 context,
                                                 name: _newbname.text.trim(),
-                                                description: _batteryDescription.text.trim(),
+                                                description: _batteryDescription
+                                                    .text
+                                                    .trim(),
                                               )) {
                                                 clearConfig();
                                                 // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
@@ -602,7 +944,8 @@ class listOverviewState extends State<listOverview> {
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                            border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
+                            border: Border.all(color: darkBg),
+                            borderRadius: BorderRadius.circular(10)),
                         child: Padding(
                             padding: EdgeInsets.only(right: 5, left: 15),
                             child: Row(
@@ -624,7 +967,11 @@ class listOverviewState extends State<listOverview> {
                                           fontFamily: baseFont,
                                           fontSize: 22,
                                           fontWeight: FontWeight.w500,
-                                          shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black,
+                                                blurRadius: 0.2)
+                                          ]),
                                     ),
                                   ],
                                 ),
@@ -672,6 +1019,7 @@ class listOverviewState extends State<listOverview> {
                   childrenPadding: EdgeInsets.symmetric(
                     horizontal: 5,
                   ),
+
                   title: Text(
                     "Config",
                     style: TextStyle(
@@ -696,9 +1044,11 @@ class listOverviewState extends State<listOverview> {
                             textColor: Colors.black,
                             collapsedIconColor: darkBg,
                             collapsedShape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), side: BorderSide(color: darkBg)),
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: darkBg)),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), side: BorderSide(color: darkBg)),
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: darkBg)),
                             title: Row(
                               children: [
                                 Icon(
@@ -716,7 +1066,11 @@ class listOverviewState extends State<listOverview> {
                                       fontFamily: baseFont,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w500,
-                                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.2)
+                                      ]),
                                 ),
                               ],
                             ),
@@ -727,269 +1081,406 @@ class listOverviewState extends State<listOverview> {
                                     color: darkBg,
                                     thickness: 2,
                                   ),
-                                  ...profiles.map((profile) {
-                                    return Column(
+                                  Text("${e.value['id']}"),
+                                  Text("${e.value['deviceName']}"),
+                                  Text("${e.value['discription']}"),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 10),
+                                    child: ExpansionTile(
+                                      title: Text("HRY"),
+                                      childrenPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                          child: ExpansionTile(
-                                            backgroundColor: Colors.white,
-                                            collapsedBackgroundColor: second_lightBg,
-                                            iconColor: darkBg,
-                                            textColor: Colors.black,
-                                            collapsedIconColor: darkBg,
-                                            collapsedShape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(10),
-                                                side: BorderSide(color: darkBg)),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(10),
-                                                side: BorderSide(color: darkBg)),
-                                            title: Row(
-                                              children: [
-                                                Icon(Icons.memory, color: darkBg, size: 18, weight: 50),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text(
-                                                  profile['name'],
-                                                  style: TextStyle(
-                                                      color: darkBg,
-                                                      fontFamily: baseFont,
-                                                      fontSize: 22,
-                                                      fontWeight: FontWeight.w500,
-                                                      shadows: [
-                                                        Shadow(color: Colors.black, blurRadius: 0.2)
-                                                      ]),
-                                                ),
-                                              ],
-                                            ),
+
+
+                                        ...profiles.map((profile) {
+
+                                          return Column(
                                             children: [
-                                              Divider(
-                                                color: darkBg,
-                                              ),
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                  Column(
+                                              Padding(
+                                                padding:
+                                                EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                                child: ExpansionTile(
+                                                  backgroundColor: Colors.white,
+                                                  collapsedBackgroundColor:
+                                                  second_lightBg,
+                                                  iconColor: darkBg,
+                                                  textColor: Colors.black,
+                                                  collapsedIconColor: darkBg,
+                                                  collapsedShape:
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          10),
+                                                      side: BorderSide(
+                                                          color: darkBg)),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.circular(10),
+                                                      side:
+                                                      BorderSide(color: darkBg)),
+                                                  title: Row(
                                                     children: [
-                                                      Text(
-                                                        "Id : ",
-                                                        style: titleTileStyle,
-                                                      ),
+                                                      Icon(Icons.memory,
+                                                          color: darkBg,
+                                                          size: 18,
+                                                          weight: 50),
                                                       SizedBox(
-                                                        height: 2,
+                                                        width: 5,
                                                       ),
                                                       Text(
-                                                        "${profile['id']}",
-                                                        style: tileTextStyle,
-                                                      )
+                                                        profile['name'],
+                                                        style: TextStyle(
+                                                            color: darkBg,
+                                                            fontFamily: baseFont,
+                                                            fontSize: 22,
+                                                            fontWeight:
+                                                            FontWeight.w500,
+                                                            shadows: [
+                                                              Shadow(
+                                                                  color: Colors.black,
+                                                                  blurRadius: 0.2)
+                                                            ]),
+                                                      ),
                                                     ],
                                                   ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        "Name : ",
-                                                        style: titleTileStyle,
+                                                  children: [
+                                                    Divider(
+                                                      color: darkBg,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 15,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              "Id : ",
+                                                              style: titleTileStyle,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 2,
+                                                            ),
+                                                            Text(
+                                                              "${profile['id']}",
+                                                              style: tileTextStyle,
+                                                            )
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              "Name : ",
+                                                              style: titleTileStyle,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 2,
+                                                            ),
+                                                            Text(
+                                                              "${profile['name']}",
+                                                              style: tileTextStyle,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              "Status : ",
+                                                              style: titleTileStyle,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 2,
+                                                            ),
+                                                            Text(
+                                                              "${profile['active'] == "Y" ? "Active" : "Suspended"}",
+                                                              style: tileTextStyle,
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    SizedBox(
+                                                      child: Column(
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Divider(
+                                                            color: Colors.black26,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          )
+                                                        ],
                                                       ),
-                                                      SizedBox(
-                                                        height: 2,
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Text(
+                                                          "Description : ",
+                                                          style: titleTileStyle,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 2,
+                                                        ),
+                                                        Text(
+                                                          "${profile['discription']}",
+                                                          style: TextStyle(
+                                                              color: darkBg,
+                                                              fontWeight:
+                                                              FontWeight.w500,
+                                                              fontFamily: baseFont,
+                                                              fontSize: 14,
+                                                              shadows: [
+                                                                Shadow(
+                                                                    color:
+                                                                    Colors.black)
+                                                              ]),
+                                                        )
+                                                      ],
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                    ),
+                                                    SizedBox(
+                                                      child: Column(
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Divider(
+                                                            color: Colors.black26,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          )
+                                                        ],
                                                       ),
-                                                      Text(
-                                                        "${profile['name']}",
-                                                        style: tileTextStyle,
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(
+                                                          left: 3.0, right: 3),
+                                                      child: FittedBox(
+                                                        child: Column(
+                                                          children: [
+                                                            Row(
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                              children: [
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                                  children: [
+                                                                    // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                                                    Text(
+                                                                        "U. Threshold",
+                                                                        style:
+                                                                        titleTileStyle),
+
+                                                                    // Upper Threshold
+                                                                    SizedBox(
+                                                                        height: 5),
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                            Icons
+                                                                                .battery_charging_full_outlined,
+                                                                            size: 18,
+                                                                            color:
+                                                                            secondaryText),
+                                                                        SizedBox(
+                                                                            width: 5),
+                                                                        Text(
+                                                                          "${profile['upperThreshold']} V",
+                                                                          style:
+                                                                          tileTextStyle,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                SizedBox(width: 20),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                                  children: [
+                                                                    // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                                                    Text(
+                                                                      "U.Volt",
+                                                                      style:
+                                                                      titleTileStyle,
+                                                                    ),
+                                                                    // Upper Voltage
+                                                                    SizedBox(
+                                                                        height: 5),
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                            Icons
+                                                                                .battery_6_bar_outlined,
+                                                                            size: 18,
+                                                                            color:
+                                                                            secondaryText),
+                                                                        SizedBox(
+                                                                            width: 5),
+                                                                        Text(
+                                                                            "${profile['upperVoltage']} V",
+                                                                            style:
+                                                                            tileTextStyle),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                SizedBox(width: 20),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                                  children: [
+                                                                    // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                                                    Text(
+                                                                      "L.Threshold",
+                                                                      style:
+                                                                      titleTileStyle,
+                                                                    ),
+                                                                    // Lower Threshold
+                                                                    SizedBox(
+                                                                        height: 5),
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                            Icons
+                                                                                .battery_alert_outlined,
+                                                                            size: 18,
+                                                                            color:
+                                                                            secondaryText),
+                                                                        SizedBox(
+                                                                            width: 5),
+                                                                        Text(
+                                                                          "${profile['lowerThreshold']} V",
+                                                                          style:
+                                                                          tileTextStyle,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                SizedBox(width: 20),
+                                                                Column(
+                                                                  // crossAxisAlignment: CrossAxisAlignment.center,
+                                                                  children: [
+                                                                    // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
+                                                                    Text(
+                                                                      "L. Volt",
+                                                                      style:
+                                                                      titleTileStyle,
+                                                                    ),
+                                                                    SizedBox(
+                                                                        height: 5),
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                            Icons
+                                                                                .battery_1_bar_rounded,
+                                                                            size: 18,
+                                                                            color:
+                                                                            secondaryText),
+                                                                        SizedBox(
+                                                                            width: 5),
+                                                                        Text(
+                                                                          "${profile['lowerVoltage']} V",
+                                                                          style:
+                                                                          tileTextStyle,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        "Status : ",
-                                                        style: titleTileStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 2,
-                                                      ),
-                                                      Text(
-                                                        "${profile['active'] == "Y" ? "Active" : "Suspended"}",
-                                                        style: tileTextStyle,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                               SizedBox(
                                                 height: 10,
-                                              ),
-                                              SizedBox(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Divider(
-                                                      color: Colors.black26,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "Description : ",
-                                                    style: titleTileStyle,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 2,
-                                                  ),
-                                                  Text(
-                                                    "${profile['discription']}",
-                                                    style: TextStyle(
-                                                        color: darkBg,
-                                                        fontWeight: FontWeight.w500,
-                                                        fontFamily: baseFont,
-                                                        fontSize: 14,
-                                                        shadows: [Shadow(color: Colors.black)]),
-                                                  )
-                                                ],
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                              ),
-                                              SizedBox(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Divider(
-                                                      color: Colors.black26,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 3.0, right: 3),
-                                                child: FittedBox(
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            children: [
-                                                              // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
-                                                              Text("U. Threshold", style: titleTileStyle),
-
-                                                              // Upper Threshold
-                                                              SizedBox(height: 5),
-                                                              Row(
-                                                                children: [
-                                                                  Icon(Icons.battery_charging_full_outlined,
-                                                                      size: 18, color: secondaryText),
-                                                                  SizedBox(width: 5),
-                                                                  Text(
-                                                                    "${profile['upperThreshold']} V",
-                                                                    style: tileTextStyle,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(width: 20),
-                                                          Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            children: [
-                                                              // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
-                                                              Text(
-                                                                "U.Volt",
-                                                                style: titleTileStyle,
-                                                              ),
-                                                              // Upper Voltage
-                                                              SizedBox(height: 5),
-                                                              Row(
-                                                                children: [
-                                                                  Icon(Icons.battery_6_bar_outlined,
-                                                                      size: 18, color: secondaryText),
-                                                                  SizedBox(width: 5),
-                                                                  Text("${profile['upperVoltage']} V",
-                                                                      style: tileTextStyle),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(width: 20),
-                                                          Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            children: [
-                                                              // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
-                                                              Text(
-                                                                "L.Threshold",
-                                                                style: titleTileStyle,
-                                                              ),
-                                                              // Lower Threshold
-                                                              SizedBox(height: 5),
-                                                              Row(
-                                                                children: [
-                                                                  Icon(Icons.battery_alert_outlined,
-                                                                      size: 18, color: secondaryText),
-                                                                  SizedBox(width: 5),
-                                                                  Text(
-                                                                    "${profile['lowerThreshold']} V",
-                                                                    style: tileTextStyle,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(width: 20),
-                                                          Column(
-                                                            // crossAxisAlignment: CrossAxisAlignment.center,
-                                                            children: [
-                                                              // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
-                                                              Text(
-                                                                "L. Volt",
-                                                                style: titleTileStyle,
-                                                              ),
-                                                              SizedBox(height: 5),
-                                                              Row(
-                                                                children: [
-                                                                  Icon(Icons.battery_1_bar_rounded,
-                                                                      size: 18, color: secondaryText),
-                                                                  SizedBox(width: 5),
-                                                                  Text(
-                                                                    "${profile['lowerVoltage']} V",
-                                                                    style: tileTextStyle,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 20,
                                               )
                                             ],
+                                          );
+                                        }).toList(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            _batterySeries.cleardata();
+                                            setState(() {
+                                              _batterySeries.setText = e.key;
+                                              _batterySeries.setobj = e.value;
+                                            });
+
+                                            printFunc("DEMO Battery series in lists - ${_batterySeries.getText}");
+                                            Navigator.of(context).push(MaterialPageRoute<void>(
+                                                builder: (_) => AddNewFirmware(
+                                                  selectedBtn: 2,
+                                                  batterySeries: _batterySeries,
+                                                )));
+                                          },
+                                          child: Container(
+                                            margin : EdgeInsets.symmetric(horizontal : 10),
+                                            padding: EdgeInsets.symmetric(vertical: 10),
+                                            decoration: BoxDecoration(
+                                                border: Border.all(color: darkBg),
+                                                borderRadius: BorderRadius.circular(10)),
+                                            child: Padding(
+                                                padding: EdgeInsets.only(right: 5, left: 15),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.add_rounded,
+                                                          color: darkBg,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          "ADD CONFIG",
+                                                          style: TextStyle(
+                                                              color: darkBg,
+                                                              fontFamily: baseFont,
+                                                              fontSize: 22,
+                                                              fontWeight: FontWeight.w500,
+                                                              shadows: [
+                                                                Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.2)
+                                                              ]),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                )),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 10,
-                                        )
+
                                       ],
-                                    );
-                                  }).toList(),
+                                    ),
+                                  ),
+
                                 ],
                               )
                             ],
@@ -1004,16 +1495,131 @@ class listOverviewState extends State<listOverview> {
                       height: 10,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute<void>(
-                            builder: (_) => AddNewFirmware(
-                                  selectedBtn: 2,
-                                )));
+                      onTap: () async {
+                        await BottomSheet_Widget(context, color: lightBg, [
+                          StatefulBuilder(builder:
+                              (thisLowerContext, checkListBatteryState) {
+                            return Container(
+                              height: size.height / 1.5,
+                              width: size.width,
+                              color: lightBg,
+                              child: SingleChildScrollView(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Enter Battery Details!",
+                                        style: TextStyle(
+                                            fontFamily: baseFont,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 24,
+                                            color: darkBg,
+                                            shadows: [
+                                              Shadow(
+                                                  color: Colors.black,
+                                                  blurRadius: 0.5,
+                                                  offset: Offset(0.5, 0.5))
+                                            ]),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+
+                                      Container(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            // Battery Name
+                                            LabelText(text: "Battery Name :"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Battery Name",
+                                              Controller: _newbname,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: batteryValidator &&
+                                                  _newbname.text
+                                                      .trim()
+                                                      .isEmpty
+                                                  ? "Please Enter Battery Name"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Relase Note
+                                            LabelText(text: "Description"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Information",
+                                              Controller: _batteryDescription,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: batteryValidator &&
+                                                  _batteryDescription.text
+                                                      .trim()
+                                                      .isEmpty
+                                                  ? "Please Enter Information"
+                                                  : "",
+                                            ),
+
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Add Btn
+                                      manageUserBtn(
+                                          text: "Add Battery",
+                                          onPress: () async {
+                                            printFunc("DEMODEMO");
+                                            printFunc(batteryValidator);
+                                            printFunc(
+                                                _newbname.text.trim().isEmpty);
+                                            checkListBatteryState(() {
+                                              ValidateBatteryFields();
+                                            });
+                                            Future.delayed(Duration(seconds: 3))
+                                                .then((_) {
+                                              checkListBatteryState(() {
+                                                batteryValidator = false;
+                                              });
+                                            });
+
+                                            if (!batteryValidator) {
+                                              printFunc("Inside IF COND");
+                                              if (await addNewDeviceType(
+                                                context,
+                                                name: _newbname.text.trim(),
+                                                description: _batteryDescription
+                                                    .text
+                                                    .trim(),
+                                              )) {
+                                                clearConfig();
+                                                // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                                              }
+                                            }
+
+                                            setState(() {});
+                                          })
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          })
+                        ]);
+                        setState(() {});
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                            border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
+                            border: Border.all(color: darkBg),
+                            borderRadius: BorderRadius.circular(10)),
                         child: Padding(
                             padding: EdgeInsets.only(right: 5, left: 15),
                             child: Row(
@@ -1029,13 +1635,17 @@ class listOverviewState extends State<listOverview> {
                                       width: 10,
                                     ),
                                     Text(
-                                      "ADD CONFIG",
+                                      "ADD BATTERY",
                                       style: TextStyle(
                                           color: darkBg,
                                           fontFamily: baseFont,
                                           fontSize: 22,
                                           fontWeight: FontWeight.w500,
-                                          shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black,
+                                                blurRadius: 0.2)
+                                          ]),
                                     ),
                                   ],
                                 ),
@@ -1066,7 +1676,7 @@ class listOverviewState extends State<listOverview> {
 
                 // List of Batches
                 ExpansionTile(
-                  backgroundColor: second_lightBg,
+                  backgroundColor: Colors.white,
                   collapsedBackgroundColor: Colors.transparent,
                   iconColor: darkBg,
                   textColor: Colors.black,
@@ -1093,38 +1703,602 @@ class listOverviewState extends State<listOverview> {
                   ),
                   children: [
                     ...batchList.map((batch) {
-                      printFunc("DEMO BATCH : ${batch}");
+                      // printFunc("DEMO BATCH : ${batch}");
                       // batch
                       final batchId = batch['id'] ?? '';
                       final batchname = batch['name'] ?? '';
                       final batchActive =
-                          batch['active'].toString().toUpperCase() == 'Y' ? "Active" : "Inactive";
+                          batch['active'].toString().toUpperCase() == 'Y'
+                              ? "Active"
+                              : "Inactive";
 
                       // Profile
                       final configName = batch['profile']?['name'] ?? 'N/A';
-                      final configUpThershold = batch['profile']?['uT'] ?? 'N/A';
-                      final configLowThershold = batch['profile']?['lT'] ?? 'N/A';
+                      final configUpThershold =
+                          batch['profile']?['uT'] ?? 'N/A';
+                      final configLowThershold =
+                          batch['profile']?['lT'] ?? 'N/A';
                       final configUpVolt = batch['profile']?['uV'] ?? 'N/A';
                       final configLowVolt = batch['profile']?['lV'] ?? 'N/A';
 
                       // Firmware
                       final firmwareId = batch['firmware']?['id'] ?? 'N/A';
-                      final firmwareVersion = batch['firmware']?['versionName'] ?? 'N/A';
-                      final firmwareRelaseNote =
-                          batch['firmware']?['releaseDate'].toString().split("T")[0] ?? 'N/A';
+                      final firmwareVersion =
+                          batch['firmware']?['versionName'] ?? 'N/A';
+                      final firmwareRelaseNote = batch['firmware']
+                                  ?['releaseDate']
+                              .toString()
+                              .split("T")[0] ??
+                          'N/A';
 
                       return Column(
                         children: [
-                          ExpansionTile(
+                          GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15),
+                                          side: BorderSide(
+                                              width: 0.5,
+                                              color: darkBg
+                                          )
+                                      ),
+                                      child: Container(
+                                        width: size.width * 0.8,
+                                        height: size.height / 1.5,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(15),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                          children: [
+                                            //Title
+                                            Padding(
+                                              padding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 20),
+                                                    child: Text(
+                                                      "${batchname}",
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                          baseFont,
+                                                          fontWeight:
+                                                          FontWeight.w800,
+                                                          fontSize: 28,
+                                                          color: darkBg),
+                                                    ),
+                                                  ),
+                                                  Divider(
+                                                    color: darkBg,
+                                                    thickness: 1.5,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            //main content
+                                            Container(
+                                              padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.only(bottom: 5),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                              Text(
+                                                              "Batch ",
+                                                              style: TextStyle(
+                                                                  color: darkBg,
+                                                                  fontFamily: baseFont,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                  FontWeight.w500,
+                                                                  shadows: [
+                                                                    Shadow(
+                                                                        color:
+                                                                        Colors.black,
+                                                                        blurRadius: 0.2)
+                                                                  ]),
+                                                            ),
+                                                            SizedBox(width: 10), // spacing before line
+                                                            Expanded(
+                                                              child: Container(
+                                                                height: 1,
+
+                                                                decoration: BoxDecoration(
+                                                                    color: darkBg,
+
+                                                                    border: Border.all(width: 1.5,color: darkBg)
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 10,),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text(
+                                                                  "Id : ",
+                                                                  style: titleTileStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 2,
+                                                                ),
+                                                                Text(
+                                                                  "${batchId}",
+                                                                  style: tileTextStyle,
+                                                                )
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                Text(
+                                                                  "Name : ",
+                                                                  style: titleTileStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 2,
+                                                                ),
+                                                                Text(
+                                                                  "${batchname}",
+                                                                  style: tileTextStyle,
+                                                                )
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                Text(
+                                                                  "Status : ",
+                                                                  style: titleTileStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 2,
+                                                                ),
+                                                                Text(
+                                                                  "${batchActive}",
+                                                                  style: tileTextStyle,
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 10,),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                    EdgeInsets.symmetric(vertical: 10),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Text (
+                                                              "Firmware",
+                                                              style: TextStyle(
+                                                                  color: darkBg,
+                                                                  fontFamily: baseFont,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                  FontWeight.w500,
+                                                                  shadows: [
+                                                                    Shadow(
+                                                                        color:
+                                                                        Colors.black,
+                                                                        blurRadius: 0.2)
+                                                                  ]),
+                                                            ),
+                                                            SizedBox(width: 10), // spacing before line
+                                                            Expanded(
+                                                              child: Container(
+                                                                height: 1,
+
+                                                                decoration: BoxDecoration(
+                                                                  color: darkBg,
+
+                                                                  border: Border.all(width: 1.5,color: darkBg)
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 10,),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            Column(
+                                                              children: [
+                                                                Text(" Id : ",
+                                                                    style: titleTileStyle),
+                                                                SizedBox(
+                                                                  height: 2,
+                                                                ),
+                                                                Text(
+                                                                  "${firmwareId}",
+                                                                  style: tileTextStyle,
+                                                                )
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                Text(
+                                                                  "Version : ",
+                                                                  style: titleTileStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 2,
+                                                                ),
+                                                                Text(
+                                                                  "${firmwareVersion}",
+                                                                  style: tileTextStyle,
+                                                                )
+                                                              ],
+                                                            ),
+                                                            //Release Note
+                                                            Column(
+                                                              children: [
+                                                                Text(
+                                                                  "Relase Date : ",
+                                                                  style: titleTileStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 2,
+                                                                ),
+                                                                Text(
+                                                                  "${firmwareRelaseNote}",
+                                                                  style: tileTextStyle,
+                                                                )
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 10,),
+
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                    EdgeInsets.symmetric(vertical: 10),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              "Config : ${configName} ",
+                                                              style: TextStyle(
+                                                                  color: darkBg,
+                                                                  fontFamily: baseFont,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                  FontWeight.w500,
+                                                                  shadows: [
+                                                                    Shadow(
+                                                                        color:
+                                                                        Colors.black,
+                                                                        blurRadius: 0.2)
+                                                                  ]),
+                                                            ),
+                                                            SizedBox(width: 10), // spacing before line
+                                                            Expanded(
+                                                              child: Container(
+                                                                height: 1,
+
+                                                                decoration: BoxDecoration(
+                                                                    color: darkBg,
+
+                                                                    border: Border.all(width: 1.5,color: darkBg)
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 10,),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(
+                                                              left: 3.0, right: 3),
+                                                          child: FittedBox(
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                                  children: [
+                                                                    Column(
+                                                                      crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                      children: [
+                                                                        // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                                                        Text(
+                                                                          "U. Threshold",
+                                                                          style:
+                                                                          titleTileStyle,
+                                                                        ),
+
+                                                                        // Upper Threshold
+                                                                        SizedBox(height: 5),
+                                                                        Row(
+                                                                          children: [
+                                                                            Icon(
+                                                                                Icons
+                                                                                    .battery_charging_full_outlined,
+                                                                                size: 18,
+                                                                                color:
+                                                                                darkBg),
+                                                                            SizedBox(
+                                                                                width: 5),
+                                                                            Text(
+                                                                              "${configUpThershold} V",
+                                                                              style:
+                                                                              tileTextStyle,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(width: 20),
+                                                                    Column(
+                                                                      crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                      children: [
+                                                                        // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                                                        Text(
+                                                                          "U.Volt",
+                                                                          style:
+                                                                          titleTileStyle,
+                                                                        ),
+                                                                        // Upper Voltage
+                                                                        SizedBox(height: 5),
+                                                                        Row(
+                                                                          children: [
+                                                                            Icon(
+                                                                                Icons
+                                                                                    .battery_6_bar_outlined,
+                                                                                size: 18,
+                                                                                color:
+                                                                                darkBg),
+                                                                            SizedBox(
+                                                                                width: 5),
+                                                                            Text(
+                                                                              "${configUpVolt} V",
+                                                                              style:
+                                                                              tileTextStyle,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(width: 20),
+                                                                    Column(
+                                                                      crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                      children: [
+                                                                        // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                                                        Text(
+                                                                          "L.Threshold",
+                                                                          style:
+                                                                          titleTileStyle,
+                                                                        ),
+                                                                        // Lower Threshold
+                                                                        SizedBox(height: 5),
+                                                                        Row(
+                                                                          children: [
+                                                                            Icon(
+                                                                                Icons
+                                                                                    .battery_alert_outlined,
+                                                                                size: 18,
+                                                                                color:
+                                                                                darkBg),
+                                                                            SizedBox(
+                                                                                width: 5),
+                                                                            Text(
+                                                                              "${configLowThershold} V",
+                                                                              style:
+                                                                              tileTextStyle,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(width: 20),
+                                                                    Column(
+                                                                      // crossAxisAlignment: CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
+                                                                        Text(
+                                                                          "L. Volt",
+                                                                          style:
+                                                                          titleTileStyle,
+                                                                        ),
+                                                                        SizedBox(height: 5),
+                                                                        Row(
+                                                                          children: [
+                                                                            Icon(
+                                                                                Icons
+                                                                                    .battery_1_bar_rounded,
+                                                                                size: 18,
+                                                                                color:
+                                                                                darkBg),
+                                                                            SizedBox(
+                                                                                width: 5),
+                                                                            Text(
+                                                                              "${configLowVolt} V",
+                                                                              style:
+                                                                              tileTextStyle,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 10,),
+
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            //Btns
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceEvenly,
+                                              children: [
+                                                ElevatedButton(
+                                                    style: ButtonStyle(
+                                                      backgroundColor: MaterialStateProperty.all(darkBg),
+                                                      minimumSize: MaterialStateProperty.all(Size(100, 40)), // width: 80, height: 40
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text(
+                                                      "Back",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontFamily:
+                                                          baseFont,
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color: Colors
+                                                                  .white,
+                                                              blurRadius: 0.2,
+                                                            )
+                                                          ]),
+                                                    )),
+                                                ElevatedButton(
+                                                  style: ButtonStyle(
+                                                    backgroundColor: MaterialStateProperty.all(darkBg),
+                                                    minimumSize: MaterialStateProperty.all(Size(100, 40)), // width: 80, height: 40
+                                                  ),
+                                                  onPressed: () {},
+                                                  child: Text("Deactive",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily:
+                                                        baseFont,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                        shadows: [
+                                                          Shadow(
+                                                            color: Colors
+                                                                .white,
+                                                            blurRadius: 0.2,
+                                                          )
+                                                        ]),
+                                                  ),
+                                                ),
+
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(1.5),
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: darkBg),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.computer,
+                                        color: darkBg,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        batchname,
+                                        style: TextStyle(
+                                            color: darkBg,
+                                            fontFamily: baseFont,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            shadows: [
+                                              Shadow(
+                                                  color: Colors.black,
+                                                  blurRadius: 0.2)
+                                            ]),
+                                      ),
+                                    ],
+                                  ),
+                                  Icon(
+                                    CupertinoIcons.chevron_right_2,
+                                    color: darkBg,
+                                    weight: 40,
+                                    size: 28,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+
+
+                          /*ExpansionTile(
                             backgroundColor: Colors.white,
                             collapsedBackgroundColor: second_lightBg,
                             iconColor: darkBg,
                             textColor: Colors.black,
                             collapsedIconColor: darkBg,
                             collapsedShape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), side: BorderSide(color: darkBg)),
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: darkBg)),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), side: BorderSide(color: darkBg)),
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: darkBg)),
                             title: Row(
                               children: [
                                 Icon(
@@ -1142,7 +2316,11 @@ class listOverviewState extends State<listOverview> {
                                       fontFamily: baseFont,
                                       fontSize: 20,
                                       fontWeight: FontWeight.w500,
-                                      shadows: [Shadow(color: Colors.black, blurRadius: 0.2)]),
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.2)
+                                      ]),
                                 ),
                               ],
                             ),
@@ -1152,7 +2330,8 @@ class listOverviewState extends State<listOverview> {
                                 thickness: 2,
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 15),
                                 child: Column(
                                   children: [
                                     Container(
@@ -1160,7 +2339,8 @@ class listOverviewState extends State<listOverview> {
                                       child: Column(
                                         children: [
                                           Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
@@ -1178,9 +2358,13 @@ class listOverviewState extends State<listOverview> {
                                                         color: darkBg,
                                                         fontFamily: baseFont,
                                                         fontSize: 20,
-                                                        fontWeight: FontWeight.w700,
+                                                        fontWeight:
+                                                            FontWeight.w700,
                                                         shadows: [
-                                                          Shadow(color: Colors.black, blurRadius: 0.2)
+                                                          Shadow(
+                                                              color:
+                                                                  Colors.black,
+                                                              blurRadius: 0.2)
                                                         ]),
                                                   ),
                                                 ],
@@ -1195,10 +2379,12 @@ class listOverviewState extends State<listOverview> {
                                             ],
                                           ),
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
                                             children: [
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Id : ",
@@ -1249,11 +2435,13 @@ class listOverviewState extends State<listOverview> {
                                       ),
                                     ),
                                     Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10),
                                       child: Column(
                                         children: [
                                           Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
@@ -1271,9 +2459,13 @@ class listOverviewState extends State<listOverview> {
                                                         color: darkBg,
                                                         fontFamily: baseFont,
                                                         fontSize: 20,
-                                                        fontWeight: FontWeight.w700,
+                                                        fontWeight:
+                                                            FontWeight.w700,
                                                         shadows: [
-                                                          Shadow(color: Colors.black, blurRadius: 0.2)
+                                                          Shadow(
+                                                              color:
+                                                                  Colors.black,
+                                                              blurRadius: 0.2)
                                                         ]),
                                                   ),
                                                 ],
@@ -1288,11 +2480,13 @@ class listOverviewState extends State<listOverview> {
                                             ],
                                           ),
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
                                             children: [
                                               Column(
                                                 children: [
-                                                  Text(" Id : ", style: titleTileStyle),
+                                                  Text(" Id : ",
+                                                      style: titleTileStyle),
                                                   SizedBox(
                                                     height: 2,
                                                   ),
@@ -1339,15 +2533,20 @@ class listOverviewState extends State<listOverview> {
                                       ),
                                     ),
                                     Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10),
                                       child: Column(
                                         children: [
                                           Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
-                                                  Icon(Icons.memory, color: darkBg, size: 18, weight: 50),
+                                                  Icon(Icons.memory,
+                                                      color: darkBg,
+                                                      size: 18,
+                                                      weight: 50),
                                                   SizedBox(
                                                     width: 10,
                                                   ),
@@ -1357,9 +2556,13 @@ class listOverviewState extends State<listOverview> {
                                                         color: darkBg,
                                                         fontFamily: baseFont,
                                                         fontSize: 20,
-                                                        fontWeight: FontWeight.w700,
+                                                        fontWeight:
+                                                            FontWeight.w700,
                                                         shadows: [
-                                                          Shadow(color: Colors.black, blurRadius: 0.2)
+                                                          Shadow(
+                                                              color:
+                                                                  Colors.black,
+                                                              blurRadius: 0.2)
                                                         ]),
                                                   ),
                                                 ],
@@ -1374,32 +2577,44 @@ class listOverviewState extends State<listOverview> {
                                             ],
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 3.0, right: 3),
+                                            padding: const EdgeInsets.only(
+                                                left: 3.0, right: 3),
                                             child: FittedBox(
                                               child: Column(
                                                 children: [
                                                   Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         children: [
                                                           // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
                                                           Text(
                                                             "U. Threshold",
-                                                            style: titleTileStyle,
+                                                            style:
+                                                                titleTileStyle,
                                                           ),
 
                                                           // Upper Threshold
                                                           SizedBox(height: 5),
                                                           Row(
                                                             children: [
-                                                              Icon(Icons.battery_charging_full_outlined,
-                                                                  size: 18, color: darkBg),
-                                                              SizedBox(width: 5),
+                                                              Icon(
+                                                                  Icons
+                                                                      .battery_charging_full_outlined,
+                                                                  size: 18,
+                                                                  color:
+                                                                      darkBg),
+                                                              SizedBox(
+                                                                  width: 5),
                                                               Text(
                                                                 "${configUpThershold} V",
-                                                                style: tileTextStyle,
+                                                                style:
+                                                                    tileTextStyle,
                                                               ),
                                                             ],
                                                           ),
@@ -1407,23 +2622,32 @@ class listOverviewState extends State<listOverview> {
                                                       ),
                                                       SizedBox(width: 20),
                                                       Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         children: [
                                                           // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                                           Text(
                                                             "U.Volt",
-                                                            style: titleTileStyle,
+                                                            style:
+                                                                titleTileStyle,
                                                           ),
                                                           // Upper Voltage
                                                           SizedBox(height: 5),
                                                           Row(
                                                             children: [
-                                                              Icon(Icons.battery_6_bar_outlined,
-                                                                  size: 18, color: darkBg),
-                                                              SizedBox(width: 5),
+                                                              Icon(
+                                                                  Icons
+                                                                      .battery_6_bar_outlined,
+                                                                  size: 18,
+                                                                  color:
+                                                                      darkBg),
+                                                              SizedBox(
+                                                                  width: 5),
                                                               Text(
                                                                 "${configUpVolt} V",
-                                                                style: tileTextStyle,
+                                                                style:
+                                                                    tileTextStyle,
                                                               ),
                                                             ],
                                                           ),
@@ -1431,23 +2655,32 @@ class listOverviewState extends State<listOverview> {
                                                       ),
                                                       SizedBox(width: 20),
                                                       Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         children: [
                                                           // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                                           Text(
                                                             "L.Threshold",
-                                                            style: titleTileStyle,
+                                                            style:
+                                                                titleTileStyle,
                                                           ),
                                                           // Lower Threshold
                                                           SizedBox(height: 5),
                                                           Row(
                                                             children: [
-                                                              Icon(Icons.battery_alert_outlined,
-                                                                  size: 18, color: darkBg),
-                                                              SizedBox(width: 5),
+                                                              Icon(
+                                                                  Icons
+                                                                      .battery_alert_outlined,
+                                                                  size: 18,
+                                                                  color:
+                                                                      darkBg),
+                                                              SizedBox(
+                                                                  width: 5),
                                                               Text(
                                                                 "${configLowThershold} V",
-                                                                style: tileTextStyle,
+                                                                style:
+                                                                    tileTextStyle,
                                                               ),
                                                             ],
                                                           ),
@@ -1460,17 +2693,24 @@ class listOverviewState extends State<listOverview> {
                                                           // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
                                                           Text(
                                                             "L. Volt",
-                                                            style: titleTileStyle,
+                                                            style:
+                                                                titleTileStyle,
                                                           ),
                                                           SizedBox(height: 5),
                                                           Row(
                                                             children: [
-                                                              Icon(Icons.battery_1_bar_rounded,
-                                                                  size: 18, color: darkBg),
-                                                              SizedBox(width: 5),
+                                                              Icon(
+                                                                  Icons
+                                                                      .battery_1_bar_rounded,
+                                                                  size: 18,
+                                                                  color:
+                                                                      darkBg),
+                                                              SizedBox(
+                                                                  width: 5),
                                                               Text(
                                                                 "${configLowVolt} V",
-                                                                style: tileTextStyle,
+                                                                style:
+                                                                    tileTextStyle,
                                                               ),
                                                             ],
                                                           ),
@@ -1489,7 +2729,7 @@ class listOverviewState extends State<listOverview> {
                                 ),
                               )
                             ],
-                          ),
+                          ), */
                           SizedBox(
                             height: 10,
                           )
@@ -1509,7 +2749,8 @@ class listOverviewState extends State<listOverview> {
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                            border: Border.all(color: darkBg), borderRadius: BorderRadius.circular(10)),
+                            border: Border.all(color: darkBg),
+                            borderRadius: BorderRadius.circular(10)),
                         child: Padding(
                             padding: EdgeInsets.only(right: 5, left: 15),
                             child: Row(
@@ -1531,7 +2772,11 @@ class listOverviewState extends State<listOverview> {
                                           fontFamily: baseFont,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w700,
-                                          shadows: [Shadow(color: Colors.black26, blurRadius: 0.4)]),
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black26,
+                                                blurRadius: 0.4)
+                                          ]),
                                     ),
                                   ],
                                 ),
@@ -1571,7 +2816,8 @@ class listOverviewState extends State<listOverview> {
       _batteryDescription,
     ];
 
-    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     printFunc("has Next : $hasEmpty");
     setState(() {
       batteryValidator = hasEmpty;

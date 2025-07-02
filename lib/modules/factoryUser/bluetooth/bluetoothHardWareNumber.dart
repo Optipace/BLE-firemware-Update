@@ -6,6 +6,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/getNumberModel.dar
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
@@ -30,6 +31,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   DataController ClientName = DataController();
 
   bool _validateDropDown = false;
+  bool _added = false;
 
   @override
   void initState() {
@@ -172,11 +174,11 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                               await BottomSheet_Widget(context, [
                                 MapListItemBuilder(
                                     listItems: widget.allclients!,
-                                    press: () {
-                                      printFunc("DAtacontroller : ${ClientName.getText}");
-                                    },
-                                    selected: ClientName)
+                                    press: () {},
+                                    selected: ClientName
+                                )
                               ]);
+                              setState(() {});
                             },
                           ),
                         ),
@@ -190,10 +192,15 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   child: manageUserBtn(
                       text: "Submit",
                       onPress: () async {
-                        printFunc("DEMo ${ClientName.Text}");
                         ValidateDropDown(HardWareNumber, ClientName);
                         await deleteByHardWareNumber();
-                        Navigator.of(context).pop();
+                        AddedSuccess(HardWareNumber,ClientName);
+
+
+                        if(_added){
+                          ShowSnackBarMessage(context, 'Added successfully', true);
+                          Navigator.of(context).pop();
+                        }
                       }),
                 )
               ],
@@ -243,6 +250,14 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
         orElse: () => null);
     if (keyToDelete != null) {
       await box.delete(keyToDelete);
+    }
+  }
+
+  void AddedSuccess(DataController hardWareNumber, DataController clientName) {
+    if(HardWareNumber.getText != "" && ClientName.getText != ""){
+      setState(() {
+        _added = true;
+      });
     }
   }
 }

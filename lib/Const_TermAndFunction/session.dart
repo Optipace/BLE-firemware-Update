@@ -114,8 +114,11 @@ Future setDeviceId() async {
 
     sharedPreferences.setString("UUID", deviceId.toString());
     sharedPreferences.setString("osVersion", androidDeviceInfo.version.release.toString());
-    sharedPreferences.setString(
-        "deviceModel", "${androidDeviceInfo.brand.toString()} - ${androidDeviceInfo.model.toString()}");
+    sharedPreferences.setString("deviceModel", androidDeviceInfo.model.toString());
+    sharedPreferences.setString("deviceBrand", androidDeviceInfo.brand.toString());
+
+    /*sharedPreferences.setString(
+        "deviceModel", "${androidDeviceInfo.brand.toString()} - ${androidDeviceInfo.model.toString()}");*/
 
     // return androidDeviceInfo.androidId; // unique ID on Android
   }
