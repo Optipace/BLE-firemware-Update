@@ -17,7 +17,8 @@ class SavedBatches extends StatefulWidget {
   State<SavedBatches> createState() => BlueetoothBatchesState();
 }
 
-TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText(
+    {required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,
@@ -60,7 +61,9 @@ class BlueetoothBatchesState extends State<SavedBatches> {
   }
 
   void clientListIntoMap() {
-    AllClient = {for (var client in clientList) client['name'].toString(): client};
+    AllClient = {
+      for (var client in clientList) client['name'].toString(): client
+    };
     setState(() {});
   }
 
@@ -73,9 +76,13 @@ class BlueetoothBatchesState extends State<SavedBatches> {
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
             "Batch's",
-            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+            style: TextStyle(
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 24,
+                color: lightBg),
           ),
-          toolbarHeight: size.height / 11.5,
+          toolbarHeight: screenSize.height / 11.5,
           backgroundColor: darkBg,
           elevation: 5,
           shadowColor: darkBg,
@@ -83,29 +90,34 @@ class BlueetoothBatchesState extends State<SavedBatches> {
         backgroundColor: lightBg,
         body: Container(
             child: SingleChildScrollView(
-
-              child:Column(children: seriesSix()),
-            )));
+          child: Column(children: seriesSix()),
+        )));
   }
 
   List<Widget> seriesSix() {
     printFunc("Serice six Data : $getAllseriesData");
     List<Widget> seriesWidgetList = [];
 
-    for (int index = 0; index < ((getAllseriesData != null) ? getAllseriesData.length : 0); index++) {
-      printFunc("DEMO DEMO Firmware logs : ${getAllseriesData[index]["saved"]}");
-      ValueNotifier moreInfo = ValueNotifier<bool>(getAllseriesData[index]['saved'] ?? false);
+    for (int index = 0;
+        index < ((getAllseriesData != null) ? getAllseriesData.length : 0);
+        index++) {
+      printFunc(
+          "DEMO DEMO Firmware logs : ${getAllseriesData[index]["saved"]}");
+      ValueNotifier moreInfo =
+          ValueNotifier<bool>(getAllseriesData[index]['saved'] ?? false);
       seriesWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 2,
-                )
-              ]),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                    )
+                  ]),
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
@@ -113,7 +125,8 @@ class BlueetoothBatchesState extends State<SavedBatches> {
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
-                collapsedBackgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
+                collapsedBackgroundColor:
+                    (moreInfo.value) ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -135,7 +148,9 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text("Batch : ",
-                                style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                                style: CardText(
+                                    font_Weight: FontWeight.w300,
+                                    FontColor: secondaryText)),
                             SizedBox(
                               height: 3,
                             ),
@@ -143,7 +158,9 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                 style: CardText(
                                     font_Weight: FontWeight.w800,
                                     size: 19,
-                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText)),
+                                    FontColor: !(moreInfo.value)
+                                        ? SuccessCardText
+                                        : FailureCardText)),
                           ],
                         ),
                       ),
@@ -156,7 +173,9 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                           children: [
                             Text(
                               "Description : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                              style: CardText(
+                                  font_Weight: FontWeight.w300,
+                                  FontColor: secondaryText),
                             ),
                             SizedBox(
                               height: 3,
@@ -166,7 +185,9 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                  FontColor: !(moreInfo.value)
+                                      ? SuccessCardText
+                                      : FailureCardText),
                             ),
                           ],
                         ),
@@ -180,17 +201,22 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                           children: [
                             Text(
                               "Series : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                              style: CardText(
+                                  font_Weight: FontWeight.w300,
+                                  FontColor: secondaryText),
                             ),
                             SizedBox(
                               height: 3,
                             ),
                             Text(
-                              getAllseriesData[index]["profile"]['deviceType'].toString(),
+                              getAllseriesData[index]["profile"]['deviceType']
+                                  .toString(),
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                  FontColor: !(moreInfo.value)
+                                      ? SuccessCardText
+                                      : FailureCardText),
                             )
                           ],
                         ),
@@ -203,15 +229,15 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       children: [
-
                         //Firmware
                         Container(
-                          width: size.width * 0.8,
+                          width: screenSize.width * 0.8,
                           child: Row(
                             children: [
                               Text("Firmware Details : ",
-                                  style:
-                                  CardText(font_Weight: FontWeight.w500, FontColor: secondaryText)),
+                                  style: CardText(
+                                      font_Weight: FontWeight.w500,
+                                      FontColor: secondaryText)),
                               SizedBox(width: 10), // spacing before line
                               Expanded(
                                 child: Container(
@@ -230,24 +256,30 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                             children: [
                               // Firm version
                               Container(
-                                width : 150,
+                                width: 150,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
                                       "Firmware Version",
-                                      style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText),
                                     ),
                                     SizedBox(
                                       height: 3,
                                     ),
                                     Text(
-                                      getAllseriesData[index]["firmware"]['version'].toString(),
+                                      getAllseriesData[index]["firmware"]
+                                              ['version']
+                                          .toString(),
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 19,
-                                          FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                          FontColor: !(moreInfo.value)
+                                              ? SuccessCardText
+                                              : FailureCardText),
                                     )
                                   ],
                                 ),
@@ -261,53 +293,70 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                   children: [
                                     Text(
                                       "Firmware Name",
-                                      style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText),
                                     ),
                                     SizedBox(
                                       height: 3,
                                     ),
                                     Text(
-                                      getAllseriesData[index]["firmware"]['versionName'].toString(),
+                                      getAllseriesData[index]["firmware"]
+                                              ['versionName']
+                                          .toString(),
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 19,
-                                          FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                          FontColor: !(moreInfo.value)
+                                              ? SuccessCardText
+                                              : FailureCardText),
                                     )
                                   ],
                                 ),
                               ),
                               // download
                               Container(
-                                width:50,
+                                width: 50,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
                                       "Flash",
-                                      style: CardText(font_Weight: FontWeight.w300, FontColor: SuccessCardText),
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: SuccessCardText),
                                     ),
                                     IconButton(
                                         onPressed: () async {
-                                          printFunc("Which Data is : ${getAllseriesData[index]}");
-                                          printFunc("Client Map : ${AllClient}");
+                                          printFunc(
+                                              "Which Data is : ${getAllseriesData[index]}");
+                                          printFunc(
+                                              "Client Map : ${AllClient}");
                                           clientListIntoMap();
                                           BatchSelected.cleardata();
-                                          var batchObj = getAllseriesData[index];
+                                          var batchObj =
+                                              getAllseriesData[index];
                                           setState(() {});
 
-                                          BatchSelected.setobj = getAllseriesData[index];
+                                          BatchSelected.setobj =
+                                              getAllseriesData[index];
 
-                                          FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
+                                          FlutterBluePlus.setLogLevel(
+                                              LogLevel.verbose,
+                                              color: true);
 
-                                          Navigator.of(context).push(MaterialPageRoute<void>(
-                                              builder: (_) => DfuHomePage(
-                                                    SelectedBatch: BatchSelected,
-                                                    allClients: AllClient,
-                                                  )));
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute<void>(
+                                                  builder: (_) => DfuHomePage(
+                                                        SelectedBatch:
+                                                            BatchSelected,
+                                                        allClients: AllClient,
+                                                      )));
                                           setState(() {});
                                         },
-                                        icon: Icon(Icons.flash_on_outlined, color: darkBg, size: 35)),
+                                        icon: Icon(Icons.flash_on_outlined,
+                                            color: darkBg, size: 35)),
                                   ],
                                 ),
                               ),
@@ -317,15 +366,18 @@ class BlueetoothBatchesState extends State<SavedBatches> {
 
                         //Config
                         Container(
-                          width: size.width * 0.8,
+                          width: screenSize.width * 0.8,
                           child: Row(
                             children: [
                               Row(
                                 children: [
                                   Text("Config : ",
-                                      style:
-                                          CardText(font_Weight: FontWeight.w500, FontColor: secondaryText)),
-                                  Text(getAllseriesData[index]["profile"]["name"],
+                                      style: CardText(
+                                          font_Weight: FontWeight.w500,
+                                          FontColor: secondaryText)),
+                                  Text(
+                                      getAllseriesData[index]["profile"]
+                                          ["name"],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
@@ -352,35 +404,45 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                 children: [
                                   // Upper Threshold
                                   Container(
-                                    width : 75,
+                                    width: 75,
                                     margin: EdgeInsets.all(1.5),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
                                         Text(
                                           "U. Threshold",
-                                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.battery_charging_full_outlined,
-                                                size: 14, color: secondaryText),
+                                            Icon(
+                                                Icons
+                                                    .battery_charging_full_outlined,
+                                                size: 14,
+                                                color: secondaryText),
                                             FittedBox(
                                               fit: BoxFit.scaleDown,
                                               child: Text(
                                                 "${getAllseriesData[index]["profile"]['uT']} V",
                                                 style: CardText(
-                                                    font_Weight: FontWeight.w800,
+                                                    font_Weight:
+                                                        FontWeight.w800,
                                                     size: 14,
-                                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                                    FontColor: !(moreInfo.value)
+                                                        ? SuccessCardText
+                                                        : FailureCardText),
                                               ),
                                             ),
                                           ],
                                         ),
-
                                       ],
                                     ),
                                   ),
@@ -389,30 +451,37 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                     width: 55,
                                     margin: EdgeInsets.all(1.5),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                         Text(
                                           "U.Volt",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_6_bar_outlined, size: 14, color: secondaryText),
+                                            Icon(Icons.battery_6_bar_outlined,
+                                                size: 14, color: secondaryText),
                                             FittedBox(
                                               fit: BoxFit.scaleDown,
                                               child: Text(
                                                 "${getAllseriesData[index]["profile"]['uV']} V",
                                                 style: CardText(
-                                                    font_Weight: FontWeight.w800,
+                                                    font_Weight:
+                                                        FontWeight.w800,
                                                     size: 14,
-                                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                                    FontColor: !(moreInfo.value)
+                                                        ? SuccessCardText
+                                                        : FailureCardText),
                                               ),
                                             ),
                                           ],
                                         ),
-
                                       ],
                                     ),
                                   ),
@@ -421,26 +490,35 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                     width: 70,
                                     margin: EdgeInsets.all(1.5),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                         Text(
                                           "L.Threshold",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.battery_alert_outlined, size: 13, color: secondaryText),
+                                            Icon(Icons.battery_alert_outlined,
+                                                size: 13, color: secondaryText),
                                             FittedBox(
                                               fit: BoxFit.scaleDown,
                                               child: Text(
                                                 "${getAllseriesData[index]["profile"]['lT']} V",
                                                 style: CardText(
-                                                    font_Weight: FontWeight.w800,
+                                                    font_Weight:
+                                                        FontWeight.w800,
                                                     size: 14,
-                                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                                    FontColor: !(moreInfo.value)
+                                                        ? SuccessCardText
+                                                        : FailureCardText),
                                               ),
                                             ),
                                           ],
@@ -457,20 +535,27 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                         // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
                                         Text(
                                           "L. Volt",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_1_bar_rounded, size: 13, color: secondaryText),
+                                            Icon(Icons.battery_1_bar_rounded,
+                                                size: 13, color: secondaryText),
                                             FittedBox(
                                               fit: BoxFit.scaleDown,
                                               child: Text(
                                                 "${getAllseriesData[index]["profile"]['lV']} V",
                                                 style: CardText(
-                                                    font_Weight: FontWeight.w800,
+                                                    font_Weight:
+                                                        FontWeight.w800,
                                                     size: 14,
-                                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                                    FontColor: !(moreInfo.value)
+                                                        ? SuccessCardText
+                                                        : FailureCardText),
                                               ),
                                             ),
                                           ],

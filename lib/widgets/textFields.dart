@@ -45,7 +45,7 @@ class TextFeildNewUser extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Container(
         height: 60,
-        width: size.width * 0.85,
+        width: screenSize.width * 0.85,
         padding: EdgeInsets.symmetric(horizontal: 18),
         child: Center(
           child: TextField(
@@ -141,7 +141,7 @@ class SearchTextFieldContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-        width: size.width,
+        width: screenSize.width,
         height: 50,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(28.0),

@@ -133,7 +133,7 @@ class manageUserBtn extends StatelessWidget {
       ),
       child: Container(
         height: height ?? 50,
-        width: width ?? size.width / 2.5,
+        width: width ?? screenSize.width / 2.5,
         child: FittedBox(
           fit: BoxFit.scaleDown,
           child: Row(

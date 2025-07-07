@@ -68,8 +68,8 @@ class LoginScreenState extends State<LoginScreen> {
           ),
           child: Center(
             child: Container(
-                height: size.height / 2.01,
-                width: size.width / 1.15,
+                height: screenSize.height / 2.01,
+                width: screenSize.width / 1.15,
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(208, 209, 206, 0.2),
                   borderRadius: BorderRadius.circular(20),
@@ -111,8 +111,8 @@ class LoginScreenState extends State<LoginScreen> {
                                   ? Row(
                                       children: [
                                         Container(
-                                            width: size.width * 0.6,
-                                            height: size.height / 20,
+                                            width: screenSize.width * 0.6,
+                                            height: screenSize.height / 20,
                                             margin: EdgeInsets.only(top: 10, bottom: 10),
                                             padding: EdgeInsets.only(right: 2, top: 3, bottom: 3),
                                             decoration: BoxDecoration(
@@ -368,7 +368,7 @@ class LoginScreenState extends State<LoginScreen> {
 
                             if ((checkPhnNum(phoneNumber.text) && checkPass(_password.text)) || true) {
                               print("Inside if cond");
-                              print("SIZE : $size");
+                              print("SIZE : $screenSize");
                               // await getEmpDetails(context, phoneNumber.text, _password.text);
                               await logInAPICall(context, phoneNumber.text, _password.text);
                             } else {

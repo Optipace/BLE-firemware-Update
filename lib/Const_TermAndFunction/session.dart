@@ -125,5 +125,6 @@ Future setDeviceId() async {
   print("Device Information : \n"
       "uuid :  ${sharedPreferences.getString("UUID")}"
       "\n version : ${sharedPreferences.getString("osVersion")}"
-      "\n model : ${sharedPreferences.getString("deviceModel")}");
+      "\n model : ${sharedPreferences.getString("deviceModel")}"
+      "\n deviceBrand : ${sharedPreferences.getString("deviceBrand")}");
 }

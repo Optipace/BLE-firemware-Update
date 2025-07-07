@@ -123,8 +123,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(22))),
                 color: lightBg,
                 child: Container(
-                  height: size.height / 9,
-                  width: size.width,
+                  height: screenSize.height / 9,
+                  width: screenSize.width,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -136,7 +136,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             });
                           },
                           child: Container(
-                            width: selectedbutton == 1 ? size.width / 1.85 : (size.width / 2) / 2.2,
+                            width: selectedbutton == 1 ? screenSize.width / 1.85 : (screenSize.width / 2) / 2.2,
                             height: 120,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
@@ -196,7 +196,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           });
                         },
                         child: Container(
-                          width: selectedbutton == 2 ? size.width / 2 : (size.width / 2) / 2.7,
+                          width: selectedbutton == 2 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
                           height: 120,
                           decoration: BoxDecoration(
                               color: selectedbutton == 2 ? darkBg : Colors.white,
@@ -256,7 +256,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           });
                         },
                         child: Container(
-                          width: selectedbutton == 3 ? size.width / 2 : (size.width / 2) / 2.7,
+                          width: selectedbutton == 3 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
                           height: 120,
                           decoration: BoxDecoration(
                               color: selectedbutton == 3 ? darkBg : Colors.white,
@@ -420,7 +420,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: Column(
                           children: [
                             PrimaryButton(
-                              width: size.width / 2.5,
+                              width: screenSize.width / 2.5,
                               height: 40,
                               tailIcon: Icon(
                                 CupertinoIcons.arrow_up_doc,
@@ -652,103 +652,110 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                 btnFunction: () async {
                                   await BottomSheet_Widget(context, color: lightBg, [
                                     StatefulBuilder(builder: (thisLowerContext, checkBoxState) {
-                                      return Container(
-                                        height: size.height / 1.5,
-                                        width: size.width,
-                                        color: lightBg,
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(thisLowerContext).viewInsets.bottom,
+                                        ),
                                         child: SingleChildScrollView(
                                           child: Container(
-                                            padding: EdgeInsets.symmetric(vertical: 20),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Enter Battery Details!",
-                                                  style: TextStyle(
-                                                      fontFamily: baseFont,
-                                                      fontWeight: FontWeight.w800,
-                                                      fontSize: 24,
-                                                      color: darkBg,
-                                                      shadows: [
-                                                        Shadow(
-                                                            color: Colors.black,
-                                                            blurRadius: 0.5,
-                                                            offset: Offset(0.5, 0.5))
-                                                      ]),
-                                                ),
-                                                SizedBox(
-                                                  height: 20,
-                                                ),
-
-                                                Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                            height: screenSize.height / 1.5,
+                                            width: screenSize.width,
+                                            color: lightBg,
+                                            child: SingleChildScrollView(
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(vertical: 20),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    // Battery Name
-                                                    LabelText(text: "Battery Name :"),
-                                                    TextFeildNewUser(
-                                                      hintText: "Enter Battery Name",
-                                                      Controller: _newbname,
-                                                      onChanged: (value) {},
-                                                      enable: true,
-                                                      etext: batteryValidator && _newbname.text.trim().isEmpty
-                                                          ? "Please Enter Battery Name"
-                                                          : "",
+                                                    Text(
+                                                      "Enter Battery Details!",
+                                                      style: TextStyle(
+                                                          fontFamily: baseFont,
+                                                          fontWeight: FontWeight.w800,
+                                                          fontSize: 24,
+                                                          color: darkBg,
+                                                          shadows: [
+                                                            Shadow(
+                                                                color: Colors.black,
+                                                                blurRadius: 0.5,
+                                                                offset: Offset(0.5, 0.5))
+                                                          ]),
                                                     ),
                                                     SizedBox(
-                                                      height: 8,
+                                                      height: 20,
                                                     ),
-                                                    // Relase Note
-                                                    LabelText(text: "Description"),
-                                                    TextFeildNewUser(
-                                                      hintText: "Enter Information",
-                                                      Controller: _batteryDescription,
-                                                      onChanged: (value) {},
-                                                      enable: true,
-                                                      etext: batteryValidator &&
-                                                              _batteryDescription.text.trim().isEmpty
-                                                          ? "Please Enter Information"
-                                                          : "",
+
+                                                    Column(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        // Battery Name
+                                                        LabelText(text: "Battery Name :"),
+                                                        TextFeildNewUser(
+                                                          hintText: "Enter Battery Name",
+                                                          Controller: _newbname,
+                                                          onChanged: (value) {},
+                                                          enable: true,
+                                                          etext: batteryValidator && _newbname.text.trim().isEmpty
+                                                              ? "Please Enter Battery Name"
+                                                              : "",
+                                                        ),
+                                                        SizedBox(
+                                                          height: 8,
+                                                        ),
+                                                        // Relase Note
+                                                        LabelText(text: "Description"),
+                                                        TextFeildNewUser(
+                                                          hintText: "Enter Information",
+                                                          Controller: _batteryDescription,
+                                                          onChanged: (value) {},
+                                                          enable: true,
+                                                          etext: batteryValidator &&
+                                                                  _batteryDescription.text.trim().isEmpty
+                                                              ? "Please Enter Information"
+                                                              : "",
+                                                        ),
+                                                        SizedBox(
+                                                          height: 8,
+                                                        ),
+                                                      ],
                                                     ),
-                                                    SizedBox(
-                                                      height: 8,
-                                                    ),
+                                                    // Add Btn
+                                                    manageUserBtn(
+                                                        text: "Add Battery",
+                                                        onPress: () async {
+                                                          printFunc("BEFORE : $batteryValidator");
+                                                          checkBoxState(() {
+                                                            ValidateBatteryFields();
+                                                          });
+                                                          Future.delayed(Duration(seconds: 3)).then((_) {
+                                                            checkBoxState(() {
+                                                              batteryValidator = false;
+                                                            });
+                                                          });
+                                                          printFunc(
+                                                              "DEMO DEMO : ${batteryValidator && _newbname.text.trim().isEmpty}");
+                                                          printFunc("DEMODEMO");
+                                                          printFunc(batteryValidator);
+                                                          printFunc(_newbname.text.trim().isEmpty);
+
+                                                          if (!batteryValidator) {
+                                                            printFunc("Inside IF COND");
+                                                            if (await addNewDeviceType(
+                                                              context,
+                                                              name: _newbname.text.trim(),
+                                                              description: _batteryDescription.text.trim(),
+                                                            )) {
+                                                              clearBattery();
+                                                              // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                                                            }
+                                                          }
+
+                                                          setState(() {});
+                                                        })
                                                   ],
                                                 ),
-                                                // Add Btn
-                                                manageUserBtn(
-                                                    text: "Add Battery",
-                                                    onPress: () async {
-                                                      printFunc("BEFORE : $batteryValidator");
-                                                      checkBoxState(() {
-                                                        ValidateBatteryFields();
-                                                      });
-                                                      Future.delayed(Duration(seconds: 3)).then((_) {
-                                                        checkBoxState(() {
-                                                          batteryValidator = false;
-                                                        });
-                                                      });
-                                                      printFunc(
-                                                          "DEMO DEMO : ${batteryValidator && _newbname.text.trim().isEmpty}");
-                                                      printFunc("DEMODEMO");
-                                                      printFunc(batteryValidator);
-                                                      printFunc(_newbname.text.trim().isEmpty);
-
-                                                      if (!batteryValidator) {
-                                                        printFunc("Inside IF COND");
-                                                        if (await addNewDeviceType(
-                                                          context,
-                                                          name: _newbname.text.trim(),
-                                                          description: _batteryDescription.text.trim(),
-                                                        )) {
-                                                          clearBattery();
-                                                          // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
-                                                        }
-                                                      }
-
-                                                      setState(() {});
-                                                    })
-                                              ],
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -888,6 +895,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             color: darkBg,
                           ),
                           press: () async {
+                            firmwareList["dweselct"]={"id":Null};
                             await BottomSheet_Widget(context, [
                               MapListItemBuilder(
                                 listItems: firmwareList,

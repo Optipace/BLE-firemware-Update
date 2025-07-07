@@ -12,12 +12,16 @@ class Dashboard extends StatelessWidget {
   final Widget child;
   final bool? userProfile;
   final Function? onLogout;
+  final Widget? add_Device;
+  final Widget? floatingBtn;
 
   Dashboard({
     required this.text,
     this.userProfile = false,
     required this.child,
     this.onLogout,
+    this.add_Device,
+    this.floatingBtn
   });
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -29,12 +33,13 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       // Createing Key
       key: _scaffoldKey,
-      drawer: UserProfileSlider(context, onLogout),
+      floatingActionButton: floatingBtn,
+      drawer: UserProfileSlider(context, onLogout,add_Device),
       body: InternetStatusWatcher(
         child: Column(
           children: [
             Container(
-              height: size.height / 3.5 + 30,
+              height: screenSize.height / 3.5 + 30,
               child: Stack(
                 children: [
                   Container(
@@ -43,7 +48,7 @@ class Dashboard extends StatelessWidget {
                   Align(
                     alignment: Alignment.topCenter,
                     child: Container(
-                      height: size.height / 3.5,
+                      height: screenSize.height / 3.5,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                           color: darkBg,
@@ -64,7 +69,7 @@ class Dashboard extends StatelessWidget {
                   // View Profile
                   userProfile == true
                       ? Positioned(
-                          top: size.height * 0.05,
+                          top: screenSize.height * 0.05,
                           left: 10,
                           child: IconButton(
                               onPressed: () {
@@ -84,8 +89,8 @@ class Dashboard extends StatelessWidget {
                               )))
                       : SizedBox(),
                   Container(
-                    padding: EdgeInsets.only(top: size.height * 0.1),
-                    width: size.width,
+                    padding: EdgeInsets.only(top: screenSize.height * 0.1),
+                    width: screenSize.width,
                     child: Center(
                         child: Column(
                       children: [
@@ -124,17 +129,18 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-UserProfileSlider(context, Function? onlogout) {
+UserProfileSlider(context, Function? onlogout, Widget? add_Device) {
   return Drawer(
-    width: size.width * 0.75,
+    width: screenSize.width * 0.75,
     elevation: 20,
     backgroundColor: lightBg,
     child: SafeArea(
         child: Column(
+
       children: [
         // Icon
         Padding(
-            padding: EdgeInsets.only(top: size.height * 0.05),
+            padding: EdgeInsets.only(top: screenSize.height * 0.05),
             child: CircleAvatar(
               radius: 50,
               backgroundColor: darkBg,
@@ -174,6 +180,7 @@ UserProfileSlider(context, Function? onlogout) {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //Designation
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: Row(
@@ -196,6 +203,7 @@ UserProfileSlider(context, Function? onlogout) {
                         ],
                       ),
                     ),
+                    //Phone
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: Row(
@@ -239,7 +247,7 @@ UserProfileSlider(context, Function? onlogout) {
                           FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Container(
-                              width: size.width * 0.52,
+                              width: screenSize.width * 0.52,
                               child: Text(
                                 "${UserData().email}",
                                 style: TextStyle(
@@ -266,6 +274,7 @@ UserProfileSlider(context, Function? onlogout) {
             ],
           ),
         ),
+        add_Device??SizedBox(),
         Spacer(),
         Divider(),
 

@@ -36,7 +36,7 @@ class PrimeryDropDownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? size.width * 0.85,
+      width: width ?? screenSize.width * 0.85,
       margin: EdgeInsets.only(left: 18, right: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,10 +90,10 @@ class PrimeryDropDownButton extends StatelessWidget {
             padding: EdgeInsets.only(left: 18),
             decoration: BoxDecoration(
                 color: isEnabled ? color ?? Colors.white : lightBg,
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(8),
                 border: Border.all(width: 1)),
             height: height ?? 45,
-            width: width ?? size.width * 0.90,
+            width: width ?? screenSize.width * 0.90,
             child: InkWell(
                 // color: color,
                 child: Row(
@@ -208,7 +208,7 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: size.width * 0.7,
+                width: screenSize.width * 0.7,
                 child: Text(
                   "SELECT",
                   textAlign: TextAlign.start,
@@ -259,7 +259,7 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
                 children: [
                   TextButton(
                     child: Container(
-                      width: size.width * 0.8,
+                      width: screenSize.width * 0.8,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.white, width: 0.2),
                         borderRadius: BorderRadius.circular(5),

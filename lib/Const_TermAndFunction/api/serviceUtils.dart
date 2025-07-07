@@ -45,6 +45,12 @@ class ApiEndpoints {
   static const String updateActive = '/api/non-auth/update_active';
   static const String getProfileByContact = '/api/non-auth/getProfileInformationByContactNumber';
 
+  //Update Firmware,config,battery
+  static const String updateFirmwareStatus = '/api/non-auth/hardware/firmware_update_status';
+  static const String updateConfigStatus = '/api/non-auth/hardware/profile_update_status';
+  static const String updateBatchStatus = '/api/non-auth/hardware/batch_update_status';
+
+
   // Hardware
   static const String saveDeviceTypes = '/api/non-auth/hardware/save_deviceTypes';
   static const String saveHardwareIds = '/api/non-auth/hardware/save_hardwareIds';

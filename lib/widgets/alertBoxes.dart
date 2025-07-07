@@ -115,3 +115,5 @@ Widget loadingDialog() {
     ),
   );
 }
+
+//pop-up while flashing

@@ -48,7 +48,9 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
 
       // Add request
       batchList = await getBatchList(context, Status: "Y");
-      printFunc("Batch list  ss :-> $batchList");
+      for(int i = 0;i<batchList.length;i++){
+        print("DEMO BATCHES FROM API - ${batchList[i]}");
+      }
       seriesSixData = await getSeriesData();
       print("SERIES DATA : $seriesSixData");
       // addBatch(BatchModel.fromJson(batchList[0]));
@@ -72,7 +74,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
             "Batch's",
             style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
           ),
-          toolbarHeight: size.height / 11.5,
+          toolbarHeight: screenSize.height / 11.5,
           backgroundColor: darkBg,
           elevation: 5,
           shadowColor: darkBg,
@@ -85,7 +87,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
   }
 
   List<Widget> seriesSix() {
-    printFunc("Serice six Data : $seriesSixData");
+    print("Serice six Data : $seriesSixData");
     List<Widget> seriesSixWidgetList = [];
 
     for (int index = 0; index < ((seriesSixData != null) ? seriesSixData.length : 0); index++) {
@@ -201,7 +203,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                       children: [
                         //Firmware
                         Container(
-                          width: size.width * 0.8,
+                          width: screenSize.width*0.8,
                           child: Row(
                             children: [
                               Text("Firmware Details  ",
@@ -306,7 +308,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                         ),
                         //config/profile
                         Container(
-                          width: size.width * 0.8,
+                          width: screenSize.width * 0.8,
                           child: Row(
                             children: [
                               Row(
@@ -477,13 +479,15 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     List<Map<String, dynamic>> totalBatchList = [];
     final allBatches = batchBox.values.toList(); // List<BatchModel>
     final allBatchMap = batchBox.toMap(); // Map<dynamic, BatchModel>
-    printFunc("allBatches : ${allBatches}");
-    printFunc("allBatchMap : ${allBatchMap}");
+    print("allBatches : ${allBatches}");
+    print("allBatchMap : ${allBatchMap.keys}");
+
     for (var entry in allBatchMap.entries) {
       final key = entry.key;
       final batch = entry.value;
 
       printFunc("Key: $key");
+      printFunc(" batch : $batch");
       printFunc("Batch Name: ${batch.batchName}");
       printFunc("Batch saved: ${batch.saved}");
       printFunc("Firmware Version: ${batch.firmware.version}");
@@ -495,7 +499,25 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     }).toList();
     // final batchFromHive = batchBox.get("$id");
 
-    allBatchMap.forEach((key, batch) {
+    print("DEMO BATCH WITH KEYS : $allBatchesWithKeys");
+
+    if(allBatchMap.containsKey(batchList)){
+      printFunc("Demo batch ID : ${allBatchMap.keys}");
+    }else{
+      printFunc("Demo batch ID not : ${allBatchMap.keys}");
+    }
+
+    for(var key in allBatchMap.keys){
+      bool ispresent =  batchList.any((batch) => batch['id'] == key);
+      if(!ispresent){
+        printFunc("DEMO KEY IS NOT PRESENTED : ${key}");
+        await batchBox.delete(key);
+      }
+    }
+
+    final activeBatchMap = batchBox.toMap();
+
+    activeBatchMap.forEach((key, batch) {
       totalBatchList.add({
         'id': batch.batchId,
         'name': batch.batchName,

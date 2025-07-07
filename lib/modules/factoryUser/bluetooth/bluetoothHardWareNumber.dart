@@ -44,7 +44,8 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     batchName.text = widget.SelectedBatch?.obj['name'];
     firmWareName.text = widget.SelectedBatch?.obj['firmware']['versionName'];
     configName.text = widget.SelectedBatch?.obj['profile']['name'];
-
+    HardWareNumber.setobj=HardWareMap.entries.first.value;
+    HardWareNumber.setText=HardWareMap.entries.first.key;
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +54,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
           "Adding",
           style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
         ),
-        toolbarHeight: size.height / 13,
+        toolbarHeight: screenSize.height / 13,
         backgroundColor: darkBg,
         elevation: 5,
         shadowColor: darkBg,
@@ -138,10 +139,10 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                             mainText: "Select HardWare Number",
                             text:
                                 HardWareNumber.Text != "" ? HardWareNumber.getText : "Select HardWare Number",
-                            icon: Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              color: darkBg,
-                            ),
+                            // icon: Icon(
+                            //   Icons.keyboard_arrow_down_sharp,
+                            //   color: darkBg,
+                            // ),
                             press: () async {
                               await BottomSheet_Widget(context, [
                                 MapListItemBuilder(

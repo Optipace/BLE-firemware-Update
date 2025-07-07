@@ -10,7 +10,7 @@ BottomSheet_Widget(context, childrens, {String? isFixed, Color? color}) {
     isScrollControlled: true,
     isDismissible: true,
     enableDrag: isFixed == "true" ? false : true,
-    constraints: BoxConstraints(maxHeight: size.height * 0.75),
+    constraints: BoxConstraints(maxHeight: screenSize.height * 0.75),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(25.0),
