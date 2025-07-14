@@ -8,7 +8,6 @@ import 'package:tracker_firmware/modules/fieldOfficer/ScanBluetooth/bluetoothBat
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
 
-import 'firmwares/firmwareFactoryManagement.dart';
 import 'pairBattery/PairBattery.dart';
 
 class FactoryMain extends StatelessWidget {
@@ -87,9 +86,6 @@ class FactoryMain extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-
-
-
             ],
           ),
         )

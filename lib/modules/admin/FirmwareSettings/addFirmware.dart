@@ -471,7 +471,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             firmwareFile: '$firmwareFileBase64'))
                         // firmwareFile: '$selectedFileName'))
                         {
+                          firmwareList = await getFirmwareList(context, active: "Y");
                           clearFirmware();
+
                           // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                         }
                       }
@@ -780,6 +782,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                 child: manageUserBtn(
                     text: "Upload Config",
                     onPress: () async {
+                      setState(() {
+                        _visibleConfig = false;
+                      });
                       ValidateConfigFields();
                       validateDropDown(_batterySeries);
                       if (!configValidator && !_validateDropDown) {
@@ -794,6 +799,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           description: _description.text.trim(),
                           batterySeriesId: (_batterySeries.obj["id"]).toString(),
                         )) {
+                          allConfigList = await getAllConfigurationList(context, active: "Y");
                           clearConfig();
                           // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                         }
@@ -918,13 +924,15 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           tail: ErrorContainer(
                               show: _validatedeviceType, errorMsg: "Please Select the Battery Series"),
                           mainText: "Select Battery Series",
-                          text: _batterySeries.Text != "" ? _batterySeries.getText : "Battery Series",
+                          text: _batterySeries.Text != "" &&  _batterySeries.Text != null ? _batterySeries.getText : "Battery Series",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
                           ),
                           press: () async {
                             _config.cleardata();
+                            allConfigList = await getAllConfigurationList(context, active: "Y");
+
                             await BottomSheet_Widget(context, [
                               MapListItemBuilder(
                                 listItems: batteryList,
@@ -935,6 +943,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             setState(() {});
                             setState(() {
                               if (_batterySeries.Text != "") _visibleConfig = true;
+
                             });
                           },
                         ),

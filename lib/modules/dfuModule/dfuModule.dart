@@ -5,12 +5,15 @@ import 'package:android_intent/android_intent.dart';
 import 'package:android_intent/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:nordic_dfu/nordic_dfu.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/getProductIdByMac.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
 
 class DfuHomePage extends StatefulWidget {
@@ -30,6 +33,17 @@ class _DfuHomePageState extends State<DfuHomePage> {
   bool isScanning = false;
   Map<String, int> progressMap = {};
   bool isDeviceSelected = false;
+
+  //mac_Id for ApiCal
+  String? mac_Id;
+  List result=[];
+
+  //current date and time for action timeStamp
+  DateTime now = DateTime.now();
+
+  //context for savelog api
+  late BuildContext _safeContext;
+
 
   Future<void> requestPermissions() async {
     if (Platform.isAndroid) {
@@ -84,6 +98,11 @@ class _DfuHomePageState extends State<DfuHomePage> {
 
   Future<void> startDfu(ScanResult device,
       {bool first = true, String oldId = ""}) async {
+
+    String DFUstatus ;
+    String DFUreason;
+
+    printFunc("DEMO DEVICE : $device");
     await stopScan();
     await Future.delayed(
         const Duration(milliseconds: 1000)); // ✅ Allow BLE stack to settle
@@ -92,6 +111,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
     debugPrint("🔄 SelectedBatch: ${widget.SelectedBatch.obj}");
 
     final handler = DfuEventHandler(
+      //Device connection
       onDeviceConnecting: (address) {
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔄 Connecting to $address")));
       },
@@ -102,10 +122,12 @@ class _DfuHomePageState extends State<DfuHomePage> {
         debugPrint("✅ Connected to device: $address");
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("✅ Connected to $address")));
       },
+      //process starting
       onDfuProcessStarting: (address) {
         debugPrint("🚀 DFU Process Starting: $address");
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🚀 DFU Starting for $address")));
       },
+      //Firmware uploading and entering the DFU model
       onEnablingDfuMode: (address) async {
         debugPrint("🛠️ Enabling DFU mode on: $address");
         ScaffoldMessenger.of(context).showSnackBar(
@@ -135,10 +157,14 @@ class _DfuHomePageState extends State<DfuHomePage> {
         // ScaffoldMessenger.of(context)
         //     .showSnackBar(SnackBar(content: Text("🧪 Validating firmware for $address")));
       },
+
+      // If DFU is Aborting [call saveLog API]
       onDfuAborted: (address) {
         debugPrint("⚠️ DFU Aborted: $address");
+        //Save LOG API CALL
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("⚠️ DFU Aborted for $address")));
       },
+      // Device disconnecting
       onDeviceDisconnecting: (address) {
         debugPrint("🔌 Disconnecting from device: $address");
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnecting from $address")));
@@ -147,11 +173,17 @@ class _DfuHomePageState extends State<DfuHomePage> {
         debugPrint("🔌 Disconnected from device: $address");
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnected from $address")));
       },
-      onProgressChanged: (address, progress, speed, avgSpeed, part, total) {
+      onProgressChanged: (address, progress, speed, avgSpeed, part, total)  {
         setState(() => progressMap[first ? address : oldId] = progress);
         setState(() => percent = progress);
       },
-      onDfuCompleted: (address) {
+
+
+      // On cmplting [call saveLog API]
+      onDfuCompleted: (address) async {
+        DFUstatus = "Y";
+        DFUreason = "DFU completed successfully";
+        setState(() {});
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text('✅ DFU completed: $oldId'),
@@ -166,44 +198,176 @@ class _DfuHomePageState extends State<DfuHomePage> {
           // scanedDevcice = null;
         });
 
-        //save logs for fieldLogs by using if cond same as below
+        //savelog API for filed User
+        if (UserData().designationCode.toString() == "2"){
+          printFunc("Savelog API for Field User");
+          printFunc("Time : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)} \n"
+              "DeviceID : ${UserData.instance.UUID} \n"
+              "MacID : ${mac_Id} \n"
+              "Batch : ${widget.SelectedBatch.obj["id"]} \n"
+              "empID : ${UserData.instance.userId} \n"
+              "Status : ${DFUstatus} \n"
+              "Reason : ${DFUreason}");
 
+          if (mounted) {
+            await saveLog(_safeContext,
+                DateAndTime: DateFormat('dd-MM-yyyy hh:mm a').format(now),
+                deviceID: UserData.instance.UUID,
+                macID: mac_Id.toString(),
+                empID: UserData.instance.userId,
+                batchID: widget.SelectedBatch.obj["id"],
+                status: DFUstatus,
+                reason: DFUreason
+            );
+          }
+        }
+
+        //For Factory User
         if (UserData().designationCode.toString() == "3") {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Important"),
-                  content: Text(
-                      "This Device is Assign with this 968574123654 Product Id.\n Do you want too?"),
-                  actions: [
-                    //Continue btn
-                    ElevatedButton(
-                        onPressed: () {
-                          //Go back
-                          //Save Log API
-                        },
-                        child: Text("Continue")),
-                    //Assign new Btn
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BluetoothHardwareNumber(
+          //apical for get productId by mac
+          //if map has a productId then
+          result = await getProductIdbyMac(context, mac_ID: mac_Id.toString());
+          printFunc("result demo ${result[0]} \n ${result[1]}");
+          bool macaAvailable = result[0];
+          Map<String, dynamic> productId= result[1];
+          printFunc("productIdproductId : ${productId}");
+
+          if(macaAvailable){
+            //Pop-up
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Column(
+                      children: [
+                        Text("PRODUCT-ID FOUND",style: TextStyle(color: darkBg,fontSize: 24,fontWeight: FontWeight.w800,shadows: [Shadow(color: Colors.black,blurRadius: 0.4)]),),
+                        Divider(color: darkBg,thickness: 0.5,)
+                      ],
+                    ),
+                    content: Text(
+                        "This Device is Assign with this ${productId[productId]} Product Id. Do you want too?",style: TextStyle(color: darkBg,fontWeight: FontWeight.w500,),),
+                    actions: [
+                      //Continue btn
+                      ElevatedButton(
+                        onPressed: () async{
+                            //Go back
+                            Navigator.of(context).pop();
+                            printFunc("Savelog API For Factory user");
+                            printFunc("Time : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)} \n"
+                                "DeviceID : ${UserData.instance.UUID} \n"
+                                "MacID : ${mac_Id} \n"
+                                "Batch : ${widget.SelectedBatch.obj["id"]} \n"
+                                "empID : ${UserData.instance.userId} \n"
+                                "Status : ${DFUstatus} \n"
+                                "Reason : ${DFUreason}");
+                            //SaveLog API
+                            if (mounted) {
+                              await saveLog(_safeContext,
+                                  DateAndTime: DateFormat('dd-MM-yyyy hh:mm a').format(now),
+                                  deviceID: UserData.instance.UUID,
+                                  macID: mac_Id.toString(),
+                                  empID: UserData.instance.userId,
+                                  batchID: widget.SelectedBatch.obj["id"],
+                                  status: DFUstatus,
+                                  reason: DFUreason
+                              );
+                            }
+                          },
+                        child: Text("Continue",style: TextStyle(fontSize: 16),),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(darkBg),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18)
+                                )
+                            )
+                        ),
+                      ),
+                      //Assign new Btn
+                      ElevatedButton(
+                          onPressed: () {
+                            if (mounted) {
+                              Navigator.push(
+                                _safeContext,
+                                MaterialPageRoute(
+                                    builder: (context) => BluetoothHardwareNumber(
+                                      safecontext:  _safeContext,
                                       SelectedBatch: widget.SelectedBatch,
                                       allclients: widget.allClients,
+                                      macID: mac_Id,
                                     )
-                            ),
-                          );
-                        },
-                        child: Text("Assign New"))
-                  ],
-                );
-              });
+                                ),
+                              );
+                            }
+                          },
+                          child: Text("Assign New",style: TextStyle(fontSize: 16),),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(darkBg),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18)
+                                  )
+                              )
+                          ),
+                      )
+                    ],
+                    backgroundColor: second_lightBg,
+
+                  );
+                });
+          }else{
+            if (mounted) {
+              Navigator.push(
+                _safeContext,
+                MaterialPageRoute(
+                    builder: (context) => BluetoothHardwareNumber(
+                      safecontext:  _safeContext,
+                      SelectedBatch: widget.SelectedBatch,
+                      allclients: widget.allClients,
+                      macID: mac_Id,
+                    )
+                ),
+              );
+            }
+          }
         }
       },
-      onError: (address, err, type, msg) {
+
+
+      // If error occured -- [ call saveLog API ]
+      onError: (address, err, type, msg)  async{
+
+        debugPrint("⚠️ DFU ERROR: $address \n $msg");
+        if(!first){
+          DFUstatus = "N";
+          DFUreason = msg ;
+          setState(() {});
+          debugPrint("Addres : ${address} \n"
+              "error : ${err} \n"
+              "type : ${type} \n"
+              "msg : ${msg}");
+
+
+          printFunc("Save log when error occured");
+          printFunc("Time : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)} \n"
+              "DeviceID : ${UserData.instance.UUID} \n"
+              "MacID : ${mac_Id} \n"
+              "Batch : ${widget.SelectedBatch.obj["id"]} \n"
+              "empID : ${UserData.instance.userId} \n"
+              "Status : ${DFUstatus} \n"
+              "Reason : ${DFUreason}");
+
+          // CALL savelog API
+          await saveLog(context,
+          DateAndTime: DateFormat('dd-MM-yyyy hh:mm a').format(now),
+          deviceID: UserData.instance.UUID,
+          macID: mac_Id.toString(),
+          empID: UserData.instance.userId,
+          batchID: widget.SelectedBatch.obj["id"],
+          status: DFUstatus,
+          reason: DFUreason
+          );
+        }
         // ScaffoldMessenger.of(context).showSnackBar(
         //   SnackBar(content: Text('❌ DFU error [$err]: $msg'), duration: Duration(seconds: 10)),
         // );
@@ -233,7 +397,10 @@ class _DfuHomePageState extends State<DfuHomePage> {
         //   dataObjectPreparationDelay: 2500.0,
         // ),
       );
-    } finally {
+    }catch(e){
+      printFunc("ERROR : $e");
+    }
+    finally {
       // await Wakelock.disable();
     }
   }
@@ -246,14 +413,10 @@ class _DfuHomePageState extends State<DfuHomePage> {
     intent.launch();
   }
 
-  @override
-  void dispose() {
-    scanSub?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
+    _safeContext = context;
     if (!isDeviceSelected) {
       scanedDevcice = null;
       percent = null;
@@ -332,7 +495,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
               isDeviceSelected = true;
               scanedDevcice = results[i];
               percent = null; // progressMap[id];
-
+              print("Demo dfu device : $scanedDevcice");
               stopScan;
             }), //startDfu(scanedDevcice),
             child: Text('Select'),
@@ -930,16 +1093,27 @@ class _DfuHomePageState extends State<DfuHomePage> {
                               Text("Change device")
                             ],
                           )),
+
+                    //start dfu
                     ElevatedButton(
                         style:
                             ElevatedButton.styleFrom(backgroundColor: darkBg),
                         onPressed: () async {
+                          setState(() {
+                            mac_Id = scanedDevcice != null
+                                ? scanedDevcice!.device.remoteId.str
+                                : "-";
+                          });
                           if (percent != null && percent != 101) {
-                            await NordicDfu().abortDfu(
-                                address: scanedDevcice!.device.remoteId.str);
-                            setState(() {
-                              percent = null;
-                            });
+                            try {
+                              await NordicDfu().abortDfu(
+                                  address: scanedDevcice!.device.remoteId.str);
+                              setState(() {
+                                percent = null;
+                              });
+                            }catch (e) {
+                              printFunc("exception while NordicDfu :$e");
+                            }
                           } else {
                             await startDfu(scanedDevcice!);
                           }
@@ -1070,5 +1244,12 @@ class _DfuHomePageState extends State<DfuHomePage> {
       FlutterBluePlus.stopScan();
       return oldMac; // fallback to old MAC if nothing found
     });
+  }
+
+
+  @override
+  void dispose() {
+    scanSub?.cancel();
+    super.dispose();
   }
 }

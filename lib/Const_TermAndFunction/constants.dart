@@ -111,3 +111,5 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
       shadows: [Shadow(color: Colors.black)]);
 }
 final appVersion = "1.0.0";
+
+

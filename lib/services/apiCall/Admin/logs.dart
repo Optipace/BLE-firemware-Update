@@ -33,7 +33,9 @@ List<Map<String, dynamic>> getFactoryLogs() {
       "firm_version": "2.3.0",
       "Batch": "B9",
       "Config": "P2,B9",
-      "Date-Time": "2025-05-26 11:15:00"
+      "Date-Time": "2025-05-26 11:15:00",
+      "reason": "failure due To Device not found"
+
     },
     {
       "empId": "EMP122",

@@ -346,8 +346,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     BtnEnable: true,
                                     btnTitle: "Add Designation",
                                     btnFunction: () async {
+                                      designationRoles = await getDesignation(context);
                                       await BottomSheet_Widget(context, color: lightBg, [
                                         StatefulBuilder(builder: (thisLowerContext, CheckDesignationState) {
+
                                           return Padding(
                                             padding: EdgeInsets.only(
                                               bottom: MediaQuery.of(thisLowerContext).viewInsets.bottom,
@@ -426,11 +428,11 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                               CheckDesignationState(() {
                                                                 ValidateDesignationFields();
                                                               });
-                                                              Future.delayed(Duration(seconds: 3)).then((_) {
-                                                                CheckDesignationState(() {
-                                                                  designationValidator = false;
-                                                                });
-                                                              });
+                                                              // Future.delayed(Duration(seconds: 3)).then((_) {
+                                                              //   CheckDesignationState(() {
+                                                              //     designationValidator = false;
+                                                              //   });
+                                                              // });
 
                                                               if (!designationValidator) {
                                                                 printFunc("Inside IF COND");
@@ -441,6 +443,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                                       int.tryParse(_designationPriority.text) ??
                                                                           0,
                                                                 )) {
+                                                                  designationRoles = await getDesignation(context);
                                                                   clearConfig();
                                                                   // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                                                                 }

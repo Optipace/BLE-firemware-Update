@@ -8,6 +8,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 // import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/getProductIdByMac.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/batch/methods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
@@ -35,6 +36,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
   var seriesNineData;
   var seriesTwelveData;
   var batchBox;
+  List? result;
 
   @override
   void initState() {
@@ -45,6 +47,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
       sharedPreferences = await SharedPreferences.getInstance();
       UserData.instance.accessToken = "sdncondscpd";
       await sharedPreferences.setString("accessToken", "sdncondscpd");
+
 
       // Add request
       batchList = await getBatchList(context, Status: "Y");
@@ -57,7 +60,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
 
       setState(() {});
     });
-
+    printFunc("DEMO USERDATA : ${UserData.instance.status}");
     if (mounted) {
       setState(() {});
     }

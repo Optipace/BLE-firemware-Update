@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/getNumberModel.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/saveHardware.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
@@ -14,8 +18,11 @@ import 'package:tracker_firmware/widgets/textFields.dart';
 class BluetoothHardwareNumber extends StatefulWidget {
   final DataController? SelectedBatch;
   final Map<String, dynamic>? allclients;
+  final String? macID;
+  BuildContext? safecontext;
 
-  BluetoothHardwareNumber({super.key, this.SelectedBatch, this.allclients});
+
+  BluetoothHardwareNumber({required safecontext,super.key, this.SelectedBatch, this.allclients, this.macID});
 
   @override
   State<BluetoothHardwareNumber> createState() => BluetoothHardwareNumberState();
@@ -33,10 +40,15 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   bool _validateDropDown = false;
   bool _added = false;
 
+  DateTime now = DateTime.now();
+
   @override
   void initState() {
     super.initState();
     generateHardWareMap();
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -132,7 +144,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                         ),
                         GestureDetector(
                           child: PrimeryDropDownButton(
-                            isEnabled: true,
+                            isEnabled: false,
                             tail: ErrorContainer(
                                 show: _validateDropDown && HardWareNumber.getText == "",
                                 errorMsg: "Please Select the HardWare Number"),
@@ -159,9 +171,11 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                         SizedBox(
                           height: 10,
                         ),
-                        GestureDetector(
+
+                        // client name field
+                        /*GestureDetector(
                           child: PrimeryDropDownButton(
-                            isEnabled: true,
+                            isEnabled: false,
                             tail: ErrorContainer(
                                 show: _validateDropDown && ClientName.getText == "",
                                 errorMsg: "Please Select the Client"),
@@ -185,7 +199,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                         ),
                         SizedBox(
                           height: 20,
-                        ),
+                        ), */
                       ],
                     )),
                 Padding(
@@ -196,12 +210,39 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                         ValidateDropDown(HardWareNumber, ClientName);
                         await deleteByHardWareNumber();
                         AddedSuccess(HardWareNumber,ClientName);
-
-
-                        if(_added){
-                          ShowSnackBarMessage(context, 'Added successfully', true);
-                          Navigator.of(context).pop();
+                        await saveHardware(
+                            context,
+                            macId: widget.macID.toString(),
+                            BatchId: widget.SelectedBatch?.obj['id'],
+                            productId: HardWareNumber.obj['id'].toString()
+                        );
+                        //call SaveLog API
+                        printFunc("savelog api when new product Id is Assigned");
+                        printFunc("date : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)}\n"
+                            "device Id : ${UserData.instance.UUID} \n"
+                            "MacId : ${widget.macID} \n"
+                            "Batch : ${widget.SelectedBatch?.obj['id']} \n"
+                            "Status : Y \n"
+                            "EmpId : ${UserData.instance.userId}"
+                            "reason : Completed");
+                        if (mounted) {
+                          await saveLog(widget.safecontext!,
+                              DateAndTime: DateFormat('dd-MM-yyyy hh:mm a').format(now),
+                              deviceID: UserData.instance.UUID,
+                              macID: widget.macID.toString(),
+                              empID: UserData.instance.userId,
+                              batchID: widget.SelectedBatch?.obj["id"],
+                              status: "Y",
+                              reason: "Completed"
+                          );
                         }
+
+                        Navigator.of(context).pop();
+
+                        printFunc("MacID : ${widget.macID}  \n"
+                            "batchId :${widget.SelectedBatch?.obj['id']} \n"
+                            "ProductId :${HardWareNumber.obj['id']} \n");
+
                       }),
                 )
               ],
@@ -214,6 +255,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
   void generateHardWareMap() {
     final box = Hive.box<GetNumberModel>('$getNumberHiveBox');
+    printFunc("Hive box : ${box.values}");
     HardWareMap = {
       for (var item in box.values)
         item.productId.toString(): {
@@ -237,9 +279,11 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       });
     }
     Future.delayed(Duration(seconds: 3), () {
-      setState(() {
-        _validateDropDown = false;
-      });
+      if (mounted) {
+        setState(() {
+          _validateDropDown = false;
+        });
+      }
     });
   }
 
@@ -260,5 +304,10 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
         _added = true;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

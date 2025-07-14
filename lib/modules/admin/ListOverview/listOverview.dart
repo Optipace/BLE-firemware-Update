@@ -5,6 +5,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/FirmwareSettings/addFirmware.dart';
 import 'package:tracker_firmware/modules/admin/ListOverview/api/api.dart';
+import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/apiCall/deviceType.dart';
 import 'package:tracker_firmware/services/apiCall/firmware.dart';
@@ -59,6 +60,17 @@ class listOverviewState extends State<listOverview> {
   Map<String, dynamic> batteryList = {};
   List<Map<String, dynamic>> allConfigList = [{}];
 
+  DataController SelectedBatch = DataController();
+  var obj = {
+    "id": "9",
+    "name": "AirBird Batch-02",
+    "description": "AirBird Batch-02",
+    "firmware": {"id": "13", "version": "AB2.0.0", "releaseNote": "", "versionName": "AB2.0.0", "deviceTypeId": "1", "file": "/data/user/0/com.example.tracker_firmware/app_flutter/AirBird Batch-02.zip", "saved": "true", "deviceType":"" },
+    "profile": {"id": "8", "name": "AirBird -02", "releaseNote": "", "uT": "23", "uV": "21", "lT": "12", "lV": "14", "saved": "true", "deviceTypeId": "1", "deviceType": "1"},
+    "saved": "true"
+  };
+  String macID = "DB:66:15:AE:7E:51";
+
   Map<String, List<Map<String, dynamic>>> profileListMap = {};
 
   bool _showInfo = false;
@@ -87,11 +99,17 @@ class listOverviewState extends State<listOverview> {
         printFunc("Battry key : $key");
         //   final profiles = await getProfileByID(context, batteryId.toString());
         //   profileListMap[key] = profiles;
-        setState(() {});
+        setState(() { });
       }
       printFunc("DEMO DEMO DEMO : ${batchList}");
       setState(() {});
     });
+    setState(() {
+      SelectedBatch.setobj = obj;
+
+    });
+    printFunc("DEMO SELECTED BATCH : ${SelectedBatch.obj}");
+
   }
 
   @override
@@ -3020,10 +3038,12 @@ class listOverviewState extends State<listOverview> {
                     ],
                   ),
                 ),
+
               ],
             ),
           ),
-        ));
+        )
+    );
   }
 
   void ValidateBatteryFields() {

@@ -64,7 +64,8 @@ class BlueetoothBatchesState extends State<SavedBatches> {
     AllClient = {
       for (var client in clientList) client['name'].toString(): client
     };
-    setState(() {});
+    setState(() {
+    });
   }
 
   @override

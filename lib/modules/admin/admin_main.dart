@@ -47,7 +47,8 @@ class AdminMainState extends State<AdminMain> {
     return Dashboard(
         text: 'ADMIN\nDASH-BOARD',
         userProfile: true,
-        add_Device: GestureDetector(
+        //add devce or Register device
+        /*add_Device: GestureDetector(
           onTap: () async{
             await BottomSheet_Widget(context, color: lightBg, [
               StatefulBuilder(builder:
@@ -261,7 +262,7 @@ class AdminMainState extends State<AdminMain> {
               ],
             ),
           ),
-        ),
+        ),*/
         child: Center(
           child: Column(
             children: [
@@ -579,7 +580,8 @@ class AdminMainState extends State<AdminMain> {
               )*/
             ],
           ),
-        ));
+        )
+    );
   }
 
   void ValidateUser() {

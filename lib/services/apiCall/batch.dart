@@ -210,6 +210,7 @@ Future<List<Map<String, dynamic>>> getBatchList(
   return batchList;
 }
 
+////////////////////// NOT IN USED /////////////////////////////////////
 Future<List<Map<String, dynamic>>> getBatchByID(BuildContext context, String id) async {
   List<Map<String, dynamic>> batchList = [{}];
   List<Map<String, dynamic>> batchByID = [{}];
