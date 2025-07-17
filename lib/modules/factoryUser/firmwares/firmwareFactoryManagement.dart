@@ -7,6 +7,9 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/services/apiCall/firmware.dart';
 import 'package:tracker_firmware/services/firmware/methods.dart';
 
+
+//////////////////// NOT IN USED {DISABLED THE FEATURE TO SHOW ALL THE FIRMWARE IN FACTORY USER DASHBOARD}//////////////////
+
 class FirmwareFactoryManagement extends StatefulWidget {
   const FirmwareFactoryManagement({super.key});
 

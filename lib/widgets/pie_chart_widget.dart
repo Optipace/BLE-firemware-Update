@@ -58,11 +58,13 @@ class PieChartView extends StatefulWidget {
   final double radius;
   int? total;
   final List<Color> colors;
+  final String titleText;
 
   PieChartView(
       {Key? key,
       required this.categories,
       required this.onTap,
+      required this.titleText,
       required this.colors,
       this.total,
       this.radius = 200})
@@ -89,92 +91,112 @@ class PieChartViewState extends State<PieChartView> {
   @override
   Widget build(BuildContext context) {
     final total = widget.total ?? widget.categories.fold<double>(0.0, (sum, c) => sum + c.amount);
+    final titleText = widget.titleText;
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black26),
-        color: second_lightBg,
+        color: Colors.white,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: widget.radius,
-                height: widget.radius,
-                child: GestureDetector(
-                  onTap: widget.onTap as void Function(),
-                  child: CustomPaint(
-                    painter: PieChartPainter(
-                        categories: widget.categories,
-                        strokeWidth: widget.radius * 0.15,
-                        colors: widget.colors),
-                  ),
-                ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              titleText,
+              style: TextStyle(
+                color: darkBg,
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 20,
+                shadows: [Shadow(color: Colors.black, blurRadius: 0.5)],
               ),
-              Column(
-                children: [
-                  Text(
-                    total.toStringAsFixed(0),
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text("Total", style: TextStyle(fontSize: 12)),
-                ],
-              ),
-            ],
+            ),
           ),
-          Container(
-            height: widget.radius / 1.8,
-            child: Theme(
-                data: Theme.of(context).copyWith(
-                  scrollbarTheme: ScrollbarThemeData(
-                    thumbColor: MaterialStateProperty.all(lightBg),
-                    mainAxisMargin: 2,
-                    crossAxisMargin: 2,
-                    trackColor: MaterialStateProperty.all(darkBg),
-                    thickness: MaterialStateProperty.all(5),
-                  ),
-                ),
-                child: Scrollbar(
-                  controller: _logs,
-                  interactive: true,
-                  thumbVisibility: true,
-                  trackVisibility: true,
-                  child: SingleChildScrollView(
-                    controller: _logs,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(widget.categories.length, (index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 12,
-                                height: 12,
-                                color: widget.colors[index % widget.colors.length],
-                              ),
-                              SizedBox(width: 5),
-                              Container(
-                                width: 80,
-                                child: Text(//
-                                  widget.categories[index].name,
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
+          SizedBox(height: 15,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: widget.radius,
+                    height: widget.radius,
+                    child: GestureDetector(
+                      onTap: widget.onTap as void Function(),
+                      child: CustomPaint(
+                        painter: PieChartPainter(
+                            categories: widget.categories,
+                            strokeWidth: widget.radius * 0.15,
+                            colors: widget.colors),
+                      ),
                     ),
                   ),
-                )),
-          )
+                  Column(
+                    children: [
+                      Text(
+                        total.toStringAsFixed(0),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text("Total", style: TextStyle(fontSize: 12)),
+                    ],
+                  ),
+                ],
+              ),
+              Container(
+                height: widget.radius / 1.8,
+                child: Theme(
+                    data: Theme.of(context).copyWith(
+                      scrollbarTheme: ScrollbarThemeData(
+                        thumbColor: MaterialStateProperty.all(lightBg),
+                        mainAxisMargin: 2,
+                        crossAxisMargin: 2,
+                        trackColor: MaterialStateProperty.all(darkBg),
+                        thickness: MaterialStateProperty.all(5),
+                      ),
+                    ),
+                    child: Scrollbar(
+                      controller: _logs,
+                      interactive: true,
+                      thumbVisibility: true,
+                      trackVisibility: true,
+                      child: SingleChildScrollView(
+                        controller: _logs,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(widget.categories.length, (index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: 12,
+                                    height: 12,
+                                    color: widget.colors[index % widget.colors.length],
+                                  ),
+                                  SizedBox(width: 5),
+                                  Container(
+                                    width: 80,
+                                    child: Text(//
+                                      widget.categories[index].name,
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                    )),
+              )
+            ],
+          ),
         ],
       ),
     );

@@ -22,8 +22,8 @@ class ApiHeaders {
 }
 
 class ApiEndpoints {
-  static const String _devBaseUrl = 'http://192.168.130.138:8080';
-  static const String _prodBaseUrl = 'http://192.168.130.138:8080';
+  static const String _devBaseUrl = 'http://10.118.170.132:8080';//192.168.130.138:8080';
+  static const String _prodBaseUrl = 'http://10.118.170.132:8080';
   static const bool _isProd = true;
 
   static String get baseUrl => _isProd ? _prodBaseUrl : _devBaseUrl;
@@ -45,25 +45,42 @@ class ApiEndpoints {
   static const String updateActive = '/api/non-auth/update_active';
   static const String getProfileByContact = '/api/non-auth/getProfileInformationByContactNumber';
 
-  // Hardware
+  //Update Firmware,config,battery
+  static const String updateFirmwareStatus = '/api/non-auth/hardware/firmware_update_status';
+  static const String updateConfigStatus = '/api/non-auth/hardware/profile_update_status';
+  static const String updateBatchStatus = '/api/non-auth/hardware/batch_update_status';
+
+
+  // save Hardware
   static const String saveDeviceTypes = '/api/non-auth/hardware/save_deviceTypes';
   static const String saveHardwareIds = '/api/non-auth/hardware/save_hardwareIds';
   static const String saveFirmware = '/api/non-auth/hardware/save_firmware';
   static const String saveHardware = '/api/non-auth/hardware/save_hardware';
   static const String saveProfile = '/api/non-auth/hardware/save_profile';
-  static const String getHardwareNumber =
-      '/api/non-auth/hardware/getnumber?count=10'; // append ID like getHardwareNumber + "5"
-  static const String getAllClients = '/api/non-auth/hardware/getAllClients';
+  static const String saveBatch = '/api/non-auth/hardware/save_batch';
 
+  // get hardware
   static const String getAllFirmwareDetails = '/api/non-auth/hardware/getAllFirmwareDetails';
   static const String getAllProfileDetails = '/api/non-auth/hardware/getAllProfileDetails';
-  static const String saveBatch = '/api/non-auth/hardware/save_batch';
   static const String getAllBatchDetails = '/api/non-auth/hardware/getAllBatchDetails';
+  static const String getHardwareNumber =
+      '/api/non-auth/hardware/getnumber?count=10'; // append ID like getHardwareNumber + "5"
 
+  // client and designation
   static const String saveClient = '/api/non-auth/hardware/save_client';
   static const String getAllDesignations = '/api/non-auth/getAllDesignations';
   static const String getAllDeviceTypes = '/api/non-auth/hardware/getAllDeviceTypes';
   static const String yetToDevelop = '/api/non-auth/hardware/underProgress';
+  static const String getAllClients = '/api/non-auth/hardware/getAllClients';
+
+  // Mac-Id details
+  static const String saveMacandClient = "/api/non-auth/hardware/save_hardware_and_clientDetail";
+  static const String saveMacandBattery = "/api/non-auth/hardware/save_hardware_and_batteryDetail";
+  static const String productIDbyMac = "/api/non-auth/hardware/getMacDetailByProductDetail";
+  static const String batteryNobyMac = "/api/non-auth/hardware/getMacByBatteryDetail";
+  static const String clientbyMac = "/api/non-auth/hardware/getMacByClientDetail";
+  static const String saveLog = "/api/software-log";
+
 }
 
 String getUrl(String endpoint) => ApiEndpoints.fullUrl(endpoint); //getUrl(ApiEndpoints.login);
@@ -81,7 +98,7 @@ class ApiService {
     bool isRetry = false, // prevents infinite loop
   }) async {
     final url = Uri.parse('${ApiEndpoints.baseUrl}$endpoint');
-
+    printFunc("DEMO URL : ${url} ");
     Map<String, String> headers = {}; // placeholder, assign later
 
     http.Response response;
@@ -117,7 +134,7 @@ class ApiService {
         throw Exception('Unsupported HTTP method: $method');
       }
       if (showLoader && Navigator.canPop(context)) {
-        Navigator.pop(context);
+        Navigator.of(context,rootNavigator: true).pop();
       }
       final responseBody = jsonDecode(response.body);
       printFunc(
@@ -153,7 +170,7 @@ class ApiService {
         }
       }
       if (response.statusCode == 200 && responseBody['response']["code"] == 1) {
-        onSuccess(responseBody['data']);
+        await onSuccess(responseBody['data']);
       } else {
         if (errorDisplay) {
           ShowSnackBarMessage(
@@ -166,7 +183,7 @@ class ApiService {
       }
     } catch (e) {
       printFunc('Error in API call: $e');
-      if (errorDisplay) {
+      if (errorDisplay ) {
         ShowSnackBarMessage(context, 'Network error: $e', false);
       }
     }
@@ -221,7 +238,9 @@ class ApiService {
         ShowSnackBarMessage(context, 'Logout failed.', false);
       }
     } catch (e) {
-      ShowSnackBarMessage(context, 'Error logging out: $e', false);
+      //Commented due to widget'a ancestor's error
+      /*ShowSnackBarMessage(context, 'Error logging out: $e', false);*/
+      printFunc("Error Lgging Out : $e");
     } finally {
       // Clear user data always
       UserData.instance.clear();

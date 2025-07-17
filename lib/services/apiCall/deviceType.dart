@@ -3,6 +3,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
+//////////////// NOT YET USED ///////////////////////////////////
 Future<Map<String, Map<String, Object>>> getDeviceTypes(BuildContext context) async {
   var deviceTypes = {
     "B6": {

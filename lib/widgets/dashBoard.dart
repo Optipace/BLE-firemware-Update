@@ -12,12 +12,16 @@ class Dashboard extends StatelessWidget {
   final Widget child;
   final bool? userProfile;
   final Function? onLogout;
+  final Widget? add_Device;
+  final Widget? floatingBtn;
 
   Dashboard({
     required this.text,
     this.userProfile = false,
     required this.child,
     this.onLogout,
+    this.add_Device,
+    this.floatingBtn
   });
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -29,7 +33,8 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       // Createing Key
       key: _scaffoldKey,
-      drawer: UserProfileSlider(context, onLogout),
+      floatingActionButton: floatingBtn,
+      drawer: UserProfileSlider(context, onLogout,add_Device),
       body: InternetStatusWatcher(
         child: Column(
           children: [
@@ -124,13 +129,14 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-UserProfileSlider(context, Function? onlogout) {
+UserProfileSlider(context, Function? onlogout, Widget? add_Device) {
   return Drawer(
     width: screenSize.width * 0.75,
     elevation: 20,
     backgroundColor: lightBg,
     child: SafeArea(
         child: Column(
+
       children: [
         // Icon
         Padding(
@@ -174,6 +180,7 @@ UserProfileSlider(context, Function? onlogout) {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //Designation
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: Row(
@@ -196,6 +203,7 @@ UserProfileSlider(context, Function? onlogout) {
                         ],
                       ),
                     ),
+                    //Phone
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: Row(
@@ -266,6 +274,7 @@ UserProfileSlider(context, Function? onlogout) {
             ],
           ),
         ),
+        add_Device??SizedBox(),
         Spacer(),
         Divider(),
 

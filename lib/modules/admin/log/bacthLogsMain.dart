@@ -62,59 +62,31 @@ class BatchLogsMain extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "Batch Name : ",
-                                  style: TextStyle(
-                                      color: darkBg,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  batchList[i]["name"] ?? "",
-                                  style: TextStyle(
-                                      color: darkBg,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Devices Flashed : ",
-                                  style: TextStyle(
-                                      color: darkBg,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "${countLogs(batchList[i])}",
-                                  style: TextStyle(
-                                      color: darkBg,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18),
-                                )
-                              ],
-                            )
-                          ],
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Batch Name : ",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                batchList[i]["name"] ?? "",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 18),
+                              )
+                            ],
+                          ),
                         ),
                         Icon(
                           CupertinoIcons.chevron_right_2,

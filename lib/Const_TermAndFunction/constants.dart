@@ -34,6 +34,15 @@ Color outlineColor = Color.fromRGBO(162, 195, 200, 1.0);
 // Error Color
 Color errorText = Color(0xFFCD5C5C);
 
+//Colors for Expansion Tiles
+Color collapsedBackgroundColorTile = Colors.white;
+Color backgroundColorTile = 	Color(0xFFF1F7FB);
+Color textColorTile = Color(0xFF358A94);
+Color collapsedTextColorTile = Color(0xFF358A94);
+Color iconColorTile = Color(0xFF358A94);
+Color collapsedIconColorTile = Color(0xFF358A94);
+Color borderTile = Color(0xFFB6C2D2);
+
 // Color for cards
 Color SuccessCard = Color.fromRGBO(220, 240, 255, 1.0); // soft light blue
 Color SuccessCardText = Color.fromRGBO(80, 140, 200, 1.0); // medium blue (text/icon)
@@ -53,6 +62,8 @@ String getNumberHiveBox = 'numberBox';
 Map<String, dynamic> serviceProfiles = {}; //await hiveService.readAllData();
 
 bool isSession = false;
+
+
 
 showAlertDialog(
   BuildContext context,
@@ -109,3 +120,5 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
       shadows: [Shadow(color: Colors.black)]);
 }
 final appVersion = "1.0.0";
+
+

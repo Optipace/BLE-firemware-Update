@@ -8,6 +8,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 // import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/getProductIdByMac.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/batch/methods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
@@ -35,6 +36,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
   var seriesNineData;
   var seriesTwelveData;
   var batchBox;
+  List? result;
 
   @override
   void initState() {
@@ -46,16 +48,19 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
       UserData.instance.accessToken = "sdncondscpd";
       await sharedPreferences.setString("accessToken", "sdncondscpd");
 
+
       // Add request
       batchList = await getBatchList(context, Status: "Y");
-      printFunc("Batch list  ss :-> $batchList");
+      for(int i = 0;i<batchList.length;i++){
+        print("DEMO BATCHES FROM API - ${batchList[i]}");
+      }
       seriesSixData = await getSeriesData();
       print("SERIES DATA : $seriesSixData");
       // addBatch(BatchModel.fromJson(batchList[0]));
 
       setState(() {});
     });
-
+    printFunc("DEMO USERDATA : ${UserData.instance.status}");
     if (mounted) {
       setState(() {});
     }
@@ -85,7 +90,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
   }
 
   List<Widget> seriesSix() {
-    printFunc("Serice six Data : $seriesSixData");
+    print("Serice six Data : $seriesSixData");
     List<Widget> seriesSixWidgetList = [];
 
     for (int index = 0; index < ((seriesSixData != null) ? seriesSixData.length : 0); index++) {
@@ -121,14 +126,13 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                 title: Padding(
                   padding: EdgeInsets.all(5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // Name
                       Container(
                         width: 90,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text("Batch : ",
                                 style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
@@ -151,7 +155,6 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                         width: 90,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "Description : ",
@@ -171,25 +174,27 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                         ),
                       ),
                       // DeviceID
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Series : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            seriesSixData[index]["profile"]['deviceType'].toString(),
-                            style: CardText(
-                                font_Weight: FontWeight.w800,
-                                size: 19,
-                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                          )
-                        ],
+                      Container(
+                        width: 80,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Series : ",
+                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Text(
+                              seriesSixData[index]["profile"]['deviceType'].toString(),
+                              style: CardText(
+                                  font_Weight: FontWeight.w800,
+                                  size: 19,
+                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -199,8 +204,23 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
                       children: [
-                        Divider(
-                          color: Colors.black26,
+                        //Firmware
+                        Container(
+                          width: screenSize.width*0.8,
+                          child: Row(
+                            children: [
+                              Text("Firmware Details  ",
+                                  style:
+                                  CardText(font_Weight: FontWeight.w500, FontColor: secondaryText)),
+                              SizedBox(width: 5), // spacing before line
+                              Expanded(
+                                child: Container(
+                                  height: 1,
+                                  color: Colors.black26,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 10),
                         FittedBox(
@@ -208,95 +228,88 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Firm version
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Firmware Version",
-                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
-                                  ),
-                                  SizedBox(
-                                    height: 3,
-                                  ),
-                                  Text(
-                                    seriesSixData[index]["firmware"]['version'].toString(),
-                                    style: CardText(
-                                        font_Weight: FontWeight.w800,
-                                        size: 19,
-                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                                  )
-                                ],
+                              Container(
+                                width : 150,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Firmware Version",
+                                      style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      seriesSixData[index]["firmware"]['version'].toString(),
+                                      style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 19,
+                                          FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                    )
+                                  ],
+                                ),
                               ),
-                              SizedBox(
-                                width: 20,
-                              ), // vertion name
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Firmware Name",
-                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
-                                  ),
-                                  SizedBox(
-                                    height: 3,
-                                  ),
-                                  Text(
-                                    seriesSixData[index]["firmware"]['versionName'].toString(),
-                                    style: CardText(
-                                        font_Weight: FontWeight.w800,
-                                        size: 19,
-                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: 20,
+                              // version name
+                              Container(
+                                width: 150,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Firmware Name",
+                                      style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      seriesSixData[index]["firmware"]['versionName'].toString(),
+                                      style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 19,
+                                          FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                    )
+                                  ],
+                                ),
                               ),
                               // download
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    (moreInfo.value) ? "Saved" : "Download",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w300,
-                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                                  ),
-                                  SizedBox(
-                                    height: 3,
-                                  ),
-                                  IconButton(
-                                      onPressed: () async {
-                                        if (!(seriesSixData[index]['saved'] ?? false)) {
-                                          if (!(await addBatch(BatchModel.fromJson(seriesSixData[index]))))
-                                            ShowSnackBarMessage(context, "Failed to save Batch", false);
+                              Container(
+                                width: 80,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      (moreInfo.value) ? "Saved" : "Download",
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                    ),
+                                    IconButton(
+                                        onPressed: () async {
+                                          if (!(seriesSixData[index]['saved'] ?? false)) {
+                                            if (!(await addBatch(BatchModel.fromJson(seriesSixData[index]))))
+                                              ShowSnackBarMessage(context, "Failed to save Batch", false);
 
+                                            setState(() {});
+                                          }
+                                          // seriesSixData.clear();
+
+                                          seriesSixData = await getSeriesData();
+                                          moreInfo.value(seriesSixData[index]['saved']);
                                           setState(() {});
-                                        }
-                                        // seriesSixData.clear();
-
-                                        seriesSixData = await getSeriesData();
-                                        moreInfo.value(seriesSixData[index]['saved']);
-                                        setState(() {});
-                                      },
-                                      icon: (!(seriesSixData[index]['saved'] ?? false))
-                                          ? Icon(Icons.download_for_offline_outlined,
-                                              color: SuccessCardText, size: 40)
-                                          : Icon(Icons.download_done_outlined, color: darkBg, size: 40)),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 20,
+                                        },
+                                        icon: (!(seriesSixData[index]['saved'] ?? false))
+                                            ? Icon(Icons.download_for_offline_outlined,
+                                                color: SuccessCardText, size: 35)
+                                            : Icon(Icons.download_done_outlined, color: darkBg, size: 35)),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        //config/profile
                         Container(
                           width: screenSize.width * 0.8,
                           child: Row(
@@ -305,7 +318,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                 children: [
                                   Text("Config : ",
                                       style:
-                                          CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                                          CardText(font_Weight: FontWeight.w500, FontColor: secondaryText)),
                                   Text(seriesSixData[index]["profile"]["name"],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
@@ -330,132 +343,118 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-// Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
-                                      Row(
-                                        children: [
-                                          Icon(Icons.battery_charging_full_outlined,
-                                              size: 18, color: secondaryText),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            "${seriesSixData[index]["profile"]['uT']} V",
-                                            style: CardText(
-                                              font_Weight: FontWeight.w800,
-                                              size: 18,
-                                              FontColor: SuccessCardText,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-// Upper Threshold
-                                      SizedBox(height: 5),
-
-                                      Text(
-                                        "U. Threshold",
-                                        style: CardText(
-                                          font_Weight: FontWeight.w800,
-                                          size: 16,
-                                          FontColor: SuccessCardText,
+                                  // Upper Threshold
+                                  Container(
+                                    width : 75,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                        Text(
+                                          "U. Threshold",
+                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(height: 5),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.battery_charging_full_outlined,
+                                                size: 14, color: secondaryText),
+                                            Text(
+                                              "${seriesSixData[index]["profile"]['uT']} V",
+                                              style: CardText(
+                                                  font_Weight: FontWeight.w800,
+                                                  size: 14,
+                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  SizedBox(width: 20),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-// Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
-                                      Row(
-                                        children: [
-                                          Icon(Icons.battery_6_bar_outlined, size: 18, color: secondaryText),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            "${seriesSixData[index]["profile"]['uV']} V",
-                                            style: CardText(
-                                              font_Weight: FontWeight.w800,
-                                              size: 18,
-                                              FontColor: SuccessCardText,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-// Upper Voltage
-                                      SizedBox(height: 5),
-
-                                      Text(
-                                        "U.Volt",
-                                        style: CardText(
-                                          font_Weight: FontWeight.w800,
-                                          size: 16,
-                                          FontColor: SuccessCardText,
+                                  // Upper Voltage
+                                  Container(
+                                    width:55,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                        Text(
+                                          "U.Volt",
+                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
                                         ),
-                                      )
-                                    ],
+                                        SizedBox(height: 5),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.battery_6_bar_outlined, size: 14, color: secondaryText),
+                                            Text(
+                                              "${seriesSixData[index]["profile"]['uV']} V",
+                                              style: CardText(
+                                                  font_Weight: FontWeight.w800,
+                                                  size: 14,
+                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  SizedBox(width: 20),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-// Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
-                                      Row(
-                                        children: [
-                                          Icon(Icons.battery_alert_outlined, size: 18, color: secondaryText),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            "${seriesSixData[index]["profile"]['lT']} V",
-                                            style: CardText(
-                                              font_Weight: FontWeight.w800,
-                                              size: 18,
-                                              FontColor: SuccessCardText,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-// Lower Threshold
-                                      SizedBox(height: 5),
-
-                                      Text(
-                                        "L.Threshold",
-                                        style: CardText(
-                                          font_Weight: FontWeight.w800,
-                                          size: 16,
-                                          FontColor: SuccessCardText,
+                                  // Lower Threshold
+                                  Container(
+                                    width: 70,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                        Text(
+                                          "L.Threshold",
+                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
                                         ),
-                                      )
-                                    ],
+                                        SizedBox(height: 5),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.battery_alert_outlined, size: 13, color: secondaryText),
+                                            Text(
+                                              "${seriesSixData[index]["profile"]['lT']} V",
+                                              style: CardText(
+                                                  font_Weight: FontWeight.w800,
+                                                  size: 14,
+                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  SizedBox(width: 20),
-                                  Column(
-// crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-// Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
-                                      Row(
-                                        children: [
-                                          Icon(Icons.battery_1_bar_rounded, size: 18, color: secondaryText),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            "${seriesSixData[index]["profile"]['lV']} V",
-                                            style: CardText(
-                                              font_Weight: FontWeight.w800,
-                                              size: 18,
-                                              FontColor: SuccessCardText,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 5),
-// Lower Voltage
-                                      Text(
-                                        "L. Volt",
-                                        style: CardText(
-                                          font_Weight: FontWeight.w800,
-                                          size: 16,
-                                          FontColor: SuccessCardText,
+                                  // Lower Voltage
+                                  Container(
+                                    width: 55,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      children: [
+                                        // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
+                                        Text(
+                                          "L. Volt",
+                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
                                         ),
-                                      )
-                                    ],
+                                        SizedBox(height: 5),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.battery_1_bar_rounded, size: 13, color: secondaryText),
+                                            Text(
+                                              "${seriesSixData[index]["profile"]['lV']} V",
+                                              style: CardText(
+                                                  font_Weight: FontWeight.w800,
+                                                  size: 14,
+                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                            ),
+                                          ],
+                                        ),
+
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -483,13 +482,15 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     List<Map<String, dynamic>> totalBatchList = [];
     final allBatches = batchBox.values.toList(); // List<BatchModel>
     final allBatchMap = batchBox.toMap(); // Map<dynamic, BatchModel>
-    printFunc("allBatches : ${allBatches}");
-    printFunc("allBatchMap : ${allBatchMap}");
+    print("allBatches : ${allBatches}");
+    print("allBatchMap : ${allBatchMap.keys}");
+
     for (var entry in allBatchMap.entries) {
       final key = entry.key;
       final batch = entry.value;
 
       printFunc("Key: $key");
+      printFunc(" batch : $batch");
       printFunc("Batch Name: ${batch.batchName}");
       printFunc("Batch saved: ${batch.saved}");
       printFunc("Firmware Version: ${batch.firmware.version}");
@@ -501,7 +502,25 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     }).toList();
     // final batchFromHive = batchBox.get("$id");
 
-    allBatchMap.forEach((key, batch) {
+    print("DEMO BATCH WITH KEYS : $allBatchesWithKeys");
+
+    if(allBatchMap.containsKey(batchList)){
+      printFunc("Demo batch ID : ${allBatchMap.keys}");
+    }else{
+      printFunc("Demo batch ID not : ${allBatchMap.keys}");
+    }
+
+    for(var key in allBatchMap.keys){
+      bool ispresent =  batchList.any((batch) => batch['id'] == key);
+      if(!ispresent){
+        printFunc("DEMO KEY IS NOT PRESENTED : ${key}");
+        await batchBox.delete(key);
+      }
+    }
+
+    final activeBatchMap = batchBox.toMap();
+
+    activeBatchMap.forEach((key, batch) {
       totalBatchList.add({
         'id': batch.batchId,
         'name': batch.batchName,

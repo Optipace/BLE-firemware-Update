@@ -48,6 +48,9 @@ dependencies:
   nordic_dfu: ^7.0.0
   android_intent: ^2.0.2
   connectivity_plus:
+  qr_code_scanner: ^1.0.1
+  mobile_scanner: ^3.2.0
+  intl: ^0.19.0
 
 #  device_imei : ^0.0.4+2
 

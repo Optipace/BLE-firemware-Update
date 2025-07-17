@@ -346,103 +346,113 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     BtnEnable: true,
                                     btnTitle: "Add Designation",
                                     btnFunction: () async {
+                                      designationRoles = await getDesignation(context);
                                       await BottomSheet_Widget(context, color: lightBg, [
                                         StatefulBuilder(builder: (thisLowerContext, CheckDesignationState) {
-                                          return Container(
-                                            height: screenSize.height / 1.5,
-                                            width: screenSize.width,
-                                            color: lightBg,
+
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: MediaQuery.of(thisLowerContext).viewInsets.bottom,
+                                            ),
                                             child: SingleChildScrollView(
                                               child: Container(
-                                                padding: EdgeInsets.symmetric(vertical: 20),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      "Enter Designation Details!",
-                                                      style: TextStyle(
-                                                          fontFamily: baseFont,
-                                                          fontWeight: FontWeight.w800,
-                                                          fontSize: 24,
-                                                          color: darkBg,
-                                                          shadows: [
-                                                            Shadow(
-                                                                color: Colors.black,
-                                                                blurRadius: 0.5,
-                                                                offset: Offset(0.5, 0.5))
-                                                          ]),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
+                                                height: screenSize.height / 1.5,
+                                                width: screenSize.width,
+                                                color: lightBg,
+                                                child: SingleChildScrollView(
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 20),
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text(
+                                                          "Enter Designation Details!",
+                                                          style: TextStyle(
+                                                              fontFamily: baseFont,
+                                                              fontWeight: FontWeight.w800,
+                                                              fontSize: 24,
+                                                              color: darkBg,
+                                                              shadows: [
+                                                                Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5,
+                                                                    offset: Offset(0.5, 0.5))
+                                                              ]),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 20,
+                                                        ),
 
-                                                    Container(
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          // Battery Name
-                                                          LabelText(text: "Designation :"),
-                                                          TextFeildNewUser(
-                                                            hintText: "Enter Designation",
-                                                            Controller: _newDesgination,
-                                                            onChanged: (value) {},
-                                                            enable: true,
-                                                            etext: designationValidator &&
-                                                                    _newDesgination.text.trim().isEmpty
-                                                                ? "Please Enter Designation"
-                                                                : "",
+                                                        Container(
+                                                          child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              // Battery Name
+                                                              LabelText(text: "Designation :"),
+                                                              TextFeildNewUser(
+                                                                hintText: "Enter Designation",
+                                                                Controller: _newDesgination,
+                                                                onChanged: (value) {},
+                                                                enable: true,
+                                                                etext: designationValidator &&
+                                                                        _newDesgination.text.trim().isEmpty
+                                                                    ? "Please Enter Designation"
+                                                                    : "",
+                                                              ),
+                                                              SizedBox(
+                                                                height: 8,
+                                                              ),
+                                                              // Relase Note
+                                                              LabelText(text: "Priority"),
+                                                              TextFeildNewUser(
+                                                                hintText: "Enter Priority",
+                                                                Controller: _designationPriority,
+                                                                onChanged: (value) {},
+                                                                enable: true,
+                                                                etext: designationValidator &&
+                                                                        _designationPriority.text.trim().isEmpty
+                                                                    ? "Please Enter Priority"
+                                                                    : "",
+                                                              ),
+                                                              SizedBox(
+                                                                height: 8,
+                                                              ),
+                                                            ],
                                                           ),
-                                                          SizedBox(
-                                                            height: 8,
-                                                          ),
-                                                          // Relase Note
-                                                          LabelText(text: "Priority"),
-                                                          TextFeildNewUser(
-                                                            hintText: "Enter Priority",
-                                                            Controller: _designationPriority,
-                                                            onChanged: (value) {},
-                                                            enable: true,
-                                                            etext: designationValidator &&
-                                                                    _designationPriority.text.trim().isEmpty
-                                                                ? "Please Enter Priority"
-                                                                : "",
-                                                          ),
-                                                          SizedBox(
-                                                            height: 8,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    // Add Btn
-                                                    manageUserBtn(
-                                                        text: "Add Designation",
-                                                        onPress: () async {
-                                                          CheckDesignationState(() {
-                                                            ValidateDesignationFields();
-                                                          });
-                                                          Future.delayed(Duration(seconds: 3)).then((_) {
-                                                            CheckDesignationState(() {
-                                                              designationValidator = false;
-                                                            });
-                                                          });
+                                                        ),
+                                                        // Add Btn
+                                                        manageUserBtn(
+                                                            text: "Add Designation",
+                                                            onPress: () async {
+                                                              CheckDesignationState(() {
+                                                                ValidateDesignationFields();
+                                                              });
+                                                              // Future.delayed(Duration(seconds: 3)).then((_) {
+                                                              //   CheckDesignationState(() {
+                                                              //     designationValidator = false;
+                                                              //   });
+                                                              // });
 
-                                                          if (!designationValidator) {
-                                                            printFunc("Inside IF COND");
-                                                            if (await addNewDesgination(
-                                                              context,
-                                                              name: _newDesgination.text.trim(),
-                                                              priority:
-                                                                  int.tryParse(_designationPriority.text) ??
-                                                                      0,
-                                                            )) {
-                                                              clearConfig();
-                                                              // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
-                                                            }
-                                                          }
-                                                          setState(() {});
-                                                        })
-                                                  ],
+                                                              if (!designationValidator) {
+                                                                printFunc("Inside IF COND");
+                                                                if (await addNewDesgination(
+                                                                  context,
+                                                                  name: _newDesgination.text.trim(),
+                                                                  priority:
+                                                                      int.tryParse(_designationPriority.text) ??
+                                                                          0,
+                                                                )) {
+                                                                  designationRoles = await getDesignation(context);
+                                                                  clearConfig();
+                                                                  // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                                                                }
+                                                              }
+                                                              setState(() {});
+                                                            })
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),

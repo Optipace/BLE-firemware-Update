@@ -1,11 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/admin/ListOverview/listOverview.dart';
 import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 import 'package:tracker_firmware/modules/admin/newUser/adminNewUser.dart';
+import 'package:tracker_firmware/widgets/BottomSheet.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
+import 'package:tracker_firmware/widgets/textFields.dart';
 
 import 'FirmwareSettings/addFirmware.dart';
 
@@ -23,6 +28,16 @@ class AdminMainState extends State<AdminMain> {
   TextEditingController _upperVoltage = TextEditingController();
   TextEditingController _lowerVoltage = TextEditingController();
 
+
+  // Controleers for New device
+  TextEditingController _newuuid = TextEditingController();
+  TextEditingController _newmodel = TextEditingController();
+  TextEditingController _newbrand = TextEditingController();
+  bool deviceValidator = false;
+
+  bool apicall = false;
+
+
   bool validateUser = false;
   bool pluss = true;
 
@@ -32,6 +47,222 @@ class AdminMainState extends State<AdminMain> {
     return Dashboard(
         text: 'ADMIN\nDASH-BOARD',
         userProfile: true,
+        //add devce or Register device
+        /*add_Device: GestureDetector(
+          onTap: () async{
+            await BottomSheet_Widget(context, color: lightBg, [
+              StatefulBuilder(builder:
+                  (thisLowerContext, checkListDeviceState) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(thisLowerContext).viewInsets.bottom,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      height: screenSize.height / 1.5,
+                      width: screenSize.width,
+                      color: lightBg,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SingleChildScrollView(
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Device Details!",
+                                      style: TextStyle(
+                                          fontFamily: baseFont,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 28,
+                                          color: darkBg,
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black,
+                                                blurRadius: 0.5,
+                                                offset: Offset(0.5, 0.5))
+                                          ]),
+                                    ),
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap :(){
+                                            checkListDeviceState(() {
+                                              _newuuid.text = sharedPreferences.getString("UUID")!;
+                                              _newbrand.text = sharedPreferences.getString("deviceBrand")!;
+                                              _newmodel.text = sharedPreferences.getString("deviceModel")!;
+                                            });
+                                           printFunc( "\n version : ${sharedPreferences.getString("osVersion")}"
+                                               "\n model : ${sharedPreferences.getString("deviceModel")}"
+                                               "\n deviceBrand : ${sharedPreferences.getString("deviceBrand")}");
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 15,vertical: 8),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.black,width: 0.3),
+                                              borderRadius: BorderRadius.circular(12),
+                                              color: darkBg
+                                            ),
+                                            child:  Column(
+                                              children: [
+                                                Text("Register This",style: TextStyle(color: Colors.white),),
+                                                Text("Device",style: TextStyle(color: Colors.white),),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                margin: EdgeInsets.fromLTRB(5, 0, 15,0),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+
+                            Container(
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  // UUID
+                                  LabelText(text: "UUID :"),
+                                  TextFeildNewUser(
+                                    hintText: "Enter Device UUID ",
+                                    Controller: _newuuid,
+                                    onChanged: (value) {},
+                                    enable: true,
+                                    etext: deviceValidator &&
+                                        _newuuid.text
+                                            .trim()
+                                            .isEmpty
+                                        ? "Please Enter Device UUID"
+                                        : "",
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  // Model
+                                  LabelText(text: "Model"),
+                                  TextFeildNewUser(
+                                    hintText: "Enter Device Model",
+                                    Controller: _newmodel,
+                                    onChanged: (value) {},
+                                    enable: true,
+                                    etext: deviceValidator &&
+                                        _newmodel.text
+                                            .trim()
+                                            .isEmpty
+                                        ? "Please Enter Device Model"
+                                        : "",
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  // Brand
+                                  LabelText(text: "Brand"),
+                                  TextFeildNewUser(
+                                    hintText: "Enter Device Brand",
+                                    Controller: _newbrand,
+                                    onChanged: (value) {},
+                                    enable: true,
+                                    etext: deviceValidator &&
+                                        _newbrand.text
+                                            .trim()
+                                            .isEmpty
+                                        ? "Please Enter Device Brand"
+                                        : "",
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Add Btn
+                            manageUserBtn(
+                                text: "Register Device",
+                                onPress: () async {
+                                  checkListDeviceState(() {
+                                    ValidateDeviceFields();
+                                  });
+                                  if(deviceValidator == false){
+                                    checkListDeviceState(() {
+                                      apicall =true;
+                                    });
+                                    if(apicall){
+                                      Navigator.of(context).pop();
+                                      ShowSnackBarMessage(context, 'Device Registerd successfully.', true);
+                                      _newuuid.clear();
+                                      _newbrand.clear();
+                                      _newmodel.clear();
+                                      setState(() {});
+                                    }
+                                  }
+                                  setState(() {});
+                                }
+                                )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              })
+            ]);
+            setState(() {});
+            print("Device Information : \n"
+                "uuid :  ${sharedPreferences.getString("UUID")}"
+                "\n version : ${sharedPreferences.getString("osVersion")}"
+                "\n model : ${sharedPreferences.getString("deviceModel")}"
+                "\n deviceBrand : ${sharedPreferences.getString("deviceBrand")}");
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: darkBg,
+                width: 1
+              ),
+              borderRadius: BorderRadius.circular(10)
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.add_circle_outline,color: darkBg,weight: 25,),
+                    SizedBox(width: 10,),
+                    Text("Register Device",
+                      style: TextStyle(
+                          fontFamily: baseFont,
+                          color: darkBg,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.3,
+                              offset: Offset(0.5, 0.4),
+                            )
+                          ]),
+                    ),
+                  ],
+                ),
+                Icon(CupertinoIcons.chevron_right_2,size: 18,)
+              ],
+            ),
+          ),
+        ),*/
         child: Center(
           child: Column(
             children: [
@@ -349,7 +580,8 @@ class AdminMainState extends State<AdminMain> {
               )*/
             ],
           ),
-        ));
+        )
+    );
   }
 
   void ValidateUser() {
@@ -376,4 +608,27 @@ class AdminMainState extends State<AdminMain> {
       });
     });
   }
+
+  void ValidateDeviceFields() {
+    final Controllers = [
+      _newuuid,
+      _newmodel,
+      _newbrand
+    ];
+
+    bool hasEmpty =
+    Controllers.any((controller) => controller.text.trim().isEmpty);
+    printFunc("has Next : $hasEmpty");
+    setState(() {
+      deviceValidator = hasEmpty;
+    });
+    // Future Delayed
+    printFunc("DEMOMMOMO : ${deviceValidator}");
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        deviceValidator = false;
+      });
+    });
+  }
+
 }

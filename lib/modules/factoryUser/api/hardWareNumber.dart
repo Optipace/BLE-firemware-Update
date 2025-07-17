@@ -9,6 +9,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 Future<void> loadHardWareNumber(BuildContext context) async {
   final box = Hive.box<GetNumberModel>('$getNumberHiveBox');
+  printFunc("SAMPLE HIVE BOX AT LOADER : ${box.values}");
 
   if (box.isEmpty) {
     await getHardwareNumber(context);
@@ -33,7 +34,7 @@ Future<void> getHardwareNumber(BuildContext context) async {
           final hardwareNumber = GetNumberModel.fromJson(item);
           box.add(hardwareNumber);
         }
-        printFunc("BOX HIVE : ${box.length}");
+        printFunc("BOX HIVE : ${box.values}");
       });
 }
 
