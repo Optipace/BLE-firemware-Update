@@ -138,91 +138,93 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                     side: BorderSide(color: Colors.black, width: 0.3)),
                 title: Padding(
                   padding: EdgeInsets.all(5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // Name
-                      Container(
-                        width: 90,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("Batch : ",
+                  child: FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // Name
+                        Container(
+                          width: 90,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("Batch : ",
+                                  style: CardText(
+                                      font_Weight: FontWeight.w300,
+                                      FontColor: secondaryText)),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(getAllseriesData[index]["name"].toString(),
+                                  style: CardText(
+                                      font_Weight: FontWeight.w800,
+                                      size: 19,
+                                      FontColor: !(moreInfo.value)
+                                          ? SuccessCardText
+                                          : FailureCardText)),
+                            ],
+                          ),
+                        ),
+                        // Description
+                        Container(
+                          width: 90,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Description : ",
                                 style: CardText(
                                     font_Weight: FontWeight.w300,
-                                    FontColor: secondaryText)),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Text(getAllseriesData[index]["name"].toString(),
+                                    FontColor: secondaryText),
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                getAllseriesData[index]["description"].toString(),
                                 style: CardText(
                                     font_Weight: FontWeight.w800,
                                     size: 19,
                                     FontColor: !(moreInfo.value)
                                         ? SuccessCardText
-                                        : FailureCardText)),
-                          ],
+                                        : FailureCardText),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      // Description
-                      Container(
-                        width: 90,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Description : ",
-                              style: CardText(
-                                  font_Weight: FontWeight.w300,
-                                  FontColor: secondaryText),
-                            ),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Text(
-                              getAllseriesData[index]["description"].toString(),
-                              style: CardText(
-                                  font_Weight: FontWeight.w800,
-                                  size: 19,
-                                  FontColor: !(moreInfo.value)
-                                      ? SuccessCardText
-                                      : FailureCardText),
-                            ),
-                          ],
+                        // Series
+                        Container(
+                          width: 80,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Series : ",
+                                style: CardText(
+                                    font_Weight: FontWeight.w300,
+                                    FontColor: secondaryText),
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                getAllseriesData[index]["profile"]['deviceType']
+                                    .toString(),
+                                style: CardText(
+                                    font_Weight: FontWeight.w800,
+                                    size: 19,
+                                    FontColor: !(moreInfo.value)
+                                        ? SuccessCardText
+                                        : FailureCardText),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      // Series
-                      Container(
-                        width: 80,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Series : ",
-                              style: CardText(
-                                  font_Weight: FontWeight.w300,
-                                  FontColor: secondaryText),
-                            ),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Text(
-                              getAllseriesData[index]["profile"]['deviceType']
-                                  .toString(),
-                              style: CardText(
-                                  font_Weight: FontWeight.w800,
-                                  size: 19,
-                                  FontColor: !(moreInfo.value)
-                                      ? SuccessCardText
-                                      : FailureCardText),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 children: [

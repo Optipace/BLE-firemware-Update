@@ -125,7 +125,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                     side: BorderSide(color: Colors.black, width: 0.3)),
                 title: Padding(
                   padding: EdgeInsets.all(5),
-                  child: Row(
+                  child: FittedBox(child:Row(
                     children: [
                       // Name
                       Container(
@@ -197,6 +197,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                         ),
                       ),
                     ],
+                  ),
                   ),
                 ),
                 children: [
