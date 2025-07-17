@@ -41,7 +41,8 @@ Future<bool> logInAPICall(BuildContext context, String phoneNum, String password
         printFunc("userData after log in set userdata: ${userData.toString()}");
         navigateToDashBoard(context, int.tryParse(userData.designationCode) ?? 2);
         return true;
-      });
+      }
+      );
   return false;
 
   /////////////////// to by pass /////////////////////////////
