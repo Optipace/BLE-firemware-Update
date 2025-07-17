@@ -159,7 +159,7 @@ class _AssignClientState extends State<AssignClient> {
                                           final result = await Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => QRScannerScreen(),
+                                              builder: (context) => QRScannerScreen(title: "Scan QR-Code"),
                                             ),
                                           );
                                           if (result != null) {
@@ -378,11 +378,13 @@ class _AssignClientState extends State<AssignClient> {
                                                 else if(clientAvaliable && ClientDetails.isEmpty){
                                                   enableClientField = true;
                                                   ShowSnackBarMessage(context, 'No Client is Assigned!', null);
+                                                  setState(() {});
 
                                                 }else if(!clientAvaliable){
                                                   enableClientField = false;
                                                   ShowSnackBarMessage(context, 'No MacID found!', false);
                                                   _macIdController.clear();
+                                                  setState(() {});
                                                 }
 
                                               },
@@ -468,8 +470,11 @@ class _AssignClientState extends State<AssignClient> {
                                         macId: _macIdController.text,
                                         clientId: ClientName.getobj['id'].toString(),
                                       );
+                                      ShowSnackBarMessage(context, 'Client is Assigned Successfully!', null);
+
                                     }
                                     setState(() {});
+                                    Navigator.popUntil(context, (route) => route.isFirst);
                                   },
                                   child: Text(
                                     "SUBMIT",
@@ -505,11 +510,7 @@ class _AssignClientState extends State<AssignClient> {
         validateFileds = true;
       });
     }
-    Future.delayed(Duration(seconds: 3), () {
-      setState(() {
-        validateFileds = false;
-      });
-    });
+
   }
 
   @override

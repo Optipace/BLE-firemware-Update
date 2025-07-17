@@ -14,6 +14,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/getProductIdByMac.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
+import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
 
 class DfuHomePage extends StatefulWidget {
@@ -37,12 +38,16 @@ class _DfuHomePageState extends State<DfuHomePage> {
   //mac_Id for ApiCal
   String? mac_Id;
   List result=[];
+  String? QRMacId;
+  bool showsnackBar = false;
+  bool _scanHandled = false;
+
 
   //current date and time for action timeStamp
   DateTime now = DateTime.now();
 
   //context for savelog api
-  late BuildContext _safeContext;
+  // late BuildContext _safeContext;
 
 
   Future<void> requestPermissions() async {
@@ -56,35 +61,61 @@ class _DfuHomePageState extends State<DfuHomePage> {
   }
 
   Future<void> startScan() async {
-    int duration = 20;
+    printFunc("DEMO QRCODE : $QRMacId");
+    const int duration = 10;
+
     await requestPermissions();
     await scanSub?.cancel();
     results.clear();
     isScanning = true;
     setState(() {});
 
-    // ✅ GATT-133 safe scan settings
-    await FlutterBluePlus.startScan(
-      // androidLegacy: true,
-      // androidScanMode: AndroidScanMode.lowLatency,
-      // androidUsesFineLocation: true,
-      timeout: Duration(seconds: duration),
-      // oneByOne: true,
-    );
+    List<ScanResult> latestDevices = [];
+
+    await FlutterBluePlus.startScan(timeout: Duration(seconds: duration));
 
     scanSub = FlutterBluePlus.scanResults.listen((devices) {
-      final filtered = devices.where((d) {
+      latestDevices = devices;
+    });
+
+    // After scan duration, process results
+    Future.delayed(Duration(seconds: duration), () async {
+      await stopScan();
+
+      final filtered = latestDevices.where((d) {
         final name = d.device.platformName.toLowerCase();
         return name.contains("eionic") || name.contains("airbird");
       }).toList();
 
-      setState(() {
+      final match = latestDevices.where(
+            (d) => d.device.remoteId.str.toUpperCase() == QRMacId?.toUpperCase(),
+      ).firstOrNull;
+
+      if (QRMacId == null) {
+        printFunc("No QR — showing filtered devices.");
         results = filtered;
-      });
-    });
-    // Wait for the scan duration to complete, then stop scan
-    Future.delayed(Duration(seconds: duration), () async {
-      await stopScan();
+        setState(() {});
+        return;
+      }
+
+      if (match != null) {
+        printFunc("MATCH FOUND for QR: ${match.device.remoteId.str}");
+        results = [match];
+        QRMacId = null;
+        setState(() {});
+      } else {
+        printFunc("NO MATCH — showing fallback filtered devices.");
+        results = filtered;
+        QRMacId = null;
+        setState(() {});
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("NO DEVICE FOUND"),
+            backgroundColor: darkBg,
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
     });
   }
 
@@ -131,7 +162,11 @@ class _DfuHomePageState extends State<DfuHomePage> {
       onEnablingDfuMode: (address) async {
         debugPrint("🛠️ Enabling DFU mode on: $address");
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("🛠️ Enabling DFU mode on $address")));
+            SnackBar(
+                content: Text("🛠️ Enabling DFU mode on $address" ,style: TextStyle(color: Colors.white),),
+                backgroundColor: darkBg,
+            )
+        );
         if (first) {
           await Future.delayed(const Duration(
               milliseconds: 2000)); // ✅ Allow BLE stack to settle
@@ -198,139 +233,32 @@ class _DfuHomePageState extends State<DfuHomePage> {
           // scanedDevcice = null;
         });
 
-        //savelog API for filed User
-        if (UserData().designationCode.toString() == "2"){
-          printFunc("Savelog API for Field User");
-          printFunc("Time : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)} \n"
-              "DeviceID : ${UserData.instance.UUID} \n"
-              "MacID : ${mac_Id} \n"
-              "Batch : ${widget.SelectedBatch.obj["id"]} \n"
-              "empID : ${UserData.instance.userId} \n"
-              "Status : ${DFUstatus} \n"
-              "Reason : ${DFUreason}");
-
-          if (mounted) {
-            await saveLog(_safeContext,
-                DateAndTime: DateFormat('dd-MM-yyyy hh:mm a').format(now),
-                deviceID: UserData.instance.UUID,
-                macID: mac_Id.toString(),
-                empID: UserData.instance.userId,
-                batchID: widget.SelectedBatch.obj["id"],
-                status: DFUstatus,
-                reason: DFUreason
-            );
-          }
+        if (mounted) {
+          await saveLog(context,//_safeContext,
+              DateAndTime: DateFormat('dd-MM-yyyy hh:mm a').format(now),
+              deviceID: UserData.instance.UUID,
+              macID: mac_Id.toString(),
+              empID: UserData.instance.userId,
+              batchID: widget.SelectedBatch.obj["id"],
+              status: DFUstatus,
+              reason: DFUreason
+          );
         }
 
-        //For Factory User
-        if (UserData().designationCode.toString() == "3") {
-          //apical for get productId by mac
-          //if map has a productId then
-          result = await getProductIdbyMac(context, mac_ID: mac_Id.toString());
-          printFunc("result demo ${result[0]} \n ${result[1]}");
-          bool macaAvailable = result[0];
-          Map<String, dynamic> productId= result[1];
-          printFunc("productIdproductId : ${productId}");
-
-          if(macaAvailable){
-            //Pop-up
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Column(
-                      children: [
-                        Text("PRODUCT-ID FOUND",style: TextStyle(color: darkBg,fontSize: 24,fontWeight: FontWeight.w800,shadows: [Shadow(color: Colors.black,blurRadius: 0.4)]),),
-                        Divider(color: darkBg,thickness: 0.5,)
-                      ],
-                    ),
-                    content: Text(
-                        "This Device is Assign with this ${productId[productId]} Product Id. Do you want too?",style: TextStyle(color: darkBg,fontWeight: FontWeight.w500,),),
-                    actions: [
-                      //Continue btn
-                      ElevatedButton(
-                        onPressed: () async{
-                            //Go back
-                            Navigator.of(context).pop();
-                            printFunc("Savelog API For Factory user");
-                            printFunc("Time : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)} \n"
-                                "DeviceID : ${UserData.instance.UUID} \n"
-                                "MacID : ${mac_Id} \n"
-                                "Batch : ${widget.SelectedBatch.obj["id"]} \n"
-                                "empID : ${UserData.instance.userId} \n"
-                                "Status : ${DFUstatus} \n"
-                                "Reason : ${DFUreason}");
-                            //SaveLog API
-                            if (mounted) {
-                              await saveLog(_safeContext,
-                                  DateAndTime: DateFormat('dd-MM-yyyy hh:mm a').format(now),
-                                  deviceID: UserData.instance.UUID,
-                                  macID: mac_Id.toString(),
-                                  empID: UserData.instance.userId,
-                                  batchID: widget.SelectedBatch.obj["id"],
-                                  status: DFUstatus,
-                                  reason: DFUreason
-                              );
-                            }
-                          },
-                        child: Text("Continue",style: TextStyle(fontSize: 16),),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18)
-                                )
-                            )
-                        ),
-                      ),
-                      //Assign new Btn
-                      ElevatedButton(
-                          onPressed: () {
-                            if (mounted) {
-                              Navigator.push(
-                                _safeContext,
-                                MaterialPageRoute(
-                                    builder: (context) => BluetoothHardwareNumber(
-                                      safecontext:  _safeContext,
-                                      SelectedBatch: widget.SelectedBatch,
-                                      allclients: widget.allClients,
-                                      macID: mac_Id,
-                                    )
-                                ),
-                              );
-                            }
-                          },
-                          child: Text("Assign New",style: TextStyle(fontSize: 16),),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18)
-                                  )
-                              )
-                          ),
-                      )
-                    ],
-                    backgroundColor: second_lightBg,
-
-                  );
-                });
-          }else{
-            if (mounted) {
-              Navigator.push(
-                _safeContext,
-                MaterialPageRoute(
-                    builder: (context) => BluetoothHardwareNumber(
-                      safecontext:  _safeContext,
-                      SelectedBatch: widget.SelectedBatch,
-                      allclients: widget.allClients,
-                      macID: mac_Id,
-                    )
-                ),
-              );
-            }
-          }
-        }
+        setState(() {
+          isDeviceSelected = false;
+        });
+        Navigator.push(
+          context,// _safeContext,
+          MaterialPageRoute(
+              builder: (context) => BluetoothHardwareNumber(
+                safecontext:  context,
+                SelectedBatch: widget.SelectedBatch,
+                allclients: widget.allClients,
+                macID: mac_Id,
+              )
+          ),
+        );
       },
 
 
@@ -416,7 +344,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _safeContext = context;
+    // _safeContext = context;
     if (!isDeviceSelected) {
       scanedDevcice = null;
       percent = null;
@@ -426,6 +354,11 @@ class _DfuHomePageState extends State<DfuHomePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        toolbarHeight: screenSize.height / 11.5,
+        backgroundColor: darkBg,
+        elevation: 5,
+        shadowColor: darkBg,
+        iconTheme: IconThemeData(color: lightBg),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_outlined),
           onPressed: () {
@@ -439,13 +372,42 @@ class _DfuHomePageState extends State<DfuHomePage> {
             }
           },
         ),
-        title: const Text("Optipace - DFU"),
+        title: const Text("DFU Devices"), //Optipace - DFU
         actions: [
           if (!isDeviceSelected)
-            IconButton(
+            isScanning
+                ? Container(
+                    color: darkBg,
+                    margin: EdgeInsets.all(18),
+                    height: 22,
+                    width: 22,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white),
+                      ),
+                    ),
+                  )
+                : IconButton(
               icon: Icon(isScanning ? Icons.pause : Icons.play_arrow),
               onPressed: isScanning ? stopScan : startScan,
             ),
+          if (!isDeviceSelected)
+            IconButton(
+            onPressed: ()async{
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      QRScannerScreen(title: "Scan QR-Code"),
+                ),
+              );
+              QRMacId = result;
+              setState(() {});
+              await startScan();
+            },
+            icon: Icon(Icons.qr_code_2_outlined)
+          ),
           IconButton(
             icon: const Icon(Icons.battery_alert),
             tooltip: 'Battery Optimization',

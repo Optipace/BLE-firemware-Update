@@ -27,8 +27,7 @@ class _PairBatteryState extends State<PairBattery> {
   //for validation
   bool validateFields = false;
 
-  List result =[];
-
+  List result = [];
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +125,7 @@ class _PairBatteryState extends State<PairBattery> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                QRScannerScreen(),
+                                                QRScannerScreen(title: "Scan QR-Code"),
                                           ),
                                         );
                                         if (result != null) {
@@ -218,12 +217,11 @@ class _PairBatteryState extends State<PairBattery> {
                                       hintText: "Enter the MacID",
                                       Controller: _macIdController,
                                       onChanged: (value) {},
-
                                       enable: true,
                                       etext: validateFields &&
-                                          _macIdController.text
-                                              .trim()
-                                              .isEmpty
+                                              _macIdController.text
+                                                  .trim()
+                                                  .isEmpty
                                           ? "Please Enter MAC-Id"
                                           : "",
                                     ),
@@ -245,78 +243,123 @@ class _PairBatteryState extends State<PairBattery> {
                                                       BorderRadius.circular(
                                                           20))),
                                         ),
-                                        onPressed: () async{
-
+                                        onPressed: () async {
                                           validateField();
 
-                                          result = await getBatteryByMac(context, macID: _macIdController.text);
-                                          bool batteryAvailable = result[0];
-                                          Map<String, dynamic> batteryDetail = result[1];
+                                          if(_macIdController.text != null){
+                                            result = await getBatteryByMac(
+                                                context,
+                                                macID: _macIdController.text);
+                                            bool batteryAvailable = result[0];
+                                            Map<String, dynamic> batteryDetail =
+                                            result[1];
 
-                                          printFunc("Demo battery details : ${batteryAvailable} \n ${batteryDetail}");
+                                            printFunc(
+                                                "Demo battery details : ${batteryAvailable} \n ${batteryDetail}");
 
-                                          if(batteryAvailable && batteryDetail.isNotEmpty){
-                                            showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Column(
-                                                      children: [
-                                                        Text("BATTERY FOUND",style: TextStyle(color: darkBg,fontSize: 24,fontWeight: FontWeight.w800,shadows: [Shadow(color: Colors.black,blurRadius: 0.4)]),),
-                                                        Divider(color: darkBg,thickness: 0.5,)
-                                                      ],
-                                                    ),
-                                                    content: Text(
-                                                        "This Device is Paired with this ${batteryDetail['batterySerialNumber']} Battery. Do you want too?"),
-                                                    actions: [
-                                                      //Continue btn
-                                                      ElevatedButton(
+                                            if (batteryAvailable &&
+                                                batteryDetail.isNotEmpty) {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Column(
+                                                        children: [
+                                                          Text(
+                                                            "BATTERY FOUND",
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontSize: 24,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .w800,
+                                                                shadows: [
+                                                                  Shadow(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      blurRadius:
+                                                                      0.4)
+                                                                ]),
+                                                          ),
+                                                          Divider(
+                                                            color: darkBg,
+                                                            thickness: 0.5,
+                                                          )
+                                                        ],
+                                                      ),
+                                                      content: Text(
+                                                          "This Device is Paired with this ${batteryDetail['batterySerialNumber']} Battery. Do you want too?"),
+                                                      actions: [
+                                                        //Continue btn
+                                                        ElevatedButton(
                                                           onPressed: () {
                                                             //Go back
-                                                            ShowSnackBarMessage(context, 'Battery Paired successfully!', true);
-                                                            Navigator.of(context).pop();                                                            //Save Log API
-                                                            Navigator.of(context).pop();                                                            //Save Log API
+                                                            ShowSnackBarMessage(
+                                                                context,
+                                                                'Battery Paired successfully!',
+                                                                true);
+                                                            Navigator.of(context)
+                                                                .pop(); //Save Log API
+                                                            Navigator.of(context)
+                                                                .pop(); //Save Log API
                                                           },
-                                                        child: Text("Continue",style: TextStyle(fontSize: 16),),
-                                                        style: ButtonStyle(
-                                                            backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                                RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(18)
-                                                                )
-                                                            )
+                                                          child: Text(
+                                                            "Continue",
+                                                            style: TextStyle(
+                                                                fontSize: 16),
+                                                          ),
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(
+                                                                  darkBg),
+                                                              shape: MaterialStateProperty.all<
+                                                                  RoundedRectangleBorder>(
+                                                                  RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          18)))),
                                                         ),
-                                                      ),
-                                                      //Assign new Btn
-                                                      ElevatedButton(
+                                                        //Assign new Btn
+                                                        ElevatedButton(
                                                           onPressed: () {
                                                             enableBarCode = true;
-                                                            Navigator.of(context).pop();
-                                                            setState(() {
-
-                                                            });
+                                                            Navigator.of(context)
+                                                                .pop();
+                                                            setState(() {});
                                                           },
-                                                        child: Text("Assign New",style: TextStyle(fontSize: 16),),
-                                                        style: ButtonStyle(
-                                                            backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                                RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(18)
-                                                                )
-                                                            )
-                                                        ),
-                                                      )
-                                                    ],
-                                                  );
-                                                }
-                                                );
-                                          }else if(batteryAvailable && batteryDetail.isEmpty){
-                                            enableBarCode = true;
-                                            ShowSnackBarMessage(context, 'No Battery is Paired!', true);
+                                                          child: Text(
+                                                            "Assign New",
+                                                            style: TextStyle(
+                                                                fontSize: 16),
+                                                          ),
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(
+                                                                  darkBg),
+                                                              shape: MaterialStateProperty.all<
+                                                                  RoundedRectangleBorder>(
+                                                                  RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          18)))),
+                                                        )
+                                                      ],
+                                                    );
+                                                  });
+                                            } else if (!batteryAvailable &&
+                                                batteryDetail.isNotEmpty) {
 
-                                          }else{
-                                            enableBarCode = false;
-                                            _macIdController.clear();
+                                              enableBarCode = true;
+                                              ShowSnackBarMessage(context,
+                                                  'No Battery is Paired!', true);
+                                              setState(() {});
+                                            } else {
+                                              enableBarCode = false;
+                                              _macIdController.clear();
+                                            }
                                           }
 
                                         },
@@ -338,8 +381,7 @@ class _PairBatteryState extends State<PairBattery> {
                                           ],
                                         ),
                                       ),
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                           ),
@@ -388,17 +430,16 @@ class _PairBatteryState extends State<PairBattery> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      QRScannerScreen(),
+                                                      QRScannerScreen(title: "Scan Barcode"),
                                                 ),
                                               );
-                                              printFunc("DEMO RESULT : $result");
+                                              printFunc(
+                                                  "DEMO RESULT : $result");
 
                                               if (result != null) {
                                                 setState(() {
-
                                                   _batteryController.text =
                                                       result;
-
                                                 });
                                               }
                                             },
@@ -500,9 +541,9 @@ class _PairBatteryState extends State<PairBattery> {
                                             onChanged: (value) {},
                                             enable: true,
                                             etext: validateFields &&
-                                                _batteryController.text
-                                                    .trim()
-                                                    .isEmpty
+                                                    _batteryController.text
+                                                        .trim()
+                                                        .isEmpty
                                                 ? "Please Enter Battery Serial number"
                                                 : "",
                                           ),
@@ -517,30 +558,29 @@ class _PairBatteryState extends State<PairBattery> {
                                     child: ElevatedButton(
                                       style: ButtonStyle(
                                         backgroundColor:
-                                        MaterialStateProperty.all<
-                                            Color>(darkBg),
+                                            MaterialStateProperty.all<Color>(
+                                                darkBg),
                                         shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
+                                                RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
                                                 borderRadius:
-                                                BorderRadius.circular(
-                                                    20))),
+                                                    BorderRadius.circular(20))),
                                       ),
-                                      onPressed: () async{
+                                      onPressed: () async {
                                         //After this everything goes to the server
                                         validateField();
-                                        printFunc("MacID : ${_macIdController.text} \n Battery SErial number : ${_batteryController.text}");
-                                        if(!validateFields){
+                                        printFunc(
+                                            "MacID : ${_macIdController.text} \n Battery SErial number : ${_batteryController.text}");
+                                        if (!validateFields) {
                                           await saveMacandBattery(context,
                                               macId: _macIdController.text,
-                                              BatterySerialNo: _batteryController.text
-                                          );
+                                              BatterySerialNo:
+                                                  _batteryController.text);
                                         }
                                         setState(() {});
                                       },
                                       child: Text(
                                         "SUBMIT",
-
                                         style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
@@ -551,7 +591,6 @@ class _PairBatteryState extends State<PairBattery> {
                                     ),
                                   ),
                                 ),
-
                               ],
                             ),
                           )
@@ -567,25 +606,13 @@ class _PairBatteryState extends State<PairBattery> {
   }
 
   void validateField() {
-    final Controllers = [
-    _macIdController,
-    _batteryController
-  ];
-  bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
-  setState(() {
-    validateFields = hasEmpty;
-  });
-
-  // Future Delayed
-
-  Future.delayed(Duration(seconds: 3), () {
+    final Controllers = [_macIdController, _batteryController];
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
-      validateFields = false;
+      validateFields = hasEmpty;
     });
-  });
-
   }
-
 
   @override
   void dispose() {

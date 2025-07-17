@@ -376,7 +376,7 @@ class AdminLogsState extends State<AdminLogs> {
                             child: Row(
                               children: [
                                 SizedBox(width: 5,),
-                                Text("Number of devices failed to flash : 23 ",
+                                Text("Number of devices Flashed : 23 ",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16

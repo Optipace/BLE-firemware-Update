@@ -131,7 +131,7 @@ class listOverviewState extends State<listOverview> {
           elevation: 5,
           shadowColor: darkBg,
         ),
-        backgroundColor: lightBg,
+        backgroundColor: Colors.white, //Color(0xFFEAF1FB)
         body: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -143,36 +143,61 @@ class listOverviewState extends State<listOverview> {
                 Container(
                   width: screenSize.width,
                   child: ExpansionTile(
-                    backgroundColor: Colors.white,
-                    collapsedBackgroundColor: Colors.transparent,
-                    iconColor: darkBg,
-                    textColor: Colors.black,
-                    collapsedIconColor: darkBg,
+                    backgroundColor: backgroundColorTile,
+                    collapsedBackgroundColor: collapsedBackgroundColorTile,
+                    iconColor: iconColorTile,
+                    textColor: textColorTile,
+                    collapsedTextColor: collapsedTextColorTile,
+                    collapsedIconColor: collapsedIconColorTile,
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: darkBg, width: 0.3),
+                      side: BorderSide(color: borderTile, width: 2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     collapsedShape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.transparent, width: 0.3),
-                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(color: borderTile, width: 2),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                    tilePadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                     childrenPadding: EdgeInsets.symmetric(horizontal: 5),
                     expandedAlignment: Alignment.center,
                     title: Text(
                       "Firmware",
                       style: TextStyle(
-                        color: darkBg,
                         fontFamily: baseFont,
                         fontWeight: FontWeight.w700,
                         fontSize: 24,
                         shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
                       ),
                     ),
+
                     children: [
                       Divider(
                         color: Colors.grey,
-                        thickness: 2,
+                        thickness: 1.5,
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                          child: Text(
+                            "Number of FirmWare : ${firmList.length}",
+                            style: TextStyle(
+                              color: darkBg,
+                              fontFamily: baseFont,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                            ),
+                          ),
+                        ),
+
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 1.5,
+                        ),
                       ),
                       ...firmList.entries.map((entry) {
                         printFunc("FirmWAre df : ${entry.value["active"]}");
@@ -927,20 +952,21 @@ class listOverviewState extends State<listOverview> {
 
                 // List of config
                 ExpansionTile(
-                  backgroundColor: second_lightBg.withOpacity(0.8),
-                  collapsedBackgroundColor: Colors.transparent,
-                  iconColor: darkBg,
-                  textColor: Colors.black,
-                  collapsedIconColor: darkBg,
+                  backgroundColor: backgroundColorTile,
+                  collapsedBackgroundColor: collapsedBackgroundColorTile,
+                  iconColor: iconColorTile,
+                  textColor: textColorTile,
+                  collapsedTextColor: collapsedTextColorTile,
+                  collapsedIconColor: collapsedIconColorTile,
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(color: darkBg, width: 1.5),
-                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(color: borderTile, width: 1),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   collapsedShape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.transparent, width: 0.3),
-                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(color: borderTile, width: 2),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                  tilePadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                   childrenPadding: EdgeInsets.symmetric(
                     horizontal: 10,
                   ),
@@ -955,6 +981,34 @@ class listOverviewState extends State<listOverview> {
                     ),
                   ),
                   children: [
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 1.5,
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                        child: Text(
+                          "Number of Batteries : ${batteryList.length}",
+                          style: TextStyle(
+                            color: darkBg,
+                            fontFamily: baseFont,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                          ),
+                        ),
+                      ),
+
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1.5,
+                      ),
+                    ),
                     ...batteryList.entries.map((e) {
                       printFunc("...batteryList.entries.map((e) { ->\n$e");
                       final profiles = e.value["configuration"] ?? [];
@@ -1094,6 +1148,34 @@ class listOverviewState extends State<listOverview> {
                                       childrenPadding: EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 10),
                                       children: [
+                                        Divider(
+                                          color: Colors.grey,
+                                          thickness: 1.5,
+                                        ),
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                            child: Text(
+                                              "Number of Config's : ${profiles.length}",
+                                              style: TextStyle(
+                                                color: darkBg,
+                                                fontFamily: baseFont,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 18,
+                                                shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                                              ),
+                                            ),
+                                          ),
+
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                          child: Divider(
+                                            color: Colors.grey,
+                                            thickness: 1.5,
+                                          ),
+                                        ),
                                         ...profiles.map((profile) {
                                           printFunc(
                                               "PROFILE df ${profile["active"]}");
@@ -1838,20 +1920,20 @@ class listOverviewState extends State<listOverview> {
 
                 // List of Batches
                 ExpansionTile(
-                  backgroundColor: Colors.white,
-                  collapsedBackgroundColor: Colors.transparent,
-                  iconColor: darkBg,
-                  textColor: Colors.black,
-                  collapsedIconColor: darkBg,
+                  backgroundColor: backgroundColorTile,
+                  collapsedBackgroundColor: collapsedBackgroundColorTile,
+                  iconColor: iconColorTile,
+                  textColor: textColorTile,
+                  collapsedIconColor: collapsedIconColorTile,
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(color: darkBg, width: 0.3),
-                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(color: borderTile, width: 1),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   collapsedShape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.transparent, width: 0.3),
+                    side: BorderSide(color: borderTile, width: 2),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                  tilePadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                   childrenPadding: EdgeInsets.symmetric(horizontal: 5),
                   title: Text(
                     "Batches",
@@ -1864,6 +1946,34 @@ class listOverviewState extends State<listOverview> {
                     ),
                   ),
                   children: [
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 1.5,
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                        child: Text(
+                          "Number of Batches : ${batchList.length}",
+                          style: TextStyle(
+                            color: darkBg,
+                            fontFamily: baseFont,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            shadows: [Shadow(color: Colors.black, blurRadius: 0.2)],
+                          ),
+                        ),
+                      ),
+
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1.5,
+                      ),
+                    ),
                     ...batchList.map((batch) {
                       // printFunc("DEMO BATCH : ${batch}");
                       // batch

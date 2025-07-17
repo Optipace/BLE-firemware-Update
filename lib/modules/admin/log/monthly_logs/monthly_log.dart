@@ -79,6 +79,150 @@ class Monthly_log extends StatelessWidget{
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: darkBg,
+                        width: 1.5
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.devices,color: darkBg,),
+                            SizedBox(width: 10,),
+                            Text("03",
+                              style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w500,
+                                  color: darkBg,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black,
+                                        blurRadius: 0.5
+                                    )
+                                  ]
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        Text("Total Devices Flashed",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300,
+                              color: darkBg,
+                              shadows: [
+                                Shadow(
+                                    color: Colors.black,
+                                    blurRadius: 0.5
+                                )
+                              ]
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10,),
+                          Divider(color: darkBg,),
+                          SizedBox(height: 10,)
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(CupertinoIcons.device_phone_portrait,size: 22,color: SuccessCardText,),
+                                SizedBox(width: 5,),
+                                Text("01",
+                                  style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w500,
+                                      color: SuccessCardText,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.5
+                                        )
+                                      ]
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+                            Text("Total Successful Devices",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w300,
+                                  color: SuccessCardText,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black,
+                                        blurRadius: 0.5
+                                    )
+                                  ]
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.device_unknown,size: 24,color: FailureCardText,),
+                                SizedBox(width: 5,),
+                                Text("02",
+                                  style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w500,
+                                      color: FailureCardText,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.5
+                                        )
+                                      ]
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+                            Text("Total Failed Devices",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w300,
+                                  color: FailureCardText,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black,
+                                        blurRadius: 0.5
+                                    )
+                                  ]
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               ...monthlylogs(),
             ],
           ),

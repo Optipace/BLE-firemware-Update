@@ -22,8 +22,8 @@ class ApiHeaders {
 }
 
 class ApiEndpoints {
-  static const String _devBaseUrl = 'http://192.168.130.138:8080';
-  static const String _prodBaseUrl = 'http://192.168.130.138:8080';
+  static const String _devBaseUrl = 'http://10.118.170.132:8080';//192.168.130.138:8080';
+  static const String _prodBaseUrl = 'http://10.118.170.132:8080';
   static const bool _isProd = true;
 
   static String get baseUrl => _isProd ? _prodBaseUrl : _devBaseUrl;
@@ -98,7 +98,7 @@ class ApiService {
     bool isRetry = false, // prevents infinite loop
   }) async {
     final url = Uri.parse('${ApiEndpoints.baseUrl}$endpoint');
-
+    printFunc("DEMO URL : ${url} ");
     Map<String, String> headers = {}; // placeholder, assign later
 
     http.Response response;
@@ -134,7 +134,7 @@ class ApiService {
         throw Exception('Unsupported HTTP method: $method');
       }
       if (showLoader && Navigator.canPop(context)) {
-        Navigator.pop(context);
+        Navigator.of(context,rootNavigator: true).pop();
       }
       final responseBody = jsonDecode(response.body);
       printFunc(
@@ -238,7 +238,9 @@ class ApiService {
         ShowSnackBarMessage(context, 'Logout failed.', false);
       }
     } catch (e) {
-      ShowSnackBarMessage(context, 'Error logging out: $e', false);
+      //Commented due to widget'a ancestor's error
+      /*ShowSnackBarMessage(context, 'Error logging out: $e', false);*/
+      printFunc("Error Lgging Out : $e");
     } finally {
       // Clear user data always
       UserData.instance.clear();
