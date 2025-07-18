@@ -103,6 +103,8 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await PIDforFactoryUser();
+      scanAndConnect();
+
     });
     setState(() {
       batteryTypeCtrl.text = "6";
@@ -130,7 +132,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
   Future<bool> _onWillPop() async {
     await disconnect();
-
 
     return false; // Block default system back button
   }
@@ -214,35 +215,53 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                   color: second_lightBg,
                                   height: 25,
                                   width: 25,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.grey),
+                                  child:  Center(
+                                    child: InkWell(onTap:() async {
+                                      await FlutterBluePlus.stopScan();
+                                      setState(() {
+                                        NotConnected = false;
+                                        enableSubmit = true;
+                                      });
+
+                                    } ,
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                            Colors.grey),
+                                      ),
                                     ),
                                   ),
                                 )
                               : ElevatedButton(
                                   onPressed: enableSubmit
-                                      ? (){}
+                                      ? () {
+                                    setState(() {
+                                      NotConnected = true;
+                                      // enableSubmit = true;
+                                    });
+                                  }
                                       : () {
-                                    // NotConnected = true;
-                                    scanAndConnect();
-                                    setState(() {});
-                                  },
+                                          // NotConnected = true;
+                                          scanAndConnect();
+                                          setState(() {});
+                                        },
                                   child: enableSubmit
                                       ? Text("Connected")
                                       : Text("Connect"),
                                   style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(darkBg),
-                              elevation: MaterialStateProperty.all(5),
-                              shadowColor: MaterialStateProperty.all(darkBg),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10), side: BorderSide(color: darkBg, width: 1)),
-                              ),
-                            ),
-
-                          ),
+                                    backgroundColor:
+                                        MaterialStateProperty.all(darkBg),
+                                    elevation: MaterialStateProperty.all(5),
+                                    shadowColor:
+                                        MaterialStateProperty.all(darkBg),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          side: BorderSide(
+                                              color: darkBg, width: 1)),
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -291,7 +310,8 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                               tail: ErrorContainer(
                                   show: _validateDropDown &&
                                       HardWareNumber.getText == "",
-                                  errorMsg: "Please Select the HardWare Number"),
+                                  errorMsg:
+                                      "Please Select the HardWare Number"),
                               mainText: "Select HardWare Number",
                               text: HardWareNumber.Text != ""
                                   ? HardWareNumber.getText
@@ -349,33 +369,38 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                         ],
                       )),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 20,top: 15),
+                    padding: EdgeInsets.only(bottom: 20, top: 15),
                     child: ElevatedButton(
                       onPressed: enableSubmit
                           ? () async {
-                        ValidateDropDown(HardWareNumber, ClientName);
-                        await deleteByHardWareNumber();
-                        AddedSuccess(HardWareNumber, ClientName);
-                        if (await sendConfig()) {
-                          saveHardware(context,
-                              macId: widget.macID.toString(),
-                              BatchId: widget.SelectedBatch?.obj['id'],
-                              productId: HardWareNumber.obj['id'].toString());
-                          await Future.delayed(Duration(seconds: 2));
-                          await sendVoltageThresholds();
-                          await Future.delayed(Duration(seconds: 3));
-                          await disconnect();
-                          Navigator.of(context).pop();
-                        }else{
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Configuration Not sent")));
-                          await disconnect();
-                          Navigator.of(context,rootNavigator: true).pop();
-                        }
-                        printFunc("MacID : ${widget.macID}  \n"
-                            "batchId :${widget.SelectedBatch?.obj['id']} \n"
-                            "ProductId :${HardWareNumber.obj['id']} \n");
-                      }
-                          : (){},
+                              ValidateDropDown(HardWareNumber, ClientName);
+                              await deleteByHardWareNumber();
+                              AddedSuccess(HardWareNumber, ClientName);
+                              if (await sendConfig()) {
+                                saveHardware(context,
+                                    macId: widget.macID.toString(),
+                                    BatchId: widget.SelectedBatch?.obj['id'],
+                                    productId:
+                                        HardWareNumber.obj['id'].toString());
+                                await Future.delayed(Duration(seconds: 2));
+                                await sendVoltageThresholds();
+                                await Future.delayed(Duration(seconds: 3));
+                                await disconnect();
+                                Navigator.of(context).pop();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text("Configuration sent")));
+                                await disconnect();
+                                // Navigator.of(context, rootNavigator: true)
+                                //     .pop();
+                              }
+                              printFunc("MacID : ${widget.macID}  \n"
+                                  "batchId :${widget.SelectedBatch?.obj['id']} \n"
+                                  "ProductId :${HardWareNumber.obj['id']} \n");
+                            }
+                          : () {},
                       style: ButtonStyle(
                         backgroundColor: enableSubmit
                             ? MaterialStateProperty.all(darkBg)
@@ -384,7 +409,8 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                         shadowColor: MaterialStateProperty.all(darkBg),
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25), side: BorderSide(color: darkBg, width: 1)),
+                              borderRadius: BorderRadius.circular(25),
+                              side: BorderSide(color: darkBg, width: 1)),
                         ),
                       ),
                       child: Container(
@@ -392,7 +418,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                         width: screenSize.width / 2.5,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          child:Text(
+                          child: Text(
                             "Submit",
                             maxLines: 1,
                             style: TextStyle(
@@ -402,16 +428,15 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
                               fontFamily: baseFont,
-                              shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
+                              shadows: [
+                                Shadow(color: Colors.black, blurRadius: 0.1)
+                              ],
                               overflow: TextOverflow.visible,
                             ),
-                          )
-                          ,
+                          ),
                         ),
                       ),
-
                     ),
-
                   )
                 ],
               )),
@@ -573,6 +598,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       await box.delete(keyToDelete);
     }
   }
+
   /////////////  End of Hardware number /////////////////////
 
   ///////////// Wrinting on device ////////////////////
@@ -607,14 +633,13 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     //Scanning the device and returing
     device = await scanDeviceByMACId(widget.macID.toString());
 
-    if(device != null){
+    if (device != null) {
       bool connected = await connectToDevice(device!);
-      if(connected){
-        if(device!.isConnected){
+      if (connected) {
+        if (device!.isConnected) {
           List<BluetoothService> services = await device!.discoverServices();
           print("Total Services Found: ${services.length}");
           print("Total Services Found1: ${services}");
-
 
           //for Printing
           for (var service in services) {
@@ -643,7 +668,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
               }
             }
           }
-
         }
         setState(() {
           status = "Connected";
@@ -651,24 +675,30 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
           enableSubmit = true;
           deviceName = device!.advName;
         });
-      }else{
+      } else {
         printFunc("Connection Failed!!");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Connection Failed",style: TextStyle(color: Colors.white)),backgroundColor:  Colors.redAccent,));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text("Connection Failed", style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.redAccent,
+        ));
         setState(() {
           NotConnected = false;
         });
       }
-    }else{
+    } else {
       printFunc("${widget.macID} is not found");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${widget.macID} is not found",style: TextStyle(color: Colors.white),),backgroundColor: Colors.redAccent,));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "${widget.macID} is not found",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.redAccent,
+      ));
       setState(() {
         NotConnected = false;
       });
     }
-
-
-
-
 
     // scanning Start
     // I need to call the scan method and get the device
@@ -767,6 +797,9 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       setState(() {});
     });
     */
+    setState(() {
+      NotConnected = false;
+    });
   }
 
   Future<void> disconnect() async {
@@ -895,7 +928,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     super.dispose();
   }
 }
-
 
 //Submit BTN
 /*manageUserBtn(

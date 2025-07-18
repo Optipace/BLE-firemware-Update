@@ -25,6 +25,7 @@ Future<List<dynamic>> getProductIdbyMac(BuildContext context,{required String ma
         }
       },
       errorDisplay: false,
+    showLoader: false,
   );
   return [isSuccess, productIdDetails];
 }

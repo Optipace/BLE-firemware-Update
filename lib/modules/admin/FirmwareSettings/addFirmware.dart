@@ -1138,9 +1138,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       setValidator(false);
     }
 
-    Future.delayed(Duration(seconds: 3), () {
-      setValidator(false);
-    });
+    // Future.delayed(Duration(seconds: 3), () {
+    //   setValidator(false);
+    // });
   }
 
   Future<void> pickPdfAndConvertToBase64() async {
