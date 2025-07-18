@@ -357,8 +357,8 @@ class _PairBatteryState extends State<PairBattery> {
                                                   'No Battery is Paired!', true);
                                               setState(() {});
                                             } else {
-                                              enableBarCode = false;
-                                              _macIdController.clear();
+                                              enableBarCode = true;
+                                              // _macIdController.clear();
                                             }
                                           }
 
