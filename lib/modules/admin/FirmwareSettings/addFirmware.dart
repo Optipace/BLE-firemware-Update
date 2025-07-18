@@ -901,7 +901,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             color: darkBg,
                           ),
                           press: () async {
-                            firmwareList["dweselct"]={"id":Null};
                             await BottomSheet_Widget(context, [
                               MapListItemBuilder(
                                 listItems: firmwareList,
@@ -1013,7 +1012,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           context,
                           config: _config.obj["id"].toString().trim(),
                           firmware: _firmware.obj["id"].toString().trim(),
-                          batchName: _batchDescription.text.trim(),
+                          batchName: _batchName.text.trim(),
                           description: _batchDescription.text.trim(),
                         )) {
                           clearBatch();
