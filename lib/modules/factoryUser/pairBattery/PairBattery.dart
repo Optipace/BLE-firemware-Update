@@ -438,6 +438,8 @@ class _PairBatteryState extends State<PairBattery> {
                                             setState(() {});
                                           } else {
                                             enableBarCode = true;
+
+
                                           }
                                         },
                                         child: Row(
