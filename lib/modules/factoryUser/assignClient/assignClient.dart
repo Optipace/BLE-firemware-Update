@@ -546,7 +546,7 @@ class _AssignClientState extends State<AssignClient> {
                                     printFunc("DEMO DEMO ClientName : ${ClientName.getobj['code'].toString()}");
                                     validateFields();
                                     if(!validateFileds){
-                                      await scanAndConnect();
+                                       await scanAndConnect();
                                       isCustomerIDSent = await sendCustomerID(ClientName.getobj['code'].toString());
                                      if(isCustomerIDSent){
                                        await disconnect();
@@ -574,7 +574,7 @@ class _AssignClientState extends State<AssignClient> {
                               ),
                             )
                             : SizedBox(),
-                            
+
                           ],
                         ),
                       ),
