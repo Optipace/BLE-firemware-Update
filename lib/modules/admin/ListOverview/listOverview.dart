@@ -61,14 +61,14 @@ class listOverviewState extends State<listOverview> {
   List<Map<String, dynamic>> allConfigList = [{}];
 
   DataController SelectedBatch = DataController();
-  var obj = {
-    "id": "9",
-    "name": "AirBird Batch-02",
-    "description": "AirBird Batch-02",
-    "firmware": {"id": "13", "version": "AB2.0.0", "releaseNote": "", "versionName": "AB2.0.0", "deviceTypeId": "1", "file": "/data/user/0/com.example.tracker_firmware/app_flutter/AirBird Batch-02.zip", "saved": "true", "deviceType":"" },
-    "profile": {"id": "8", "name": "AirBird -02", "releaseNote": "", "uT": "23", "uV": "21", "lT": "12", "lV": "14", "saved": "true", "deviceTypeId": "1", "deviceType": "1"},
-    "saved": "true"
-  };
+  // var obj = {
+  //   "id": "9",
+  //   "name": "AirBird Batch-02",
+  //   "description": "AirBird Batch-02",
+  //   "firmware": {"id": "13", "version": "AB2.0.0", "releaseNote": "", "versionName": "AB2.0.0", "deviceTypeId": "1", "file": "/data/user/0/com.example.tracker_firmware/app_flutter/AirBird Batch-02.zip", "saved": "true", "deviceType":"" },
+  //   "profile": {"id": "8", "name": "AirBird -02", "releaseNote": "", "uT": "23", "uV": "21", "lT": "12", "lV": "14", "saved": "true", "deviceTypeId": "1", "deviceType": "1"},
+  //   "saved": "true"
+  // };
   String macID = "DB:66:15:AE:7E:51";
 
   Map<String, List<Map<String, dynamic>>> profileListMap = {};
@@ -101,14 +101,14 @@ class listOverviewState extends State<listOverview> {
         //   profileListMap[key] = profiles;
         setState(() { });
       }
-      printFunc("DEMO DEMO DEMO : ${batchList}");
+      print("DEMO DEMO DEMO : ${batchList}");
       setState(() {});
     });
     setState(() {
-      SelectedBatch.setobj = obj;
+      // SelectedBatch.setobj = obj;
 
     });
-    printFunc("DEMO SELECTED BATCH : ${SelectedBatch.obj}");
+    // printFunc("DEMO SELECTED BATCH : ${SelectedBatch.obj}");
 
   }
 
@@ -1097,7 +1097,7 @@ class listOverviewState extends State<listOverview> {
                                         Row(
                                           children: [
                                             Text(
-                                              "Description : ",
+                                              "Battery-Code : ",
                                               style: tileTextStyle,
                                             ),
                                             Container(
@@ -1207,7 +1207,7 @@ class listOverviewState extends State<listOverview> {
                                                                   0.95,
                                                               height: screenSize
                                                                       .height /
-                                                                  1.8,
+                                                                  1.5,
                                                               decoration:
                                                                   BoxDecoration(
                                                                 borderRadius:
@@ -1482,6 +1482,68 @@ class listOverviewState extends State<listOverview> {
                                                                                       ),
                                                                                     ],
                                                                                   ),
+                                                                                ],
+                                                                              ),
+                                                                              SizedBox(height: 15,),
+                                                                              Row(
+                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                children: [
+                                                                                  Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                    children: [
+                                                                                      // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                                                                      Text("N. Voltage", style: titleTileStyle),
+
+                                                                                      // Upper Threshold
+                                                                                      SizedBox(height: 5),
+                                                                                      Row(
+                                                                                        children: [
+                                                                                          Icon(Icons.battery_charging_full_outlined, size: 18, color: secondaryText),
+                                                                                          SizedBox(width: 5),
+                                                                                          Text(
+                                                                                            // "${profile['upperThreshold']} V",
+                                                                                            "4.2 V",
+                                                                                            style: tileTextStyle,
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                  SizedBox(width: 20),
+                                                                                  Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                    children: [
+                                                                                      // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                                                                      Text(
+                                                                                        "U.Temp",
+                                                                                        style: titleTileStyle,
+                                                                                      ),
+                                                                                      // Upper Voltage
+                                                                                      SizedBox(height: 5),
+                                                                                      Text(
+                                                                                        // "${profile['upperVoltage']} V",
+                                                                                          "24 ' C",
+                                                                                          style: tileTextStyle),
+                                                                                    ],
+                                                                                  ),
+                                                                                  SizedBox(width: 20),
+                                                                                  Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                    children: [
+                                                                                      // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                                                                      Text(
+                                                                                        "L.Temp",
+                                                                                        style: titleTileStyle,
+                                                                                      ),
+                                                                                      // Lower Threshold
+                                                                                      SizedBox(height: 5),
+                                                                                      Text(
+                                                                                        "17 ' C",
+                                                                                        style: tileTextStyle,
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+
                                                                                 ],
                                                                               ),
                                                                             ],
@@ -1794,9 +1856,9 @@ class listOverviewState extends State<listOverview> {
                                                   height: 8,
                                                 ),
                                                 // Relase Note
-                                                LabelText(text: "Description"),
+                                                LabelText(text: "Battery Code"),
                                                 TextFeildNewUser(
-                                                  hintText: "Enter Information",
+                                                  hintText: "Enter Battery Code",
                                                   Controller: _batteryDescription,
                                                   onChanged: (value) {},
                                                   enable: true,
@@ -1804,7 +1866,7 @@ class listOverviewState extends State<listOverview> {
                                                           _batteryDescription.text
                                                               .trim()
                                                               .isEmpty
-                                                      ? "Please Enter Information"
+                                                      ? "Please Enter Battery Code"
                                                       : "",
                                                 ),
 
@@ -1975,7 +2037,7 @@ class listOverviewState extends State<listOverview> {
                       ),
                     ),
                     ...batchList.map((batch) {
-                      // printFunc("DEMO BATCH : ${batch}");
+                      printFunc("DEMO BATCH : ${batch}");
                       // batch
                       final batchId = batch['id'] ?? '';
                       final batchname = batch['name'] ?? '';
@@ -1992,6 +2054,9 @@ class listOverviewState extends State<listOverview> {
                           batch['profile']?['lT'] ?? 'N/A';
                       final configUpVolt = batch['profile']?['uV'] ?? 'N/A';
                       final configLowVolt = batch['profile']?['lV'] ?? 'N/A';
+                      final configNominalVolt = batch['profile']?['nV'] ?? 'N/A';
+                      final configUpperTemp = batch['profile']?['uTemp'] ?? 'N/A';
+                      final configLowerTemp = batch['profile']?['lTemp'] ?? 'N/A';
 
                       // Firmware
                       final firmwareId = batch['firmware']?['id'] ?? 'N/A';
@@ -2019,7 +2084,7 @@ class listOverviewState extends State<listOverview> {
                                               width: 0.5, color: darkBg)),
                                       child: Container(
                                         width: screenSize.width * 0.8,
-                                        height: screenSize.height / 1.5,
+                                        height: screenSize.height / 1.3,
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(15),
@@ -2471,6 +2536,93 @@ class listOverviewState extends State<listOverview> {
                                                                         ),
                                                                       ],
                                                                     ),
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 15,),
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                                                        Text(
+                                                                          "N. Volt",
+                                                                          style:
+                                                                              titleTileStyle,
+                                                                        ),
+
+                                                                        // Upper Threshold
+                                                                        SizedBox(
+                                                                            height:
+                                                                                5),
+                                                                        Row(
+                                                                          children: [
+                                                                            Icon(Icons.battery_charging_full_outlined,
+                                                                                size: 18,
+                                                                                color: darkBg),
+                                                                            SizedBox(width: 5),
+                                                                            Text(
+                                                                              "${configNominalVolt} V",
+                                                                              style: tileTextStyle,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            20),
+                                                                    Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                                                        Text(
+                                                                          "U.Temp",
+                                                                          style:
+                                                                              titleTileStyle,
+                                                                        ),
+                                                                        // Upper Voltage
+                                                                        SizedBox(
+                                                                            height:
+                                                                                5),
+                                                                        Text(
+                                                                          "${configUpperTemp} \' C",
+                                                                          style: tileTextStyle,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            20),
+                                                                    Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                                                        Text(
+                                                                          "L.Temp",
+                                                                          style:
+                                                                              titleTileStyle,
+                                                                        ),
+                                                                        // Lower Threshold
+                                                                        SizedBox(
+                                                                            height:
+                                                                                5),
+                                                                        Text(
+                                                                          "${configLowThershold} \' C",
+                                                                          style: tileTextStyle,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+
                                                                   ],
                                                                 ),
                                                               ],

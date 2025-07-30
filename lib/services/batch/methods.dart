@@ -5,55 +5,65 @@ import 'dart:typed_data';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+// import 'package:tracker_firmware/Const_TermAndFunction/entity/BatteryModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/battery_model.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart';
+// import 'package:tracker_firmware/Const_TermAndFunction/entity/batteryModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 // --------------------- This is not Used ------------------------------
-Future<void> saveBatchListToHive(List<Map<String, dynamic>> batchList) async {
-  final batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
-
-  for (var series in batchList) {
-    var firmware = series["firmware"];
-    var profile = series["profile"];
-
-    printFunc("DEMODEMODEMO path : ${firmware['file']}");
-    // Convert base64 into Zip
-
-    FirmwareModel firmwareModel = FirmwareModel(
-        id: firmware['id'],
-        version: firmware['version'],
-        releaseNote: firmware['releaseNote'],
-        versionName: firmware['versionName'],
-        deviceTypeId: firmware['deviceTypeId'],
-        file: firmware['file'],
-        saved: true,
-        deviceType: firmware['deviceType']);
-    ProfileModel profileModel = ProfileModel(
-      id: profile['id'] ?? 0,
-      name: profile['name'] ?? '',
-      releaseNote: profile['releaseNote'] ?? '',
-      uT: profile['uT'] ?? '',
-      uV: profile['uV'] ?? '',
-      lT: profile['lT'] ?? '',
-      lV: profile['lV'] ?? '',
-      saved: true,
-      deviceTypeId: profile['deviceTypeId'] ?? '',
-      deviceType: profile['deviceType'] ?? '',
-    );
-    var batchModel = BatchModel(
-      batchId: series['id'],
-      batchName: series['name'],
-      batchDescription: series['description'],
-      firmware: firmwareModel,
-      profile: profileModel,
-      saved: true,
-    );
-
-    await batchBox.put(series['id'], batchModel);
-  }
-}
+// Future<void> saveBatchListToHive(List<Map<String, dynamic>> batchList) async {
+//   final batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
+//
+//   for (var series in batchList) {
+//     var firmware = series["firmware"];
+//     var profile = series["profile"];
+//
+//     printFunc("DEMODEMODEMO path : ${firmware['file']}");
+//     // Convert base64 into Zip
+//
+//     FirmwareModel firmwareModel = FirmwareModel(
+//         id: firmware['id'],
+//         version: firmware['version'],
+//         releaseNote: firmware['releaseNote'],
+//         versionName: firmware['versionName'],
+//         deviceTypeId: firmware['deviceTypeId'],
+//         file: firmware['file'],
+//         saved: true,
+//         deviceType: firmware['deviceType']);
+//     ProfileModel profileModel = ProfileModel(
+//       id: profile['id'] ?? 0,
+//       name: profile['name'] ?? '',
+//       releaseNote: profile['releaseNote'] ?? '',
+//       uT: profile['uT'] ?? '',
+//       uV: profile['uV'] ?? '',
+//       lT: profile['lT'] ?? '',
+//       lV: profile['lV'] ?? '',
+//       saved: true,
+//       deviceTypeId: profile['deviceTypeId'] ?? '',
+//       deviceType: profile['deviceType'] ?? '',
+//     );
+//
+//     BatteryModel Battery = BatteryModel(
+//         id: '',
+//         batteryName: '',
+//         batteryCode: ''
+//     );
+//     // var batchModel = BatchModel(
+//     //   batchId: series['id'],
+//     //   batchName: series['name'],
+//     //   batchDescription: series['description'],
+//     //   firmware: firmwareModel,
+//     //   profile: profileModel,
+//     //   battery: Battery,
+//     //   saved: true,
+//     // );
+//
+//     // await batchBox.put(series['id'], batchModel);
+//   }
+// }
 // -------------------------not used -----------------------------------
 
 Future<bool> addBatch(BatchModel newBatch) async {
@@ -78,11 +88,12 @@ Future<bool> addBatch(BatchModel newBatch) async {
     saved: true,
     firmware: newBatch.firmware,
     profile: newBatch.profile,
+    battery: newBatch.battery,
   );
 
   // Save to box
   await batchBox.put(newBatch.batchId, batch);
-  print(
+  printFunc(
       "Series ${newBatch.batchId} created and batch ${newBatch.batchName} added. ${newBatch.firmware.file}");
 
   return true;
@@ -104,13 +115,31 @@ Future<String> saveBase64ZipToFile(String base64String, String fileName) async {
     File zipFile = File(filePath);
     await zipFile.writeAsBytes(zipBytes);
 
-    print('✅ ZIP saved to: $filePath');
+    printFunc('ZIP saved to: $filePath');
     return filePath;
   } catch (e) {
-    print('❌ Error saving ZIP: $e');
+    printFunc('Error saving ZIP: $e');
     return "";
   }
 }
+
+
+Future<List<Map<String, dynamic>>> getAllBatchFromHive() async {
+  final box = await Hive.openBox<BatchModel>('$batchHiveBox');
+
+  return box.values.map((series) {
+    return {
+      "id": series.batchId,
+      "name": series.batchName,
+      "description": series.batchDescription,
+      "saved": series.saved,
+      "firmware": series.firmware.toJson(),
+      "profile": series.profile.toJson(),
+    };
+  }).toList();
+}
+
+
 
 // to add one by one
 /*
@@ -127,17 +156,3 @@ final newBatch = BatchModel(
 // {
 //
 // }
-Future<List<Map<String, dynamic>>> getAllBatchFromHive() async {
-  final box = await Hive.openBox<BatchModel>('$batchHiveBox');
-
-  return box.values.map((series) {
-    return {
-      "id": series.batchId,
-      "name": series.batchName,
-      "description": series.batchDescription,
-      "saved": series.saved,
-      "firmware": series.firmware.toJson(),
-      "profile": series.profile.toJson(),
-    };
-  }).toList();
-}

@@ -15,25 +15,40 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
       shadows: [Shadow(color: Colors.black)]);
 }
 
-List<Widget> factoryUserLog() {
-  var factoryLogs = getFactoryLogs();
-  var sortedFactoryLogs = sortByStatus(factoryLogs);
-  List<Widget> factoryUsersList = [];
+class FactoryLog extends StatefulWidget {
+  List<Map<String,dynamic>> FactoryLogs;
+  Map<String, dynamic> FactoryLogsCounts;
+  FactoryLog({
+    super.key,
+    required this.FactoryLogsCounts,
+    required this.FactoryLogs
+  });
 
-  for (int index = 0; index < sortedFactoryLogs.length; index++) {
-    printFunc("DEMO DEMO Factory logs : ${sortedFactoryLogs[index]}");
-    ValueNotifier moreInfo = ValueNotifier<bool>(false);
-    factoryUsersList.add(ValueListenableBuilder(
-        valueListenable: moreInfo,
-        builder: (ctx, value, child) {
-          return log_pop_up(SortedLogs: sortedFactoryLogs, index: index);
-        }));
-  }
-
-  return factoryUsersList;
+  @override
+  State<FactoryLog> createState() => _FactoryLogState();
 }
 
-class FactoryLog extends StatelessWidget {
+class _FactoryLogState extends State<FactoryLog> {
+
+  var sortedFactoryLogs;
+  int TotalLogs = 0;
+  int successLogs = 0;
+  int FailureLogs = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      sortedFactoryLogs = sortByStatus(widget.FactoryLogs);
+      TotalLogs = widget.FactoryLogsCounts['TotalFactLogs'];
+      successLogs = widget.FactoryLogsCounts['SuccessFactLogs'];
+      FailureLogs = widget.FactoryLogsCounts['FailureFactLogs'];
+      setState(() { });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -76,7 +91,7 @@ class FactoryLog extends StatelessWidget {
                           children: [
                             Icon(Icons.devices,color: darkBg,),
                             SizedBox(width: 10,),
-                            Text("04",
+                            Text(TotalLogs.toString(),
                               style: TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.w500,
@@ -125,7 +140,7 @@ class FactoryLog extends StatelessWidget {
                               children: [
                                 Icon(CupertinoIcons.device_phone_portrait,size: 22,color: SuccessCardText,),
                                 SizedBox(width: 5,),
-                                Text("01",
+                                Text(successLogs.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -162,7 +177,7 @@ class FactoryLog extends StatelessWidget {
                               children: [
                                 Icon(Icons.device_unknown,size: 24,color: FailureCardText,),
                                 SizedBox(width: 5,),
-                                Text("03",
+                                Text(FailureLogs.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -202,7 +217,15 @@ class FactoryLog extends StatelessWidget {
                   margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
                   child: Divider(color: darkBg.withOpacity(0.5),)
               ),
-              ...factoryUserLog(),
+              ...List.generate(TotalLogs, (index) {
+                ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
+                return ValueListenableBuilder(
+                  valueListenable: moreInfo,
+                  builder: (ctx, value, child) {
+                    return log_pop_up(SortedLogs: sortedFactoryLogs, index: index);
+                  },
+                );
+              }),
             ],
           ),
         ),
@@ -210,3 +233,5 @@ class FactoryLog extends StatelessWidget {
     );
   }
 }
+
+

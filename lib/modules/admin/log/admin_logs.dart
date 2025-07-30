@@ -1,7 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/admin/log/API/allLogAPI.dart';
+import 'package:tracker_firmware/modules/admin/log/API/daysAPI.dart';
 import 'package:tracker_firmware/modules/admin/log/bacthLogsMain.dart';
+import 'package:tracker_firmware/modules/admin/log/monthly_logs/day_log.dart';
 import 'package:tracker_firmware/modules/admin/log/monthly_logs/monthly_log.dart';
 import 'package:tracker_firmware/modules/admin/log/monthly_logs/week_log.dart';
 import 'package:tracker_firmware/modules/admin/log/userLogsMain.dart';
@@ -17,18 +22,46 @@ class AdminLogs extends StatefulWidget {
 
 
 class AdminLogsState extends State<AdminLogs> {
+
   List<Map<String, dynamic>> batchList = [{}];
-  var factoryLogs;
-  var fieldLogs;
-  var allLogs;
+  List<Map<String, dynamic>> factoryLogs =[{}];
+  List<Map<String, dynamic>> fieldLogs=[{}];
+  List<Map<String, dynamic>> allLogs=[{}];
 
   //  User logs
-  late final List<Category> UserLogs;
+  List<Category> UserLogs=[];
   late final List<Color> UserColor;
 
   // Batch Logs
   List<Category> BatchLogs = [];
   List<Color> BatchColors = [];
+
+
+
+  // List for logs by Days
+  List<dynamic> dayLogs =[];
+  List<dynamic> weekLogs =[];
+  List<dynamic> monthlylogs =[];
+
+  //List for logs by user
+  List<dynamic> userlogs=[];
+
+  //Counts
+  int totalMonthlyCount=0;
+  int totalWeeklyCount=0;
+  int totalDailyCount = 0;
+  int totalAllCount = 0;
+  double factoryCount = 0;
+  double fieldCount = 0;
+
+  //Maps For Counts
+  Map<String,dynamic> AllLogsCounts = {};
+  Map<String,dynamic> FactoryLogsCounts = {};
+  Map<String,dynamic> FieldLogsCounts = {};
+
+
+
+
 
   @override
   void initState() {
@@ -42,30 +75,85 @@ class AdminLogsState extends State<AdminLogs> {
         for (int i = 0; i < batchList.length; i++)
           Category(batchList![i]["name"].toString(), false, amount: countLogs(batchList[i]).toDouble())
       ];
-
       BatchColors = generateBrightColors(batchList.length);
       printFunc("demo batch ${batchList[1]['name']}");
 
-      // Printing Batch logs
-      /*
-      printFunc("Batch Logs : ${BatchLogs.toString()}");
-      printFunc("Batch logs Colors : ${BatchColors.toString()}");
-      */
-      setState(() {});
-    });
-    factoryLogs = getFactoryLogs();
-    fieldLogs = getFeildLogs();
-    allLogs = getAllLogs();
+      // logs API's
 
-    //  USER LOGS PIE CHART
-    UserLogs = [
-      Category("Fatory User", false, amount: this.factoryLogs.length.toDouble()),
-      Category("Field User", false, amount: this.fieldLogs.length.toDouble())
-    ];
+      //Days
+      dayLogs = await getLogsByDays(context, days: 1);
+      weekLogs = await getLogsByDays(context, days: 7);
+      monthlylogs = await getLogsByDays(context, days: 30);
+
+      // By users
+      userlogs = await getAllCount(context);
+
+      if(monthlylogs.isNotEmpty){
+        totalMonthlyCount = monthlylogs[0]['TotalCount'];
+      }else{
+        totalMonthlyCount = 0;
+      }
+
+      if(weekLogs.isNotEmpty){
+        totalWeeklyCount = weekLogs[0]['TotalCount'];
+      }else{
+        totalWeeklyCount = 0;
+      }
+      if(dayLogs.isNotEmpty) {
+        totalDailyCount = dayLogs[0]['TotalCount'];
+      }else{
+        totalDailyCount = 0;
+      }
+
+
+      //For PIECHART
+      totalAllCount = userlogs[0].first[0]['TotalLogs'];
+      allLogs.clear();
+      allLogs = userlogs[0].first[1].first;
+      fieldLogs.clear();
+      fieldLogs = userlogs[1].first[1].first;
+      factoryLogs.clear();
+      factoryLogs = userlogs[2].first[1].first;
+      factoryCount = factoryLogs.length.toDouble();
+      fieldCount = fieldLogs.length.toDouble();
+
+      //  USER LOGS PIE CHART
+      UserLogs = [
+        Category("Fatory User", false, amount: factoryCount),
+        Category("Field User", false, amount: fieldCount)
+      ];
+
+      //Maps for Counts
+      AllLogsCounts = {
+        "TotalLogs": userlogs[0].first[0]['TotalLogs'],
+        "SucessCount": userlogs[0].first[0]['SucessCount'],
+        "FailureCount": userlogs[0].first[0]['FailureCount']
+      };
+      FieldLogsCounts =  {
+        "TotalFieldLogs": userlogs[1].first[0]['TotalFieldLogs'],
+        "SuccessFieldLogs": userlogs[1].first[0]['SuccessFieldLogs'],
+        "FailureFieldLogs": userlogs[1].first[0]['FailureFieldLogs']
+      };
+      FactoryLogsCounts =  {
+        "TotalFactLogs": userlogs[2].first[0]['TotalFactLogs'],
+        "SuccessFactLogs": userlogs[2].first[0]['SuccessFactLogs'],
+        "FailureFactLogs": userlogs[2].first[0]['FailureFactLogs']
+      };
+
+
+
+
+
+      setState(() {});
+      printFunc("AlLLoGSCOUNTS : ${userlogs[1].first[0]}");
+      printFunc("AlLLoGSCOUNTS : ${userlogs[2].first[0]}");
+    });
+
+
+
     UserColor = [Color(0xFF5262FF), Color(0xFF2EC6FF)];
 
     setState(() {});
-    printFunc("Logs length : ${factoryLogs.length}");
   }
 
   //Counting of batches Logs
@@ -138,8 +226,8 @@ class AdminLogsState extends State<AdminLogs> {
                           children: [
                             //Month
                             GestureDetector(
-                              onTap :(){
-                                Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Monthly_log()));
+                              onTap :() async {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Monthly_log(monthlyLogs: monthlylogs,)));
                               },
                               child: Column(
                                 children: [
@@ -184,7 +272,8 @@ class AdminLogsState extends State<AdminLogs> {
                                                     ),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
-                                                      child:Text("123",
+                                                      child:Text
+                                                        (totalMonthlyCount.toString(),
                                                         style: TextStyle(
                                                             color: Color(0xFF212121),
                                                             fontWeight: FontWeight.bold,
@@ -215,7 +304,7 @@ class AdminLogsState extends State<AdminLogs> {
                             //Week
                             GestureDetector(
                               onTap: (){
-                                Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Week_logs()));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Week_logs(weeklogs: weekLogs,)));
                               },
                               child: Column(
                                 children: [
@@ -260,7 +349,8 @@ class AdminLogsState extends State<AdminLogs> {
                                                     ),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
-                                                      child:Text("123",
+                                                      child:Text(
+                                                        totalWeeklyCount.toString(),
                                                         style: TextStyle(
                                                             color: Color(0xFF212121),
                                                             fontWeight: FontWeight.bold,
@@ -291,7 +381,7 @@ class AdminLogsState extends State<AdminLogs> {
                             //day
                             GestureDetector(
                               onTap: (){
-                                Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Week_logs()));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Day_logs(dailyLogs: dayLogs,)));
                               },
                               child: Column(
                                 children: [
@@ -336,7 +426,8 @@ class AdminLogsState extends State<AdminLogs> {
                                                     ),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
-                                                      child:Text("123",
+                                                      child:Text(
+                                                        totalDailyCount.toString(),
                                                         style: TextStyle(
                                                             color: Color(0xFF212121),
                                                             fontWeight: FontWeight.bold,
@@ -376,7 +467,7 @@ class AdminLogsState extends State<AdminLogs> {
                             child: Row(
                               children: [
                                 SizedBox(width: 5,),
-                                Text("Number of devices Flashed : 23 ",
+                                Text("Number of devices Flashed : $totalAllCount",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16
@@ -401,7 +492,17 @@ class AdminLogsState extends State<AdminLogs> {
                     colors: UserColor,
                     onTap: () {
                       printFunc("User Logs ${UserLogs[1].name}");
-                      Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserLogsMain()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_) =>
+                          UserLogsMain(
+                            AllLogs: allLogs,
+                            FieldLogs: fieldLogs,
+                            FactoryLogs: factoryLogs,
+                            AllLogsCount: AllLogsCounts,
+                            FactoryLogsCount: FactoryLogsCounts,
+                            FieldLogsCount: FieldLogsCounts,
+                          )
+                      )
+                      );
                     },
                   ),
                 ),

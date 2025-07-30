@@ -3,61 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/log/field_log.dart';
+import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
 
-List<Widget> weeklylogs(){
-  List<Widget> weeklyLogList = [];
-  List<Map<String,dynamic>> sortedWeeklyLogs =
-  [
-    {
-      "empId": "EMP124",
-      "Name": "Emma Clark",
-      "status": "Success",
-      "mac_Id": "03:1A:2B:3C:4D:5E",
-      "DeviceID": "548",
-      "Batch": "airbird 100",
-      "Config": "air01",
-      "firm_version": "2.2.9",
-      "Date-Time": "2025-05-26 12:45:00",
-      "reason": "Success"
-    },
-    {
-      "empId": "EMP123",
-      "Name": "David Stone",
-      "status": "Failure",
-      "mac_Id": "03:1A:2B:3C:4D:5E",
-      "DeviceID": "547",
-      "Batch": "airbird batches",
-      "Config": "a34",
-      "firm_version": "2.3.1",
-      "Date-Time": "2025-05-26 12:00:00",
-      "reason": "Failure due to device not found"
-    },
-    {
-      "empId": "EMP123",
-      "Name": "David Stone",
-      "status": "Failure",
-      "mac_Id": "03:1A:2B:3C:4D:5E",
-      "DeviceID": "547",
-      "Batch": "airBird batch01",
-      "Config": "ar001",
-      "firm_version": "2.3.1",
-      "Date-Time": "2025-05-26 12:00:00",
-      "reason": "Failed due to MAC ID not found"
-    }
-  ];
 
-  for(int index =0;index<sortedWeeklyLogs.length;index++){
-    ValueNotifier moreInfo = ValueNotifier<bool>(false);
-    weeklyLogList.add(ValueListenableBuilder(
-        valueListenable: moreInfo,
-        builder: (ctx, value, child) {
-          return log_pop_up(SortedLogs: sortedWeeklyLogs, index: index);
-        }));
-  }
-  return weeklyLogList;
+
+class Week_logs extends StatefulWidget {
+
+  List<dynamic> weeklogs=[];
+  Week_logs({super.key,required this.weeklogs});
+
+  @override
+  State<Week_logs> createState() => _Week_logsState();
 }
 
-class Week_logs extends StatelessWidget{
+class _Week_logsState extends State<Week_logs> {
+  var sortedWeeklyLogs;
+  int totalCount = 0;
+  int suceesCount = 0 ;
+  int failCount = 0;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sortedWeeklyLogs = sortByStatus(widget.weeklogs[1]);
+    totalCount = widget.weeklogs[0]['TotalCount'];
+    suceesCount = widget.weeklogs[0]['SuccessCount'];
+    failCount = widget.weeklogs[0]['FailureCount'];
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -65,7 +41,7 @@ class Week_logs extends StatelessWidget{
       appBar: AppBar(
         iconTheme: IconThemeData(color: lightBg),
         title: Text(
-          "Monthly Logs",
+          "Weekly Logs",
           style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
         ),
         toolbarHeight: screenSize.height / 11.5,
@@ -100,7 +76,7 @@ class Week_logs extends StatelessWidget{
                           children: [
                             Icon(Icons.devices,color: darkBg,),
                             SizedBox(width: 10,),
-                            Text("03",
+                            Text(totalCount.toString(),
                               style: TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.w500,
@@ -149,7 +125,7 @@ class Week_logs extends StatelessWidget{
                               children: [
                                 Icon(CupertinoIcons.device_phone_portrait,size: 22,color: SuccessCardText,),
                                 SizedBox(width: 5,),
-                                Text("01",
+                                Text(suceesCount.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -186,7 +162,7 @@ class Week_logs extends StatelessWidget{
                               children: [
                                 Icon(Icons.device_unknown,size: 24,color: FailureCardText,),
                                 SizedBox(width: 5,),
-                                Text("02",
+                                Text(failCount.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -222,7 +198,15 @@ class Week_logs extends StatelessWidget{
                   ],
                 ),
               ),
-              ...weeklylogs(),
+              ...List.generate(sortedWeeklyLogs.length, (index) {
+                ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
+                return ValueListenableBuilder(
+                  valueListenable: moreInfo,
+                  builder: (ctx, value, child) {
+                    return log_pop_up(SortedLogs: sortedWeeklyLogs, index: index);
+                  },
+                );
+              }),
             ],
           ),
         ),
@@ -230,3 +214,5 @@ class Week_logs extends StatelessWidget{
     );
   }
 }
+
+

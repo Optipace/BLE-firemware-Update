@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 
 Future<bool> getAllLogs(BuildContext context) async {
-  print("INSIDE LOGS API");
+  printFunc("INSIDE LOGS API");
   // var response = "";
 
   if (/* response.statusCode == 200 */ true) {

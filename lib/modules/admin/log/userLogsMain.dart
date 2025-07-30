@@ -7,10 +7,53 @@ import 'package:tracker_firmware/modules/admin/log/factory_log.dart';
 import 'package:tracker_firmware/modules/admin/log/field_log.dart';
 import 'package:tracker_firmware/services/apiCall/Admin/logs.dart';
 
-class UserLogsMain extends StatelessWidget {
-  var allLogs = getAllLogs();
-  var factoryLogs = getFactoryLogs();
-  var fieldLogs = getFeildLogs();
+class UserLogsMain extends StatefulWidget {
+
+  //Lists of Logs
+  List<Map<String, dynamic>> AllLogs;
+  List<Map<String, dynamic>> FactoryLogs;
+  List<Map<String, dynamic>> FieldLogs;
+
+  Map<String, dynamic> AllLogsCount;
+  Map<String, dynamic> FactoryLogsCount;
+  Map<String, dynamic> FieldLogsCount;
+
+
+
+  UserLogsMain({
+    super.key,
+    required this.AllLogs,
+    required this.FieldLogs,
+    required this.FactoryLogs,
+    required this.AllLogsCount,
+    required this.FactoryLogsCount,
+    required this.FieldLogsCount
+  });
+
+  @override
+  State<UserLogsMain> createState() => _UserLogsMainState();
+}
+
+class _UserLogsMainState extends State<UserLogsMain> {
+
+  List<Map<String, dynamic>> allLogs=[{}];
+  List<Map<String, dynamic>> factoryLogs =[{}];
+  List<Map<String, dynamic>> fieldLogs =[{}];
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      allLogs = widget.AllLogs;
+      factoryLogs = widget.FactoryLogs;
+      fieldLogs = widget.FieldLogs;
+      setState(() { });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +79,14 @@ class UserLogsMain extends StatelessWidget {
           GestureDetector(
             onTap: () {
               printFunc("Inside All logs");
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => all_Logs()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) =>
+                  all_Logs(
+                    AllLogs: allLogs,
+                    AllLogsCount: widget.AllLogsCount,
+
+                  )
+                )
+              );
             },
             child: Container(
                 width: screenSize.width,
@@ -98,10 +148,17 @@ class UserLogsMain extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
+
           GestureDetector(
             onTap: () {
               printFunc("Inside Factory user ");
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => FactoryLog()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) =>
+                  FactoryLog(
+                    FactoryLogs: widget.FactoryLogs,
+                    FactoryLogsCounts: widget.FactoryLogsCount,
+                  )
+                )
+              );
             },
             child: Container(
                 width: screenSize.width,
@@ -163,10 +220,18 @@ class UserLogsMain extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
+
+
           GestureDetector(
             onTap: () {
               printFunc("Inside Field user ");
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => FieldLogs()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) =>
+                  FieldLogs(
+                    FieldListLogs: widget.FieldLogs,
+                    FieldLogsCounts: widget.FieldLogsCount,
+                  )
+                )
+              );
             },
             child: Container(
                 width: screenSize.width,
@@ -233,3 +298,5 @@ class UserLogsMain extends StatelessWidget {
     );
   }
 }
+
+

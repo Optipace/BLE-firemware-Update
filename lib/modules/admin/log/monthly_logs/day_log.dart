@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/log/field_log.dart';
+import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
+
 
 List<Widget> dailylogs(){
   List<Widget> dailylogList =[];
@@ -57,7 +59,33 @@ List<Widget> dailylogs(){
   return dailylogList;
 }
 
-class Day_logs extends StatelessWidget{
+
+class Day_logs extends StatefulWidget {
+  List<dynamic> dailyLogs = [];
+  Day_logs({super.key,required this.dailyLogs});
+
+  @override
+  State<Day_logs> createState() => _Day_logsState();
+}
+
+class _Day_logsState extends State<Day_logs> {
+  var sortedDailyLogs;
+  int totalCount =0;
+  int sucessCount = 0;
+  int failCount = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    sortedDailyLogs = sortByStatus(widget.dailyLogs[1]);
+    totalCount = widget.dailyLogs[0]['TotalCount'];
+    sucessCount = widget.dailyLogs[0]['SuccessCount'];
+    failCount = widget.dailyLogs[0]['FailureCount'];
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -65,7 +93,7 @@ class Day_logs extends StatelessWidget{
       appBar: AppBar(
         iconTheme: IconThemeData(color: lightBg),
         title: Text(
-          "Monthly Logs",
+          "Daily Logs",
           style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
         ),
         toolbarHeight: screenSize.height / 11.5,
@@ -100,7 +128,7 @@ class Day_logs extends StatelessWidget{
                           children: [
                             Icon(Icons.devices,color: darkBg,),
                             SizedBox(width: 10,),
-                            Text("03",
+                            Text(totalCount.toString(),
                               style: TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.w500,
@@ -149,7 +177,7 @@ class Day_logs extends StatelessWidget{
                               children: [
                                 Icon(CupertinoIcons.device_phone_portrait,size: 22,color: SuccessCardText,),
                                 SizedBox(width: 5,),
-                                Text("01",
+                                Text(sucessCount.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -186,7 +214,7 @@ class Day_logs extends StatelessWidget{
                               children: [
                                 Icon(Icons.device_unknown,size: 24,color: FailureCardText,),
                                 SizedBox(width: 5,),
-                                Text("02",
+                                Text(failCount.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -222,7 +250,16 @@ class Day_logs extends StatelessWidget{
                   ],
                 ),
               ),
-              ...dailylogs(),
+
+              ...List.generate(sortedDailyLogs.length, (index) {
+                ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
+                return ValueListenableBuilder(
+                  valueListenable: moreInfo,
+                  builder: (ctx, value, child) {
+                    return log_pop_up(SortedLogs: sortedDailyLogs, index: index);
+                  },
+                );
+              }),
             ],
           ),
         ),

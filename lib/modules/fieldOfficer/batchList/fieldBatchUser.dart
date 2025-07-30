@@ -168,7 +168,9 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                             height: 3,
                           ),
                           Text(
-                            getAllseriesData[index]["profile"]['deviceType'].toString(),
+                              moreInfo.value
+                            ? getAllseriesData[index]["battery"]['batteryCode'].toString()
+                            : batchList[index]['batteryDetails']['Battery-Code'].toString(),
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
@@ -448,6 +450,97 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                     ),
                                   ],
                                 ),
+                                SizedBox(height: 15,),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+// Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.battery_charging_full_outlined,
+                                                size: 18, color: secondaryText),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "${getAllseriesData[index]["profile"]['nV']} V",
+                                              style: CardText(
+                                                font_Weight: FontWeight.w800,
+                                                size: 18,
+                                                FontColor: SuccessCardText,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+// Upper Threshold
+                                        SizedBox(height: 5),
+
+                                        Text(
+                                          "N.Volt",
+                                          style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 16,
+                                            FontColor: SuccessCardText,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(width: 20),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+// Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                        Text(
+                                          "${getAllseriesData[index]["profile"]['uTemp']}'C",
+                                          style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 18,
+                                            FontColor: SuccessCardText,
+                                          ),
+                                        ),
+// Upper Voltage
+                                        SizedBox(height: 5),
+
+                                        Text(
+                                          "U.Temp",
+                                          style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 16,
+                                            FontColor: SuccessCardText,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(width: 20),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+// Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                        Text(
+                                          "${getAllseriesData[index]["profile"]['lTemp']}'C",
+                                          style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 18,
+                                            FontColor: SuccessCardText,
+                                          ),
+                                        ),
+// Lower Threshold
+                                        SizedBox(height: 5),
+
+                                        Text(
+                                          "L.Temp",
+                                          style: CardText(
+                                            font_Weight: FontWeight.w800,
+                                            size: 16,
+                                            FontColor: SuccessCardText,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -498,6 +591,7 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
         'description': batch.batchDescription,
         'firmware': batch.firmware.toJson(),
         'profile': batch.profile.toJson(),
+        'battery': batch.battery.toJson(),
         'saved': true,
       });
     });

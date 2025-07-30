@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileSeriesModel.dart';
+/////////////////////////NOT IN USED/////////////////////////////////////////
 
 Future<void> saveProfileListToHive(List<Map<String, dynamic>> profileList) async {
   final profileBox = await Hive.openBox<ProfileSeriesModel>('$serviceHiveBox');
@@ -16,6 +17,9 @@ Future<void> saveProfileListToHive(List<Map<String, dynamic>> profileList) async
         uV: f['upperVoltage'] ?? '',
         lT: f['lowerThreshold'] ?? '',
         lV: f['lowerVoltage'] ?? '',
+        nV: f['nV'] ?? '',
+        uTemp: f['uTemp'] ?? '',
+        lTemp: f['lTemp'] ?? '',
         saved: true,
         deviceTypeId: f['deviceId'] ?? '',
         deviceType: f['deviceType'] ?? '',

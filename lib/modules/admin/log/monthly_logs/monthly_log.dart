@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/log/field_log.dart';
+import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
+
 
 
 List<Widget> monthlylogs(){
@@ -58,7 +60,33 @@ List<Widget> monthlylogs(){
   return monthlyLogList;
 }
 
-class Monthly_log extends StatelessWidget{
+
+class Monthly_log extends StatefulWidget {
+  List<dynamic> monthlyLogs;
+  Monthly_log({super.key,required this.monthlyLogs});
+
+  @override
+  State<Monthly_log> createState() => _Monthly_logState();
+}
+
+class _Monthly_logState extends State<Monthly_log> {
+  var sortedMontlyLogs;
+  int totalCount=0;
+  int sucessCount=0;
+  int failCount=0;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sortedMontlyLogs = sortByStatus(widget.monthlyLogs[1]);
+    totalCount = widget.monthlyLogs[0]['TotalCount'];
+    sucessCount = widget.monthlyLogs[0]['SuccessCount'];
+    failCount = widget.monthlyLogs[0]['FailureCount'];
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -101,7 +129,7 @@ class Monthly_log extends StatelessWidget{
                           children: [
                             Icon(Icons.devices,color: darkBg,),
                             SizedBox(width: 10,),
-                            Text("03",
+                            Text(totalCount.toString(),
                               style: TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.w500,
@@ -150,7 +178,7 @@ class Monthly_log extends StatelessWidget{
                               children: [
                                 Icon(CupertinoIcons.device_phone_portrait,size: 22,color: SuccessCardText,),
                                 SizedBox(width: 5,),
-                                Text("01",
+                                Text(sucessCount.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -187,7 +215,7 @@ class Monthly_log extends StatelessWidget{
                               children: [
                                 Icon(Icons.device_unknown,size: 24,color: FailureCardText,),
                                 SizedBox(width: 5,),
-                                Text("02",
+                                Text(failCount.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -223,7 +251,20 @@ class Monthly_log extends StatelessWidget{
                   ],
                 ),
               ),
-              ...monthlylogs(),
+
+
+
+              ...List.generate(sortedMontlyLogs.length, (index) {
+                ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
+                return ValueListenableBuilder(
+                  valueListenable: moreInfo,
+                  builder: (ctx, value, child) {
+                    return log_pop_up(SortedLogs: sortedMontlyLogs, index: index);
+                  },
+                );
+              }),
+
+
             ],
           ),
         ),
@@ -231,3 +272,5 @@ class Monthly_log extends StatelessWidget{
     );
   }
 }
+
+

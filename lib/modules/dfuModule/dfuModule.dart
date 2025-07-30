@@ -13,6 +13,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/getProductIdByMac.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/saveHardware.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
@@ -41,6 +42,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
   String? QRMacId;
   bool showsnackBar = false;
   bool _scanHandled = false;
+  bool _dfuPopUp = false;
 
 
   //current date and time for action timeStamp
@@ -127,211 +129,255 @@ class _DfuHomePageState extends State<DfuHomePage> {
     setState(() {});
   }
 
-  Future<void> startDfu(ScanResult device,
-      {bool first = true, String oldId = ""}) async {
+    Future<void> startDfu(ScanResult device,
+        {bool first = true, String oldId = ""}) async {
 
-    String DFUstatus ;
-    String DFUreason;
+      _dfuPopUp = false;
 
-    printFunc("DEMO DEVICE : $device");
-    await stopScan();
-    await Future.delayed(
-        const Duration(milliseconds: 1000)); // ✅ Allow BLE stack to settle
+      String DFUstatus ;
+      String DFUreason;
 
-    String file = widget.SelectedBatch.obj["firmware"]["file"];
-    debugPrint("🔄 SelectedBatch: ${widget.SelectedBatch.obj}");
+      printFunc("DEMO DEVICE : $device");
+      await stopScan();
+      await Future.delayed(
+          const Duration(milliseconds: 1000)); // ✅ Allow BLE stack to settle
 
-    final handler = DfuEventHandler(
-      //Device connection
-      onDeviceConnecting: (address) {
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔄 Connecting to $address")));
-      },
-      onDeviceConnected: (address) {
-        setState(() => progressMap[first ? address : oldId] = -1);
-        setState(() => percent = -1);
+      String file = widget.SelectedBatch.obj["firmware"]["file"];
+      debugPrint("🔄 SelectedBatch: ${widget.SelectedBatch.obj}");
 
-        debugPrint("✅ Connected to device: $address");
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("✅ Connected to $address")));
-      },
-      //process starting
-      onDfuProcessStarting: (address) {
-        debugPrint("🚀 DFU Process Starting: $address");
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🚀 DFU Starting for $address")));
-      },
-      //Firmware uploading and entering the DFU model
-      onEnablingDfuMode: (address) async {
-        debugPrint("🛠️ Enabling DFU mode on: $address");
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text("🛠️ Enabling DFU mode on $address" ,style: TextStyle(color: Colors.white),),
-                backgroundColor: darkBg,
-            )
-        );
-        if (first) {
-          await Future.delayed(const Duration(
-              milliseconds: 2000)); // ✅ Allow BLE stack to settle
-          await NordicDfu().abortDfu(address: address);
-          ScanResult dfuDevice = await startScanSecondTime(device);
-          // results.clear();
-          // results.add(dfuDevice);
-          await startDfu(dfuDevice,
-              first: false, oldId: device.device.remoteId.str);
+      final handler = DfuEventHandler(
+        //Device connection
+        onDeviceConnecting: (address) {
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔄 Connecting to $address")));
+        },
+        onDeviceConnected: (address) {
+          setState(() => progressMap[first ? address : oldId] = -1);
+          setState(() => percent = -1);
 
-          debugPrint("🛠️ DFU Aborted: $device");
-        }
-      },
-      onFirmwareUploading: (address) {
-        debugPrint("📤 Firmware uploading started on: $address");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("📤 Uploading firmware on $oldId"),
-          duration: Duration(seconds: 6),
-        ));
-      },
-      onFirmwareValidating: (address) {
-        debugPrint("🧪 Validating firmware for: $address");
-        // ScaffoldMessenger.of(context)
-        //     .showSnackBar(SnackBar(content: Text("🧪 Validating firmware for $address")));
-      },
-
-      // If DFU is Aborting [call saveLog API]
-      onDfuAborted: (address) {
-        debugPrint("⚠️ DFU Aborted: $address");
-        //Save LOG API CALL
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("⚠️ DFU Aborted for $address")));
-      },
-      // Device disconnecting
-      onDeviceDisconnecting: (address) {
-        debugPrint("🔌 Disconnecting from device: $address");
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnecting from $address")));
-      },
-      onDeviceDisconnected: (address) {
-        debugPrint("🔌 Disconnected from device: $address");
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnected from $address")));
-      },
-      onProgressChanged: (address, progress, speed, avgSpeed, part, total)  {
-        setState(() => progressMap[first ? address : oldId] = progress);
-        setState(() => percent = progress);
-      },
-
-
-      // On cmplting [call saveLog API]
-      onDfuCompleted: (address) async {
-        DFUstatus = "Y";
-        DFUreason = "DFU completed successfully";
-        setState(() {});
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('✅ DFU completed: $oldId'),
-              duration: Duration(seconds: 10)),
-        );
-        setState(() => progressMap.remove(first
-            ? address
-            : oldId)); //progressMap[first ? address : oldId] = );
-        setState(() => percent = 101);
-        setState(() {
-          // isDeviceSelected = false;
-          // scanedDevcice = null;
-        });
-
-        if (mounted) {
-          await saveLog(context,//_safeContext,
-              DateAndTime: DateFormat('dd-MM-yyyy hh:mm a').format(now),
-              deviceID: UserData.instance.UUID,
-              macID: mac_Id.toString(),
-              empID: UserData.instance.userId,
-              batchID: widget.SelectedBatch.obj["id"],
-              status: DFUstatus,
-              reason: DFUreason
-          );
-        }
-
-        setState(() {
-          isDeviceSelected = false;
-        });
-        Navigator.push(
-          context,// _safeContext,
-          MaterialPageRoute(
-              builder: (context) => BluetoothHardwareNumber(
-                safecontext:  context,
-                SelectedBatch: widget.SelectedBatch,
-                allclients: widget.allClients,
-                macID: mac_Id,
+          debugPrint("✅ Connected to device: $address");
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("✅ Connected to $address")));
+        },
+        //process starting
+        onDfuProcessStarting: (address) {
+          debugPrint("🚀 DFU Process Starting: $address");
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🚀 DFU Starting for $address")));
+        },
+        //Firmware uploading and entering the DFU model
+        onEnablingDfuMode: (address) async {
+          debugPrint("🛠️ Enabling DFU mode on: $address");
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text("🛠️ Enabling DFU mode on $address" ,style: TextStyle(color: Colors.white),),
+                  backgroundColor: darkBg,
               )
-          ),
-        );
-      },
-
-
-      // If error occured -- [ call saveLog API ]
-      onError: (address, err, type, msg)  async{
-
-        debugPrint("⚠️ DFU ERROR: $address \n $msg");
-        if(!first){
-          DFUstatus = "N";
-          DFUreason = msg ;
-          setState(() {});
-          debugPrint("Addres : ${address} \n"
-              "error : ${err} \n"
-              "type : ${type} \n"
-              "msg : ${msg}");
-
-
-          printFunc("Save log when error occured");
-          printFunc("Time : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)} \n"
-              "DeviceID : ${UserData.instance.UUID} \n"
-              "MacID : ${mac_Id} \n"
-              "Batch : ${widget.SelectedBatch.obj["id"]} \n"
-              "empID : ${UserData.instance.userId} \n"
-              "Status : ${DFUstatus} \n"
-              "Reason : ${DFUreason}");
-
-          // CALL savelog API
-          await saveLog(context,
-          DateAndTime: DateFormat('dd-MM-yyyy hh:mm a').format(now),
-          deviceID: UserData.instance.UUID,
-          macID: mac_Id.toString(),
-          empID: UserData.instance.userId,
-          batchID: widget.SelectedBatch.obj["id"],
-          status: DFUstatus,
-          reason: DFUreason
           );
-        }
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(content: Text('❌ DFU error [$err]: $msg'), duration: Duration(seconds: 10)),
-        // );
-      },
-    );
+          if (first) {
+            await Future.delayed(const Duration(
+                milliseconds: 2000)); // ✅ Allow BLE stack to settle
+            await NordicDfu().abortDfu(address: address);
+            ScanResult dfuDevice = await startScanSecondTime(device);
+            // results.clear();
+            // results.add(dfuDevice);
+            await startDfu(dfuDevice,
+                first: false, oldId: device.device.remoteId.str);
+            debugPrint("️ DFU Aborted: $device");
+          }
+        },
+        onFirmwareUploading: (address) {
+          debugPrint(" Firmware uploading started on: $address");
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(" Uploading firmware on $oldId"),
+            duration: Duration(seconds: 6),
+          ));
+        },
+        onFirmwareValidating: (address) {
+          debugPrint(" Validating firmware for: $address");
+          // ScaffoldMessenger.of(context)
+          //     .showSnackBar(SnackBar(content: Text("🧪 Validating firmware for $address")));
+        },
 
-    try {
-      await NordicDfu().startDfu(
-        device.device.remoteId.str,
-        file, //file.files.single.path!,
-        dfuEventHandler: handler,
-        forceDfu: true,
-        numberOfPackets: 4,
-        // enableUnsafeExperimentalButtonlessServiceInSecureDfu:false,
-        androidParameters:
-            //  const AndroidParameters(rebootTime: 10000),
-            const AndroidParameters(
-          rebootTime: 2000,
-          packetReceiptNotificationsEnabled: true,
-          keepBond: false,
-          restoreBond: false,
-          numberOfRetries: 5,
-        ),
-        // darwinParameters: const DarwinParameters(
-        //   forceScanningForNewAddressInLegacyDfu: true,
-        //   packetReceiptNotificationParameter: 4,
-        //   dataObjectPreparationDelay: 2500.0,
-        // ),
+        // If DFU is Aborting [call saveLog API]
+        onDfuAborted: (address) {
+          debugPrint("️ DFU Aborted: $address");
+          //Save LOG API CALL
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("⚠️ DFU Aborted for $address")));
+        },
+        // Device disconnecting
+        onDeviceDisconnecting: (address) {
+          debugPrint(" Disconnecting from device: $address");
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnecting from $address")));
+        },
+        onDeviceDisconnected: (address) {
+          debugPrint("Disconnected from device: $address");
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnected from $address")));
+        },
+        onProgressChanged: (address, progress, speed, avgSpeed, part, total)  {
+          setState(() => progressMap[first ? address : oldId] = progress);
+          setState(() => percent = progress);
+        },
+
+
+        // On cmplting [call saveLog API]
+        onDfuCompleted: (address) async {
+          if(_dfuPopUp)return;
+          _dfuPopUp = true;
+          DFUstatus = "Y";
+          DFUreason = "DFU completed successfully";
+          setState(() {});
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text('DFU completed: $oldId'),
+                duration: Duration(seconds: 10)),
+          );
+          setState(() => progressMap.remove(first
+              ? address
+              : oldId)); //progressMap[first ? address : oldId] = );
+          setState(() => percent = 101);
+          setState(() {
+            // isDeviceSelected = false;
+            // scanedDevcice = null;
+          });
+
+          if (mounted) {
+            await saveLog(context,//_safeContext,
+                DateAndTime: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(now),
+                deviceID: UserData.instance.UUID,
+                macID: mac_Id.toString(),
+                empID: UserData.instance.userId,
+                batchID: widget.SelectedBatch.obj["id"],
+                status: DFUstatus,
+                reason: DFUreason
+            );
+          }
+
+
+          // Here the Pop-up Goes if the OK btn clicks then it goes to the Bluetooth-Hardware Page
+
+          isDeviceSelected
+          ? showDialog(
+          context: context,
+          builder: (BuildContext contextt) {
+            return AlertDialog(
+              // title: Text(""),
+              content: Text(
+                "DFU Completed Successfully!!",
+                style: TextStyle(
+                  color: darkBg,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              actions: [
+                //OK btn that goes for next page
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      isDeviceSelected = false;
+                    });
+                    Navigator.push(
+                      context,// _safeContext,
+                      MaterialPageRoute(
+                          builder: (context) => BluetoothHardwareNumber(
+                            safecontext:  context,
+                            SelectedBatch: widget.SelectedBatch,
+                            allclients: widget.allClients,
+                            macID: mac_Id,
+                          )
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Ok",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                      MaterialStateProperty.all<Color>(darkBg),
+                      shape:
+                      MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18)))),
+                )
+              ],
+              backgroundColor: second_lightBg,
+            );
+          })
+          : SizedBox();
+
+
+        },
+
+
+        // If error occured -- [ call saveLog API ]
+        onError: (address, err, type, msg)  async{
+
+          debugPrint("⚠️ DFU ERROR: $address \n $msg");
+          if(!first){
+            DFUstatus = "N";
+            DFUreason = msg ;
+            setState(() {});
+            debugPrint("Addres : ${address} \n"
+                "error : ${err} \n"
+                "type : ${type} \n"
+                "msg : ${msg}");
+
+
+            printFunc("Save log when error occured");
+            printFunc("Time : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)} \n"
+                "DeviceID : ${UserData.instance.UUID} \n"
+                "MacID : ${mac_Id} \n"
+                "Batch : ${widget.SelectedBatch.obj["id"]} \n"
+                "empID : ${UserData.instance.userId} \n"
+                "Status : ${DFUstatus} \n"
+                "Reason : ${DFUreason}");
+
+            // CALL savelog API
+            await saveLog(context,
+            DateAndTime: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(now),
+            deviceID: UserData.instance.UUID,
+            macID: mac_Id.toString(),
+            empID: UserData.instance.userId,
+            batchID: widget.SelectedBatch.obj["id"],
+            status: DFUstatus,
+            reason: DFUreason
+            );
+          }
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(content: Text('❌ DFU error [$err]: $msg'), duration: Duration(seconds: 10)),
+          // );
+        },
       );
-    }catch(e){
-      printFunc("ERROR : $e");
+
+      try {
+        await NordicDfu().startDfu(
+          device.device.remoteId.str,
+          file, //file.files.single.path!,
+          dfuEventHandler: handler,
+          forceDfu: true,
+          numberOfPackets: 4,
+          // enableUnsafeExperimentalButtonlessServiceInSecureDfu:false,
+          androidParameters:
+              //  const AndroidParameters(rebootTime: 10000),
+              const AndroidParameters(
+            rebootTime: 2000,
+            packetReceiptNotificationsEnabled: true,
+            keepBond: false,
+            restoreBond: false,
+            numberOfRetries: 5,
+          ),
+          // darwinParameters: const DarwinParameters(
+          //   forceScanningForNewAddressInLegacyDfu: true,
+          //   packetReceiptNotificationParameter: 4,
+          //   dataObjectPreparationDelay: 2500.0,
+          // ),
+        );
+      }catch(e){
+        printFunc("ERROR : $e");
+      }
+      finally {
+        // await Wakelock.disable();
+      }
     }
-    finally {
-      // await Wakelock.disable();
-    }
-  }
 
   void openBatteryOptimizationSettings() {
     var intent = AndroidIntent(

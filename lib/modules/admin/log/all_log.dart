@@ -7,26 +7,38 @@ import 'package:tracker_firmware/services/apiCall/Admin/logs.dart';
 
 import 'sortByStatus.dart';
 
+class all_Logs extends StatefulWidget {
 
-List<Widget> allLogs() {
-  var allLogs = getAllLogs();
-  var sortedAllLogs = sortByStatus(allLogs);
-  List<Widget> allLogsList = [];
+  List<Map<String,dynamic>> AllLogs;
+  Map<String, dynamic> AllLogsCount;
+  all_Logs({super.key,required this.AllLogs,required this.AllLogsCount});
 
-  for (int index = 0; index < sortedAllLogs.length; index++) {
-    printFunc("DEMO DEMO Factory logs : ${sortedAllLogs[index]}");
-    ValueNotifier moreInfo = ValueNotifier<bool>(false);
-    allLogsList.add(ValueListenableBuilder(
-        valueListenable: moreInfo,
-        builder: (ctx, value, child) {
-          return log_pop_up(SortedLogs: sortedAllLogs, index: index);
-        }));
-  }
-
-  return allLogsList;
+  @override
+  State<all_Logs> createState() => _all_LogsState();
 }
 
-class all_Logs extends StatelessWidget {
+class _all_LogsState extends State<all_Logs> {
+  var sortedAllLogs;
+  int totalCount=0;
+  int successCount=0;
+  int FailureCount=0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      totalCount = widget.AllLogsCount['TotalLogs'];
+      successCount = widget.AllLogsCount['SucessCount'];
+      FailureCount = widget.AllLogsCount['FailureCount'];
+      sortedAllLogs = sortByStatus(widget.AllLogs);
+
+      setState(() { });
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -51,12 +63,12 @@ class all_Logs extends StatelessWidget {
                 margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
                 padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: darkBg,
-                    width: 1.5
-                  ),
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white
+                    border: Border.all(
+                        color: darkBg,
+                        width: 1.5
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -69,17 +81,17 @@ class all_Logs extends StatelessWidget {
                           children: [
                             Icon(Icons.devices,color: darkBg,),
                             SizedBox(width: 10,),
-                            Text("06",
+                            Text(totalCount.toString(),
                               style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w500,
-                                color: darkBg,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black,
-                                    blurRadius: 0.5
-                                  )
-                                ]
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w500,
+                                  color: darkBg,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black,
+                                        blurRadius: 0.5
+                                    )
+                                  ]
                               ),
                             ),
                           ],
@@ -87,7 +99,7 @@ class all_Logs extends StatelessWidget {
                         SizedBox(height: 5,),
                         Text("Total Devices Flashed",
                           style: TextStyle(
-                            fontSize: 14,
+                              fontSize: 14,
                               fontWeight: FontWeight.w300,
                               color: darkBg,
                               shadows: [
@@ -118,7 +130,7 @@ class all_Logs extends StatelessWidget {
                               children: [
                                 Icon(CupertinoIcons.device_phone_portrait,size: 22,color: SuccessCardText,),
                                 SizedBox(width: 5,),
-                                Text("01",
+                                Text(successCount.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -155,7 +167,7 @@ class all_Logs extends StatelessWidget {
                               children: [
                                 Icon(Icons.device_unknown,size: 24,color: FailureCardText,),
                                 SizedBox(width: 5,),
-                                Text("05",
+                                Text(FailureCount.toString(),
                                   style: TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w500,
@@ -195,7 +207,15 @@ class all_Logs extends StatelessWidget {
                   margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
                   child: Divider(color: darkBg.withOpacity(0.5),)
               ),
-              ...allLogs(),
+              ...List.generate(totalCount, (index) {
+                ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
+                return ValueListenableBuilder(
+                  valueListenable: moreInfo,
+                  builder: (ctx, value, child) {
+                    return log_pop_up(SortedLogs: sortedAllLogs, index: index);
+                  },
+                );
+              }),
             ],
           ),
         ),
@@ -203,3 +223,5 @@ class all_Logs extends StatelessWidget {
     );
   }
 }
+
+

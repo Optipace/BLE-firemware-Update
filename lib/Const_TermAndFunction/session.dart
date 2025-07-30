@@ -122,7 +122,7 @@ Future setDeviceId() async {
 
     // return androidDeviceInfo.androidId; // unique ID on Android
   }
-  print("Device Information : \n"
+  printFunc("Device Information : \n"
       "uuid :  ${sharedPreferences.getString("UUID")}"
       "\n version : ${sharedPreferences.getString("osVersion")}"
       "\n model : ${sharedPreferences.getString("deviceModel")}"

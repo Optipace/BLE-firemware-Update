@@ -49,3 +49,8 @@ Future<bool> connectToDevice(BluetoothDevice device) async {
 
   return false;
 }
+
+
+
+
+

@@ -46,12 +46,9 @@ class _BluetoothMainScreenState extends State<BluetoothMainScreen> {
     ?  DfuHomePage(SelectedBatch: widget.SelectedBatch, allClients: widget.allClients)
     : BluetoothOffScreen(adapterState: _adapterState,);
 
-    return MaterialApp(
-      color: darkBg,
-      debugShowCheckedModeBanner: false,
-      home: screen,
+    return  screen;
       // navigatorObservers: [BluetoothAdapterStateObserver()],
-    );
+
   }
 }
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -96,6 +97,15 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
   int batteryFactor = 1;
 
+  //bool for sending things
+  bool isConfigSent = true;
+  bool isVoltSent = true;
+  bool isTempSent = true;
+  String? fullSerial;
+
+  Timer? timeoutTimer;
+
+
   @override
   void initState() {
     super.initState();
@@ -103,13 +113,17 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await PIDforFactoryUser();
-      scanAndConnect();
+      // await scanAndConnect();
+
 
     });
     setState(() {
-      batteryTypeCtrl.text = "6";
-      dateCtrl.text = "2025-07-16";
-      serialCtrl.text = "1234";
+
+
+      // batteryTypeCtrl.text = "9";
+      batteryTypeCtrl.text = widget.SelectedBatch?.obj['battery']['batteryCode'];
+      // dateCtrl.text = "2025-07-28";
+      dateCtrl.text = DateFormat('yyyy-MM-dd').format(now);
       HardWareNumber.getText.toString();
       custIdCtrl.text = "1";
       productIdCtrl.text = "4637";
@@ -119,9 +133,9 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       maxThresholdCtrl.text = widget.SelectedBatch?.obj['profile']['uT'];
       minThresholdCtrl.text = widget.SelectedBatch?.obj['profile']['lT'];
       minVoltageCtrl.text = widget.SelectedBatch?.obj['profile']['lV'];
-      nominalVoltageCtrl.text = "17";
-      minTempCtrl.text = "11";
-      maxTempCtrl.text = "21";
+      nominalVoltageCtrl.text = widget.SelectedBatch?.obj['profile']['nV'];
+      minTempCtrl.text = widget.SelectedBatch?.obj['profile']['lTemp'];
+      maxTempCtrl.text = widget.SelectedBatch?.obj['profile']['uTemp'];
       tempCalibCtrl.text = "13";
     });
 
@@ -132,8 +146,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
   Future<bool> _onWillPop() async {
     await disconnect();
-
-    return false; // Block default system back button
+    return true; // Block default system back button
   }
 
   @override
@@ -144,7 +157,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     batchName.text = widget.SelectedBatch?.obj['name'];
     firmWareName.text = widget.SelectedBatch?.obj['firmware']['versionName'];
     configName.text = widget.SelectedBatch?.obj['profile']['name'];
-    HardWareNumber.setobj = HardWareMap.entries.first.value;
+    // HardWareNumber.setobj = HardWareMap.entries.first.value;
     // TODO: implement build
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -216,34 +229,25 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                   height: 25,
                                   width: 25,
                                   child:  Center(
-                                    child: InkWell(onTap:() async {
-                                      await FlutterBluePlus.stopScan();
-                                      setState(() {
-                                        NotConnected = false;
-                                        enableSubmit = true;
-                                      });
-
-                                    } ,
-                                      child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            Colors.grey),
-                                      ),
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.grey),
                                     ),
                                   ),
                                 )
                               : ElevatedButton(
                                   onPressed: enableSubmit
                                       ? () {
-                                    setState(() {
-                                      NotConnected = true;
-                                      // enableSubmit = true;
+                                    setState(() {});
+                                    timeoutTimer?.cancel();
+                                    timeoutTimer = Timer(Duration(seconds: 15), () async {
+                                      setState(() {
+                                        NotConnected = false;
+                                      });
+                                      await FlutterBluePlus.stopScan();
                                     });
                                   }
-                                      : () {
-                                          // NotConnected = true;
-                                          scanAndConnect();
-                                          setState(() {});
-                                        },
+                                      : ()  { },
                                   child: enableSubmit
                                       ? Text("Connected")
                                       : Text("Connect"),
@@ -371,40 +375,147 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   Padding(
                     padding: EdgeInsets.only(bottom: 20, top: 15),
                     child: ElevatedButton(
-                      onPressed: enableSubmit
-                          ? () async {
+                      onPressed: () async {
                               ValidateDropDown(HardWareNumber, ClientName);
-                              await deleteByHardWareNumber();
-                              AddedSuccess(HardWareNumber, ClientName);
-                              if (await sendConfig()) {
-                                saveHardware(context,
-                                    macId: widget.macID.toString(),
-                                    BatchId: widget.SelectedBatch?.obj['id'],
-                                    productId:
-                                        HardWareNumber.obj['id'].toString());
-                                await Future.delayed(Duration(seconds: 2));
-                                await sendVoltageThresholds();
-                                await Future.delayed(Duration(seconds: 3));
-                                await disconnect();
-                                Navigator.of(context).pop();
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content:
-                                            Text("Configuration sent")));
-                                await disconnect();
-                                // Navigator.of(context, rootNavigator: true)
-                                //     .pop();
+                             if(device!=null){ if(device!.isDisconnected){
+                                await device!.connect(autoConnect: false);
                               }
+                          }   else{
+
+                             }
+                              AddedSuccess(HardWareNumber, ClientName);
+                              // if (await sendConfig() ) {
+                              //   saveHardware(context,
+                              //       macId: widget.macID.toString(),
+                              //       BatchId: widget.SelectedBatch?.obj['id'],
+                              //       productId:
+                              //           HardWareNumber.obj['id'].toString());
+                              //   await deleteByHardWareNumber();
+                              //
+                              //   //await Future.delayed(Duration(seconds: 2));
+                              //   await sendVoltageThresholds();
+                              //   await sendTemperatureThresholds();
+                              //   await Future.delayed(Duration(seconds: 3));
+                              //   disconnect();
+                              //   Navigator.of(context).pop();
+                              // }
+                              // else {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //       SnackBar(
+                              //           content:
+                              //               Text("Configuration sent")));
+                              //   await disconnect();
+                              //   // Navigator.of(context, rootNavigator: true)
+                              //   //     .pop();
+                              // }
+
+                              await scanAndConnect();
+                              if(await sendConfig()){
+                                if(await sendVoltageThresholds()){
+                                  if(await sendTemperatureThresholds()){
+                                    printFunc("Inside the Send Temp Func");
+                                    await saveHardware(context,
+                                        macId: widget.macID.toString(),
+                                        BatchId: widget.SelectedBatch?.obj['id'],
+                                        productId:
+                                        HardWareNumber.obj['id'].toString());
+                                    await deleteByHardWareNumber();
+                                    disconnect();
+                                  }else{
+                                   isTempSent = false;
+                                   setState(() {});
+                                   ShowSnackBarMessage(context, "Temperature Not Sent", false);
+                                  }
+                                }else{
+                                  isVoltSent = false;
+                                  setState(() {});
+                                  ShowSnackBarMessage(context, "Voltage Not Sent", false);
+                                }
+                              }else{
+                                isConfigSent = false;
+                                setState(() {});
+                                ShowSnackBarMessage(context, "Config Not Sent", false);
+                              }
+
+
                               printFunc("MacID : ${widget.macID}  \n"
                                   "batchId :${widget.SelectedBatch?.obj['id']} \n"
                                   "ProductId :${HardWareNumber.obj['id']} \n");
-                            }
-                          : () {},
+                            },
+                      // enableSubmit
+                      //     ? () async {
+                      //         ValidateDropDown(HardWareNumber, ClientName);
+                      //        if(device!=null){ if(device!.isDisconnected){
+                      //           await device!.connect(autoConnect: false);
+                      //         }
+                      //     }   else{
+                      //
+                      //        }
+                      //         AddedSuccess(HardWareNumber, ClientName);
+                      //         // if (await sendConfig() ) {
+                      //         //   saveHardware(context,
+                      //         //       macId: widget.macID.toString(),
+                      //         //       BatchId: widget.SelectedBatch?.obj['id'],
+                      //         //       productId:
+                      //         //           HardWareNumber.obj['id'].toString());
+                      //         //   await deleteByHardWareNumber();
+                      //         //
+                      //         //   //await Future.delayed(Duration(seconds: 2));
+                      //         //   await sendVoltageThresholds();
+                      //         //   await sendTemperatureThresholds();
+                      //         //   await Future.delayed(Duration(seconds: 3));
+                      //         //   disconnect();
+                      //         //   Navigator.of(context).pop();
+                      //         // }
+                      //         // else {
+                      //         //   ScaffoldMessenger.of(context).showSnackBar(
+                      //         //       SnackBar(
+                      //         //           content:
+                      //         //               Text("Configuration sent")));
+                      //         //   await disconnect();
+                      //         //   // Navigator.of(context, rootNavigator: true)
+                      //         //   //     .pop();
+                      //         // }
+                      //
+                      //         await scanAndConnect();
+                      //         if(await sendConfig()){
+                      //           if(await sendVoltageThresholds()){
+                      //             if(await sendTemperatureThresholds()){
+                      //               printFunc("Inside the Send Temp Func");
+                      //               await saveHardware(context,
+                      //                   macId: widget.macID.toString(),
+                      //                   BatchId: widget.SelectedBatch?.obj['id'],
+                      //                   productId:
+                      //                   HardWareNumber.obj['id'].toString());
+                      //               await deleteByHardWareNumber();
+                      //               disconnect();
+                      //             }else{
+                      //              isTempSent = false;
+                      //              setState(() {});
+                      //              ShowSnackBarMessage(context, "Temperature Not Sent", false);
+                      //             }
+                      //           }else{
+                      //             isVoltSent = false;
+                      //             setState(() {});
+                      //             ShowSnackBarMessage(context, "Voltage Not Sent", false);
+                      //           }
+                      //         }else{
+                      //           isConfigSent = false;
+                      //           setState(() {});
+                      //           ShowSnackBarMessage(context, "Config Not Sent", false);
+                      //         }
+                      //
+                      //
+                      //         printFunc("MacID : ${widget.macID}  \n"
+                      //             "batchId :${widget.SelectedBatch?.obj['id']} \n"
+                      //             "ProductId :${HardWareNumber.obj['id']} \n");
+                      //       }
+                      //     : () {},
                       style: ButtonStyle(
-                        backgroundColor: enableSubmit
-                            ? MaterialStateProperty.all(darkBg)
-                            : MaterialStateProperty.all(Color(0xFFB3D3D6)),
+                        backgroundColor: MaterialStateProperty.all(darkBg),
+                        // backgroundColor: enableSubmit
+                        //     ? MaterialStateProperty.all(darkBg)
+                        //     : MaterialStateProperty.all(Color(0xFFB3D3D6)),
                         elevation: MaterialStateProperty.all(5),
                         shadowColor: MaterialStateProperty.all(darkBg),
                         shape: MaterialStateProperty.all(
@@ -437,7 +548,8 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  // ElevatedButton(onPressed: ()async{await disconnect();}, child: Text("Disconnect"))
                 ],
               )),
             ),
@@ -526,6 +638,9 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                       Navigator.of(contextt, rootNavigator: true).pop();
                       HardWareNumber.setText =
                           productId['productId'].toString();
+                      HardWareNumber.setobj = productId;
+                      String fullSerial = HardWareNumber.getText.toString();
+                      serialCtrl.text = fullSerial.substring(0, 4);
                       setState(() {});
                       // ProductID should prefill the part of ProductId
                     },
@@ -546,6 +661,9 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                     onPressed: () {
                       Navigator.of(contextt, rootNavigator: true).pop();
                       HardWareNumber.setText = HardWareMap.entries.first.key;
+                      HardWareNumber.setobj = HardWareMap.entries.first.value;
+                      String fullSerial = HardWareNumber.getText.toString();
+                      serialCtrl.text = fullSerial.substring(0, 4);
                       setState(() {});
                       // New ProductId assinged Procees should start
                     },
@@ -567,6 +685,9 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
             });
       } else {
         HardWareNumber.setText = HardWareMap.entries.first.key;
+        HardWareNumber.setobj = HardWareMap.entries.first.value;
+        String fullSerial = HardWareNumber.getText.toString();
+        serialCtrl.text = fullSerial.substring(0, 4);
         setState(() {});
         // New product ID assigned without any Pop -up
       }
@@ -610,13 +731,24 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     await Permission.bluetoothAdvertise.request();
   }
 
-  void scanAndConnect() async {
+  Future<void> scanAndConnect() async {
     print("BEFORe Device Connected -- $status");
 
     setState(() {
       status = "Scanning...";
       NotConnected = true;
     });
+
+
+    timeoutTimer?.cancel();
+    timeoutTimer = Timer(Duration(seconds: 45), ()async {
+      await FlutterBluePlus.stopScan();
+      setState(() {
+        NotConnected = false;
+      });
+    });
+
+
     print("Found Old macid: ${widget.macID}");
     await requestPermissions();
 
@@ -627,16 +759,19 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       printFunc("device present : ${device != null}");
       await disconnect();
     }
+
     printFunc("device present : ${device != null}");
     await Future.delayed(Duration(seconds: 5));
 
     //Scanning the device and returing
     device = await scanDeviceByMACId(widget.macID.toString());
+    printFunc( "DEMO DEVICE : $device");
 
     if (device != null) {
       bool connected = await connectToDevice(device!);
       if (connected) {
         if (device!.isConnected) {
+          timeoutTimer?.cancel();
           List<BluetoothService> services = await device!.discoverServices();
           print("Total Services Found: ${services.length}");
           print("Total Services Found1: ${services}");
@@ -649,6 +784,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
               print("    Properties: ${characteristic.properties}");
             }
           }
+
           print("Services Found: $services");
 
           for (var s in services) {
@@ -675,19 +811,29 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
           enableSubmit = true;
           deviceName = device!.advName;
         });
+        return;
       } else {
+        if(mounted){
+          setState(() {
+            NotConnected = false;
+          });
+        }
         printFunc("Connection Failed!!");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content:
               Text("Connection Failed", style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.redAccent,
         ));
-        setState(() {
-          NotConnected = false;
-        });
+
       }
-    } else {
+    }
+    else {
+      if(mounted){
+        setState(() {NotConnected = false;});
+      }
+      printFunc("DEVICE NOT FOund in else Cond");
       printFunc("${widget.macID} is not found");
+      await FlutterBluePlus.stopScan();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
           "${widget.macID} is not found",
@@ -695,13 +841,184 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
         ),
         backgroundColor: Colors.redAccent,
       ));
-      setState(() {
-        NotConnected = false;
-      });
     }
 
-    // scanning Start
-    // I need to call the scan method and get the device
+    printFunc("DEMO STReet : $NotConnected");
+    timeoutTimer?.cancel();
+    if(mounted){
+      setState(() {NotConnected = false;});
+    }
+    printFunc("DEMO STReet1 : $NotConnected");
+  }
+
+  Future<void> disconnect() async {
+    if (device != null) {
+      await device!.disconnect();
+      if(mounted){
+        setState(() {
+          status = "Disconnected";
+          deviceName = "-";
+          NotConnected = false;
+        });
+      }
+    }
+    await Future.delayed(Duration(seconds: 2));
+
+    printFunc("${widget.macID} is disconnected");
+  }
+
+  Future<bool> sendConfig() async {
+    print("null");
+    printFunc("configCHar : $configChar");
+    if (configChar == null) return false;
+    print("null2");
+    try {
+      int batteryType = int.parse(batteryTypeCtrl.text);
+      batteryFactor = batteryType;
+
+      List<String> parts = dateCtrl.text.split("-");
+      int year = int.parse(parts[0]);
+      int month = int.parse(parts[1]);
+      int day = int.parse(parts[2]);
+
+      int serial = int.parse(serialCtrl.text);
+      int product = int.parse(productIdCtrl.text);
+      int chem = int.parse(chemistryTypeCtrl.text);
+
+      var data = List<int>.filled(12, 0);
+      data[0] = '['.codeUnitAt(0);
+      data[1] = batteryType;
+      data[2] = day;
+      data[3] = month;
+      data[4] = year & 0xFF;
+      data[5] = (year >> 8) & 0xFF;
+      data[6] = serial & 0xFF;
+      data[7] = (serial >> 8) & 0xFF;
+      data[8] = product & 0xFF;
+      data[9] =  (product >> 8) & 0xFF;
+      data[10] = chem;
+      data[11] = ']'.codeUnitAt(0);
+      printFunc("config data : $data");
+      await configChar!.write(data);
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Configuration sent")));
+      printFunc("Configuration sent");
+      return true; //------------------- commit
+    } catch (e) {
+      printFunc("Invalid input at config: $e");
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Invalid input: $e")));
+      return false;
+    }
+  }
+
+  Future<bool> sendVoltageThresholds() async {
+    if (thresholdChar == null) return false;
+
+    double maxVoltage = double.parse(maxVoltageCtrl.text);
+    double maxThreshold = double.parse(maxThresholdCtrl.text);
+    double minThreshold = double.parse(minThresholdCtrl.text);
+    double minVoltage = double.parse(minVoltageCtrl.text);
+    double nominalVoltage = double.parse(nominalVoltageCtrl.text);
+
+    int batteryType = int.parse(batteryTypeCtrl.text);
+    batteryFactor = batteryType;
+    print("bfactor------------>$batteryFactor");
+    int factor = batteryFactor == 0 ? 1 : batteryFactor;
+
+    double maxV = maxVoltage * factor;
+    double maxT = maxThreshold * factor;
+    double minT = minThreshold * factor;
+    double minV = minVoltage * factor;
+    double nomV = nominalVoltage * factor;
+
+    print("Raw Inputs:");
+    print("Max Voltage: $maxVoltage");
+    print("Max Threshold: $maxThreshold");
+    print("Min Threshold: $minThreshold");
+    print("Min Voltage: $minVoltage");
+    print("Nominal Voltage: $nominalVoltage");
+
+    print("After applying battery factor ($factor):");
+    print("maxV = $maxV");
+    print("maxT = $maxT");
+    print("minT = $minT");
+    print("minV = $minV");
+    print("nomV = $nomV");
+
+    final data = Uint8List(12);
+    final view = ByteData.view(data.buffer);
+
+    data[0] = 91; // '['
+    view.setUint16(1, (maxV * 100).round(), Endian.little);
+    view.setUint16(3, (maxT * 100).round(), Endian.little);
+    view.setUint16(5, (minT * 100).round(), Endian.little);
+    view.setUint16(7, (minV * 100).round(), Endian.little);
+    view.setUint16(9, (nomV * 100).round(), Endian.little);
+    data[11] = 93; // ']'
+    try {
+      print("Final Bytes to Send: ${data.join(', ')}");
+
+      await thresholdChar!.write(data);
+
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text("Voltage thresholds sent successfully")),
+      // );
+      return true;
+    } catch (e) {
+      printFunc("Exception at voltage $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Invalid voltage input: $e")),
+      );
+      print("Error: $e");
+      return false;
+    }
+    printFunc("${widget.macID} is voltage is sented");
+  }
+
+  Future<bool> sendTemperatureThresholds() async {
+    if (thresholdChar == null) return false;
+    try {
+      int minTemp = int.parse(minTempCtrl.text);
+      int maxTemp = int.parse(maxTempCtrl.text);
+      printFunc("DEMODEMODEMO maxTemp minTemp  : $maxTemp $minTemp");
+
+      Uint8List buffer = Uint8List(6);
+      buffer[0] = 123;
+      ByteData view = ByteData.view(buffer.buffer);
+
+      view.setInt16(1, minTemp, Endian.little);
+      view.setInt16(3, maxTemp, Endian.little);
+      buffer[5] = 125;
+
+      printFunc("Demo Temperature Packet : $buffer");
+
+      // var data = List<int>.filled(6, 0);
+      // data[0] = 123;
+      // ByteData.view(Uint8List.fromList(data).buffer).setInt16(1, minTemp, Endian.little);
+      // ByteData.view(Uint8List.fromList(data).buffer).setInt16(3, maxTemp, Endian.little);
+      // data[5] = 125;
+      //
+      // printFunc("Demo Temperature Packet : $data");
+
+      await thresholdChar!.write(buffer);
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Temperature thresholds sent")));
+      return true;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid temperature input: $e")));
+      return false;
+    }
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+}
+
+
+// scanning Start -- I need to call the scan method and get the device
 
 /*
     await FlutterBluePlus.startScan(timeout: const Duration(seconds: 45));
@@ -797,137 +1114,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       setState(() {});
     });
     */
-    setState(() {
-      NotConnected = false;
-    });
-  }
-
-  Future<void> disconnect() async {
-    if (device != null) {
-      await device!.disconnect();
-      setState(() {
-        status = "Disconnected";
-        deviceName = "-";
-      });
-    }
-    await Future.delayed(Duration(seconds: 2));
-
-    printFunc("${widget.macID} is disconnected");
-  }
-
-  Future<bool> sendConfig() async {
-    print("null");
-    if (configChar == null) return false;
-    print("null2");
-    try {
-      int batteryType = int.parse(batteryTypeCtrl.text);
-      batteryFactor = batteryType;
-      List<String> parts = dateCtrl.text.split("-");
-      int year = int.parse(parts[0]);
-      int month = int.parse(parts[1]);
-      int day = int.parse(parts[2]);
-      int serial = int.parse(serialCtrl.text);
-      int cust = int.parse(custIdCtrl.text);
-      int product = int.parse(productIdCtrl.text);
-      int chem = int.parse(chemistryTypeCtrl.text);
-
-      var data = List<int>.filled(13, 0);
-      data[0] = '['.codeUnitAt(0);
-      data[1] = batteryType;
-      data[2] = day;
-      data[3] = month;
-      data[4] = year & 0xFF;
-      data[5] = (year >> 8) & 0xFF;
-      data[6] = serial & 0xFF;
-      data[7] = (serial >> 8) & 0xFF;
-      data[8] = cust;
-      data[9] = product & 0xFF;
-      data[10] = (product >> 8) & 0xFF;
-      data[11] = chem;
-      data[12] = ']'.codeUnitAt(0);
-      printFunc("config data : $data");
-      await configChar!.write(data);
-// ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Configuration sent")));
-      printFunc("Configuration sent");
-
-      return true;
-    } catch (e) {
-      printFunc("Invalid input at config: $e");
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Invalid input: $e")));
-      return false;
-    }
-    printFunc("${widget.macID} is config sented");
-    return false;
-  }
-
-  Future<void> sendVoltageThresholds() async {
-    if (thresholdChar == null) return;
-
-    double maxVoltage = double.parse(maxVoltageCtrl.text);
-    double maxThreshold = double.parse(maxThresholdCtrl.text);
-    double minThreshold = double.parse(minThresholdCtrl.text);
-    double minVoltage = double.parse(minVoltageCtrl.text);
-    double nominalVoltage = double.parse(nominalVoltageCtrl.text);
-
-    int batteryType = int.parse(batteryTypeCtrl.text);
-    batteryFactor = batteryType;
-    print("bfactor------------>$batteryFactor");
-    int factor = batteryFactor == 0 ? 1 : batteryFactor;
-
-    double maxV = maxVoltage * factor;
-    double maxT = maxThreshold * factor;
-    double minT = minThreshold * factor;
-    double minV = minVoltage * factor;
-    double nomV = nominalVoltage * factor;
-
-    print("Raw Inputs:");
-    print("Max Voltage: $maxVoltage");
-    print("Max Threshold: $maxThreshold");
-    print("Min Threshold: $minThreshold");
-    print("Min Voltage: $minVoltage");
-    print("Nominal Voltage: $nominalVoltage");
-
-    print("After applying battery factor ($factor):");
-    print("maxV = $maxV");
-    print("maxT = $maxT");
-    print("minT = $minT");
-    print("minV = $minV");
-    print("nomV = $nomV");
-
-    final data = Uint8List(12);
-    final view = ByteData.view(data.buffer);
-
-    data[0] = 91; // '['
-    view.setUint16(1, (maxV * 100).round(), Endian.little);
-    view.setUint16(3, (maxT * 100).round(), Endian.little);
-    view.setUint16(5, (minT * 100).round(), Endian.little);
-    view.setUint16(7, (minV * 100).round(), Endian.little);
-    view.setUint16(9, (nomV * 100).round(), Endian.little);
-    data[11] = 93; // ']'
-    try {
-      print("Final Bytes to Send: ${data.join(', ')}");
-
-      await thresholdChar!.write(data);
-
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text("Voltage thresholds sent successfully")),
-      // );
-    } catch (e) {
-      printFunc("Exception at voltage $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Invalid voltage input: $e")),
-      );
-      print("Error: $e");
-    }
-    printFunc("${widget.macID} is voltage is sented");
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-}
 
 //Submit BTN
 /*manageUserBtn(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/admin/log/API/batchAPI.dart';
 import 'package:tracker_firmware/modules/admin/log/batchLogs.dart';
 import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
 
@@ -45,10 +46,11 @@ class BatchLogsMain extends StatelessWidget {
         child: Column(
           children: [
             for (int i = 0; i < batchList.length; i++)
+
               GestureDetector(
-                onTap: () {
-                  printFunc("Inside ${batchList[i]["batchName"]} ");
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => BatchLogs(batchList[i])));
+                onTap: () async {
+                  printFunc("Inside getLogsByBatchId ${batchList[i]["id"]} ");
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => BatchLogs(item: batchList[i])));
                 },
                 child: Container(
                     width: screenSize.width,

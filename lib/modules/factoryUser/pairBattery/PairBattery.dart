@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/getBatteryByMac.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/pairBattery.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/barcode.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
+import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
@@ -28,6 +33,29 @@ class _PairBatteryState extends State<PairBattery> {
   bool validateFields = false;
 
   List result = [];
+
+// For Bluetooth Device
+  final flutterBlue = FlutterBluePlus.instance;
+  BluetoothDevice? device;
+  BluetoothCharacteristic? configChar;
+  BluetoothCharacteristic? thresholdChar;
+  BluetoothCharacteristic? calibrationChar;
+
+  final serviceUUID = Guid("f043176a-5168-11ee-be56-0242ac120012");
+  final configCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120014");
+  final thresholdCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120016");
+  final calibrationCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120017");
+
+  bool NotConnected = false;
+  bool enableSubmit = false;
+  String status = "Disconnected";
+  String deviceName = "-";
+
+  bool connected = false;
+  bool enablePopUp = false;
+  bool isBatterySnoSent = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -96,16 +124,71 @@ class _PairBatteryState extends State<PairBattery> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Text(
-                              "MAC-ID  ",
-                              style: TextStyle(
-                                  color: darkBg,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  shadows: [
-                                    Shadow(color: Colors.black, blurRadius: 0.3)
-                                  ]),
+                            padding: EdgeInsets.only(left: 15,right: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "MAC-ID  ",
+                                  style: TextStyle(
+                                      color: darkBg,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      shadows: [
+                                        Shadow(color: Colors.black, blurRadius: 0.3)
+                                      ]),
+                                ),
+
+
+                                enableBarCode
+                                ? NotConnected
+                                    ? Container(
+                                  color: Colors.transparent,
+                                  height: 25,
+                                  width: 25,
+                                  child:  Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.grey),
+                                    ),
+                                  ),
+                                )
+                                    : ElevatedButton(
+                                  onPressed: enableSubmit
+                                      ? () {}
+                                      : () async {
+                                    validateField();
+                                    !validateFields;
+
+                                    // await scanAndConnect();
+
+
+
+                                    setState(() {});
+                                  },
+                                  child: enableSubmit
+                                      ? Text("Connected")
+                                      : Text("Connect"),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty.all(darkBg),
+                                    elevation: MaterialStateProperty.all(5),
+                                    shadowColor:
+                                    MaterialStateProperty.all(darkBg),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          side: BorderSide(
+                                              color: darkBg, width: 1)),
+                                    ),
+                                  ),
+                                )
+                                : SizedBox(),
+
+
+
+                              ],
                             ),
                           ),
                           Container(
@@ -234,134 +317,128 @@ class _PairBatteryState extends State<PairBattery> {
                                       child: ElevatedButton(
                                         style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  darkBg),
+                                          MaterialStateProperty.all<Color>(
+                                              darkBg),
                                           shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
+                                              RoundedRectangleBorder>(
                                               RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          20))),
+                                                  BorderRadius.circular(
+                                                      20))),
                                         ),
                                         onPressed: () async {
                                           validateField();
+                                          result = await getBatteryByMac(
+                                              context,
+                                              macID: _macIdController.text);
+                                          bool batteryAvailable = result[0];
+                                          Map<String, dynamic> batteryDetail =
+                                          result[1];
 
-                                          if(_macIdController.text != null){
-                                            result = await getBatteryByMac(
-                                                context,
-                                                macID: _macIdController.text);
-                                            bool batteryAvailable = result[0];
-                                            Map<String, dynamic> batteryDetail =
-                                            result[1];
+                                          printFunc(
+                                              "Demo battery details : ${batteryAvailable} \n ${batteryDetail}");
 
-                                            printFunc(
-                                                "Demo battery details : ${batteryAvailable} \n ${batteryDetail}");
-
-                                            if (batteryAvailable &&
-                                                batteryDetail.isNotEmpty) {
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      title: Column(
-                                                        children: [
-                                                          Text(
-                                                            "BATTERY FOUND",
-                                                            style: TextStyle(
-                                                                color: darkBg,
-                                                                fontSize: 24,
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .w800,
-                                                                shadows: [
-                                                                  Shadow(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      blurRadius:
-                                                                      0.4)
-                                                                ]),
-                                                          ),
-                                                          Divider(
-                                                            color: darkBg,
-                                                            thickness: 0.5,
-                                                          )
-                                                        ],
-                                                      ),
-                                                      content: Text(
-                                                          "This Device is Paired with this ${batteryDetail['batterySerialNumber']} Battery. Do you want too?"),
-                                                      actions: [
-                                                        //Continue btn
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            //Go back
-                                                            ShowSnackBarMessage(
-                                                                context,
-                                                                'Battery Paired successfully!',
-                                                                true);
-                                                            Navigator.of(context)
-                                                                .pop(); //Save Log API
-                                                            Navigator.of(context)
-                                                                .pop(); //Save Log API
-                                                          },
-                                                          child: Text(
-                                                            "Continue",
-                                                            style: TextStyle(
-                                                                fontSize: 16),
-                                                          ),
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                              MaterialStateProperty
-                                                                  .all<Color>(
-                                                                  darkBg),
-                                                              shape: MaterialStateProperty.all<
-                                                                  RoundedRectangleBorder>(
-                                                                  RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          18)))),
+                                          if (batteryAvailable &&
+                                              batteryDetail.isNotEmpty) {
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Column(
+                                                      children: [
+                                                        Text(
+                                                          "BATTERY FOUND",
+                                                          style: TextStyle(
+                                                              color: darkBg,
+                                                              fontSize: 24,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w800,
+                                                              shadows: [
+                                                                Shadow(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    blurRadius:
+                                                                    0.4)
+                                                              ]),
                                                         ),
-                                                        //Assign new Btn
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            enableBarCode = true;
-                                                            Navigator.of(context)
-                                                                .pop();
-                                                            setState(() {});
-                                                          },
-                                                          child: Text(
-                                                            "Assign New",
-                                                            style: TextStyle(
-                                                                fontSize: 16),
-                                                          ),
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                              MaterialStateProperty
-                                                                  .all<Color>(
-                                                                  darkBg),
-                                                              shape: MaterialStateProperty.all<
-                                                                  RoundedRectangleBorder>(
-                                                                  RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          18)))),
+                                                        Divider(
+                                                          color: darkBg,
+                                                          thickness: 0.5,
                                                         )
                                                       ],
-                                                    );
-                                                  });
-                                            } else if (!batteryAvailable &&
-                                                batteryDetail.isNotEmpty) {
-
-                                              enableBarCode = true;
-                                              ShowSnackBarMessage(context,
-                                                  'No Battery is Paired!', true);
-                                              setState(() {});
-                                            } else {
-                                              enableBarCode = false;
-                                              _macIdController.clear();
-                                            }
+                                                    ),
+                                                    content: Text(
+                                                        "This Device is Paired with this ${batteryDetail['batterySerialNumber']} Battery. Do you want too?"),
+                                                    actions: [
+                                                      //Continue btn
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          //Go back
+                                                          ShowSnackBarMessage(
+                                                              context,
+                                                              'Battery Paired successfully!',
+                                                              true);
+                                                          Navigator.of(context)
+                                                              .pop(); //Save Log API
+                                                          Navigator.of(context)
+                                                              .pop(); //Save Log API
+                                                        },
+                                                        child: Text(
+                                                          "Continue",
+                                                          style: TextStyle(
+                                                              fontSize: 16),
+                                                        ),
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(
+                                                                darkBg),
+                                                            shape: MaterialStateProperty.all<
+                                                                RoundedRectangleBorder>(
+                                                                RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        18)))),
+                                                      ),
+                                                      //Assign new Btn
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          enableBarCode = true;
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          setState(() {});
+                                                        },
+                                                        child: Text(
+                                                          "Assign New",
+                                                          style: TextStyle(
+                                                              fontSize: 16),
+                                                        ),
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(
+                                                                darkBg),
+                                                            shape: MaterialStateProperty.all<
+                                                                RoundedRectangleBorder>(
+                                                                RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        18)))),
+                                                      )
+                                                    ],
+                                                  );
+                                                });
+                                          } else if (!batteryAvailable &&
+                                              batteryDetail.isEmpty) {
+                                            enableBarCode = true;
+                                            ShowSnackBarMessage(context,
+                                                'No Battery is Paired!', true);
+                                            setState(() {});
+                                          } else {
+                                            enableBarCode = true;
                                           }
-
                                         },
                                         child: Row(
                                           children: [
@@ -385,6 +462,8 @@ class _PairBatteryState extends State<PairBattery> {
                               ],
                             ),
                           ),
+
+
                         ],
                       ),
                     ),
@@ -572,12 +651,20 @@ class _PairBatteryState extends State<PairBattery> {
                                         printFunc(
                                             "MacID : ${_macIdController.text} \n Battery SErial number : ${_batteryController.text}");
                                         if (!validateFields) {
-                                          await saveMacandBattery(context,
-                                              macId: _macIdController.text,
-                                              BatterySerialNo:
-                                                  _batteryController.text);
+                                          await scanAndConnect();
+                                          isBatterySnoSent = await sendBatterySerialNumber(_batteryController.text.toString());
+                                          if(isBatterySnoSent){
+                                            await disconnect();
+                                            await saveMacandBattery(context,
+                                                macId: _macIdController.text,
+                                                BatterySerialNo:
+                                                _batteryController.text);
+                                            Navigator.popUntil(context, (route) => route.isFirst);
+                                          }
                                         }
-                                        setState(() {});
+                                        if(mounted){
+                                          setState(() {});
+                                        }
                                       },
                                       child: Text(
                                         "SUBMIT",
@@ -591,6 +678,8 @@ class _PairBatteryState extends State<PairBattery> {
                                     ),
                                   ),
                                 ),
+
+
                               ],
                             ),
                           )
@@ -613,6 +702,188 @@ class _PairBatteryState extends State<PairBattery> {
       validateFields = hasEmpty;
     });
   }
+
+  Future<void> requestPermissions() async {
+    await Permission.location.request();
+    await Permission.bluetooth.request();
+    await Permission.bluetoothScan.request();
+    await Permission.bluetoothConnect.request();
+    await Permission.bluetoothAdvertise.request();
+  }
+
+  Future<void> scanAndConnect() async {
+  if(_macIdController.text.isNotEmpty){
+    print("BEFORe Device Connected -- $status");
+
+    setState(() {
+      status = "Scanning...";
+      NotConnected = true;
+    });
+
+
+    print("Found Old macid: ${_macIdController.text}");
+    await requestPermissions();
+
+    printFunc("device present : ${device != null}");
+
+    // If Device is Present we need to disconnect
+    if (device != null && device!.isConnected) {
+      printFunc("device present : ${device != null}");
+      await disconnect();
+    }
+
+    printFunc("device present : ${device != null}");
+    await Future.delayed(Duration(seconds: 5));
+
+    //Scanning the device and returing
+    device = await scanDeviceByMACId(_macIdController.text);
+    printFunc( "DEMO DEVICE : $device");
+
+    if (device != null) {
+      connected = await connectToDevice(device!);
+      printFunc("DEMO DEVICE IS CONNECTED : $connected");
+      if (connected) {
+        if (device!.isConnected) {
+          List<BluetoothService> services = await device!.discoverServices();
+          print("Total Services Found: ${services.length}");
+          print("Total Services Found1: ${services}");
+
+          //for Printing
+          for (var service in services) {
+            print("Service UUID: ${service.uuid}");
+            for (var characteristic in service.characteristics) {
+              print("  Characteristic UUID: ${characteristic.uuid}");
+              print("    Properties: ${characteristic.properties}");
+            }
+          }
+
+          print("Services Found: $services");
+
+          for (var s in services) {
+            printFunc(
+                "service uuid : ${s.uuid} \nf043176a-5168-11ee-be56-0242ac120012 : ${s.uuid == serviceUUID}");
+
+            if (s.uuid == serviceUUID) {
+              printFunc("s.characteristics : ${s.characteristics}");
+              for (var c in s.characteristics) {
+                printFunc("characteristics c : $c");
+                printFunc("UUID");
+                printFunc("characteristics UUID : ${c.uuid}");
+
+                if (c.uuid == configCharUUID) configChar = c;
+                if (c.uuid == thresholdCharUUID) thresholdChar = c;
+                if (c.uuid == calibrationCharUUID) calibrationChar = c;
+              }
+            }
+          }
+        }
+        setState(() {
+          status = "Connected";
+          NotConnected = false;
+          enableSubmit = true;
+          enablePopUp = true;
+          deviceName = device!.advName;
+        });
+        printFunc("DEmo is device Connected enableSubmit: $enableSubmit \n NotConnected :  $NotConnected  ");
+
+        printFunc("charterstics : configChar : $configChar");
+        return;
+      } else {
+        if(mounted){
+          setState(() {
+            NotConnected = false;
+          });
+        }
+        printFunc("Connection Failed!!");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+          Text("Connection Failed", style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.redAccent,
+        ));
+
+      }
+    }
+    else {
+      if(mounted){
+        setState(() {NotConnected = false;});
+      }
+      printFunc("DEVICE NOT FOund in else Cond");
+      await FlutterBluePlus.stopScan();
+      printFunc("${_macIdController.text} is not found");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "${_macIdController.text} is not found",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.redAccent,
+      ));
+    }
+
+    printFunc("DEMO STReet : $NotConnected");
+    if(mounted){
+      setState(() {NotConnected = false;});
+    }
+    printFunc("DEMO STReet1 : $NotConnected");
+  }
+  }
+
+  Future<void> disconnect() async {
+    if (device != null) {
+      await device!.disconnect();
+      if(mounted){
+        setState(() {
+          status = "Disconnected";
+          deviceName = "-";
+          NotConnected = false;
+        });
+      }
+    }
+    await Future.delayed(Duration(seconds: 2));
+
+    printFunc("${_macIdController.text} is disconnected");
+  }
+
+  Future<bool> sendBatterySerialNumber(String batterySerialCtrl) async {
+
+    if (configChar == null) {
+      printFunc("DEMODEMODMEOM configChar : $configChar");
+      printFunc("Characteristic is null, can't send battery serial number.");
+      return false;
+    }
+
+    try {
+      int batterySerial = int.parse(batterySerialCtrl.trim());
+
+      if (batterySerial < 0 || batterySerial > 99) {
+        printFunc("Battery Serial Number out of bounds: $batterySerial");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Battery Serial Number must be between 0 and 99")),
+        );
+        return false;
+      }
+
+      // Create 5-byte packet
+      List<int> data = List.filled(5, 0);
+      data[0] = '{'.codeUnitAt(0);
+      data[1] = 'B'.codeUnitAt(0);
+      data[2] = batterySerial & 0xFF;
+      data[3] = (batterySerial >> 8) & 0xFF;
+      data[4] = '}'.codeUnitAt(0);
+
+      printFunc("Battery Config packet: $data");
+
+      await configChar!.write(data);
+      printFunc("Battery Serial Number sent successfully");
+      return true;
+    } catch (e) {
+      printFunc("Failed to send Battery Serial Number: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Invalid Battery Serial Number: $e")),
+      );
+      return false;
+    }
+  }
+
 
   @override
   void dispose() {

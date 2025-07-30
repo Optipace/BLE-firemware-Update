@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/services/apiCall/Admin/userManagement.dart';
 import 'package:tracker_firmware/services/apiCall/designation.dart';
 import 'package:tracker_firmware/services/apiCall/logIn.dart';
@@ -427,6 +428,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                             onPress: () async {
                                                               CheckDesignationState(() {
                                                                 ValidateDesignationFields();
+
                                                               });
                                                               // Future.delayed(Duration(seconds: 3)).then((_) {
                                                               //   CheckDesignationState(() {
@@ -445,6 +447,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                                 )) {
                                                                   designationRoles = await getDesignation(context);
                                                                   clearConfig();
+
+                                                                  Navigator.of(context).pop(); // Close inner sheet
                                                                   // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                                                                 }
                                                               }
@@ -525,9 +529,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                           deviveId: _uuid.text.trim(),
                         );
                         if (success) {
-                          // clearNewUserFields();
+                          clearNewUserFields();
                         }
-                        // Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
                       }
                     }),
               )
@@ -709,6 +713,21 @@ class AdminNewUserState extends State<AdminNewUser> {
                             height: 8,
                           ),
 
+                          //------Device UUID -----------
+                          LabelText(text: "Employee Device UUID :"),
+                          TextFeildNewUser(
+                            hintText: "Enter device UUID",
+                            Controller: _uuidEdit,
+                            onChanged: (value) {},
+                            enable: _activeUser,
+                            etext: _validateEditUser && _uuidEdit.text.trim().isEmpty
+                                ? "Please Enter the UUID"
+                                : "",
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+
                           //----DesignationID---- [DROPDOWN]
                           GestureDetector(
                             child: PrimeryDropDownButton(
@@ -742,159 +761,86 @@ class AdminNewUserState extends State<AdminNewUser> {
 
                           Visibility(
                               visible: _userFound && !_validatePhn,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                      child: Column(
-                                        // mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 20,
-                                          ),
+                              child:  _activeUser
+                                  ? Container(
+                                padding: EdgeInsets.only(top: 15, bottom: 30, left: 15, right: 15),
+                                child: FittedBox(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      manageUserBtn(
+                                          text: "Update",
+                                          onPress: () async {
+                                            ValidateEditUser();
+                                            validateEditDropDown(designation01);
+                                            printFunc("validate edit User : $_validateEditDropDown");
+                                            printFunc(
+                                                "Validate Edit Drop Down : ${_validateEditDropDown}");
+                                            printFunc(
+                                                "${!_validateEditUser && !_validateEditDropDown}");
+                                            if (!_validateEditUser && !_validateEditDropDown) {
+                                              printFunc("Insid if cond");
+                                              final success = await updateUser(
+                                                context,
+                                                id: existingUserId,
+                                                // must be tracked somewhere in state
+                                                name: _name01.text.trim(),
+                                                empRegisteredId: _empRegId01.text.trim(),
+                                                email: _email01.text.trim(),
+                                                contact: _contact01.text.trim(),
+                                                password: _password.text.trim(),
+                                                designationId: designation01.obj != null
+                                                    ? designation01.obj!["id"]?.toString() ?? ''
+                                                    : '',
 
-                                          //----Name-----
-                                          LabelText(text: "Emoplyee Name :"),
-                                          TextFeildNewUser(
-                                            hintText: "Enter Employee name",
-                                            Controller: _name01,
-                                            onChanged: (value) {},
-                                            enable: _activeUser,
-                                            etext: _validateEditUser && _name01.text.trim().isEmpty
-                                                ? "Please Enter the name"
-                                                : "",
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
+                                                deviveId: _uuidEdit.text.trim(),
+                                              );
 
-                                          //----empRegId------
-                                          LabelText(text: "Emoplyee Regestred ID:"),
-                                          TextFeildNewUser(
-                                            hintText: "Enter empRegID",
-                                            Controller: _empRegId01,
-                                            onChanged: (value) {},
-                                            enable: _activeUser,
-                                            etext: _validateEditUser && _empRegId01.text.trim().isEmpty
-                                                ? "Please Enter the empRegID"
-                                                : "",
-                                          ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
+                                              if (success) {
+                                                clearEditUserFields();
+                                                _searchPhn.clear();
+                                              }
+                                            } else {
+                                              printFunc("Inside else cond");
+                                            }
+                                            setState(() {
+                                              _userFound = false;
+                                            });
+                                          }),
+                                      SizedBox(width: 5),
+                                      manageUserBtn(
+                                          text: "Deactive",
+                                          onPress: () async {
+                                            final success =
+                                            await deActivateUser(context, id: existingUserId);
+                                            if (success) {
+                                              setState(() {
+                                                _activeUser = false;
+                                              });
+                                            }
+                                          })
+                                    ],
+                                  ),
+                                ),
+                              )
+                                  : Container(
+                                padding: EdgeInsets.only(top: 15, bottom: 30),
+                                child: Center(
+                                  child: manageUserBtn(
+                                      text: "Active",
+                                      onPress: () async {
+                                        final success =
+                                        await setUserActive(context, id: existingUserId);
+                                        if (success) {
+                                          setState(() {
+                                            _activeUser = true;
+                                          });
+                                        }
+                                      }),
+                                ),
+                              )
+                          )
 
-                                          //------email------
-                                          LabelText(text: "Employee E-Mail :"),
-                                          TextFeildNewUser(
-                                            hintText: "Enter Employee E-Mail",
-                                            Controller: _email01,
-                                            onChanged: (value) {},
-                                            enable: _activeUser,
-                                            etext: _validateEditUser && _email01.text.trim().isEmpty
-                                                ? "Please Enter the E-Mail"
-                                                : "",
-                                          ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
-
-                                          LabelText(text: "Employee Device UUID :"),
-                                          TextFeildNewUser(
-                                            hintText: "Enter device UUID",
-                                            Controller: _uuidEdit,
-                                            onChanged: (value) {},
-                                            enable: _activeUser,
-                                            etext: _validateEditUser && _uuidEdit.text.trim().isEmpty
-                                                ? "Please Enter the UUID"
-                                                : "",
-                                          ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
-
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                        ],
-                                      )),
-                                  _activeUser
-                                      ? Container(
-                                          padding: EdgeInsets.only(top: 15, bottom: 30, left: 15, right: 15),
-                                          child: FittedBox(
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                manageUserBtn(
-                                                    text: "Update",
-                                                    onPress: () async {
-                                                      ValidateEditUser();
-                                                      validateEditDropDown(designation01);
-                                                      print("validate edit User : $_validateEditDropDown");
-                                                      printFunc(
-                                                          "Validate Edit Drop Down : ${_validateEditDropDown}");
-                                                      printFunc(
-                                                          "${!_validateEditUser && !_validateEditDropDown}");
-                                                      if (!_validateEditUser && !_validateEditDropDown) {
-                                                        printFunc("Insid if cond");
-                                                        final success = await updateUser(
-                                                          context,
-                                                          id: existingUserId,
-                                                          // must be tracked somewhere in state
-                                                          name: _name01.text.trim(),
-                                                          empRegisteredId: _empRegId01.text.trim(),
-                                                          email: _email01.text.trim(),
-                                                          contact: _contact01.text.trim(),
-                                                          password: _password.text.trim(),
-                                                          designationId: designation01.obj != null
-                                                              ? designation01.obj!["id"]?.toString() ?? ''
-                                                              : '',
-
-                                                          deviveId: _uuidEdit.text.trim(),
-                                                        );
-
-                                                        if (success) {
-                                                          clearEditUserFields();
-                                                        }
-                                                      } else {
-                                                        printFunc("Inside else cond");
-                                                      }
-                                                      setState(() {
-                                                        _userFound = false;
-                                                      });
-                                                    }),
-                                                SizedBox(width: 5),
-                                                manageUserBtn(
-                                                    text: "Deactive",
-                                                    onPress: () async {
-                                                      final success =
-                                                          await deActivateUser(context, id: existingUserId);
-                                                      if (success) {
-                                                        setState(() {
-                                                          _activeUser = false;
-                                                        });
-                                                      }
-                                                    })
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      : Container(
-                                          padding: EdgeInsets.only(top: 15, bottom: 30),
-                                          child: manageUserBtn(
-                                              text: "Active",
-                                              onPress: () async {
-                                                final success =
-                                                    await setUserActive(context, id: existingUserId);
-                                                if (success) {
-                                                  setState(() {
-                                                    _activeUser = true;
-                                                  });
-                                                }
-                                              }),
-                                        )
-                                ],
-                              ))
                         ],
                       ),
                     ),
@@ -980,7 +926,7 @@ class AdminNewUserState extends State<AdminNewUser> {
   }
 
   void validatePassword() {
-    print("Demo validatePassword ${_passwordNotSame}");
+    printFunc("Demo validatePassword ${_passwordNotSame}");
     if (_password.text != _repassword.text!) {
       setState(() {
         _passwordNotSame = true;

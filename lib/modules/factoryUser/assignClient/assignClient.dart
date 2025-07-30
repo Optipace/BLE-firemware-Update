@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
@@ -9,6 +13,7 @@ import 'package:tracker_firmware/modules/factoryUser/api/hardWareNumber.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/barcode.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
@@ -38,6 +43,29 @@ class _AssignClientState extends State<AssignClient> {
   bool enableClientField = false;
   List result =[];
 
+  // For Bluetooth Device
+  final flutterBlue = FlutterBluePlus.instance;
+  BluetoothDevice? device;
+  BluetoothCharacteristic? configChar;
+  BluetoothCharacteristic? thresholdChar;
+  BluetoothCharacteristic? calibrationChar;
+
+  final serviceUUID = Guid("f043176a-5168-11ee-be56-0242ac120012");
+  final configCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120014");
+  final thresholdCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120016");
+  final calibrationCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120017");
+
+  bool NotConnected = false;
+  bool enableSubmit = false;
+  bool enablePopUp = false;
+  String status = "Disconnected";
+  String deviceName = "-";
+
+  bool connected = false;
+  bool isCustomerIDSent = false;
+
+  // Timer? timeoutTimer;
+
 
 
 
@@ -47,6 +75,10 @@ class _AssignClientState extends State<AssignClient> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       clientList = await getAllClients(context);
       clientListIntoMap();
+      if (device != null && device!.isConnected) {
+        printFunc("device present : ${device != null}");
+        await disconnect();
+      }
       printFunc("clientList/ :-> $clientList");
       if (mounted) {
         setState(() {});
@@ -131,16 +163,67 @@ class _AssignClientState extends State<AssignClient> {
                           children: [
                             //MACID
                             Container(
-                              padding: EdgeInsets.only(left: 15),
-                              child: Text(
-                                "MAC-ID  ",
-                                style: TextStyle(
-                                    color: darkBg,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    shadows: [
-                                      Shadow(color: Colors.black, blurRadius: 0.3)
-                                    ]),
+                              padding: EdgeInsets.only(left: 15,right: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "MAC-ID  ",
+                                    style: TextStyle(
+                                        color: darkBg,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        shadows: [
+                                          Shadow(color: Colors.black, blurRadius: 0.3)
+                                        ]),
+                                  ),
+                                  enableClientField
+                                  ?NotConnected
+                                      ? Container(
+                                    color: Colors.transparent,
+                                    height: 25,
+                                    width: 25,
+                                    child:  Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                            Colors.grey),
+                                      ),
+                                    ),
+                                  )
+                                      : ElevatedButton(
+                                    onPressed: enableSubmit
+                                        ? () {}
+                                        : () async {
+                                      validateFields();
+
+                                      !validateFileds;
+                                      // await scanAndConnect();
+
+
+                                      setState(() {});
+                                    },
+                                    child: enableSubmit
+                                        ? Text("Connected")
+                                        : Text("Connect"),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(darkBg),
+                                      elevation: MaterialStateProperty.all(5),
+                                      shadowColor:
+                                      MaterialStateProperty.all(darkBg),
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(10),
+                                            side: BorderSide(
+                                                color: darkBg, width: 1)),
+                                      ),
+                                    ),
+                                  )
+                                  : SizedBox() ,
+
+
+                                ],
                               ),
                             ),
                             Container(
@@ -253,7 +336,6 @@ class _AssignClientState extends State<AssignClient> {
                                         hintText: "Enter the MacID",
                                         Controller: _macIdController,
                                         onChanged: (value) {
-
                                         },
 
                                         enable: true,
@@ -265,7 +347,6 @@ class _AssignClientState extends State<AssignClient> {
                                             : "",
                                       ),
 
-                                      //Search btn
                                       Visibility(
                                           visible: !enableClientField,
                                           child: Container(
@@ -282,9 +363,8 @@ class _AssignClientState extends State<AssignClient> {
                                                         BorderRadius.circular(
                                                             20))),
                                               ),
-
-                                              onPressed: () async{
-                                                validateFields();
+                                              onPressed: () async {
+                                                //POP UP GOES HERE
 
                                                 result = await GetClientByMac(context,macId: _macIdController.text.toString());
                                                 bool clientAvaliable = result[0];
@@ -304,6 +384,7 @@ class _AssignClientState extends State<AssignClient> {
                                                     "contactPerson": "",
                                                     "discription": "",
                                                     "createdBy": null,
+                                                    "code":""
                                                   });
                                                   clientListIntoMap();
                                                   setState(() {});
@@ -317,8 +398,10 @@ class _AssignClientState extends State<AssignClient> {
                                                     "email": ClientDetails['email'],
                                                     "contactPerson": ClientDetails['contactPerson'],
                                                     "discription":ClientDetails['discription'],
-                                                    "createdBy": ClientDetails['createdBy']
+                                                    "createdBy": ClientDetails['createdBy'],
+                                                    "code":ClientDetails['code']
                                                   };
+
 
                                                   showDialog(
                                                       context: context,
@@ -331,16 +414,16 @@ class _AssignClientState extends State<AssignClient> {
                                                             ],
                                                           ),
                                                           content: Text(
-                                                              "This Device is Assigned to ${ClientDetails['name']}. Do you want too?",style: TextStyle(color: darkBg,fontWeight: FontWeight.w500,),),
+                                                            "This Device is Assigned to ${ClientDetails['name']}. Do you want too?",style: TextStyle(color: darkBg,fontWeight: FontWeight.w500,),),
                                                           actions: [
                                                             //Continue btn
                                                             ElevatedButton(
-                                                                onPressed: () {
-                                                                  //Go back
-                                                                  ShowSnackBarMessage(context, 'Client Assigned successfully!', true);
-                                                                  Navigator.of(context).pop();                                                            //Save Log API
-                                                                  Navigator.of(context).pop();                                                            //Save Log API
-                                                                },
+                                                              onPressed: () {
+                                                                //Go back
+                                                                enableClientField = true;
+                                                                Navigator.of(context).pop();                                                            //Save Log API
+                                                                setState(() { });
+                                                              },
                                                               child: Text("Continue",style: TextStyle(fontSize: 16),),
                                                               style: ButtonStyle(
                                                                   backgroundColor: MaterialStateProperty.all<Color>(darkBg),
@@ -353,13 +436,11 @@ class _AssignClientState extends State<AssignClient> {
                                                             ),
                                                             //Assign new Btn
                                                             ElevatedButton(
-                                                                onPressed: () {
-                                                                  enableClientField = true;
-                                                                  Navigator.of(context).pop();
-                                                                  setState(() {
-
-                                                                  });
-                                                                },
+                                                              onPressed: () {
+                                                                enableClientField = true;
+                                                                Navigator.of(context).pop();
+                                                                setState(() { });
+                                                              },
                                                               child: Text("Assign New",style: TextStyle(fontSize: 16),),
                                                               style: ButtonStyle(
                                                                   backgroundColor: MaterialStateProperty.all<Color>(darkBg),
@@ -380,13 +461,13 @@ class _AssignClientState extends State<AssignClient> {
                                                   ShowSnackBarMessage(context, 'No Client is Assigned!', null);
                                                   setState(() {});
 
-                                                }else if(!clientAvaliable){
+                                                }
+                                                else if(!clientAvaliable){
                                                   enableClientField = false;
                                                   ShowSnackBarMessage(context, 'No MacID found!', false);
                                                   _macIdController.clear();
                                                   setState(() {});
                                                 }
-
                                               },
                                               child: Row(
                                                 children: [
@@ -405,10 +486,8 @@ class _AssignClientState extends State<AssignClient> {
                                                   )
                                                 ],
                                               ),
-
                                             ),
-                                          )
-                                      )
+                                          )),
 
                                     ],
                                   ),
@@ -464,17 +543,23 @@ class _AssignClientState extends State<AssignClient> {
                                                 20))),
                                   ),
                                   onPressed: () async{
+                                    printFunc("DEMO DEMO ClientName : ${ClientName.getobj['code'].toString()}");
                                     validateFields();
                                     if(!validateFileds){
-                                      await saveClient(context,
-                                        macId: _macIdController.text,
-                                        clientId: ClientName.getobj['id'].toString(),
-                                      );
-                                      ShowSnackBarMessage(context, 'Client is Assigned Successfully!', null);
-
+                                      await scanAndConnect();
+                                      isCustomerIDSent = await sendCustomerID(ClientName.getobj['code'].toString());
+                                     if(isCustomerIDSent){
+                                       await disconnect();
+                                       await saveClient(context,
+                                         macId: _macIdController.text,
+                                         clientId: ClientName.getobj['id'].toString(),
+                                       );
+                                       Navigator.popUntil(context, (route) => route.isFirst);
+                                     }
                                     }
                                     setState(() {});
-                                    Navigator.popUntil(context, (route) => route.isFirst);
+
+
                                   },
                                   child: Text(
                                     "SUBMIT",
@@ -489,6 +574,7 @@ class _AssignClientState extends State<AssignClient> {
                               ),
                             )
                             : SizedBox(),
+                            
                           ],
                         ),
                       ),
@@ -512,6 +598,187 @@ class _AssignClientState extends State<AssignClient> {
     }
 
   }
+
+
+  Future<void> requestPermissions() async {
+    await Permission.location.request();
+    await Permission.bluetooth.request();
+    await Permission.bluetoothScan.request();
+    await Permission.bluetoothConnect.request();
+    await Permission.bluetoothAdvertise.request();
+  }
+
+  Future<void> scanAndConnect() async {
+
+   if(_macIdController.text.isNotEmpty){
+     print("BEFORe Device Connected -- $status");
+
+     setState(() {
+       status = "Scanning...";
+       NotConnected = true;
+     });
+     print("Found Old macid: ${_macIdController.text}");
+     await requestPermissions();
+
+     printFunc("device present : ${device != null}");
+
+     // If Device is Present we need to disconnect
+     if (device != null && device!.isConnected) {
+       printFunc("device present : ${device != null}");
+       await disconnect();
+     }
+
+     printFunc("device present : ${device != null}");
+     await Future.delayed(Duration(seconds: 5));
+
+     //Scanning the device and returing
+     device = await scanDeviceByMACId(_macIdController.text);
+     printFunc( "DEMO DEVICE : $device");
+
+     if (device != null) {
+       connected = await connectToDevice(device!);
+       printFunc("DEMO DEVICE IS CONNECTED : $connected");
+       if (connected) {
+         if (device!.isConnected) {
+           // timeoutTimer?.cancel();
+           List<BluetoothService> services = await device!.discoverServices();
+           print("Total Services Found: ${services.length}");
+           print("Total Services Found1: ${services}");
+
+           //for Printing
+           for (var service in services) {
+             print("Service UUID: ${service.uuid}");
+             for (var characteristic in service.characteristics) {
+               print("  Characteristic UUID: ${characteristic.uuid}");
+               print("    Properties: ${characteristic.properties}");
+             }
+           }
+
+           print("Services Found: $services");
+
+           for (var s in services) {
+             printFunc(
+                 "service uuid : ${s.uuid} \nf043176a-5168-11ee-be56-0242ac120012 : ${s.uuid == serviceUUID}");
+
+             if (s.uuid == serviceUUID) {
+               printFunc("s.characteristics : ${s.characteristics}");
+               for (var c in s.characteristics) {
+                 printFunc("characteristics c : $c");
+                 printFunc("UUID");
+                 printFunc("characteristics UUID : ${c.uuid}");
+
+                 if (c.uuid == configCharUUID) configChar = c;
+                 if (c.uuid == thresholdCharUUID) thresholdChar = c;
+                 if (c.uuid == calibrationCharUUID) calibrationChar = c;
+               }
+             }
+           }
+         }
+         setState(() {
+           status = "Connected";
+           NotConnected = false;
+           enableSubmit = true;
+           enablePopUp = true;
+           deviceName = device!.advName;
+         });
+         printFunc("DEmo is device Connected enableSubmit: $enableSubmit \n NotConnected :  $NotConnected  ");
+         return;
+       } else {
+         if(mounted){
+           setState(() {
+             NotConnected = false;
+           });
+         }
+         printFunc("Connection Failed!!");
+         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+           content:
+           Text("Connection Failed", style: TextStyle(color: Colors.white)),
+           backgroundColor: Colors.redAccent,
+         ));
+
+       }
+     }
+     else {
+       if(mounted){
+         setState(() {NotConnected = false;});
+       }
+       printFunc("DEVICE NOT FOund in else Cond");
+       await FlutterBluePlus.stopScan();
+
+       printFunc("${_macIdController.text} is not found");
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+         content: Text(
+           "${_macIdController.text} is not found",
+           style: TextStyle(color: Colors.white),
+         ),
+         backgroundColor: Colors.redAccent,
+       ));
+     }
+
+     printFunc("DEMO STReet : $NotConnected");
+     // timeoutTimer?.cancel();
+     if(mounted){
+       setState(() {NotConnected = false;});
+     }
+     printFunc("DEMO STReet1 : $NotConnected");
+   }
+  }
+
+  Future<void> disconnect() async {
+    if (device != null) {
+      await device!.disconnect();
+      if(mounted){
+        setState(() {
+          status = "Disconnected";
+          deviceName = "-";
+          NotConnected = false;
+        });
+      }
+    }
+
+    printFunc("${_macIdController.text} is disconnected");
+  }
+
+
+  Future<bool> sendCustomerID(String custIdCtrl) async {
+    if (configChar == null) {
+      printFunc("Characteristic is null, can't send customer ID.");
+      return false;
+    }
+
+    try {
+      int customerID = int.parse(custIdCtrl.trim());
+
+      if (customerID < 0 || customerID > 99) {
+        printFunc("Customer ID out of bounds: $customerID");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Customer ID must be between 0 and 99")),
+        );
+        return false;
+      }
+
+      // Create 5-byte packet
+      List<int> data = List.filled(5, 0);
+      data[0] = '{'.codeUnitAt(0);
+      data[1] = 'C'.codeUnitAt(0);
+      data[2] = customerID & 0xFF;
+      data[3] = (customerID >> 8) & 0xFF;
+      data[4] = '}'.codeUnitAt(0);
+
+      printFunc("Customer ID packet: $data");
+
+      await configChar!.write(data);
+      printFunc("Customer ID sent successfully");
+      return true;
+    } catch (e) {
+      printFunc("Failed to send customer ID: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Invalid Customer ID: $e")),
+      );
+      return false;
+    }
+  }
+
 
   @override
   void dispose() {

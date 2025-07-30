@@ -15,8 +15,8 @@ var screenSize;
 
 void printFunc(var str) {
   // if(isTesting)
-  // print(str.toString());
-  dev.log(str.toString());
+  print(str.toString());
+  // dev.log(str.toString());
   // debugPrint(str.toString());
 }
 

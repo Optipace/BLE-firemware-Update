@@ -58,6 +58,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
   TextEditingController _lowerTreshold = TextEditingController();
   TextEditingController _upperTreshold = TextEditingController();
   TextEditingController _upperVoltage = TextEditingController();
+  TextEditingController _nominalVolt = TextEditingController();
+  TextEditingController _upperTemp = TextEditingController();
+  TextEditingController _lowerTemp = TextEditingController();
+
   TextEditingController _description = TextEditingController();
   TextEditingController _configName = TextEditingController();
   DataController _batterySeries = DataController();
@@ -613,7 +617,61 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
                       SizedBox(
                         height: 8,
-                      ), // ---- Description -----
+                      ),
+
+                      // ---------- nominal Voltage -------
+                      const LabelText(text: "Nominal Voltage :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Nominal Voltage",
+                        inputFormatters: [OneDecimalInputFormatter()],
+                        type: TextInputType.number,
+                        Controller: _nominalVolt,
+                        onChanged: (value) {},
+                        enable: true,
+                        etext: configValidator && _nominalVolt.text.trim().isEmpty
+                            ? "Please Enter the Nominal Voltage"
+                            : "",
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+
+                      // ---------- Upper Temp -------
+                      const LabelText(text: "Upper Temperature :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Upper Temperature ",
+                        inputFormatters: [OneDecimalInputFormatter()],
+                        type: TextInputType.number,
+                        Controller: _upperTemp,
+                        onChanged: (value) {},
+                        enable: true,
+                        etext: configValidator && _upperTemp.text.trim().isEmpty
+                            ? "Please Enter the Upper Temperature"
+                            : "",
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+
+                      // ---------- Lower Temp -------
+                      const LabelText(text: "Lower Temperature :"),
+                      TextFeildNewUser(
+                        hintText: "Enter Lower Temperature",
+                        inputFormatters: [OneDecimalInputFormatter()],
+                        type: TextInputType.number,
+                        Controller: _lowerTemp,
+                        onChanged: (value) {},
+                        enable: true,
+                        etext: configValidator && _lowerTemp.text.trim().isEmpty
+                            ? "Please Enter the Lower Temperature"
+                            : "",
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+
+
+                      // ---- Description -----
                       LabelText(text: "Description :"),
                       TextFeildNewUser(
                         hintText: "Description",
@@ -706,15 +764,15 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                           height: 8,
                                                         ),
                                                         // Relase Note
-                                                        LabelText(text: "Description"),
+                                                        LabelText(text: "Battery Code"),
                                                         TextFeildNewUser(
-                                                          hintText: "Enter Information",
+                                                          hintText: "Enter Battery Code",
                                                           Controller: _batteryDescription,
                                                           onChanged: (value) {},
                                                           enable: true,
                                                           etext: batteryValidator &&
                                                                   _batteryDescription.text.trim().isEmpty
-                                                              ? "Please Enter Information"
+                                                              ? "Please Enter Battery Code"
                                                               : "",
                                                         ),
                                                         SizedBox(
@@ -730,11 +788,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                           checkBoxState(() {
                                                             ValidateBatteryFields();
                                                           });
-                                                          Future.delayed(Duration(seconds: 3)).then((_) {
-                                                            checkBoxState(() {
-                                                              batteryValidator = false;
-                                                            });
-                                                          });
                                                           printFunc(
                                                               "DEMO DEMO : ${batteryValidator && _newbname.text.trim().isEmpty}");
                                                           printFunc("DEMODEMO");
@@ -748,7 +801,11 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                               name: _newbname.text.trim(),
                                                               description: _batteryDescription.text.trim(),
                                                             )) {
+                                                              allConfigList = await getAllConfigurationList(context, active: "Y");
+                                                              batteryList = {for (var item in allConfigList) item['deviceName']: item};
                                                               clearBattery();
+                                                              Navigator.of(context,rootNavigator: true).pop();
+
                                                               // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                                                             }
                                                           }
@@ -774,6 +831,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       SizedBox(
                         height: 8,
                       ),
+                      //----Battery series---- [DROPDOWN]
                     ],
                   )),
               //Upload btn
@@ -796,10 +854,14 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           upperVoltage: _upperVoltage.text.trim(),
                           lowerThreshold: _lowerTreshold.text.trim(),
                           lowerVoltage: _lowerVoltage.text.trim(),
+                          nominalVoltage: _nominalVolt.text.trim(),
+                          lowerTemp: _lowerTemp.text.trim(),
+                          upperTemp: _upperTemp.text.trim(),
                           description: _description.text.trim(),
                           batterySeriesId: (_batterySeries.obj["id"]).toString(),
                         )) {
                           allConfigList = await getAllConfigurationList(context, active: "Y");
+                          batteryList = {for (var item in allConfigList) item['deviceName']: item};
                           clearConfig();
                           // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                         }
@@ -953,13 +1015,13 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       // ----- Config[DropDown] -----
                       Visibility(
-                        visible: _visibleConfig,
+                        visible: _visibleConfig && _batterySeries.Text != null,
                         child: GestureDetector(
                           child: PrimeryDropDownButton(
                             isEnabled: true,
                             tail: ErrorContainer(show: _validateConfig, errorMsg: "Please Select the Config"),
                             mainText: "Config",
-                            text: _config.Text != "" ? _config.getText : "select Config",
+                            text: _config.Text != "" ? _config.getText : "Select Config",
                             icon: Icon(
                               Icons.keyboard_arrow_down_sharp,
                               color: darkBg,
@@ -1077,6 +1139,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       _upperVoltage,
       _lowerTreshold,
       _lowerVoltage,
+      _nominalVolt,
+      _upperTemp,
+      _lowerTemp,
       _description,
     ];
 
@@ -1158,10 +1223,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
         selectedFileName = result.files.single.name;
         selectedFileSizeInBytes = fileBytes.length;
       });
-      print('PDF converted to Base64:\n$firmwareFileBase64');
+      printFunc('PDF converted to Base64:\n$firmwareFileBase64');
     } else {
       // User canceled the picker
-      print('No file selected.');
+      printFunc('No file selected.');
     }
   }
 
@@ -1182,6 +1247,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     _lowerTreshold.clear();
     _lowerVoltage.clear();
     _description.clear();
+    _lowerTemp.clear();
+    _upperTemp.clear();
+    _nominalVolt.clear();
 
     // Clear dropdown
     _batterySeries.cleardata();

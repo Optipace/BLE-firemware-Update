@@ -52,7 +52,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
       // Add request
       batchList = await getBatchList(context, Status: "Y");
       for(int i = 0;i<batchList.length;i++){
-        print("DEMO BATCHES FROM API - ${batchList[i]}");
+        print("DEMO BATCHES FROM API - ${batchList[i]['batteryDetails']}");
       }
       seriesSixData = await getSeriesData();
       print("SERIES DATA : $seriesSixData");
@@ -94,7 +94,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     List<Widget> seriesSixWidgetList = [];
 
     for (int index = 0; index < ((seriesSixData != null) ? seriesSixData.length : 0); index++) {
-      printFunc("DEMO DEMO Firmware logs : ${seriesSixData[index]["saved"]}");
+      print("DEMO DEMO Firmware logs 23: ${seriesSixData[index]}");
       ValueNotifier moreInfo = ValueNotifier<bool>(seriesSixData[index]['saved'] ?? false);
       seriesSixWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
@@ -187,7 +187,9 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                               height: 3,
                             ),
                             Text(
-                              seriesSixData[index]["profile"]['deviceType'].toString(),
+                              moreInfo.value
+                              ? seriesSixData[index]["battery"]['batteryCode'].toString()
+                              : batchList[index]['batteryDetails']['Battery-Code'],
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
@@ -459,6 +461,89 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                   ),
                                 ],
                               ),
+                              SizedBox(height: 15,),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Nominal Voltage
+                                  Container(
+                                    width : 75,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                        Text(
+                                          "N. Volt",
+                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.battery_charging_full_outlined,
+                                                size: 14, color: secondaryText),
+                                            Text(
+                                              "${seriesSixData[index]["profile"]['nV']} V",
+                                              style: CardText(
+                                                  font_Weight: FontWeight.w800,
+                                                  size: 14,
+                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Upper Voltage
+                                  Container(
+                                    width:55,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                        Text(
+                                          "U.Temp",
+                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          "${seriesSixData[index]["profile"]['uTemp']} ' C",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w800,
+                                              size: 14,
+                                              FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Lower Threshold
+                                  Container(
+                                    width: 70,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                        Text(
+                                          "L.Temp",
+                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          "${seriesSixData[index]["profile"]['lTemp']}'c",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w800,
+                                              size: 14,
+                                              FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Lower Voltage
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -496,6 +581,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
       printFunc("Batch saved: ${batch.saved}");
       printFunc("Firmware Version: ${batch.firmware.version}");
       printFunc("Profile Name: ${batch.profile.name}");
+      printFunc("BatteryName : ${batch.battery.batteryName}");
     }
     final allBatchesWithKeys = batchBox.keys.map((key) {
       final batch = batchBox.get(key);
@@ -528,6 +614,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
         'description': batch.batchDescription,
         'firmware': batch.firmware.toJson(),
         'profile': batch.profile.toJson(),
+        'battery':batch.battery.toJson(),
         'saved': true,
       });
     });

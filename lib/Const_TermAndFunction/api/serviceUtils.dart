@@ -22,10 +22,10 @@ class ApiHeaders {
 }
 
 class ApiEndpoints {
-  // static const String _devBaseUrl = 'http://192.168.130.138:8080';//192.168.130.138:8080';
-  // static const String _prodBaseUrl = 'http://192.168.130.138:8080';
-  static const String _devBaseUrl = 'http://10.118.170.132:8080';//192.168.130.138:8080';
-  static const String _prodBaseUrl = 'http://10.118.170.132:8080';
+  static const String _devBaseUrl = 'http://192.168.130.138:8080';//192.168.130.138:8080';
+  static const String _prodBaseUrl = 'http://192.168.130.138:8080';
+  // static const String _devBaseUrl = 'http://10.118.170.132:8080';//192.168.130.138:8080';
+  // static const String _prodBaseUrl = 'http://10.118.170.132:8080';
   static const bool _isProd = true;
 
   static String get baseUrl => _isProd ? _prodBaseUrl : _devBaseUrl;
@@ -81,7 +81,14 @@ class ApiEndpoints {
   static const String productIDbyMac = "/api/non-auth/hardware/getMacDetailByProductDetail";
   static const String batteryNobyMac = "/api/non-auth/hardware/getMacByBatteryDetail";
   static const String clientbyMac = "/api/non-auth/hardware/getMacByClientDetail";
-  static const String saveLog = "/api/software-log";
+
+  // Logs
+  static const String saveLog = "/api/software-log/save_softwareLog";
+  static const String getAllLogsOnDays = "/api/software-log/getAllLogsOnDays";
+  static const String getAllCount = "/api/software-log/getAllCount";
+  static const String getAllBatchDetailLogResponse = "/api/software-log/getAllBatchDetailLogResponse";
+
+
 
 }
 

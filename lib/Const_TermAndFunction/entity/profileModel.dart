@@ -21,13 +21,20 @@ class ProfileModel extends HiveObject {
   String lT;
   @HiveField(6)
   String lV;
-
   @HiveField(7)
+  String nV;
+  @HiveField(8)
+  String uTemp;
+  @HiveField(9)
+  String lTemp;
+
+  @HiveField(10)
   String deviceType;
 
-  @HiveField(8)
+  @HiveField(11)
   String deviceTypeId;
-  @HiveField(9)
+
+  @HiveField(12)
   bool saved;
 
   ProfileModel({
@@ -38,6 +45,9 @@ class ProfileModel extends HiveObject {
     required this.uV,
     required this.lT,
     required this.lV,
+    required this.nV,
+    required this.uTemp,
+    required this.lTemp,
     required this.saved,
     required this.deviceTypeId,
     required this.deviceType,
@@ -45,7 +55,7 @@ class ProfileModel extends HiveObject {
 
   @override
   String toString() {
-    return 'ProfileModel{id: $id, name: $name, releaseNote: $releaseNote, uT: $uT, uV: $uV, lT: $lT, lV: $lV, deviceType: $deviceType, deviceTypeId: $deviceTypeId, saved: $saved}';
+    return 'ProfileModel{id: $id, name: $name, releaseNote: $releaseNote, uT: $uT, uV: $uV, lT: $lT, lV: $lV, nv : $nV, uTemp : $uTemp, lTemp : $lTemp, deviceType: $deviceType, deviceTypeId: $deviceTypeId, saved: $saved}';
   }
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -57,6 +67,9 @@ class ProfileModel extends HiveObject {
       uV: json['uV'] ?? '',
       lT: json['lT'] ?? '',
       lV: json['lV'] ?? '',
+      nV: json['nV'] ?? '',
+      uTemp: json['uTemp'] ?? '',
+      lTemp: json['lTemp'] ?? '',
       saved: true,
       deviceTypeId: json['deviceTypeId'] ?? '',
       deviceType: json['deviceType'] ?? '',
@@ -72,6 +85,9 @@ class ProfileModel extends HiveObject {
       'uV': uV,
       'lT': lT,
       'lV': lV,
+      'nV': nV,
+      'uTemp': uTemp,
+      'lTemp': lTemp,
       'saved': saved,
       'deviceTypeId': deviceTypeId,
       'deviceType': deviceType,

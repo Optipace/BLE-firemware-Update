@@ -23,6 +23,10 @@ Future<List<Map<String, dynamic>>> getBatchList(
         for (var item in data) {
           final firmware = item['firmware'] ?? {};
           final config = item['configuration'] ?? {};
+          final device = item['configuration']['device'] ?? {};
+          config['nominalVoltage'] = 6.2;
+          config['upperTemp'] = 26;
+          config['lowerTemp'] = 17;
 
           Map<String, dynamic> formatted = {
             "id": item['id'].toString(),
@@ -38,6 +42,9 @@ Future<List<Map<String, dynamic>>> getBatchList(
               "uV": config['upperVoltage']?.toString() ?? '',
               "lT": config['lowerThreshold']?.toString() ?? '',
               "lV": config['lowerVoltage']?.toString() ?? '',
+              "nV": config['nominalVoltage']?.toString() ?? '',
+              "uTemp": config['upperTemp']?.toString() ?? '',
+              "lTemp": config['lowerTemp']?.toString() ?? '',
               "deviceTypeId": config['deviceId']?.toString() ?? '',
               "file": "Base64Data",
               "saved": false,
@@ -52,14 +59,19 @@ Future<List<Map<String, dynamic>>> getBatchList(
               "file": firmware['file'],
               "saved": false,
               "deviceType": firmware['deviceTypeId']?.toString() ?? '',
+            },
+            "batteryDetails":{
+              "id":   device['id']?.toString() ?? '',
+              "name": device['deviceName']?.toString() ?? '',
+              "Battery-Code": device['discription']?.toString() ?? '',
             }
           };
 
           batchList.add(formatted);
-          printFunc("Formatted data : $formatted");
+          // printFunc("Formatted data : $formatted");
         }
 
-        printFunc("Formatted data list : $batchList");
+        print("Formatted data list : $batchList");
       });
 
   // batchList = [
@@ -225,6 +237,9 @@ Future<List<Map<String, dynamic>>> getBatchByID(BuildContext context, String id)
 
   return batchByID;
 }
+////////////////////// NOT IN USED /////////////////////////////////////
+
+
 
 Future<bool> addNewBatch(
   BuildContext context, {

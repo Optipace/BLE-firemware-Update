@@ -24,16 +24,19 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
       uV: fields[4] as String,
       lT: fields[5] as String,
       lV: fields[6] as String,
-      saved: fields[9] as bool,
-      deviceTypeId: fields[8] as String,
-      deviceType: fields[7] as String,
+      nV: fields[7] as String,
+      uTemp: fields[8] as String,
+      lTemp: fields[9] as String,
+      saved: fields[12] as bool,
+      deviceTypeId: fields[11] as String,
+      deviceType: fields[10] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ProfileModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -49,10 +52,16 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
       ..writeByte(6)
       ..write(obj.lV)
       ..writeByte(7)
-      ..write(obj.deviceType)
+      ..write(obj.nV)
       ..writeByte(8)
-      ..write(obj.deviceTypeId)
+      ..write(obj.uTemp)
       ..writeByte(9)
+      ..write(obj.lTemp)
+      ..writeByte(10)
+      ..write(obj.deviceType)
+      ..writeByte(11)
+      ..write(obj.deviceTypeId)
+      ..writeByte(12)
       ..write(obj.saved);
   }
 
@@ -62,5 +71,7 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ProfileModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is ProfileModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

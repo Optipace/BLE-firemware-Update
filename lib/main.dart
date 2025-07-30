@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/battery_model.dart';
+// import 'package:tracker_firmware/Const_TermAndFunction/entity/batteryModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareSeriesModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/getNumberModel.dart';
@@ -25,9 +27,13 @@ void main() async {
   Hive.registerAdapter(BatchModelAdapter());
 
   Hive.registerAdapter(FirmwareModelAdapter());
+  Hive.registerAdapter(BatteryModelAdapter());
+
   Hive.registerAdapter(FirmwareSeriesModelAdapter());
 
   await Hive.openBox<BatchModel>('$batchHiveBox');
+  // await Hive.deleteBoxFromDisk('$batchHiveBox');
+
   // Hive.registerAdapter(BatchModelAdapter());
 
   await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
@@ -36,6 +42,9 @@ void main() async {
 
   Hive.registerAdapter(GetNumberModelAdapter());
   await Hive.openBox<GetNumberModel>('$getNumberHiveBox');
+
+  // Hive box for battery Details
+
 
   // ✅ Register adapters BEFORE using any boxes
   // Hive.registerAdapter(FirmwareModelAdapter());

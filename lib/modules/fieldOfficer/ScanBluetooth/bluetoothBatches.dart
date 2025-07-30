@@ -5,6 +5,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/dfuModule/bluetoothMain.dart';
 import 'package:tracker_firmware/modules/dfuModule/dfuModule.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/hardWareNumber.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
@@ -103,7 +104,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
         index < ((getAllseriesData != null) ? getAllseriesData.length : 0);
         index++) {
       printFunc(
-          "DEMO DEMO Firmware logs : ${getAllseriesData[index]["saved"]}");
+          "DEMO DEMO Firmware logs : ${getAllseriesData[index]}");
       ValueNotifier moreInfo =
           ValueNotifier<bool>(getAllseriesData[index]['saved'] ?? false);
       seriesWidgetList.add(ValueListenableBuilder(
@@ -211,7 +212,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                 height: 3,
                               ),
                               Text(
-                                getAllseriesData[index]["profile"]['deviceType']
+                                getAllseriesData[index]["battery"]['batteryCode']
                                     .toString(),
                                 style: CardText(
                                     font_Weight: FontWeight.w800,
@@ -349,14 +350,13 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                               LogLevel.verbose,
                                               color: true);
 
+                                          printFunc("DEMO DEMO DEMO BatchSelected : ${BatchSelected.Text} \n ${BatchSelected.obj.toString()}");
                                           Navigator.of(context)
                                               .push(MaterialPageRoute<void>(
                                             /*BluetoothMainScreen(SelectedBatch: BatchSelected, allClients: AllClient)*/
-                                                  builder: (_) => DfuHomePage(
-                                                        SelectedBatch:
-                                                            BatchSelected,
-                                                        allClients: AllClient,
-                                                      )));
+                                            /*DfuHomePage(SelectedBatch:BatchSelected,allClients: AllClient,)*/
+                                                  builder: (_) => BluetoothMainScreen(SelectedBatch: BatchSelected, allClients: AllClient)
+                                          ));
                                           setState(() {});
                                         },
                                         icon: Icon(Icons.flash_on_outlined,
@@ -401,7 +401,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                         SizedBox(height: 10),
                         FittedBox(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -569,6 +569,122 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                   ),
                                 ],
                               ),
+                              SizedBox(height: 15,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Nominal Voltage
+                                  Container(
+                                    width: 75,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                        Text(
+                                          "N. Volt",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                                Icons
+                                                    .battery_charging_full_outlined,
+                                                size: 14,
+                                                color: secondaryText),
+                                            FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text(
+                                                "${getAllseriesData[index]["profile"]['nV']} V",
+                                                style: CardText(
+                                                    font_Weight:
+                                                        FontWeight.w800,
+                                                    size: 14,
+                                                    FontColor: !(moreInfo.value)
+                                                        ? SuccessCardText
+                                                        : FailureCardText),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Upper Temp
+                                  Container(
+                                    width: 55,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                        Text(
+                                          "U.Temp",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
+                                        ),
+                                        SizedBox(height: 5),
+                                        FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            "${getAllseriesData[index]["profile"]['uTemp']}'C",
+                                            style: CardText(
+                                                font_Weight:
+                                                FontWeight.w800,
+                                                size: 14,
+                                                FontColor: !(moreInfo.value)
+                                                    ? SuccessCardText
+                                                    : FailureCardText),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Lower Threshold
+                                  Container(
+                                    width: 70,
+                                    margin: EdgeInsets.all(1.5),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                        Text(
+                                          "L.Temp",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
+                                        ),
+                                        SizedBox(height: 5),
+                                        FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            "${getAllseriesData[index]["profile"]['lTemp']}'C",
+                                            style: CardText(
+                                                font_Weight:
+                                                FontWeight.w800,
+                                                size: 14,
+                                                FontColor: !(moreInfo.value)
+                                                    ? SuccessCardText
+                                                    : FailureCardText),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -604,6 +720,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
       printFunc("Batch saved: ${batch.saved}");
       printFunc("Firmware Version: ${batch.firmware.version}");
       printFunc("Profile Name: ${batch.profile.name}");
+      printFunc("Battery Name: ${batch.battery.batteryName}");
     }
     final allBatchesWithKeys = batchBox.keys.map((key) {
       final batch = batchBox.get(key);
@@ -618,6 +735,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
         'description': batch.batchDescription,
         'firmware': batch.firmware.toJson(),
         'profile': batch.profile.toJson(),
+        'battery':batch.battery.toJson(),
         'saved': true,
       });
     });

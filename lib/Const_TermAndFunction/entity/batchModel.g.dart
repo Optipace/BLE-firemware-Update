@@ -22,14 +22,15 @@ class BatchModelAdapter extends TypeAdapter<BatchModel> {
       batchDescription: fields[2] as String,
       firmware: fields[3] as FirmwareModel,
       profile: fields[4] as ProfileModel,
-      saved: fields[5] as bool,
+      battery: fields[5] as BatteryModel,
+      saved: fields[6] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, BatchModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.batchId)
       ..writeByte(1)
@@ -41,6 +42,8 @@ class BatchModelAdapter extends TypeAdapter<BatchModel> {
       ..writeByte(4)
       ..write(obj.profile)
       ..writeByte(5)
+      ..write(obj.battery)
+      ..writeByte(6)
       ..write(obj.saved);
   }
 
@@ -50,5 +53,7 @@ class BatchModelAdapter extends TypeAdapter<BatchModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BatchModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is BatchModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

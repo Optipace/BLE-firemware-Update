@@ -363,16 +363,16 @@ class LoginScreenState extends State<LoginScreen> {
                               //   });
                               // });
                             });
-                            print(
+                            printFunc(
                                 "DEMO DEMO ${checkPhnNum(phoneNumber.toString()) && checkPass(_password.toString())}");
 
                             if ((checkPhnNum(phoneNumber.text) && checkPass(_password.text)) || true) {
-                              print("Inside if cond");
-                              print("SIZE : $screenSize");
+                              printFunc("Inside if cond");
+                              printFunc("SIZE : $screenSize");
                               // await getEmpDetails(context, phoneNumber.text, _password.text);
                               await logInAPICall(context, phoneNumber.text, _password.text);
                             } else {
-                              print("inside Else cond");
+                              printFunc("inside Else cond");
                             }
                           },
                           child: Text(
