@@ -12,6 +12,8 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart'
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileSeriesModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/hive/hiveOperation.dart';
 import 'package:tracker_firmware/widgets/splash_screen.dart';
+import 'dev_options_checker.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,13 +51,44 @@ void main() async {
   // ✅ Register adapters BEFORE using any boxes
   // Hive.registerAdapter(FirmwareModelAdapter());
   // Hive.registerAdapter(FirmwareSeriesModelAdapter());
+  //Without DEV-Option
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
   ]).then((_) async {
     runApp(MyApp());
-  });
+  }); 
+
+  //Dev-option
+  /*SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.landscapeLeft,
+  ]).then((_) async {
+    bool isDevEnabled = await DevOptionsChecker.isDevOptionsEnabled();
+    if (isDevEnabled) {
+      runApp(MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: AlertDialog(
+              title: Text("Access Blocked"),
+              content: Text("Developer Options or USB Debugging is enabled.\nPlease disable it to use this app."),
+              actions: [
+                TextButton(
+                  onPressed: () => SystemNavigator.pop(), // Exit app
+                  child: Text("Exit"),
+                )
+              ],
+            ),
+          ),
+        ),
+      ));
+    } else {
+      runApp(MyApp());
+    }
+  }); */
 }
 
 class MyApp extends StatelessWidget {
