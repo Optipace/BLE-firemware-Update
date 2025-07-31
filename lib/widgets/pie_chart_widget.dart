@@ -11,6 +11,7 @@ class Category {
   bool isSelect;
 
   Category(this.name, this.isSelect, {required this.amount});
+
 }
 
 // ----------- PIE CHART WIDGET --------------

@@ -70,13 +70,7 @@ class AdminLogsState extends State<AdminLogs> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       batchList = await getBatchList(context, Status: "A");
-      // BACTH LOGS PIE CHART
-      BatchLogs = [
-        for (int i = 0; i < batchList.length; i++)
-          Category(batchList![i]["name"].toString(), false, amount: countLogs(batchList[i]).toDouble())
-      ];
-      BatchColors = generateBrightColors(batchList.length);
-      printFunc("demo batch ${batchList[1]['name']}");
+
 
       // logs API's
 
@@ -116,6 +110,7 @@ class AdminLogsState extends State<AdminLogs> {
       factoryLogs = userlogs[2].first[1].first;
       factoryCount = factoryLogs.length.toDouble();
       fieldCount = fieldLogs.length.toDouble();
+      setState(() {});
 
       //  USER LOGS PIE CHART
       UserLogs = [
@@ -142,38 +137,43 @@ class AdminLogsState extends State<AdminLogs> {
 
 
 
+      // BACTH LOGS PIE CHART
+      BatchLogs = [
+        for (int i = 0; i < batchList.length; i++)
+          Category(batchList![i]["name"].toString(), false, amount: allLogs.where((log) => log["Batch"] == batchList[i]["name"]).length.toDouble())
+      ];
+      BatchColors = generateBrightColors(batchList.length);
+      printFunc("demo batch ${batchList[1]['name']}");
+
+
+
 
 
       setState(() {});
       printFunc("AlLLoGSCOUNTS : ${userlogs[1].first[0]}");
       printFunc("AlLLoGSCOUNTS : ${userlogs[2].first[0]}");
+      printFunc("ALL LOGS DEMO : ${allLogs.length}");
     });
 
 
 
     UserColor = [Color(0xFF5262FF), Color(0xFF2EC6FF)];
 
+
     setState(() {});
   }
 
-  //Counting of batches Logs
-  int countLogs(Map<String, dynamic> item) {
-    int count = 0;
-    for (int index = 0; index < allLogs.length; index++) {
-      if (item["name"] == allLogs[index]["Batch"]) {
-        count++;
-      }
-    }
-    return count;
-  }
+
 
   // To generate the different Colors
   List<Color> generateBrightColors(int count) {
     return List<Color>.generate(count, (i) {
       final hue = 200 + 40 * (i / count);
+      // final hue = (i * 360 / count) % 360;
       return HSLColor.fromAHSL(1.0, hue, 0.95, 0.5).toColor();
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -522,7 +522,7 @@ class AdminLogsState extends State<AdminLogs> {
                             allLogs: allLogs,
                           )));
                     },
-                    total: batchList.length,
+                    total: allLogs.length,
                   ),
                 ),
               ),

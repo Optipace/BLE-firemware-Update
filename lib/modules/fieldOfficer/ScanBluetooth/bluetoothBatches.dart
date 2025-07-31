@@ -351,11 +351,13 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                               color: true);
 
                                           printFunc("DEMO DEMO DEMO BatchSelected : ${BatchSelected.Text} \n ${BatchSelected.obj.toString()}");
+                                          /* BLUEETOOTH SCREEN*/
+
                                           Navigator.of(context)
                                               .push(MaterialPageRoute<void>(
                                             /*BluetoothMainScreen(SelectedBatch: BatchSelected, allClients: AllClient)*/
                                             /*DfuHomePage(SelectedBatch:BatchSelected,allClients: AllClient,)*/
-                                                  builder: (_) => BluetoothMainScreen(SelectedBatch: BatchSelected, allClients: AllClient)
+                                                  builder: (_) => BluetoothMainScreen(onBluetoothOn: () => DfuHomePage(SelectedBatch:BatchSelected,allClients: AllClient,),)
                                           ));
                                           setState(() {});
                                         },

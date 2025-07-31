@@ -8,10 +8,9 @@ import 'package:tracker_firmware/modules/dfuModule/bluetooth_off_screen.dart';
 import 'package:tracker_firmware/modules/dfuModule/dfuModule.dart';
 
 class BluetoothMainScreen extends StatefulWidget {
-  final DataController SelectedBatch;
-  final Map<String, dynamic> allClients;
+  final Widget Function() onBluetoothOn;
 
-  const BluetoothMainScreen({super.key, required this.SelectedBatch, required this.allClients,});
+  const BluetoothMainScreen({super.key, required this.onBluetoothOn});
 
   @override
   State<BluetoothMainScreen> createState() => _BluetoothMainScreenState();
@@ -43,11 +42,11 @@ class _BluetoothMainScreenState extends State<BluetoothMainScreen> {
   @override
   Widget build(BuildContext context) {
     Widget screen  = _adapterState == BluetoothAdapterState.on
-    ?  DfuHomePage(SelectedBatch: widget.SelectedBatch, allClients: widget.allClients)
+    // ?  DfuHomePage(SelectedBatch: widget.SelectedBatch, allClients: widget.allClients)
+    ? widget.onBluetoothOn()
     : BluetoothOffScreen(adapterState: _adapterState,);
 
     return  screen;
-      // navigatorObservers: [BluetoothAdapterStateObserver()],
 
   }
 }

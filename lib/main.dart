@@ -53,13 +53,13 @@ void main() async {
   // Hive.registerAdapter(FirmwareSeriesModelAdapter());
   //Without DEV-Option
 
-  SystemChrome.setPreferredOrientations([
+ SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
   ]).then((_) async {
     runApp(MyApp());
-  }); 
+  });
 
   //Dev-option
   /*SystemChrome.setPreferredOrientations([
@@ -70,17 +70,32 @@ void main() async {
     bool isDevEnabled = await DevOptionsChecker.isDevOptionsEnabled();
     if (isDevEnabled) {
       runApp(MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: AlertDialog(
-              title: Text("Access Blocked"),
-              content: Text("Developer Options or USB Debugging is enabled.\nPlease disable it to use this app."),
-              actions: [
-                TextButton(
-                  onPressed: () => SystemNavigator.pop(), // Exit app
-                  child: Text("Exit"),
-                )
-              ],
+        debugShowCheckedModeBanner: false,
+        home:  Scaffold(
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [darkBg, lightBg], // Your gradient colors
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Center(
+              child: AlertDialog(
+                title: Text("Access Blocked"),
+                content: Text("Developer Options or USB Debugging is enabled.\nPlease disable it to use this app."),
+                actions: [
+                  TextButton(
+                    onPressed: () => SystemNavigator.pop(),
+                    style:ButtonStyle(
+                        elevation: MaterialStatePropertyAll(5),
+                        backgroundColor: MaterialStatePropertyAll(darkBg),
+                        shadowColor: MaterialStatePropertyAll(Colors.black),
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
+                    child: Text("Exit",style: TextStyle(color: lightBg),),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -88,7 +103,7 @@ void main() async {
     } else {
       runApp(MyApp());
     }
-  }); */
+  });*/
 }
 
 class MyApp extends StatelessWidget {
