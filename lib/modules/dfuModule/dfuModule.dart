@@ -129,7 +129,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
     setState(() {});
   }
 
-    Future<void> startDfu(ScanResult device,
+    Future<void> startDfu(ScanResult device,int numberofPackets,
         {bool first = true, String oldId = ""}) async {
 
       _dfuPopUp = false;
@@ -178,7 +178,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
             ScanResult dfuDevice = await startScanSecondTime(device);
             // results.clear();
             // results.add(dfuDevice);
-            await startDfu(dfuDevice,
+            await startDfu(dfuDevice,numberofPackets = 4,
                 first: false, oldId: device.device.remoteId.str);
             debugPrint("️ DFU Aborted: $device");
           }
@@ -269,7 +269,9 @@ class _DfuHomePageState extends State<DfuHomePage> {
               actions: [
                 //OK btn that goes for next page
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: UserData().designationCode == '3'
+                    ? () {
+                    printFunc("Inside the Factory User");
                     Navigator.of(context).pop();
                     setState(() {
                       isDeviceSelected = false;
@@ -285,7 +287,15 @@ class _DfuHomePageState extends State<DfuHomePage> {
                           )
                       ),
                     );
+                  }
+                    : (){
+                    printFunc("Inside the Field User");
+                    Navigator.of(context).pop();
+                    setState(() {
+                      isDeviceSelected = false;
+                    });
                   },
+
                   child: Text(
                     "Ok",
                     style: TextStyle(fontSize: 16),
@@ -342,9 +352,9 @@ class _DfuHomePageState extends State<DfuHomePage> {
             reason: DFUreason
             );
           }
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(content: Text('❌ DFU error [$err]: $msg'), duration: Duration(seconds: 10)),
-          // );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('❌ DFU error [$err]: $msg'), duration: Duration(seconds: 15)),
+          );
         },
       );
 
@@ -354,7 +364,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
           file, //file.files.single.path!,
           dfuEventHandler: handler,
           forceDfu: true,
-          numberOfPackets: 4,
+          numberOfPackets: numberofPackets,
           // enableUnsafeExperimentalButtonlessServiceInSecureDfu:false,
           androidParameters:
               //  const AndroidParameters(rebootTime: 10000),
@@ -1123,7 +1133,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                               printFunc("exception while NordicDfu :$e");
                             }
                           } else {
-                            await startDfu(scanedDevcice!);
+                            await startDfu(scanedDevcice!,4);
                           }
                         },
                         child: Row(

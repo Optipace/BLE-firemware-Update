@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
@@ -292,8 +293,9 @@ class log_pop_up extends StatelessWidget {
                         side: BorderSide(
                             width: 0.5, color: darkBg)),
                     child: Container(
-                      width: screenSize.width * 0.8,
-                      height: screenSize.height / 1.5,
+                      width: screenSize.width * 0.9,
+                      height: screenSize.height / 1.3,
+                      padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           borderRadius:
                           BorderRadius.circular(15),
@@ -466,7 +468,7 @@ class log_pop_up extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   Text(
-                                                    "Device ",
+                                                    "DFU Info ",
                                                     style: TextStyle(
                                                         color: darkBg,
                                                         fontFamily:
@@ -528,7 +530,7 @@ class log_pop_up extends StatelessWidget {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      Text("DeviceID",
+                                                      Text("Device-type",
                                                         style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
                                                       ),
                                                       SizedBox(height: 5,),
@@ -697,6 +699,7 @@ class log_pop_up extends StatelessWidget {
                                                 ],
                                               ),
                                               SizedBox(height: 5,),
+
                                               Text(SortedLogs[index]['Date-Time'],
                                                 style: CardText(
                                                     font_Weight: FontWeight.w800,
@@ -716,7 +719,7 @@ class log_pop_up extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   Text(
-                                                    "Reason",
+                                                    "Message",
                                                     style: TextStyle(
                                                         color: darkBg,
                                                         fontFamily:
@@ -850,7 +853,7 @@ class log_pop_up extends StatelessWidget {
 
                     // Batch
                     Container(
-                      width: screenSize.width/4,
+                      width: screenSize.width/5,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -880,6 +883,38 @@ class log_pop_up extends StatelessWidget {
                         ],
                       ),
                     ),
+
+                    //Time and Date
+                    Container(
+                      width: screenSize.width/6,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text("Date-Time : ",
+                                style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text
+                              (formatDateTime(SortedLogs[index]['Date-Time']),
+                              style: CardText(
+                                  font_Weight: FontWeight.w800,
+                                  size: 14,
+                                  FontColor:
+                                  SortedLogs[index]['status'] == 'Success'
+                                      ? SuccessCardText
+                                      : FailureCardText),),
+                          ),
+                        ],
+                      ),
+                    ),
+
                   ],
                 ),
                 Icon(
@@ -893,6 +928,11 @@ class log_pop_up extends StatelessWidget {
           ),
         )
     );
+  }
+
+  String formatDateTime(String dateTimeStr) {
+    DateTime dateTime = DateTime.parse(dateTimeStr);
+    return DateFormat('dd/MM \'T\' HH:mm').format(dateTime);
   }
 }
 
