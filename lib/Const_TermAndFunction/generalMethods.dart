@@ -1,4 +1,3 @@
-import 'dart:developer' as dev;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -103,7 +102,6 @@ Future<int> checkInternet(context) async {
     Navigator.of(context, rootNavigator: true).pop();
     return 1;
   }
-  return 1;
 }
 
 getSize(BuildContext context) {
@@ -155,5 +153,6 @@ Future<dynamic> LogOutUser(BuildContext context) async {
     await forceLogOut(context);
   }, () {
     Navigator.of(context, rootNavigator: true).pop();
-  });
+  }, "Yes","No"
+  );
 }

@@ -41,6 +41,7 @@ Future<Map<String, Map<String, Object>>> getDeviceTypes(BuildContext context) as
 
   return deviceTypes;
 }
+//////////////////////////////////////////////////////////////////////
 
 Future<bool> addNewDeviceType(
   BuildContext context, {

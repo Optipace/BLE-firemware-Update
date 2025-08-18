@@ -264,7 +264,541 @@ class log_pop_up extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     printFunc("Sorted LOGS IN POP_UP : ${SortedLogs[index]}");
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.circular(15),
+                    side: BorderSide(
+                        width: 0.5, color: darkBg)),
+                child: Container(
+                  // margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  height: screenSize.height / 1.3,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius:
+                      BorderRadius.circular(15),
+                      color:  SortedLogs[index]['status'] == 'Success'
+                          ? SuccessCard
+                          : FailureCard
+                  ),
+                  child: Column(
+                    mainAxisAlignment:
+                    MainAxisAlignment.start,
+                    crossAxisAlignment:
+                    CrossAxisAlignment.center,
+                    children: [
+                      //Title
+                      Padding(
+                        padding:
+                        const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20,left: 10,right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Log Info",
+                                    style: TextStyle(
+                                        fontFamily: baseFont,
+                                        fontWeight:
+                                        FontWeight.w800,
+                                        fontSize: 28,
+                                        color: darkBg),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: SortedLogs[index]['status']  == 'Success'
+                                            ? CupertinoColors.activeGreen
+                                            : CupertinoColors.destructiveRed
+                                    ),
+                                    child: Text(SortedLogs[index]['status'],style: TextStyle(color: Colors.white),),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Divider(
+                              color: darkBg,
+                              thickness: 1.5,
+                            ),
+                          ],
+                        ),
+                      ),
+                      //main content
+                      Expanded(
+                        child: ScrollbarTheme(
+                          data: ScrollbarThemeData(
+                            thumbColor: MaterialStateProperty.all(darkBg),
+                            radius: Radius.circular(10),
+                            thickness: MaterialStateProperty.all(6),
+                            trackColor: MaterialStateProperty.all(Colors.white),
+                            trackBorderColor: MaterialStateProperty.all(Colors.black),
+                          ),
+                          child: Scrollbar(
+                            thumbVisibility: true,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                width: screenSize.width,
+                                child: Column(
+                                  children: [
+                                    //Emp details
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(0,0,0,5),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Empolyee ",
+                                                style: TextStyle(
+                                                    color: darkBg,
+                                                    fontFamily:
+                                                    baseFont,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w500,
+                                                    shadows: [
+                                                      Shadow(
+                                                          color: Colors
+                                                              .black,
+                                                          blurRadius:
+                                                          0.2)
+                                                    ]),
+                                              ),
+                                              SizedBox(
+                                                  width:
+                                                  3), // spacing before line
+                                              Expanded(
+                                                child: Container(
+                                                  height: 1,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                      darkBg,
+                                                      border: Border.all(
+                                                          width:
+                                                          0.8,
+                                                          color:
+                                                          darkBg)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5,),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text("Name",
+                                                    style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
+                                                  ),
+                                                  SizedBox(height: 5,),
+                                                  FittedBox(
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(SortedLogs[index]['Name'],
+                                                      style: CardText(
+                                                          font_Weight: FontWeight.w800,
+                                                          size: 16,
+                                                          FontColor:
+                                                          SortedLogs[index]['status'] == 'Success'
+                                                              ? SuccessCardText
+                                                              : FailureCardText
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text("EmpId",
+                                                    style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
+                                                  ),
+                                                  SizedBox(height: 5,),
+                                                  FittedBox(
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(SortedLogs[index]['empId'],
+                                                      style: CardText(
+                                                          font_Weight: FontWeight.w800,
+                                                          size: 16,
+                                                          FontColor: SortedLogs[index]['status'] == 'Success'
+                                                              ? SuccessCardText
+                                                              : FailureCardText),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //Device details
+                                    Container(
+                                      margin: EdgeInsets.symmetric(vertical: 10),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "DFU Info ",
+                                                style: TextStyle(
+                                                    color: darkBg,
+                                                    fontFamily:
+                                                    baseFont,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w500,
+                                                    shadows: [
+                                                      Shadow(
+                                                          color: Colors
+                                                              .black,
+                                                          blurRadius:
+                                                          0.2)
+                                                    ]),
+                                              ),
+                                              SizedBox(
+                                                  width:
+                                                  3), // spacing before line
+                                              Expanded(
+                                                child: Container(
+                                                  height: 1,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                      darkBg,
+                                                      border: Border.all(
+                                                          width:
+                                                          0.8,
+                                                          color:
+                                                          darkBg)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5,),
+                                          //MacId-deviceId
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text("MAC ID",
+                                                    style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
+                                                  ),
+                                                  SizedBox(height: 5,),
+                                                  FittedBox(
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(SortedLogs[index]['mac_Id'],
+                                                      style: CardText(
+                                                          font_Weight: FontWeight.w800,
+                                                          size: 16,
+                                                          FontColor: SortedLogs[index]['status'] == 'Success'
+                                                              ? SuccessCardText
+                                                              : FailureCardText),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text("Device-type",
+                                                    style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
+                                                  ),
+                                                  SizedBox(height: 5,),
+                                                  FittedBox(
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(SortedLogs[index]['DeviceID'].toString(),
+                                                      style: CardText(
+                                                          font_Weight: FontWeight.w800,
+                                                          size: 16,
+                                                          FontColor: SortedLogs[index]['status'] == 'Success'
+                                                              ? SuccessCardText
+                                                              : FailureCardText),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 15,),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: screenSize.width/4.5,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(Icons.computer,size: 14,),
+                                                          SizedBox(width: 3,),
+                                                          Text("Batch",
+                                                            style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Text(SortedLogs[index]['Batch'],
+                                                        style: CardText(
+                                                            font_Weight: FontWeight.w800,
+                                                            size: 16,
+                                                            FontColor: SortedLogs[index]['status'] == 'Success'
+                                                                ? SuccessCardText
+                                                                : FailureCardText),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                width: screenSize.width/4.5,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(Icons.memory,size: 16,),
+                                                          SizedBox(width: 3,),
+                                                          Text("Config",
+                                                            style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Text(SortedLogs[index]['Config'],
+                                                        style: CardText(
+                                                            font_Weight: FontWeight.w800,
+                                                            size: 16,
+                                                            FontColor: SortedLogs[index]['status']  == 'Success'
+                                                                ? SuccessCardText
+                                                                : FailureCardText),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                width: screenSize.width/4.5,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(Icons.folder_open_outlined,size: 16),
+                                                          SizedBox(width: 3,),
+                                                          Text("FirmWare",
+                                                            style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Text(SortedLogs[index]['firm_version'],
+                                                        style: CardText(
+                                                            font_Weight: FontWeight.w800,
+                                                            size: 16,
+                                                            FontColor: SortedLogs[index]['status']  == 'Success'
+                                                                ? SuccessCardText
+                                                                : FailureCardText),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //date and Time
+                                    Container(
+                                      margin: EdgeInsets.symmetric(vertical: 10),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Date And Time ",
+                                                style: TextStyle(
+                                                    color: darkBg,
+                                                    fontFamily:
+                                                    baseFont,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w500,
+                                                    shadows: [
+                                                      Shadow(
+                                                          color: Colors
+                                                              .black,
+                                                          blurRadius:
+                                                          0.2)
+                                                    ]),
+                                              ),
+                                              SizedBox(
+                                                  width:
+                                                  3), // spacing before line
+                                              Expanded(
+                                                child: Container(
+                                                  height: 1,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                      darkBg,
+                                                      border: Border.all(
+                                                          width:
+                                                          0.8,
+                                                          color:
+                                                          darkBg)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5,),
+
+                                          Text(SortedLogs[index]['Date-Time'],
+                                            style: CardText(
+                                                font_Weight: FontWeight.w800,
+                                                size: 16,
+                                                FontColor: SortedLogs[index]['status']  == 'Success'
+                                                    ? SuccessCardText
+                                                    : FailureCardText),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //Reason
+                                    Container(
+                                      margin: EdgeInsets.symmetric(vertical: 10),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Message",
+                                                style: TextStyle(
+                                                    color: darkBg,
+                                                    fontFamily:
+                                                    baseFont,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w500,
+                                                    shadows: [
+                                                      Shadow(
+                                                          color: Colors
+                                                              .black,
+                                                          blurRadius:
+                                                          0.2)
+                                                    ]),
+                                              ),
+                                              SizedBox(
+                                                  width:
+                                                  3), // spacing before line
+                                              Expanded(
+                                                child: Container(
+                                                  height: 1,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                      darkBg,
+                                                      border: Border.all(
+                                                          width:
+                                                          0.8,
+                                                          color:
+                                                          darkBg)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5,),
+                                          Text(SortedLogs[index]['reason'],
+                                            style: CardText(
+                                                font_Weight: FontWeight.w800,
+                                                size: 16,
+                                                FontColor: SortedLogs[index]['status']  == 'Success'
+                                                    ? SuccessCardText
+                                                    : FailureCardText),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //Btns
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStateProperty
+                                  .all(darkBg),
+                              minimumSize:
+                              MaterialStateProperty
+                                  .all(Size(100,
+                                  40)), // width: 80, height: 40
+                            ),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pop();
+                            },
+                            child: Text(
+                              "Back",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: baseFont,
+                                  fontSize: 18,
+                                  fontWeight:
+                                  FontWeight.w500,
+                                  shadows: [
+                                    Shadow(
+                                      color:
+                                      Colors.white,
+                                      blurRadius: 0.2,
+                                    )
+                                  ]),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
+      child: Container(
         margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
         padding: EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
@@ -280,653 +814,115 @@ class log_pop_up extends StatelessWidget {
                 : FailureCard
         ),
         height: screenSize.height/10,
-        child: GestureDetector(
-          onTap: () {
-            showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (context) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.circular(15),
-                        side: BorderSide(
-                            width: 0.5, color: darkBg)),
-                    child: Container(
-                      width: screenSize.width * 0.9,
-                      height: screenSize.height / 1.3,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius:
-                          BorderRadius.circular(15),
-                          color:  SortedLogs[index]['status'] == 'Success'
-                              ? SuccessCard
-                              : FailureCard
-                      ),
-                      child: Column(
-                        mainAxisAlignment:
-                        MainAxisAlignment.start,
-                        crossAxisAlignment:
-                        CrossAxisAlignment.center,
-                        children: [
-                          //Title
-                          Padding(
-                            padding:
-                            const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Log Info",
-                                        style: TextStyle(
-                                            fontFamily: baseFont,
-                                            fontWeight:
-                                            FontWeight.w800,
-                                            fontSize: 28,
-                                            color: darkBg),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(20),
-                                            color: SortedLogs[index]['status']  == 'Success'
-                                                ? CupertinoColors.activeGreen
-                                                : CupertinoColors.destructiveRed
-                                        ),
-                                        child: Text(SortedLogs[index]['status'],style: TextStyle(color: Colors.white),),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Divider(
-                                  color: darkBg,
-                                  thickness: 1.5,
-                                ),
-                              ],
-                            ),
-                          ),
-                          //main content
-                          Expanded(
-                            child: ScrollbarTheme(
-                              data: ScrollbarThemeData(
-                                thumbColor: MaterialStateProperty.all(darkBg),
-                                radius: Radius.circular(10),
-                                thickness: MaterialStateProperty.all(6),
-                                trackColor: MaterialStateProperty.all(Colors.white),
-                                trackBorderColor: MaterialStateProperty.all(Colors.black),
-                              ),
-                              child: Scrollbar(
-                                thumbVisibility: true,
-                                child: SingleChildScrollView(
-                                  child: Container(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                    width: screenSize.width,
-                                    child: Column(
-                                      children: [
-                                        //Emp details
-                                        Container(
-                                          margin: EdgeInsets.fromLTRB(0,0,0,5),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "Empolyee ",
-                                                    style: TextStyle(
-                                                        color: darkBg,
-                                                        fontFamily:
-                                                        baseFont,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .w500,
-                                                        shadows: [
-                                                          Shadow(
-                                                              color: Colors
-                                                                  .black,
-                                                              blurRadius:
-                                                              0.2)
-                                                        ]),
-                                                  ),
-                                                  SizedBox(
-                                                      width:
-                                                      3), // spacing before line
-                                                  Expanded(
-                                                    child: Container(
-                                                      height: 1,
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                          darkBg,
-                                                          border: Border.all(
-                                                              width:
-                                                              0.8,
-                                                              color:
-                                                              darkBg)),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5,),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      Text("Name",
-                                                        style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
-                                                      ),
-                                                      SizedBox(height: 5,),
-                                                      FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child: Text(SortedLogs[index]['Name'],
-                                                          style: CardText(
-                                                              font_Weight: FontWeight.w800,
-                                                              size: 16,
-                                                              FontColor:
-                                                              SortedLogs[index]['status'] == 'Success'
-                                                                  ? SuccessCardText
-                                                                  : FailureCardText
-                                                                  ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Text("EmpId",
-                                                        style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
-                                                      ),
-                                                      SizedBox(height: 5,),
-                                                      FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child: Text(SortedLogs[index]['empId'],
-                                                          style: CardText(
-                                                              font_Weight: FontWeight.w800,
-                                                              size: 16,
-                                                              FontColor: SortedLogs[index]['status'] == 'Success'
-                                                                  ? SuccessCardText
-                                                                  : FailureCardText),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        //Device details
-                                        Container(
-                                          margin: EdgeInsets.symmetric(vertical: 10),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "DFU Info ",
-                                                    style: TextStyle(
-                                                        color: darkBg,
-                                                        fontFamily:
-                                                        baseFont,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .w500,
-                                                        shadows: [
-                                                          Shadow(
-                                                              color: Colors
-                                                                  .black,
-                                                              blurRadius:
-                                                              0.2)
-                                                        ]),
-                                                  ),
-                                                  SizedBox(
-                                                      width:
-                                                      3), // spacing before line
-                                                  Expanded(
-                                                    child: Container(
-                                                      height: 1,
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                          darkBg,
-                                                          border: Border.all(
-                                                              width:
-                                                              0.8,
-                                                              color:
-                                                              darkBg)),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5,),
-                                              //MacId-deviceId
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      Text("MAC ID",
-                                                        style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
-                                                      ),
-                                                      SizedBox(height: 5,),
-                                                      FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child: Text(SortedLogs[index]['mac_Id'],
-                                                          style: CardText(
-                                                              font_Weight: FontWeight.w800,
-                                                              size: 16,
-                                                              FontColor: SortedLogs[index]['status'] == 'Success'
-                                                                  ? SuccessCardText
-                                                                  : FailureCardText),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Text("Device-type",
-                                                        style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
-                                                      ),
-                                                      SizedBox(height: 5,),
-                                                      FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child: Text(SortedLogs[index]['DeviceID'].toString(),
-                                                          style: CardText(
-                                                              font_Weight: FontWeight.w800,
-                                                              size: 16,
-                                                              FontColor: SortedLogs[index]['status'] == 'Success'
-                                                                  ? SuccessCardText
-                                                                  : FailureCardText),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 15,),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: screenSize.width/4.5,
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(Icons.computer,size: 14,),
-                                                              SizedBox(width: 3,),
-                                                              Text("Batch",
-                                                                style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 5,),
-                                                        FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          child: Text(SortedLogs[index]['Batch'],
-                                                            style: CardText(
-                                                                font_Weight: FontWeight.w800,
-                                                                size: 16,
-                                                                FontColor: SortedLogs[index]['status'] == 'Success'
-                                                                    ? SuccessCardText
-                                                                    : FailureCardText),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: screenSize.width/4.5,
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(Icons.memory,size: 16,),
-                                                              SizedBox(width: 3,),
-                                                              Text("Config",
-                                                                style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 5,),
-                                                        FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          child: Text(SortedLogs[index]['Config'],
-                                                            style: CardText(
-                                                                font_Weight: FontWeight.w800,
-                                                                size: 16,
-                                                                FontColor: SortedLogs[index]['status']  == 'Success'
-                                                                    ? SuccessCardText
-                                                                    : FailureCardText),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: screenSize.width/4.5,
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(Icons.folder_open_outlined,size: 16),
-                                                              SizedBox(width: 3,),
-                                                              Text("FirmWare",
-                                                                style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 5,),
-                                                        FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          child: Text(SortedLogs[index]['firm_version'],
-                                                            style: CardText(
-                                                                font_Weight: FontWeight.w800,
-                                                                size: 16,
-                                                                FontColor: SortedLogs[index]['status']  == 'Success'
-                                                                    ? SuccessCardText
-                                                                    : FailureCardText),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        //date and Time
-                                        Container(
-                                          margin: EdgeInsets.symmetric(vertical: 10),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "Date And Time ",
-                                                    style: TextStyle(
-                                                        color: darkBg,
-                                                        fontFamily:
-                                                        baseFont,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .w500,
-                                                        shadows: [
-                                                          Shadow(
-                                                              color: Colors
-                                                                  .black,
-                                                              blurRadius:
-                                                              0.2)
-                                                        ]),
-                                                  ),
-                                                  SizedBox(
-                                                      width:
-                                                      3), // spacing before line
-                                                  Expanded(
-                                                    child: Container(
-                                                      height: 1,
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                          darkBg,
-                                                          border: Border.all(
-                                                              width:
-                                                              0.8,
-                                                              color:
-                                                              darkBg)),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5,),
-
-                                              Text(SortedLogs[index]['Date-Time'],
-                                                style: CardText(
-                                                    font_Weight: FontWeight.w800,
-                                                    size: 16,
-                                                    FontColor: SortedLogs[index]['status']  == 'Success'
-                                                        ? SuccessCardText
-                                                        : FailureCardText),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        //Reason
-                                        Container(
-                                          margin: EdgeInsets.symmetric(vertical: 10),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "Message",
-                                                    style: TextStyle(
-                                                        color: darkBg,
-                                                        fontFamily:
-                                                        baseFont,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .w500,
-                                                        shadows: [
-                                                          Shadow(
-                                                              color: Colors
-                                                                  .black,
-                                                              blurRadius:
-                                                              0.2)
-                                                        ]),
-                                                  ),
-                                                  SizedBox(
-                                                      width:
-                                                      3), // spacing before line
-                                                  Expanded(
-                                                    child: Container(
-                                                      height: 1,
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                          darkBg,
-                                                          border: Border.all(
-                                                              width:
-                                                              0.8,
-                                                              color:
-                                                              darkBg)),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5,),
-                                              Text(SortedLogs[index]['reason'],
-                                                style: CardText(
-                                                    font_Weight: FontWeight.w800,
-                                                    size: 16,
-                                                    FontColor: SortedLogs[index]['status']  == 'Success'
-                                                        ? SuccessCardText
-                                                        : FailureCardText),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          //Btns
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
-                            child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty
-                                      .all(darkBg),
-                                  minimumSize:
-                                  MaterialStateProperty
-                                      .all(Size(100,
-                                      40)), // width: 80, height: 40
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pop();
-                                },
-                                child: Text(
-                                  "Back",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: baseFont,
-                                      fontSize: 18,
-                                      fontWeight:
-                                      FontWeight.w500,
-                                      shadows: [
-                                        Shadow(
-                                          color:
-                                          Colors.white,
-                                          blurRadius: 0.2,
-                                        )
-                                      ]),
-                                )),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                });
-          },
-          child: Container(
-            padding: EdgeInsets.all(5),
-            width: screenSize.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Name
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // Name
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      width: screenSize.width/4,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Name : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text
-                              (SortedLogs[index]["Name"] ??'' ,
-                              style: CardText(
-                                  font_Weight: FontWeight.w800,
-                                  size: 14,
-                                  FontColor:
-                                  SortedLogs[index]['status'] == 'Success'
-                                      ? SuccessCardText
-                                      : FailureCardText),),
-                          ),
-                        ],
+                Container(
+                  width: screenSize.width/4,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Name : ",
+                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                      SizedBox(
+                        height: 3,
                       ),
-                    ),
-
-                    // Batch
-                    Container(
-                      width: screenSize.width/5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Batch:",
-                            style: CardText(
-                              font_Weight: FontWeight.w300,
-                              FontColor: secondaryText,
-                            ),
-                          ),
-                          SizedBox(height: 3),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              SortedLogs[index]['Batch'] ?? '',
-                              style: CardText(
-                                font_Weight: FontWeight.w800,
-                                size: 14,
-                                FontColor:
-                                SortedLogs[index]['status']  == 'Success'
-                                    ? SuccessCardText
-                                    : FailureCardText,
-                              ),
-                            ),
-                          ),
-                        ],
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text
+                          (SortedLogs[index]["Name"] ??'' ,
+                          style: CardText(
+                              font_Weight: FontWeight.w800,
+                              size: 14,
+                              FontColor:
+                              SortedLogs[index]['status'] == 'Success'
+                                  ? SuccessCardText
+                                  : FailureCardText),),
                       ),
-                    ),
-
-                    //Time and Date
-                    Container(
-                      width: screenSize.width/6,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text("Date-Time : ",
-                                style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text
-                              (formatDateTime(SortedLogs[index]['Date-Time']),
-                              style: CardText(
-                                  font_Weight: FontWeight.w800,
-                                  size: 14,
-                                  FontColor:
-                                  SortedLogs[index]['status'] == 'Success'
-                                      ? SuccessCardText
-                                      : FailureCardText),),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                  ],
+                    ],
+                  ),
                 ),
-                Icon(
-                  CupertinoIcons.chevron_right_2,
-                  color: darkBg,
-                  weight: 40,
-                  size: 26,
-                )
+
+                // Batch
+                Container(
+                  width: screenSize.width/5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Batch:",
+                        style: CardText(
+                          font_Weight: FontWeight.w300,
+                          FontColor: secondaryText,
+                        ),
+                      ),
+                      SizedBox(height: 3),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          SortedLogs[index]['Batch'] ?? '',
+                          style: CardText(
+                            font_Weight: FontWeight.w800,
+                            size: 14,
+                            FontColor:
+                            SortedLogs[index]['status']  == 'Success'
+                                ? SuccessCardText
+                                : FailureCardText,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                //Time and Date
+                Container(
+                  width: screenSize.width/6,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text("Date-Time : ",
+                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text
+                          (formatDateTime(SortedLogs[index]['Date-Time']),
+                          style: CardText(
+                              font_Weight: FontWeight.w800,
+                              size: 14,
+                              FontColor:
+                              SortedLogs[index]['status'] == 'Success'
+                                  ? SuccessCardText
+                                  : FailureCardText),),
+                      ),
+                    ],
+                  ),
+                ),
+
               ],
             ),
-          ),
-        )
+            Icon(
+              CupertinoIcons.chevron_right_2,
+              color: darkBg,
+              weight: 40,
+              size: 26,
+            )
+          ],
+        ),
+      ),
     );
   }
 

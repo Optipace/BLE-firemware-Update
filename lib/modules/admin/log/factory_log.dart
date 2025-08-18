@@ -4,7 +4,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/log/field_log.dart';
 import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
-import 'package:tracker_firmware/services/apiCall/Admin/logs.dart';
 
 TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(

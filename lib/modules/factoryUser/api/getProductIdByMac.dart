@@ -12,6 +12,7 @@ Future<List<dynamic>> getProductIdbyMac(BuildContext context,{required String ma
       context: context,
       method: 'POST',
       endpoint: ApiEndpoints.productIDbyMac,
+      errorDisplay: false,
       bodyOrParams: requestBody,
       onSuccess: (data) async{
         printFunc("Product DATA :$data");
@@ -24,7 +25,6 @@ Future<List<dynamic>> getProductIdbyMac(BuildContext context,{required String ma
           isSuccess = true;
         }
       },
-      errorDisplay: false,
     showLoader: false,
   );
   return [isSuccess, productIdDetails];

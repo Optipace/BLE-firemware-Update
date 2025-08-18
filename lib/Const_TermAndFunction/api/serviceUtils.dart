@@ -22,10 +22,12 @@ class ApiHeaders {
 }
 
 class ApiEndpoints {
-  static const String _devBaseUrl = 'http://192.168.130.138:8080';//192.168.130.138:8080';
-  static const String _prodBaseUrl = 'http://192.168.130.138:8080';
-  // static const String _devBaseUrl = 'http://10.118.170.132:8080';//192.168.130.138:8080';
+  static const String _devBaseUrl = 'http://106.51.141.50:8083';
+  static const String _prodBaseUrl = 'http://106.51.141.50:8083';
+  // static const String _devBaseUrl = 'http://10.118.170.132:8080';
   // static const String _prodBaseUrl = 'http://10.118.170.132:8080';
+  // static const String _devBaseUrl = 'http://192.168.130.138:8080';
+  // static const String _prodBaseUrl = 'http://192.168.130.138:8080';
   static const bool _isProd = true;
 
   static String get baseUrl => _isProd ? _prodBaseUrl : _devBaseUrl;
@@ -238,6 +240,7 @@ class ApiService {
           'refreshToken': UserData.instance.refreshToken ?? "",
         }),
       );
+      printFunc("URL : ${url}");
       printFunc("response.statusCode : ${response.statusCode}");
       printFunc("response.body : ${jsonDecode(response.body)}");
       if (response.statusCode == 200 && jsonDecode(response.body)['response']["code"] == 2) {

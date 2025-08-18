@@ -24,9 +24,7 @@ Future<List<Map<String, dynamic>>> getBatchList(
           final firmware = item['firmware'] ?? {};
           final config = item['configuration'] ?? {};
           final device = item['configuration']['device'] ?? {};
-          config['nominalVoltage'] = 6.2;
-          config['upperTemp'] = 26;
-          config['lowerTemp'] = 17;
+
 
           Map<String, dynamic> formatted = {
             "id": item['id'].toString(),
@@ -42,13 +40,14 @@ Future<List<Map<String, dynamic>>> getBatchList(
               "uV": config['upperVoltage']?.toString() ?? '',
               "lT": config['lowerThreshold']?.toString() ?? '',
               "lV": config['lowerVoltage']?.toString() ?? '',
-              "nV": config['nominalVoltage']?.toString() ?? '',
-              "uTemp": config['upperTemp']?.toString() ?? '',
-              "lTemp": config['lowerTemp']?.toString() ?? '',
+              "nV": config['normalVoltage']?.toString() ?? '',
+              "uTemp": config['upperTemperature']?.toString() ?? '',
+              "lTemp": config['lowerTemperature']?.toString() ?? '',
               "deviceTypeId": config['deviceId']?.toString() ?? '',
               "file": "Base64Data",
               "saved": false,
               "deviceType": config['deviceId']?.toString() ?? '',
+
             },
             "firmware": {
               "id": firmware['id'],

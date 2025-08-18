@@ -102,7 +102,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
   @override
   Widget build(BuildContext context) {
-    printFunc("DEMO BATTERY = ${_batterySeries.getText!}");
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(

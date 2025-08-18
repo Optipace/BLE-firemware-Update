@@ -12,11 +12,10 @@ import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/modules/factoryUser/api/getProductIdByMac.dart';
-import 'package:tracker_firmware/modules/factoryUser/api/saveHardware.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
 class DfuHomePage extends StatefulWidget {
   const DfuHomePage(
@@ -50,6 +49,9 @@ class _DfuHomePageState extends State<DfuHomePage> {
 
   //context for savelog api
   // late BuildContext _safeContext;
+
+  //flag for Pop-up after DFU
+  bool showPopUpAfterDFU = false;
 
 
   Future<void> requestPermissions() async {
@@ -132,6 +134,8 @@ class _DfuHomePageState extends State<DfuHomePage> {
     Future<void> startDfu(ScanResult device,int numberofPackets,
         {bool first = true, String oldId = ""}) async {
 
+
+
       _dfuPopUp = false;
 
       String DFUstatus ;
@@ -140,7 +144,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
       printFunc("DEMO DEVICE : $device");
       await stopScan();
       await Future.delayed(
-          const Duration(milliseconds: 1000)); // ✅ Allow BLE stack to settle
+          const Duration(milliseconds: 1000));
 
       String file = widget.SelectedBatch.obj["firmware"]["file"];
       debugPrint("🔄 SelectedBatch: ${widget.SelectedBatch.obj}");
@@ -155,7 +159,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
           setState(() => percent = -1);
 
           debugPrint("✅ Connected to device: $address");
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("✅ Connected to $address")));
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(" Connected to $address")));
         },
         //process starting
         onDfuProcessStarting: (address) {
@@ -173,7 +177,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
           );
           if (first) {
             await Future.delayed(const Duration(
-                milliseconds: 2000)); // ✅ Allow BLE stack to settle
+                milliseconds: 2000));
             await NordicDfu().abortDfu(address: address);
             ScanResult dfuDevice = await startScanSecondTime(device);
             // results.clear();
@@ -270,11 +274,12 @@ class _DfuHomePageState extends State<DfuHomePage> {
                 //OK btn that goes for next page
                 ElevatedButton(
                   onPressed: UserData().designationCode == '3'
-                    ? () {
+                      ? () {
                     printFunc("Inside the Factory User");
                     Navigator.of(context).pop();
                     setState(() {
                       isDeviceSelected = false;
+                      showPopUpAfterDFU = true;
                     });
                     Navigator.push(
                       context,// _safeContext,
@@ -288,7 +293,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                       ),
                     );
                   }
-                    : (){
+                      : (){
                     printFunc("Inside the Field User");
                     Navigator.of(context).pop();
                     setState(() {
@@ -325,7 +330,10 @@ class _DfuHomePageState extends State<DfuHomePage> {
           if(!first){
             DFUstatus = "N";
             DFUreason = msg ;
-            setState(() {});
+            setState(() => percent = null);
+            setState(() {
+              isDeviceSelected = false;
+            });
             debugPrint("Addres : ${address} \n"
                 "error : ${err} \n"
                 "type : ${type} \n"
@@ -352,9 +360,12 @@ class _DfuHomePageState extends State<DfuHomePage> {
             reason: DFUreason
             );
           }
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('❌ DFU error [$err]: $msg'), duration: Duration(seconds: 15)),
-          );
+
+
+
+          ShowSnackBarMessage(context, ' DFU error [$err]: $msg', false);
+
+
         },
       );
 
@@ -415,9 +426,11 @@ class _DfuHomePageState extends State<DfuHomePage> {
         elevation: 5,
         shadowColor: darkBg,
         iconTheme: IconThemeData(color: lightBg),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined),
-          onPressed: () {
+        leading: isDeviceSelected
+          ? SizedBox()
+          : IconButton(
+              icon: Icon(Icons.arrow_back_outlined),
+              onPressed: () {
             if (isDeviceSelected) {
               setState(() {
                 isDeviceSelected = false;
@@ -427,7 +440,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
               Navigator.of(context, rootNavigator: true).pop();
             }
           },
-        ),
+          ),
         title: const Text("DFU Devices"), //Optipace - DFU
         actions: [
           if (!isDeviceSelected)
@@ -493,34 +506,124 @@ class _DfuHomePageState extends State<DfuHomePage> {
   int? percent;
 
   Widget DeviceList() {
-    return ListView.builder(
-      itemCount: results.length,
-      itemBuilder: (_, i) {
-        final device = results[i].device;
-        final id = device.remoteId.str;
-        percent = progressMap[id];
-        final name =
-            device.platformName.isNotEmpty ? device.platformName : 'Unnamed';
+    return Stack(
+      children: [
+        ListView.builder(
+            itemCount: results.length,
+            itemBuilder: (_, i) {
+              final device = results[i].device;
+              final id = device.remoteId.str;
+              percent = progressMap[id];
+              final name =
+                  device.platformName.isNotEmpty ? device.platformName : 'Unnamed';
 
-        return ListTile(
-          leading: const Icon(Icons.bluetooth),
-          title: Text(name),
-          subtitle: Text(id),
-          trailing: ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: darkBg),
+              return ListTile(
+                leading: const Icon(Icons.bluetooth),
+                title: Text(name),
+                subtitle: Text(id),
+                trailing: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: darkBg),
 
-            onPressed: () => setState(() {
-              isDeviceSelected = true;
-              scanedDevcice = results[i];
-              percent = null; // progressMap[id];
-              print("Demo dfu device : $scanedDevcice");
-              stopScan;
-            }), //startDfu(scanedDevcice),
-            child: Text('Select'),
-            // Text(percent != null ? '$percent%' :percent == -1 ?"i need a progress circle": 'DFU'),
+                  onPressed: () => setState(() {
+                    isDeviceSelected = true;
+                    scanedDevcice = results[i];
+                    percent = null; // progressMap[id];
+                    print("Demo dfu device : $scanedDevcice");
+                    stopScan;
+                  }), //startDfu(scanedDevcice),
+                  child: Text('Select'),
+                  // Text(percent != null ? '$percent%' :percent == -1 ?"i need a progress circle": 'DFU'),
+                ),
+                // trailing: ElevatedButton(onPressed: (){
+                //   Navigator.push(
+                //     context,// _safeContext,
+                //     MaterialPageRoute(
+                //         builder: (context) => BluetoothHardwareNumber(
+                //           safecontext:  context,
+                //           SelectedBatch: widget.SelectedBatch,
+                //           allclients: widget.allClients,
+                //           macID: mac_Id,
+                //         )
+                //     ),
+                //   );
+                // }, child: Text("child")),
+              );
+            },
           ),
-        );
-      },
+        if (showPopUpAfterDFU)
+          Positioned.fill(
+            child: Container(
+              color: Colors.black54, // dim background
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  width: 300,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+
+                    children: [
+                      Text("Notice", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 16),
+                      Text("Do you need to flash New Device ?",style: TextStyle(fontSize: 16,)),
+                      SizedBox(height: 20),
+
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: 120,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                MaterialStateProperty
+                                    .all(darkBg),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  showPopUpAfterDFU = false;
+                                });
+                              },
+                              child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text("Yes")
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 120,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                MaterialStateProperty
+                                    .all(darkBg),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // pop screen if needed
+                                Navigator.of(context).pop();
+                                setState(() {
+                                  showPopUpAfterDFU = false;
+                                });
+                              },
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child:Text("NO"),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 
@@ -694,62 +797,107 @@ class _DfuHomePageState extends State<DfuHomePage> {
                     ),
                     Container(
                       padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      child: Column(
                         children: [
-                          // Name
-                          Container(
-                            width: 90,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Batch",
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              // Name
+                              Container(
+                                width: 80,
+                                child:Text("Batch",
                                     style: CardText(
                                         font_Weight: FontWeight.w500,
                                         FontColor: secondaryText)),
-                                SizedBox(
-                                  height: 3,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              // Description
+                              Container(
+                                width: 80,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    "Description",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w500,
+                                        FontColor: secondaryText),
+                                  ),
                                 ),
-                                Text(
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              // Description
+                              Container(
+                                width: 60,
+                                child: Text(
+                                  "Series",
+                                  style: CardText(
+                                      font_Weight: FontWeight.w500,
+                                      FontColor: secondaryText),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+
+
+                              // Name
+                              Container(
+                                width: 80,
+                                child:  Text(
                                     widget.SelectedBatch.obj["name"].toString(),
                                     style: CardText(
                                         font_Weight: FontWeight.w700,
                                         size: 16,
                                         FontColor: darkBg)),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          // Description
-                          Container(
-                            width: 90,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Description",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w500,
-                                      FontColor: secondaryText),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              // Description
+                              Container(
+                                width: 80,
+                                child: Center(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      widget.SelectedBatch.obj["description"]
+                                          .toString(),
+                                      style: CardText(
+                                          font_Weight: FontWeight.w700,
+                                          size: 16,
+                                          FontColor: darkBg),
+                                    ),
+                                  ),
                                 ),
-                                SizedBox(
-                                  height: 3,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              // Description
+                              Container(
+                                width: 60,
+                                child: Center(
+                                  child: Text(
+                                    widget.SelectedBatch.obj["battery"]['batteryCode']
+                                        .toString(),
+                                    style: CardText(
+                                        font_Weight: FontWeight.w700,
+                                        size: 16,
+                                        FontColor: darkBg),
+                                  ),
                                 ),
-                                Text(
-                                  widget.SelectedBatch.obj["description"]
-                                      .toString(),
-                                  style: CardText(
-                                      font_Weight: FontWeight.w700,
-                                      size: 16,
-                                      FontColor: darkBg),
-                                ),
-                              ],
-                            ),
+
+                              ),
+                            ],
                           ),
+                          SizedBox(height: 10,),
                         ],
                       ),
                     )
@@ -1031,6 +1179,117 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                 ),
                               ],
                             ),
+                            SizedBox(height: 15,),
+                            Row(
+                              crossAxisAlignment:
+                              CrossAxisAlignment
+                                  .start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment
+                                      .center,
+                                  children: [
+                                    // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                    Text(
+                                      "N. Volt",
+                                      style:
+                                      CardText(
+                                        font_Weight: FontWeight.w700,
+                                        size: 16,
+                                        FontColor: darkBg,
+                                      ),
+                                    ),
+
+                                    // Upper Threshold
+                                    SizedBox(
+                                        height:
+                                        5),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.battery_charging_full_outlined,
+                                            size: 18,
+                                            color: darkBg),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          "${widget.SelectedBatch.obj["profile"]["nV"]} V",
+                                          style: CardText(
+                                            font_Weight: FontWeight.w700,
+                                            size: 16,
+                                            FontColor: darkBg,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                    width:
+                                    20),
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment
+                                      .center,
+                                  children: [
+                                    // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                    Text(
+                                      "U.Temp",
+                                      style:
+                                      CardText(
+                                        font_Weight: FontWeight.w700,
+                                        size: 16,
+                                        FontColor: darkBg,
+                                      ),
+                                    ),
+                                    // Upper Voltage
+                                    SizedBox(
+                                        height:
+                                        5),
+                                    Text(
+                                      "${widget.SelectedBatch.obj["profile"]['uTemp']}",
+                                      style:CardText(
+                                        font_Weight: FontWeight.w700,
+                                        size: 16,
+                                        FontColor: darkBg,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                    width:
+                                    20),
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment
+                                      .center,
+                                  children: [
+                                    // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                    Text(
+                                      "L.Temp",
+                                      style:
+                                      CardText(
+                                        font_Weight: FontWeight.w700,
+                                        size: 16,
+                                        FontColor: darkBg,
+                                      ),
+                                    ),
+                                    // Lower Threshold
+                                    SizedBox(
+                                        height:
+                                        5),
+                                    Text(
+                                      "${widget.SelectedBatch.obj["profile"]['lTemp']} ",
+                                      style: CardText(
+                                        font_Weight: FontWeight.w700,
+                                        size: 16,
+                                        FontColor: darkBg,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -1111,9 +1370,10 @@ class _DfuHomePageState extends State<DfuHomePage> {
                               Text("Change device")
                             ],
                           )),
-
                     //start dfu
-                    ElevatedButton(
+
+                    if (percent == null || percent == 101)
+                      ElevatedButton(
                         style:
                             ElevatedButton.styleFrom(backgroundColor: darkBg),
                         onPressed: () async {
@@ -1122,7 +1382,11 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                 ? scanedDevcice!.device.remoteId.str
                                 : "-";
                           });
-                          if (percent != null && percent != 101) {
+
+                          await startDfu(scanedDevcice!,4);
+
+                          // For aborting Button things
+                          /*if (percent != null && percent != 101) {
                             try {
                               await NordicDfu().abortDfu(
                                   address: scanedDevcice!.device.remoteId.str);
@@ -1132,25 +1396,37 @@ class _DfuHomePageState extends State<DfuHomePage> {
                             }catch (e) {
                               printFunc("exception while NordicDfu :$e");
                             }
-                          } else {
-                            await startDfu(scanedDevcice!,4);
                           }
+                          else {
+                            await startDfu(scanedDevcice!,4);
+                          } */
                         },
                         child: Row(
                           children: [
-                            Icon(percent != null && percent != 101
+                            Icon(
+                                Icons.flash_on_outlined
+                                //For aborting Button
+                                /*percent != null && percent != 101
                                 ? Icons.clear_outlined
-                                : Icons.flash_on_outlined),
+                                : Icons.flash_on_outlined */
+                            ),
                             SizedBox(
                               width: 5,
                             ),
-                            Text(percent != null && percent != 101
+                            Text(
+                                percent == 101
+                                    ? "Start Again"
+                                    : 'Start DFU'
+                                // For abort button
+                                /*percent != null && percent != 101
                                 ? "   Abort   "
                                 : percent == 101
                                     ? "Start Again"
-                                    : 'Start DFU')
+                                    : 'Start DFU'*/
+                            )
                           ],
                         )),
+
                   ],
                 ),
               )

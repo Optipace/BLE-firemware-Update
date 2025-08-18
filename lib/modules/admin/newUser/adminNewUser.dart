@@ -64,6 +64,9 @@ class AdminNewUserState extends State<AdminNewUser> {
   TextEditingController _designationPriority = TextEditingController();
   bool designationValidator = false;
 
+  bool isAdmin = false;
+  bool isEditAdmin = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -80,7 +83,11 @@ class AdminNewUserState extends State<AdminNewUser> {
         appBar: AppBar(
           title: Text(
             "Manage User",
-            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 22, color: lightBg),
+            style: TextStyle(
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 22,
+                color: lightBg),
           ),
           toolbarHeight: 60,
           backgroundColor: darkBg,
@@ -89,7 +96,8 @@ class AdminNewUserState extends State<AdminNewUser> {
         ),
         backgroundColor: lightBg,
         body: SingleChildScrollView(
-            child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Card(
               // elevation: ,
               // shadowColor: Colors.black,
@@ -117,9 +125,12 @@ class AdminNewUserState extends State<AdminNewUser> {
                         decoration: BoxDecoration(
                             color: selectedbutton == 1 ? darkBg : lightBg,
                             borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20)),
                             border: Border.all(width: 0.5, color: darkBg),
-                            boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                            boxShadow: [
+                              BoxShadow(blurRadius: 0.5, color: darkBg)
+                            ]),
                         child: Center(
                             heightFactor: 2,
                             child: Center(
@@ -130,7 +141,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     'assets/image/user.png',
                                     width: 32,
                                     height: 32,
-                                    color: selectedbutton == 1 ? lightBg : darkBg,
+                                    color:
+                                        selectedbutton == 1 ? lightBg : darkBg,
                                   ),
                                   Text(
                                     "New User",
@@ -138,14 +150,20 @@ class AdminNewUserState extends State<AdminNewUser> {
                                       fontSize: 22,
                                       fontFamily: baseFont,
                                       fontWeight: FontWeight.w600,
-                                      color: selectedbutton == 1 ? lightBg : darkBg,
+                                      color: selectedbutton == 1
+                                          ? lightBg
+                                          : darkBg,
                                       shadows: [
                                         Shadow(
                                             offset: Offset(0.3, 0.3),
-                                            color: selectedbutton == 1 ? lightBg : darkBg),
+                                            color: selectedbutton == 1
+                                                ? lightBg
+                                                : darkBg),
                                         Shadow(
                                             offset: Offset(-0.3, 0.3),
-                                            color: selectedbutton == 1 ? lightBg : darkBg),
+                                            color: selectedbutton == 1
+                                                ? lightBg
+                                                : darkBg),
                                       ],
                                     ),
                                   )
@@ -167,8 +185,11 @@ class AdminNewUserState extends State<AdminNewUser> {
                         decoration: BoxDecoration(
                             color: selectedbutton == 2 ? darkBg : lightBg,
                             borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-                            boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                                topRight: Radius.circular(20),
+                                bottomRight: Radius.circular(20)),
+                            boxShadow: [
+                              BoxShadow(blurRadius: 0.5, color: darkBg)
+                            ]),
                         child: Center(
                             heightFactor: 2,
                             child: Center(
@@ -179,7 +200,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     'assets/image/editUser.png',
                                     width: 32,
                                     height: 32,
-                                    color: selectedbutton == 1 ? darkBg : lightBg,
+                                    color:
+                                        selectedbutton == 1 ? darkBg : lightBg,
                                   ),
                                   Text(
                                     "Edit User",
@@ -187,15 +209,21 @@ class AdminNewUserState extends State<AdminNewUser> {
                                       fontSize: 22,
                                       fontFamily: baseFont,
                                       fontWeight: FontWeight.w600,
-                                      color: selectedbutton == 1 ? darkBg : lightBg,
+                                      color: selectedbutton == 1
+                                          ? darkBg
+                                          : lightBg,
                                       shadows: [
                                         Shadow(
                                           offset: Offset(0.3, 0.3),
-                                          color: selectedbutton == 1 ? darkBg : lightBg,
+                                          color: selectedbutton == 1
+                                              ? darkBg
+                                              : lightBg,
                                         ),
                                         Shadow(
                                           offset: Offset(-0.3, 0.3),
-                                          color: selectedbutton == 1 ? darkBg : lightBg,
+                                          color: selectedbutton == 1
+                                              ? darkBg
+                                              : lightBg,
                                         ),
                                       ],
                                     ),
@@ -241,7 +269,12 @@ class AdminNewUserState extends State<AdminNewUser> {
                         fontWeight: FontWeight.w600,
                         fontSize: 24,
                         color: darkBg,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))]),
+                        shadows: [
+                          Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.5))
+                        ]),
                   ),
                 ),
               ),
@@ -261,7 +294,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                         Controller: _name,
                         onChanged: (value) {},
                         enable: true,
-                        etext: validateUser && _name.text.trim().isEmpty ? "Please Enter the name" : "",
+                        etext: validateUser && _name.text.trim().isEmpty
+                            ? "Please Enter the name"
+                            : "",
                       ),
                       SizedBox(
                         height: 10,
@@ -274,8 +309,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                         Controller: _empRegId,
                         onChanged: (value) {},
                         enable: true,
-                        etext:
-                            validateUser && _empRegId.text.trim().isEmpty ? "Please Enter the empRegID" : "",
+                        etext: validateUser && _empRegId.text.trim().isEmpty
+                            ? "Please Enter the empRegID"
+                            : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -288,7 +324,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                         Controller: _email,
                         onChanged: (value) {},
                         enable: true,
-                        etext: validateUser && _email.text.trim().isEmpty ? "Please Enter the E-Mail" : "",
+                        etext: validateUser && _email.text.trim().isEmpty
+                            ? "Please Enter the E-Mail"
+                            : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -310,26 +348,18 @@ class AdminNewUserState extends State<AdminNewUser> {
                       SizedBox(
                         height: 8,
                       ),
-                      const LabelText(text: "Device UUID :"),
-                      TextFeildNewUser(
-                        hintText: "Enter device UUID",
-                        Controller: _uuid,
-                        onChanged: (value) {},
-                        enable: true,
-                        etext: validateUser && _uuid.text.trim().isEmpty ? "Please Enter the UUID" : "",
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
 
                       //----DesignationID---- [DROPDOWN]
                       GestureDetector(
                         child: PrimeryDropDownButton(
                           isEnabled: true,
                           tail: ErrorContainer(
-                              show: _validateDropDown, errorMsg: "Please Select the Designation"),
+                              show: _validateDropDown,
+                              errorMsg: "Please Select the Designation"),
                           mainText: "Select the desgination",
-                          text: designation.Text != "" ? designation.getText : "Select The Designation",
+                          text: designation.Text != ""
+                              ? designation.getText
+                              : "Select The Designation",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
@@ -347,144 +377,229 @@ class AdminNewUserState extends State<AdminNewUser> {
                                     BtnEnable: true,
                                     btnTitle: "Add Designation",
                                     btnFunction: () async {
-                                      designationRoles = await getDesignation(context);
-                                      await BottomSheet_Widget(context, color: lightBg, [
-                                        StatefulBuilder(builder: (thisLowerContext, CheckDesignationState) {
-
-                                          return Padding(
-                                            padding: EdgeInsets.only(
-                                              bottom: MediaQuery.of(thisLowerContext).viewInsets.bottom,
-                                            ),
-                                            child: SingleChildScrollView(
-                                              child: Container(
-                                                height: screenSize.height / 1.5,
-                                                width: screenSize.width,
-                                                color: lightBg,
+                                      designationRoles =
+                                          await getDesignation(context);
+                                      await BottomSheet_Widget(
+                                          context,
+                                          color: lightBg,
+                                          [
+                                            StatefulBuilder(builder:
+                                                (thisLowerContext,
+                                                    CheckDesignationState) {
+                                              return Padding(
+                                                padding: EdgeInsets.only(
+                                                  bottom: MediaQuery.of(
+                                                          thisLowerContext)
+                                                      .viewInsets
+                                                      .bottom,
+                                                ),
                                                 child: SingleChildScrollView(
                                                   child: Container(
-                                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Text(
-                                                          "Enter Designation Details!",
-                                                          style: TextStyle(
-                                                              fontFamily: baseFont,
-                                                              fontWeight: FontWeight.w800,
-                                                              fontSize: 24,
-                                                              color: darkBg,
-                                                              shadows: [
-                                                                Shadow(
-                                                                    color: Colors.black,
-                                                                    blurRadius: 0.5,
-                                                                    offset: Offset(0.5, 0.5))
-                                                              ]),
+                                                    height:
+                                                        screenSize.height / 1.5,
+                                                    width: screenSize.width,
+                                                    color: lightBg,
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              "Enter Designation Details!",
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      baseFont,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  fontSize: 24,
+                                                                  color: darkBg,
+                                                                  shadows: [
+                                                                    Shadow(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        blurRadius:
+                                                                            0.5,
+                                                                        offset: Offset(
+                                                                            0.5,
+                                                                            0.5))
+                                                                  ]),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+
+                                                            Container(
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  // Battery Name
+                                                                  LabelText(
+                                                                      text:
+                                                                          "Designation :"),
+                                                                  TextFeildNewUser(
+                                                                    hintText:
+                                                                        "Enter Designation",
+                                                                    Controller:
+                                                                        _newDesgination,
+                                                                    onChanged:
+                                                                        (value) {},
+                                                                    enable:
+                                                                        true,
+                                                                    etext: designationValidator &&
+                                                                            _newDesgination.text.trim().isEmpty
+                                                                        ? "Please Enter Designation"
+                                                                        : "",
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 8,
+                                                                  ),
+                                                                  // Relase Note
+                                                                  LabelText(
+                                                                      text:
+                                                                          "Priority"),
+                                                                  TextFeildNewUser(
+                                                                    hintText:
+                                                                        "Enter Priority",
+                                                                    Controller:
+                                                                        _designationPriority,
+                                                                    onChanged:
+                                                                        (value) {},
+                                                                    enable:
+                                                                        true,
+                                                                    etext: designationValidator &&
+                                                                            _designationPriority.text.trim().isEmpty
+                                                                        ? "Please Enter Priority"
+                                                                        : "",
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 8,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            // Add Btn
+                                                            manageUserBtn(
+                                                                text:
+                                                                    "Add Designation",
+                                                                onPress:
+                                                                    () async {
+                                                                  CheckDesignationState(
+                                                                      () {
+                                                                    ValidateDesignationFields();
+                                                                  });
+                                                                  // Future.delayed(Duration(seconds: 3)).then((_) {
+                                                                  //   CheckDesignationState(() {
+                                                                  //     designationValidator = false;
+                                                                  //   });
+                                                                  // });
+
+                                                                  if (!designationValidator) {
+                                                                    printFunc(
+                                                                        "Inside IF COND");
+                                                                    if (await addNewDesgination(
+                                                                      context,
+                                                                      name: _newDesgination
+                                                                          .text
+                                                                          .trim(),
+                                                                      priority:
+                                                                          int.tryParse(_designationPriority.text) ??
+                                                                              0,
+                                                                    )) {
+                                                                      designationRoles =
+                                                                          await getDesignation(
+                                                                              context);
+                                                                      clearConfig();
+
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop(); // Close inner sheet
+                                                                      // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                                                                    }
+                                                                  }
+                                                                  setState(
+                                                                      () {});
+                                                                })
+                                                          ],
                                                         ),
-                                                        SizedBox(
-                                                          height: 20,
-                                                        ),
-
-                                                        Container(
-                                                          child: Column(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              // Battery Name
-                                                              LabelText(text: "Designation :"),
-                                                              TextFeildNewUser(
-                                                                hintText: "Enter Designation",
-                                                                Controller: _newDesgination,
-                                                                onChanged: (value) {},
-                                                                enable: true,
-                                                                etext: designationValidator &&
-                                                                        _newDesgination.text.trim().isEmpty
-                                                                    ? "Please Enter Designation"
-                                                                    : "",
-                                                              ),
-                                                              SizedBox(
-                                                                height: 8,
-                                                              ),
-                                                              // Relase Note
-                                                              LabelText(text: "Priority"),
-                                                              TextFeildNewUser(
-                                                                hintText: "Enter Priority",
-                                                                Controller: _designationPriority,
-                                                                onChanged: (value) {},
-                                                                enable: true,
-                                                                etext: designationValidator &&
-                                                                        _designationPriority.text.trim().isEmpty
-                                                                    ? "Please Enter Priority"
-                                                                    : "",
-                                                              ),
-                                                              SizedBox(
-                                                                height: 8,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        // Add Btn
-                                                        manageUserBtn(
-                                                            text: "Add Designation",
-                                                            onPress: () async {
-                                                              CheckDesignationState(() {
-                                                                ValidateDesignationFields();
-
-                                                              });
-                                                              // Future.delayed(Duration(seconds: 3)).then((_) {
-                                                              //   CheckDesignationState(() {
-                                                              //     designationValidator = false;
-                                                              //   });
-                                                              // });
-
-                                                              if (!designationValidator) {
-                                                                printFunc("Inside IF COND");
-                                                                if (await addNewDesgination(
-                                                                  context,
-                                                                  name: _newDesgination.text.trim(),
-                                                                  priority:
-                                                                      int.tryParse(_designationPriority.text) ??
-                                                                          0,
-                                                                )) {
-                                                                  designationRoles = await getDesignation(context);
-                                                                  clearConfig();
-
-                                                                  Navigator.of(context).pop(); // Close inner sheet
-                                                                  // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
-                                                                }
-                                                              }
-                                                              setState(() {});
-                                                            })
-                                                      ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                          );
-                                        })
-                                      ]);
+                                              );
+                                            })
+                                          ]);
                                     },
                                   )
                                 ],
                               )
                             ]);
-                            setState(() {});
+                            setState(() {
+                              printFunc(
+                                  "DEMO Desgination role : ${designation.Text.toString().toLowerCase()} ");
+                            });
+                            if (designation.Text.toString().toLowerCase() ==
+                                "admin") {
+                              setState(() {
+                                isAdmin = true;
+                                _uuid.text = "ADMIN_DEVICE";
+                              });
+                            } else {
+                              isAdmin = false;
+                            }
                           },
                         ),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 10,
                       ),
+
+                      //Device ID
+                      !isAdmin
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const LabelText(text: "Device UUID :"),
+                                TextFeildNewUser(
+                                  hintText: "Enter device UUID",
+                                  Controller: _uuid,
+                                  onChanged: (value) {},
+                                  enable: true,
+                                  etext:
+                                      validateUser && _uuid.text.trim().isEmpty
+                                          ? "Please Enter the UUID"
+                                          : "",
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
 
                       //-----password-----
                       LabelText(text: "Employee Password :"),
                       TextFeildNewUser(
                         hintText: "Enter Employee Password",
                         Controller: _password,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          printFunc("IS ADMIN = ${_uuid.text.toString()}");
+                        },
                         enable: true,
-                        etext:
-                            validateUser && _password.text.trim().isEmpty ? "Please Enter the Password" : "",
+                        etext: validateUser && _password.text.trim().isEmpty
+                            ? "Please Enter the Password"
+                            : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -530,8 +645,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                         );
                         if (success) {
                           clearNewUserFields();
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => AdminMain()));
                         }
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
                       }
                     }),
               )
@@ -571,7 +687,12 @@ class AdminNewUserState extends State<AdminNewUser> {
                         fontWeight: FontWeight.w800,
                         fontSize: 24,
                         color: darkBg,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))]),
+                        shadows: [
+                          Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.5))
+                        ]),
                   ),
                 ),
               ),
@@ -594,7 +715,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                         type: TextInputType.number,
                         onChanged: (value) {},
                         enable: true,
-                        etext: _validatePhn ? "Please Enter 10 digit Phone number" : "",
+                        etext: _validatePhn
+                            ? "Please Enter 10 digit Phone number"
+                            : "",
                       ),
                       SizedBox(
                         height: 10,
@@ -658,9 +781,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                             Controller: _name01,
                             onChanged: (value) {},
                             enable: _activeUser,
-                            etext: _validateEditUser && _name01.text.trim().isEmpty
-                                ? "Please Enter the name"
-                                : "",
+                            etext:
+                                _validateEditUser && _name01.text.trim().isEmpty
+                                    ? "Please Enter the name"
+                                    : "",
                           ),
                           SizedBox(
                             height: 10,
@@ -673,7 +797,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                             Controller: _empRegId01,
                             onChanged: (value) {},
                             enable: _activeUser,
-                            etext: _validateEditUser && _empRegId01.text.trim().isEmpty
+                            etext: _validateEditUser &&
+                                    _empRegId01.text.trim().isEmpty
                                 ? "Please Enter the empRegID"
                                 : "",
                           ),
@@ -688,7 +813,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                             Controller: _email01,
                             onChanged: (value) {},
                             enable: _activeUser,
-                            etext: _validateEditUser && _email01.text.trim().isEmpty
+                            etext: _validateEditUser &&
+                                    _email01.text.trim().isEmpty
                                 ? "Please Enter the E-Mail"
                                 : "",
                           ),
@@ -705,23 +831,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                             type: TextInputType.number,
                             maxLength: 10,
                             enable: _activeUser,
-                            etext: _validateEditUser && _contact01.text.trim().isEmpty
+                            etext: _validateEditUser &&
+                                    _contact01.text.trim().isEmpty
                                 ? "Please Enter the Phone Number"
-                                : "",
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-
-                          //------Device UUID -----------
-                          LabelText(text: "Employee Device UUID :"),
-                          TextFeildNewUser(
-                            hintText: "Enter device UUID",
-                            Controller: _uuidEdit,
-                            onChanged: (value) {},
-                            enable: _activeUser,
-                            etext: _validateEditUser && _uuidEdit.text.trim().isEmpty
-                                ? "Please Enter the UUID"
                                 : "",
                           ),
                           SizedBox(
@@ -733,10 +845,12 @@ class AdminNewUserState extends State<AdminNewUser> {
                             child: PrimeryDropDownButton(
                               isEnabled: _activeUser,
                               tail: ErrorContainer(
-                                  show: _validateDropDown, errorMsg: "Please Select the Designation"),
+                                  show: _validateDropDown,
+                                  errorMsg: "Please Select the Designation"),
                               mainText: "Select the desgination",
-                              text:
-                                  designation01.Text != "" ? designation01.getText : "Select The Designation",
+                              text: designation01.Text != ""
+                                  ? designation01.getText
+                                  : "Select The Designation",
                               icon: Icon(
                                 Icons.keyboard_arrow_down_sharp,
                                 color: darkBg,
@@ -754,93 +868,159 @@ class AdminNewUserState extends State<AdminNewUser> {
                                   )
                                 ]);
                                 setState(() {});
-                                printFunc("Designation Demo ${designation01.obj}");
+                                if (designation01.Text.toString()
+                                        .toLowerCase() ==
+                                    "admin") {
+                                  setState(() {
+                                    isEditAdmin = true;
+                                    _uuidEdit.text = "ADMIN_DEVICE";
+                                  });
+                                } else {
+                                  setState(() {
+                                    isEditAdmin = false;
+                                  });
+                                }
+
+                                printFunc(
+                                    "Designation Demo ${designation01.Text.toString().toLowerCase()}");
+                                printFunc(
+                                    "ADMIN DEVICE ID : ${_uuidEdit.text}");
                               },
                             ),
                           ),
+                          SizedBox(
+                            height: 8,
+                          ),
 
+                          //------Device UUID -----------
+                          !isEditAdmin
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    LabelText(text: "Employee Device UUID :"),
+                                    TextFeildNewUser(
+                                      hintText: "Enter device UUID",
+                                      Controller: _uuidEdit,
+                                      onChanged: (value) {},
+                                      enable: _activeUser,
+                                      etext: _validateEditUser &&
+                                              _uuidEdit.text.trim().isEmpty
+                                          ? "Please Enter the UUID"
+                                          : "",
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                  ],
+                                )
+                              : SizedBox(),
+
+                          //-------BTN------
                           Visibility(
                               visible: _userFound && !_validatePhn,
-                              child:  _activeUser
+                              child: _activeUser
                                   ? Container(
-                                padding: EdgeInsets.only(top: 15, bottom: 30, left: 15, right: 15),
-                                child: FittedBox(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      manageUserBtn(
-                                          text: "Update",
-                                          onPress: () async {
-                                            ValidateEditUser();
-                                            validateEditDropDown(designation01);
-                                            printFunc("validate edit User : $_validateEditDropDown");
-                                            printFunc(
-                                                "Validate Edit Drop Down : ${_validateEditDropDown}");
-                                            printFunc(
-                                                "${!_validateEditUser && !_validateEditDropDown}");
-                                            if (!_validateEditUser && !_validateEditDropDown) {
-                                              printFunc("Insid if cond");
-                                              final success = await updateUser(
-                                                context,
-                                                id: existingUserId,
-                                                // must be tracked somewhere in state
-                                                name: _name01.text.trim(),
-                                                empRegisteredId: _empRegId01.text.trim(),
-                                                email: _email01.text.trim(),
-                                                contact: _contact01.text.trim(),
-                                                password: _password.text.trim(),
-                                                designationId: designation01.obj != null
-                                                    ? designation01.obj!["id"]?.toString() ?? ''
-                                                    : '',
+                                      padding: EdgeInsets.only(
+                                          top: 15,
+                                          bottom: 30,
+                                          left: 15,
+                                          right: 15),
+                                      child: FittedBox(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            manageUserBtn(
+                                                text: "Update",
+                                                onPress: () async {
+                                                  ValidateEditUser();
+                                                  validateEditDropDown(
+                                                      designation01);
+                                                  printFunc(
+                                                      "validate edit User : $_validateEditDropDown");
+                                                  printFunc(
+                                                      "Validate Edit Drop Down : ${_validateEditDropDown}");
+                                                  printFunc(
+                                                      "${!_validateEditUser && !_validateEditDropDown}");
+                                                  if (!_validateEditUser &&
+                                                      !_validateEditDropDown) {
+                                                    printFunc("Insid if cond");
+                                                    final success =
+                                                        await updateUser(
+                                                      context,
+                                                      id: existingUserId,
+                                                      // must be tracked somewhere in state
+                                                      name: _name01.text.trim(),
+                                                      empRegisteredId:
+                                                          _empRegId01.text
+                                                              .trim(),
+                                                      email:
+                                                          _email01.text.trim(),
+                                                      contact: _contact01.text
+                                                          .trim(),
+                                                      password:
+                                                          _password.text.trim(),
+                                                      designationId: designation01
+                                                                  .obj !=
+                                                              null
+                                                          ? designation01
+                                                                  .obj!["id"]
+                                                                  ?.toString() ??
+                                                              ''
+                                                          : '',
 
-                                                deviveId: _uuidEdit.text.trim(),
-                                              );
+                                                      deviveId:
+                                                          _uuidEdit.text.trim(),
+                                                    );
 
-                                              if (success) {
-                                                clearEditUserFields();
-                                                _searchPhn.clear();
-                                              }
-                                            } else {
-                                              printFunc("Inside else cond");
-                                            }
-                                            setState(() {
-                                              _userFound = false;
-                                            });
-                                          }),
-                                      SizedBox(width: 5),
-                                      manageUserBtn(
-                                          text: "Deactive",
-                                          onPress: () async {
-                                            final success =
-                                            await deActivateUser(context, id: existingUserId);
-                                            if (success) {
-                                              setState(() {
-                                                _activeUser = false;
-                                              });
-                                            }
-                                          })
-                                    ],
-                                  ),
-                                ),
-                              )
+                                                    if (success) {
+                                                      clearEditUserFields();
+                                                      _searchPhn.clear();
+                                                    }
+                                                  } else {
+                                                    printFunc(
+                                                        "Inside else cond");
+                                                  }
+                                                  setState(() {
+                                                    _userFound = false;
+                                                  });
+                                                }),
+                                            SizedBox(width: 5),
+                                            manageUserBtn(
+                                                text: "Deactive",
+                                                onPress: () async {
+                                                  final success =
+                                                      await deActivateUser(
+                                                          context,
+                                                          id: existingUserId);
+                                                  if (success) {
+                                                    setState(() {
+                                                      _activeUser = false;
+                                                    });
+                                                  }
+                                                })
+                                          ],
+                                        ),
+                                      ),
+                                    )
                                   : Container(
-                                padding: EdgeInsets.only(top: 15, bottom: 30),
-                                child: Center(
-                                  child: manageUserBtn(
-                                      text: "Active",
-                                      onPress: () async {
-                                        final success =
-                                        await setUserActive(context, id: existingUserId);
-                                        if (success) {
-                                          setState(() {
-                                            _activeUser = true;
-                                          });
-                                        }
-                                      }),
-                                ),
-                              )
-                          )
-
+                                      padding:
+                                          EdgeInsets.only(top: 15, bottom: 30),
+                                      child: Center(
+                                        child: manageUserBtn(
+                                            text: "Active",
+                                            onPress: () async {
+                                              final success =
+                                                  await setUserActive(context,
+                                                      id: existingUserId);
+                                              if (success) {
+                                                setState(() {
+                                                  _activeUser = true;
+                                                });
+                                              }
+                                            }),
+                                      ),
+                                    ))
                         ],
                       ),
                     ),
@@ -886,7 +1066,8 @@ class AdminNewUserState extends State<AdminNewUser> {
     printFunc(
         "name : ${_name.text}\n EmpREGID : ${_empRegId.text}\n email : ${_email.text}\n Contact : ${_contact.text}\n password : ${_password.text} \nRePassword : ${_repassword.text}");
 
-    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
       validateUser = hasEmpty;
     });
@@ -911,7 +1092,8 @@ class AdminNewUserState extends State<AdminNewUser> {
       _repassword01,
       */
     ];
-    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
 
     setState(() {
       _validateEditUser = hasEmpty;
@@ -1012,8 +1194,8 @@ class AdminNewUserState extends State<AdminNewUser> {
         designation01.setText = empObj["designation"];
         _uuidEdit.text = empObj["deviceId"];
 
-        designation01.setobj = designationRoles[
-            empObj["designation"]]; //Designation.getEmpDetails(int.parse(empObj["designationCode"]));
+        designation01.setobj = designationRoles[empObj[
+            "designation"]]; //Designation.getEmpDetails(int.parse(empObj["designationCode"]));
       });
       printFunc("Inside else cond");
       if ((empObj["status"]).toString().toUpperCase() == "Y") {
@@ -1039,7 +1221,8 @@ class AdminNewUserState extends State<AdminNewUser> {
   void ValidateDesignationFields() {
     final Controllers = [_newDesgination, _designationPriority];
 
-    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     printFunc("has Next : $hasEmpty");
     setState(() {
       designationValidator = hasEmpty;

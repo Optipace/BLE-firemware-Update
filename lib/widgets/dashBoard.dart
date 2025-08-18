@@ -13,6 +13,7 @@ class Dashboard extends StatelessWidget {
   final bool? userProfile;
   final Function? onLogout;
   final Widget? add_Device;
+  final Widget? add_Client;
   final Widget? floatingBtn;
 
   Dashboard({
@@ -21,6 +22,7 @@ class Dashboard extends StatelessWidget {
     required this.child,
     this.onLogout,
     this.add_Device,
+    this.add_Client,
     this.floatingBtn
   });
 
@@ -34,7 +36,7 @@ class Dashboard extends StatelessWidget {
       // Createing Key
       key: _scaffoldKey,
       floatingActionButton: floatingBtn,
-      drawer: UserProfileSlider(context, onLogout,add_Device),
+      drawer: UserProfileSlider(context, onLogout,add_Device,add_Client),
       body: InternetStatusWatcher(
         child: Column(
           children: [
@@ -129,7 +131,7 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-UserProfileSlider(context, Function? onlogout, Widget? add_Device) {
+UserProfileSlider(context, Function? onlogout, Widget? add_Device,Widget? add_Client) {
   return Drawer(
     width: screenSize.width * 0.75,
     elevation: 20,
@@ -275,6 +277,7 @@ UserProfileSlider(context, Function? onlogout, Widget? add_Device) {
           ),
         ),
         add_Device??SizedBox(),
+        add_Client??SizedBox(),
         Spacer(),
         Divider(),
 

@@ -49,8 +49,12 @@ Future<bool> addNewConfig(
     "upperThreshold": upperThreshold,
     "lowerVoltage": lowerVoltage,
     "lowerThreshold": lowerThreshold,
+    "normalVoltage":nominalVoltage,
+    "upperTemperature":upperTemp,
+    "lowerTemperature":lowerTemp,
     "discription": description,
-    "deviceId": batterySeriesId
+    "deviceId": batterySeriesId,
+
   };
 
   bool isSuccess = false;

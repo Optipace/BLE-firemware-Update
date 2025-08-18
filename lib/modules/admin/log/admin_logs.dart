@@ -10,7 +10,6 @@ import 'package:tracker_firmware/modules/admin/log/monthly_logs/day_log.dart';
 import 'package:tracker_firmware/modules/admin/log/monthly_logs/monthly_log.dart';
 import 'package:tracker_firmware/modules/admin/log/monthly_logs/week_log.dart';
 import 'package:tracker_firmware/modules/admin/log/userLogsMain.dart';
-import 'package:tracker_firmware/services/apiCall/Admin/logs.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/widgets/pie_chart_widget.dart';
 
@@ -42,6 +41,16 @@ class AdminLogsState extends State<AdminLogs> {
   List<dynamic> dayLogs =[];
   List<dynamic> weekLogs =[];
   List<dynamic> monthlylogs =[];
+  List<dynamic> emptyList = [
+    {
+      "TotalCount": 0,
+      "SuccessCount": 0,
+      "FailureCount": 0,
+    },
+    <Map<String, dynamic>>[{}]
+  ];
+
+
 
   //List for logs by user
   List<dynamic> userlogs=[];
@@ -75,7 +84,7 @@ class AdminLogsState extends State<AdminLogs> {
       // logs API's
 
       //Days
-      dayLogs = await getLogsByDays(context, days: 1);
+      dayLogs = await getLogsByDays(context, days: 1) ;
       weekLogs = await getLogsByDays(context, days: 7);
       monthlylogs = await getLogsByDays(context, days: 30);
 
@@ -86,17 +95,20 @@ class AdminLogsState extends State<AdminLogs> {
         totalMonthlyCount = monthlylogs[0]['TotalCount'];
       }else{
         totalMonthlyCount = 0;
+        monthlylogs =emptyList;
       }
 
       if(weekLogs.isNotEmpty){
         totalWeeklyCount = weekLogs[0]['TotalCount'];
       }else{
         totalWeeklyCount = 0;
+        weekLogs =emptyList;
       }
       if(dayLogs.isNotEmpty) {
         totalDailyCount = dayLogs[0]['TotalCount'];
       }else{
         totalDailyCount = 0;
+        dayLogs = emptyList;
       }
 
 
@@ -143,11 +155,7 @@ class AdminLogsState extends State<AdminLogs> {
           Category(batchList![i]["name"].toString(), false, amount: allLogs.where((log) => log["Batch"] == batchList[i]["name"]).length.toDouble())
       ];
       BatchColors = generateBrightColors(batchList.length);
-      printFunc("demo batch ${batchList[1]['name']}");
-
-
-
-
+      // printFunc("demo batch ${batchList[1]['name']}");
 
       setState(() {});
       printFunc("AlLLoGSCOUNTS : ${userlogs[1].first[0]}");

@@ -21,8 +21,8 @@ Future<List<dynamic>> getBatteryByMac(BuildContext context,{required String macI
             "macId": data['macId'],
             ...data['batteryDetail'],  
           };
-          isSuccess = true;
         }
+        isSuccess = true;
       },
     errorDisplay: true,
   );

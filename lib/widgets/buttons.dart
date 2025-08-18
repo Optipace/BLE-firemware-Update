@@ -28,7 +28,7 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final buttonWidth = width ?? screenWidth * 0.65;
+    final buttonWidth = width ?? screenWidth * 0.7;
     final activate = enable ?? true;
 
     if (activate) {
@@ -68,18 +68,15 @@ class PrimaryButton extends StatelessWidget {
                 ),
               if (icon != null) SizedBox(width: 20),
               Expanded(
-                child: Center(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: baseFont,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
-                      ),
-                    ),
+                child: Text(
+                  text,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: baseFont,
+                    shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
                   ),
                 ),
               ),

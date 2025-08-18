@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
-showAlertNavigtorLogout(BuildContext context, String type, String msg, Function Action1, Function Action2) {
+showAlertNavigtorLogout(BuildContext context, String type, String msg, Function Action1, Function Action2, String? Yes, String? No) {
   // Create button
   getSize(context);
   Widget cancleButton = ElevatedButton(
     style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFC62828)),
-    child: Text(
+    child: Text(No ??
       "NO",
       style: TextStyle(fontSize: 12, fontFamily: baseFont),
     ),
@@ -18,7 +18,7 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg, Function 
   );
   Widget okButton = ElevatedButton(
     style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF2E7D32)),
-    child: Text(
+    child: Text( Yes ??
       "YES",
       style: TextStyle(fontSize: 12, fontFamily: baseFont),
     ),
@@ -100,7 +100,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> ShowSnackBarMessage(
       backgroundColor: bgColor,
       elevation: 6,
       margin: EdgeInsets.all(16),
-      duration: Duration(milliseconds: 2000),
+      duration: Duration(seconds: 4),
     ),
   );
 }

@@ -49,7 +49,7 @@ Future<bool> addNewDesgination(BuildContext context, {required String name, requ
       endpoint: ApiEndpoints.saveDesignation,
       bodyOrParams: body,
       onSuccess: (data) {
-        ShowSnackBarMessage(context, 'New Designation added successfully!', true);
+        ShowSnackBarMessage(context, 'Designation added successfully!', true);
         Navigator.of(context).pop();
         isSuccess = true;
       });

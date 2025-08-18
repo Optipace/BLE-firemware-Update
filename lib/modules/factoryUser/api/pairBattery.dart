@@ -16,7 +16,7 @@ Future<bool> saveMacandBattery(BuildContext context,{required String macId, requ
       bodyOrParams: body,
       onSuccess: (data){
         ShowSnackBarMessage(context, 'Battery Paired successfully!', true);
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
         isSuccess = true;
       }
   );

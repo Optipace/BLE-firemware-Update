@@ -2,10 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/modules/dfuModule/bluetooth_off_screen.dart';
-import 'package:tracker_firmware/modules/dfuModule/dfuModule.dart';
 
 class BluetoothMainScreen extends StatefulWidget {
   final Widget Function() onBluetoothOn;

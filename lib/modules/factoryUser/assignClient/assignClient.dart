@@ -10,9 +10,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/assignClient.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/getClientByMac.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/hardWareNumber.dart';
-import 'package:tracker_firmware/modules/factoryUser/assignClient/barcode.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
@@ -91,7 +89,7 @@ class _AssignClientState extends State<AssignClient> {
       for (var client in clientList) client['name'].toString(): client
     };
     setState(() {
-      printFunc("AllClient:$AllClient");
+      printFunc("AllClient demo :$AllClient");
     });
   }
 
@@ -439,6 +437,7 @@ class _AssignClientState extends State<AssignClient> {
                                                               onPressed: () {
                                                                 enableClientField = true;
                                                                 Navigator.of(context).pop();
+                                                                ClientName.cleardata();
                                                                 setState(() { });
                                                               },
                                                               child: Text("Assign New",style: TextStyle(fontSize: 16),),
@@ -532,8 +531,10 @@ class _AssignClientState extends State<AssignClient> {
                                 width: screenSize.width / 3,
                                 child: ElevatedButton(
                                   style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all<
+                                    backgroundColor: NotConnected
+                                      ? MaterialStateProperty.all<
+                                        Color>(darkBg.withOpacity(0.3))
+                                      : MaterialStateProperty.all<
                                         Color>(darkBg),
                                     shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
@@ -542,21 +543,33 @@ class _AssignClientState extends State<AssignClient> {
                                             BorderRadius.circular(
                                                 20))),
                                   ),
+
                                   onPressed: () async{
                                     printFunc("DEMO DEMO ClientName : ${ClientName.getobj['code'].toString()}");
                                     validateFields();
                                     if(!validateFileds){
                                        await scanAndConnect();
-                                      isCustomerIDSent = await sendCustomerID(ClientName.getobj['code'].toString());
+                                      isCustomerIDSent = await sendCustomerID(ClientName.getobj!['code'].toString());
                                      if(isCustomerIDSent){
                                        await disconnect();
-                                       await saveClient(context,
+                                       await saveMacandClient(context,
                                          macId: _macIdController.text,
                                          clientId: ClientName.getobj['id'].toString(),
                                        );
-                                       Navigator.popUntil(context, (route) => route.isFirst);
+                                       _macIdController.clear();
+                                       ClientName.cleardata();
+                                       enableClientField = false;
+                                       setState(() { });
+                                       // Navigator.popUntil(context, (route) => route.isFirst);
+                                     }
+                                     else{
+                                       _macIdController.clear();
+                                       ClientName.cleardata();
+                                       enableClientField = false;
+                                       setState(() { });
                                      }
                                     }
+
                                     setState(() {});
 
 
@@ -629,6 +642,7 @@ class _AssignClientState extends State<AssignClient> {
      }
 
      printFunc("device present : ${device != null}");
+     printFunc("device is null ${device}");
      await Future.delayed(Duration(seconds: 5));
 
      //Scanning the device and returing
@@ -690,25 +704,65 @@ class _AssignClientState extends State<AssignClient> {
            });
          }
          printFunc("Connection Failed!!");
-         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-           content:
-           Text("Connection Failed", style: TextStyle(color: Colors.white)),
-           backgroundColor: Colors.redAccent,
-         ));
+
+         showDialog(context: context, builder: (BuildContext contextt) {
+           return AlertDialog(
+             // title: Text(""),
+             content: Text(
+               "Connection Failed!!",
+               style: TextStyle(
+                 color: darkBg,
+                 fontWeight: FontWeight.w500,
+               ),
+             ),
+             actions: [
+               //OK btn that goes for next page
+               ElevatedButton(
+                 onPressed: (){
+                   Navigator.of(context).pop();
+                 },
+
+                 child: Text(
+                   "Re-Try",
+                   style: TextStyle(fontSize: 16),
+                 ),
+                 style: ButtonStyle(
+                     backgroundColor:
+                     MaterialStateProperty.all<Color>(darkBg),
+                     shape:
+                     MaterialStateProperty.all<RoundedRectangleBorder>(
+                         RoundedRectangleBorder(
+                             borderRadius: BorderRadius.circular(18)))),
+               )
+             ],
+             backgroundColor: second_lightBg,
+           );
+         });
+
+         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+         //   duration: Duration(seconds: 3),
+         //   content:
+         //   Text("Connection Failed", style: TextStyle(color: Colors.white)),
+         //   backgroundColor: Colors.redAccent,
+         // ));
 
        }
      }
      else {
        if(mounted){
-         setState(() {NotConnected = false;});
+         setState(() {
+           NotConnected = false;
+
+         });
        }
        printFunc("DEVICE NOT FOund in else Cond");
        await FlutterBluePlus.stopScan();
 
-       printFunc("${_macIdController.text} is not found");
+       printFunc("Device not found");
        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+         duration: Duration(seconds: 5),
          content: Text(
-           "${_macIdController.text} is not found",
+           "Device not found",
            style: TextStyle(color: Colors.white),
          ),
          backgroundColor: Colors.redAccent,

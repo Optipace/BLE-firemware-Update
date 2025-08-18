@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -8,7 +7,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/getBatteryByMac.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/pairBattery.dart';
-import 'package:tracker_firmware/modules/factoryUser/assignClient/barcode.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
@@ -376,14 +374,13 @@ class _PairBatteryState extends State<PairBattery> {
                                                       ElevatedButton(
                                                         onPressed: () {
                                                           //Go back
-                                                          ShowSnackBarMessage(
-                                                              context,
-                                                              'Battery Paired successfully!',
-                                                              true);
+                                                          enableBarCode = true;
+                                                          setState(() {
+                                                            _batteryController.text = batteryDetail['batterySerialNumber'];
+                                                          });
                                                           Navigator.of(context)
                                                               .pop(); //Save Log API
-                                                          Navigator.of(context)
-                                                              .pop(); //Save Log API
+
                                                         },
                                                         child: Text(
                                                           "Continue",
@@ -430,16 +427,17 @@ class _PairBatteryState extends State<PairBattery> {
                                                     ],
                                                   );
                                                 });
-                                          } else if (!batteryAvailable &&
+                                          } else if (batteryAvailable &&
                                               batteryDetail.isEmpty) {
                                             enableBarCode = true;
                                             ShowSnackBarMessage(context,
                                                 'No Battery is Paired!', true);
                                             setState(() {});
-                                          } else {
-                                            enableBarCode = true;
-
-
+                                          } else if(!batteryAvailable){
+                                            enableBarCode = false;
+                                            // ShowSnackBarMessage(context, 'No MacID found!', false);
+                                            _macIdController.clear();
+                                            setState(() {});
                                           }
                                         },
                                         child: Row(
@@ -638,8 +636,10 @@ class _PairBatteryState extends State<PairBattery> {
                                     width: screenSize.width / 3,
                                     child: ElevatedButton(
                                       style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
+                                        backgroundColor: NotConnected
+                                          ? MaterialStateProperty.all<Color>(
+                                            Color(0xFF358A94).withOpacity(0.4))
+                                            : MaterialStateProperty.all<Color>(
                                                 darkBg),
                                         shape: MaterialStateProperty.all<
                                                 RoundedRectangleBorder>(
@@ -661,10 +661,23 @@ class _PairBatteryState extends State<PairBattery> {
                                                 macId: _macIdController.text,
                                                 BatterySerialNo:
                                                 _batteryController.text);
-                                            Navigator.popUntil(context, (route) => route.isFirst);
+                                            _batteryController.clear();
+                                            _macIdController.clear();
+                                            enableBarCode = false;
+                                            validateFields = false;
+                                            setState(() {});
+                                            // Navigator.popUntil(context, (route) => route.isFirst);
+                                          }
+                                          else{
+                                            _batteryController.clear();
+                                            _macIdController.clear();
+                                            enableBarCode = false;
+                                            validateFields = false;
+                                            setState(() {});
                                           }
                                         }
                                         if(mounted){
+
                                           setState(() {});
                                         }
                                       },
@@ -797,11 +810,48 @@ class _PairBatteryState extends State<PairBattery> {
           });
         }
         printFunc("Connection Failed!!");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content:
-          Text("Connection Failed", style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.redAccent,
-        ));
+
+        showDialog(context: context, builder: (BuildContext contextt) {
+          return AlertDialog(
+            // title: Text(""),
+            content: Text(
+              "Connection Failed!!",
+              style: TextStyle(
+                color: darkBg,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            actions: [
+              //OK btn that goes for next page
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+
+                child: Text(
+                  "Re-Try",
+                  style: TextStyle(fontSize: 16),
+                ),
+                style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(darkBg),
+                    shape:
+                    MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18)))),
+              )
+            ],
+            backgroundColor: second_lightBg,
+          );
+        });
+
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(
+        //       content: Text("Connection Failed, Try to Re-Submit", style: TextStyle(color: Colors.white)),
+        //       backgroundColor: Colors.redAccent,
+        //       duration: Duration(seconds: 3),
+        //
+        // ));
 
       }
     }
@@ -812,9 +862,11 @@ class _PairBatteryState extends State<PairBattery> {
       printFunc("DEVICE NOT FOund in else Cond");
       await FlutterBluePlus.stopScan();
       printFunc("${_macIdController.text} is not found");
+
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-          "${_macIdController.text} is not found",
+          "Device not found",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.redAccent,

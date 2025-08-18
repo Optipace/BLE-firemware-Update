@@ -4,7 +4,6 @@ import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/battery_model.dart';
-// import 'package:tracker_firmware/Const_TermAndFunction/entity/batteryModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareSeriesModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/getNumberModel.dart';
@@ -12,7 +11,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart'
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileSeriesModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/hive/hiveOperation.dart';
 import 'package:tracker_firmware/widgets/splash_screen.dart';
-import 'dev_options_checker.dart';
 
 
 void main() async {
@@ -44,11 +42,13 @@ void main() async {
 
   Hive.registerAdapter(GetNumberModelAdapter());
   await Hive.openBox<GetNumberModel>('$getNumberHiveBox');
+  // await Hive.deleteBoxFromDisk('$getNumberHiveBox');
+
 
   // Hive box for battery Details
 
 
-  // ✅ Register adapters BEFORE using any boxes
+  // Register adapters BEFORE using any boxes
   // Hive.registerAdapter(FirmwareModelAdapter());
   // Hive.registerAdapter(FirmwareSeriesModelAdapter());
   //Without DEV-Option

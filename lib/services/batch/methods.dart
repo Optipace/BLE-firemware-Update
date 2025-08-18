@@ -5,12 +5,7 @@ import 'dart:typed_data';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-// import 'package:tracker_firmware/Const_TermAndFunction/entity/BatteryModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/entity/battery_model.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart';
-// import 'package:tracker_firmware/Const_TermAndFunction/entity/batteryModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 // --------------------- This is not Used ------------------------------
@@ -96,6 +91,16 @@ Future<bool> addBatch(BatchModel newBatch) async {
   printFunc(
       "Series ${newBatch.batchId} created and batch ${newBatch.batchName} added. ${newBatch.firmware.file}");
 
+  printFunc("DEM3."
+      ".O  newBatch  _________________  \n"
+        "batchId : ${newBatch.batchId}  \n"
+        "batchName : ${newBatch.batchName}  \n"
+        "batchDescription : ${newBatch.batchDescription}  \n"
+        "firmware : ${newBatch.firmware}  \n"
+        "profile : ${newBatch.profile}  \n"
+        "battery : ${newBatch.battery}  \n"
+  );
+
   return true;
 }
 
@@ -123,7 +128,7 @@ Future<String> saveBase64ZipToFile(String base64String, String fileName) async {
   }
 }
 
-
+/////////////////// Not in used ///////////////////////
 Future<List<Map<String, dynamic>>> getAllBatchFromHive() async {
   final box = await Hive.openBox<BatchModel>('$batchHiveBox');
 
@@ -152,7 +157,3 @@ final newBatch = BatchModel(
   file: "Base64Data",
 );
  */
-// Future<List<Map<String, dynamic>>> getAllBatch() async
-// {
-//
-// }

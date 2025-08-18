@@ -110,7 +110,7 @@ Future<List<Map<String, dynamic>>> getAllProfile() async {
           "saved": fw.saved,
           "deviceType": fw.deviceType
         };
-        ;
+
       }).toList(),
     };
   }).toList();

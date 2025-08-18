@@ -8,8 +8,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/dfuModule/bluetoothMain.dart';
 import 'package:tracker_firmware/modules/dfuModule/dfuModule.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/hardWareNumber.dart';
-import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
-import 'package:tracker_firmware/widgets/buttons.dart';
 
 class SavedBatches extends StatefulWidget {
   const SavedBatches({super.key});
@@ -140,89 +138,121 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                 title: Padding(
                   padding: EdgeInsets.all(5),
                   child: FittedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Column(
                       children: [
-                        // Name
-                        Container(
-                          width: 90,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("Batch : ",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w300,
-                                      FontColor: secondaryText)),
-                              SizedBox(
-                                height: 3,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            // Name
+                            Container(
+                              width: 90,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("Batch : ",
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText)),
+                                ],
                               ),
-                              Text(getAllseriesData[index]["name"].toString(),
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: !(moreInfo.value)
-                                          ? SuccessCardText
-                                          : FailureCardText)),
-                            ],
-                          ),
+                            ),
+                            // Description
+                            Container(
+                              width: 90,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Description : ",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: secondaryText),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Series
+                            Container(
+                              width: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Series : ",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: secondaryText),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        // Description
-                        Container(
-                          width: 90,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Description : ",
-                                style: CardText(
-                                    font_Weight: FontWeight.w300,
-                                    FontColor: secondaryText),
+                        SizedBox(height: 5,),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Name
+                            Container(
+                              width: 90,
+                              padding: EdgeInsets.only(left: 15),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(getAllseriesData[index]["name"].toString(),
+                                      style: CardText(
+                                          font_Weight: FontWeight.w800,
+                                          size: 19,
+                                          FontColor: !(moreInfo.value)
+                                              ? SuccessCardText
+                                              : FailureCardText)),
+                                ],
                               ),
-                              SizedBox(
-                                height: 3,
+                            ),
+                            // Description
+                            Container(
+                              width: 90,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    getAllseriesData[index]["description"].toString(),
+                                    style: CardText(
+                                        font_Weight: FontWeight.w800,
+                                        size: 19,
+                                        FontColor: !(moreInfo.value)
+                                            ? SuccessCardText
+                                            : FailureCardText),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                getAllseriesData[index]["description"].toString(),
-                                style: CardText(
-                                    font_Weight: FontWeight.w800,
-                                    size: 19,
-                                    FontColor: !(moreInfo.value)
-                                        ? SuccessCardText
-                                        : FailureCardText),
+                            ),
+                            // Series
+                            Container(
+                              width: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    getAllseriesData[index]["battery"]['batteryCode']
+                                        .toString(),
+                                    style: CardText(
+                                        font_Weight: FontWeight.w800,
+                                        size: 19,
+                                        FontColor: !(moreInfo.value)
+                                            ? SuccessCardText
+                                            : FailureCardText),
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        // Series
-                        Container(
-                          width: 80,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Series : ",
-                                style: CardText(
-                                    font_Weight: FontWeight.w300,
-                                    FontColor: secondaryText),
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                              Text(
-                                getAllseriesData[index]["battery"]['batteryCode']
-                                    .toString(),
-                                style: CardText(
-                                    font_Weight: FontWeight.w800,
-                                    size: 19,
-                                    FontColor: !(moreInfo.value)
-                                        ? SuccessCardText
-                                        : FailureCardText),
-                              )
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -254,117 +284,152 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                         ),
                         SizedBox(height: 10),
                         FittedBox(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Column(
                             children: [
-                              // Firm version
-                              Container(
-                                width: 150,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Firmware Version",
-                                      style: CardText(
-                                          font_Weight: FontWeight.w300,
-                                          FontColor: secondaryText),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Firm version
+                                  Container(
+                                    width: 150,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Firmware Version",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 3,
+                                  ),
+                                  // firmware name
+                                  Container(
+                                    width: 150,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Firmware Name",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      getAllseriesData[index]["firmware"]
-                                              ['version']
-                                          .toString(),
-                                      style: CardText(
-                                          font_Weight: FontWeight.w800,
-                                          size: 19,
-                                          FontColor: !(moreInfo.value)
-                                              ? SuccessCardText
-                                              : FailureCardText),
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  // download
+                                  Container(
+                                    width: 50,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Flash",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: SuccessCardText),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              // firmware name
-                              Container(
-                                width: 150,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Firmware Name",
-                                      style: CardText(
-                                          font_Weight: FontWeight.w300,
-                                          FontColor: secondaryText),
+                              SizedBox(height: 5,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Firm version
+                                  Container(
+                                    width: 150,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          getAllseriesData[index]["firmware"]
+                                          ['version']
+                                              .toString(),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w800,
+                                              size: 19,
+                                              FontColor: !(moreInfo.value)
+                                                  ? SuccessCardText
+                                                  : FailureCardText),
+                                        )
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 3,
+                                  ),
+                                  // firmware name
+                                  Container(
+                                    width: 150,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          getAllseriesData[index]["firmware"]
+                                          ['versionName']
+                                              .toString(),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w800,
+                                              size: 19,
+                                              FontColor: !(moreInfo.value)
+                                                  ? SuccessCardText
+                                                  : FailureCardText),
+                                        )
+                                      ],
                                     ),
-                                    Text(
-                                      getAllseriesData[index]["firmware"]
-                                              ['versionName']
-                                          .toString(),
-                                      style: CardText(
-                                          font_Weight: FontWeight.w800,
-                                          size: 19,
-                                          FontColor: !(moreInfo.value)
-                                              ? SuccessCardText
-                                              : FailureCardText),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              // download
-                              Container(
-                                width: 50,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Flash",
-                                      style: CardText(
-                                          font_Weight: FontWeight.w300,
-                                          FontColor: SuccessCardText),
-                                    ),
-                                    IconButton(
-                                        onPressed: () async {
-                                          printFunc(
-                                              "Which Data is : ${getAllseriesData[index]}");
-                                          printFunc(
-                                              "Client Map : ${AllClient}");
-                                          clientListIntoMap();
-                                          BatchSelected.cleardata();
-                                          var batchObj =
+                                  ),
+                                  // download
+                                  Container(
+                                    width: 50,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () async {
+                                              printFunc(
+                                                  "Which Data is : ${getAllseriesData[index]}");
+                                              printFunc(
+                                                  "Client Map : ${AllClient}");
+                                              clientListIntoMap();
+                                              BatchSelected.cleardata();
+                                              var batchObj =
                                               getAllseriesData[index];
-                                          setState(() {});
+                                              setState(() {});
 
-                                          BatchSelected.setobj =
+                                              BatchSelected.setobj =
                                               getAllseriesData[index];
 
-                                          FlutterBluePlus.setLogLevel(
-                                              LogLevel.verbose,
-                                              color: true);
+                                              FlutterBluePlus.setLogLevel(
+                                                  LogLevel.verbose,
+                                                  color: true);
 
-                                          printFunc("DEMO DEMO DEMO BatchSelected : ${BatchSelected.Text} \n ${BatchSelected.obj.toString()}");
-                                          /* BLUEETOOTH SCREEN*/
+                                              printFunc("DEMO DEMO DEMO BatchSelected : ${BatchSelected.Text} \n ${BatchSelected.obj.toString()}");
+                                              /* BLUEETOOTH SCREEN*/
 
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute<void>(
-                                            /*BluetoothMainScreen(SelectedBatch: BatchSelected, allClients: AllClient)*/
-                                            /*DfuHomePage(SelectedBatch:BatchSelected,allClients: AllClient,)*/
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute<void>(
+                                                /*BluetoothMainScreen(SelectedBatch: BatchSelected, allClients: AllClient)*/
+                                                /*DfuHomePage(SelectedBatch:BatchSelected,allClients: AllClient,)*/
                                                   builder: (_) => BluetoothMainScreen(onBluetoothOn: () => DfuHomePage(SelectedBatch:BatchSelected,allClients: AllClient,),)
-                                          ));
-                                          setState(() {});
-                                        },
-                                        icon: Icon(Icons.flash_on_outlined,
-                                            color: darkBg, size: 35)),
-                                  ],
-                                ),
+                                              ));
+                                              setState(() {});
+                                            },
+                                            icon: Icon(Icons.flash_on_outlined,
+                                                color: darkBg, size: 35)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -639,7 +704,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                         FittedBox(
                                           fit: BoxFit.scaleDown,
                                           child: Text(
-                                            "${getAllseriesData[index]["profile"]['uTemp']}'C",
+                                            "${getAllseriesData[index]["profile"]['uTemp']}",
                                             style: CardText(
                                                 font_Weight:
                                                 FontWeight.w800,
@@ -672,7 +737,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                         FittedBox(
                                           fit: BoxFit.scaleDown,
                                           child: Text(
-                                            "${getAllseriesData[index]["profile"]['lTemp']}'C",
+                                            "${getAllseriesData[index]["profile"]['lTemp']}",
                                             style: CardText(
                                                 font_Weight:
                                                 FontWeight.w800,

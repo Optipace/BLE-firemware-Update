@@ -109,9 +109,10 @@ class LoginScreenState extends State<LoginScreen> {
                               curve: Curves.easeInOut,
                               child: _showInfo
                                   ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                            width: screenSize.width * 0.6,
+                                            width: screenSize.width * 0.45,
                                             height: screenSize.height / 20,
                                             margin: EdgeInsets.only(top: 10, bottom: 10),
                                             padding: EdgeInsets.only(right: 2, top: 3, bottom: 3),
@@ -137,29 +138,35 @@ class LoginScreenState extends State<LoginScreen> {
                                                 ),
                                               ),
                                             )),
-                                        //to copu UUID
+                                        //to copy UUID
 
-                                        // IconButton(
-                                        //   icon: Icon(Icons.copy, color: Colors.white, size: 18),
-                                        //   tooltip: "Copy UUID",
-                                        //   onPressed: () async {
-                                        //     await Clipboard.setData(ClipboardData(text: _uuid.toString()));
-                                        //     ScaffoldMessenger.of(context).showSnackBar(
-                                        //       SnackBar(
-                                        //         content: Text("UUID copied to clipboard"),
-                                        //         behavior: SnackBarBehavior.floating,
-                                        //         duration: Duration(seconds: 2),
-                                        //       ),
-                                        //     );
-                                        //   },
-                                        // ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: IconButton(
+                                            icon: Icon(Icons.copy, color: Colors.white, size: 18),
+                                            tooltip: "Copy UUID",
+                                            onPressed: () async {
+                                              await Clipboard.setData(ClipboardData(text: _uuid.toString()));
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text("UUID copied to clipboard"),
+                                                  behavior: SnackBarBehavior.floating,
+                                                  duration: Duration(seconds: 2),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
                                         // Share UUID
-                                        IconButton(
-                                          icon: Icon(Icons.share, color: Colors.white, size: 20),
-                                          tooltip: "Share UUID",
-                                          onPressed: () {
-                                            Share.share("Here is the device UUID: $_uuid");
-                                          },
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: IconButton(
+                                            icon: Icon(Icons.share, color: Colors.white, size: 20),
+                                            tooltip: "Share UUID",
+                                            onPressed: () {
+                                              Share.share("Here is the device UUID: $_uuid");
+                                            },
+                                          ),
                                         ),
                                       ],
                                     )

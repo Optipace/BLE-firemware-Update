@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
-Future<bool> saveClient(BuildContext context,{required String macId, required String clientId}) async{
+Future<bool> saveMacandClient(BuildContext context,{required String macId, required String clientId}) async{
   final body = {"macId":macId, "clientId": clientId};
   bool isSuccess = false;
 
@@ -13,7 +13,6 @@ Future<bool> saveClient(BuildContext context,{required String macId, required St
       bodyOrParams: body,
       onSuccess: (data) {
         ShowSnackBarMessage(context, 'Client assigned successfully!', true);
-        Navigator.of(context).pop();
         isSuccess = true;
       }
   );
