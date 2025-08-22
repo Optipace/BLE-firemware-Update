@@ -472,6 +472,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                                                                   TextFeildNewUser(
                                                                     hintText:
                                                                         "Enter Priority",
+                                                                    type: TextInputType.number,
                                                                     Controller:
                                                                         _designationPriority,
                                                                     onChanged:

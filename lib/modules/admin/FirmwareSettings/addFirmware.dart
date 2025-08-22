@@ -552,7 +552,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       const LabelText(text: "Upper Threshold :"),
                       TextFeildNewUser(
                         hintText: "Enter Upper Threshold",
-                        inputFormatters: [OneDecimalInputFormatter()],
+                        inputFormatters: [ThreeDecimalInputFormatter()],
                         type: TextInputType.number,
                         Controller: _upperTreshold,
                         onChanged: (value) {},
@@ -569,7 +569,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       const LabelText(text: "Upper Voltage :"),
                       TextFeildNewUser(
                         hintText: "Enter Upper Voltage",
-                        inputFormatters: [OneDecimalInputFormatter()],
+                        inputFormatters: [ThreeDecimalInputFormatter()],
                         // Correct
                         type: TextInputType.number,
 
@@ -588,7 +588,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       const LabelText(text: "Lower Threshold :"),
                       TextFeildNewUser(
                         hintText: "Enter Lower Threshold",
-                        inputFormatters: [OneDecimalInputFormatter()],
+                        inputFormatters: [ThreeDecimalInputFormatter()],
                         type: TextInputType.number,
                         Controller: _lowerTreshold,
                         onChanged: (value) {},
@@ -605,7 +605,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       const LabelText(text: "Lower Voltage :"),
                       TextFeildNewUser(
                         hintText: "Enter Lower Voltage",
-                        inputFormatters: [OneDecimalInputFormatter()],
+                        inputFormatters: [ThreeDecimalInputFormatter()],
                         type: TextInputType.number,
                         Controller: _lowerVoltage,
                         onChanged: (value) {},
@@ -622,7 +622,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       const LabelText(text: "Nominal Voltage :"),
                       TextFeildNewUser(
                         hintText: "Enter Nominal Voltage",
-                        inputFormatters: [OneDecimalInputFormatter()],
+                        inputFormatters: [ThreeDecimalInputFormatter()],
                         type: TextInputType.number,
                         Controller: _nominalVolt,
                         onChanged: (value) {},
@@ -639,7 +639,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       const LabelText(text: "Upper Temperature :"),
                       TextFeildNewUser(
                         hintText: "Enter Upper Temperature ",
-                        inputFormatters: [OneDecimalInputFormatter()],
+                        inputFormatters: [ThreeDecimalInputFormatter()],
                         type: TextInputType.number,
                         Controller: _upperTemp,
                         onChanged: (value) {},
@@ -656,7 +656,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       const LabelText(text: "Lower Temperature :"),
                       TextFeildNewUser(
                         hintText: "Enter Lower Temperature",
-                        inputFormatters: [OneDecimalInputFormatter()],
+                        inputFormatters: [ThreeDecimalInputFormatter()],
                         type: TextInputType.number,
                         Controller: _lowerTemp,
                         onChanged: (value) {},
@@ -767,6 +767,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                         TextFeildNewUser(
                                                           hintText: "Enter Battery Code",
                                                           Controller: _batteryDescription,
+                                                          type: TextInputType.number,
+                                                          maxLength: 2,
                                                           onChanged: (value) {},
                                                           enable: true,
                                                           etext: batteryValidator &&

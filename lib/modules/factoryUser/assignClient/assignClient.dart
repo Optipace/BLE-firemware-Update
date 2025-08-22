@@ -403,6 +403,7 @@ class _AssignClientState extends State<AssignClient> {
 
                                                   showDialog(
                                                       context: context,
+                                                      barrierDismissible: false,
                                                       builder: (BuildContext context) {
                                                         return AlertDialog(
                                                           title: Column(
@@ -611,7 +612,6 @@ class _AssignClientState extends State<AssignClient> {
     }
 
   }
-
 
   Future<void> requestPermissions() async {
     await Permission.location.request();

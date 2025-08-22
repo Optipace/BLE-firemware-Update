@@ -46,13 +46,13 @@ class _PairBatteryState extends State<PairBattery> {
 
   bool NotConnected = false;
   bool enableSubmit = false;
+  bool connect = false;
   String status = "Disconnected";
   String deviceName = "-";
 
   bool connected = false;
   bool enablePopUp = false;
   bool isBatterySnoSent = false;
-
 
 
   @override
@@ -151,7 +151,7 @@ class _PairBatteryState extends State<PairBattery> {
                                     ),
                                   ),
                                 )
-                                    : ElevatedButton(
+                                    :ElevatedButton(
                                   onPressed: enableSubmit
                                       ? () {}
                                       : () async {
@@ -160,11 +160,9 @@ class _PairBatteryState extends State<PairBattery> {
 
                                     // await scanAndConnect();
 
-
-
                                     setState(() {});
                                   },
-                                  child: enableSubmit
+                                  child: (device != null && device!.isConnected)
                                       ? Text("Connected")
                                       : Text("Connect"),
                                   style: ButtonStyle(
@@ -340,6 +338,7 @@ class _PairBatteryState extends State<PairBattery> {
                                               batteryDetail.isNotEmpty) {
                                             showDialog(
                                                 context: context,
+                                                barrierDismissible: false,
                                                 builder:
                                                     (BuildContext context) {
                                                   return AlertDialog(
@@ -504,21 +503,21 @@ class _PairBatteryState extends State<PairBattery> {
                                         children: [
                                           GestureDetector(
                                             onTap: () async {
-                                              final result =
-                                                  await Navigator.push(
+                                              final result = await Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       QRScannerScreen(title: "Scan Barcode"),
                                                 ),
                                               );
-                                              printFunc(
-                                                  "DEMO RESULT : $result");
+
+
+                                              printFunc("DEMO RESULT : ${result.replaceAll("-","")}");
 
                                               if (result != null) {
                                                 setState(() {
                                                   _batteryController.text =
-                                                      result;
+                                                      result.replaceAll("-","");
                                                 });
                                               }
                                             },
@@ -617,14 +616,12 @@ class _PairBatteryState extends State<PairBattery> {
                                             hintText:
                                                 "Enter Battery Serial Number",
                                             Controller: _batteryController,
+                                            type: TextInputType.number,
                                             onChanged: (value) {},
                                             enable: true,
-                                            etext: validateFields &&
-                                                    _batteryController.text
-                                                        .trim()
-                                                        .isEmpty
-                                                ? "Please Enter Battery Serial number"
-                                                : "",
+                                            // etext: validateFields
+                                            //     ? "Please Enter Battery Serial number"
+                                            //     : "",
                                           ),
                                         ],
                                       ),
@@ -656,7 +653,7 @@ class _PairBatteryState extends State<PairBattery> {
                                           await scanAndConnect();
                                           isBatterySnoSent = await sendBatterySerialNumber(_batteryController.text.toString());
                                           if(isBatterySnoSent){
-                                            await disconnect();
+                                            disconnect();
                                             await saveMacandBattery(context,
                                                 macId: _macIdController.text,
                                                 BatterySerialNo:
@@ -665,14 +662,16 @@ class _PairBatteryState extends State<PairBattery> {
                                             _macIdController.clear();
                                             enableBarCode = false;
                                             validateFields = false;
+
                                             setState(() {});
                                             // Navigator.popUntil(context, (route) => route.isFirst);
                                           }
                                           else{
-                                            _batteryController.clear();
-                                            _macIdController.clear();
-                                            enableBarCode = false;
-                                            validateFields = false;
+                                            // _batteryController.clear();
+                                            // _macIdController.clear();
+                                            // enableBarCode = false;
+                                            // validateFields = false;
+                                            await disconnect();
                                             setState(() {});
                                           }
                                         }
@@ -797,6 +796,7 @@ class _PairBatteryState extends State<PairBattery> {
           NotConnected = false;
           enableSubmit = true;
           enablePopUp = true;
+          connect = true;
           deviceName = device!.advName;
         });
         printFunc("DEmo is device Connected enableSubmit: $enableSubmit \n NotConnected :  $NotConnected  ");
@@ -908,13 +908,13 @@ class _PairBatteryState extends State<PairBattery> {
     try {
       int batterySerial = int.parse(batterySerialCtrl.trim());
 
-      if (batterySerial < 0 || batterySerial > 99) {
-        printFunc("Battery Serial Number out of bounds: $batterySerial");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Battery Serial Number must be between 0 and 99")),
-        );
-        return false;
-      }
+      // if (batterySerial < 0 || batterySerial > 99) {
+      //   printFunc("Battery Serial Number out of bounds: $batterySerial");
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text("Battery Serial Number must be between 0 and 99")),
+      //   );
+      //   return false;
+      // }
 
       // Create 5-byte packet
       List<int> data = List.filled(5, 0);

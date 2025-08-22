@@ -134,8 +134,6 @@ class _DfuHomePageState extends State<DfuHomePage> {
     Future<void> startDfu(ScanResult device,int numberofPackets,
         {bool first = true, String oldId = ""}) async {
 
-
-
       _dfuPopUp = false;
 
       String DFUstatus ;

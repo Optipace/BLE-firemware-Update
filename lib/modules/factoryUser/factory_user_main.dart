@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/modules/dfuModule/bluetoothMain.dart';
+import 'package:tracker_firmware/modules/factoryUser/Calibration/calibration_main.dart';
+import 'package:tracker_firmware/modules/factoryUser/Locate%5BFind_my_device%5D/locate_Device.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/assignClient.dart';
 import 'package:tracker_firmware/modules/factoryUser/batchList/batchList.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/ScanBluetooth/bluetoothBatches.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
-
 import 'pairBattery/PairBattery.dart';
 
 class FactoryMain extends StatelessWidget {
@@ -90,6 +91,48 @@ class FactoryMain extends StatelessWidget {
                           onBluetoothOn: () => AssignClient(),
                         )
                       )
+                    );
+                  }),
+              SizedBox(
+                height: 15,
+              ),
+
+              //locate btn
+              PrimaryButton(
+                  icon: Icon(
+                    CupertinoIcons.location_solid,
+                    size:
+                    // Image.asset('assets/image/viewLog.png',width: 24,height:
+                    24,
+                    color: darkBg,
+                  ),
+                  text: "Locate Device",
+                  onPress: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute<void>(
+                        builder: (_) => BluetoothMainScreen(onBluetoothOn: () => locateHomePage(),)
+                    ));
+                  }),
+              SizedBox(
+                height: 15,
+              ),
+
+              //Calibration btn
+              PrimaryButton(
+                  icon: Icon(
+                    Icons.settings_input_component,
+                    size:
+                    // Image.asset('assets/image/viewLog.png',width: 24,height:
+                    18,
+                    color: darkBg,
+                  ),
+                  text: "Calibration",
+                  onPress: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute<void>(builder: (_) => BluetoothMainScreen(
+                      onBluetoothOn: () => CalibrateDevice(),
+                    )
+                    )
                     );
                   }),
               SizedBox(

@@ -16,6 +16,7 @@ import 'package:tracker_firmware/modules/factoryUser/api/saveHardware.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
@@ -36,6 +37,7 @@ class BluetoothHardwareNumber extends StatefulWidget {
   State<BluetoothHardwareNumber> createState() =>
       BluetoothHardwareNumberState();
 }
+
 
 class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   // For Current Date
@@ -60,7 +62,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   bool NotConnected = false;
   bool enableSubmit = false;
 
-  // New flags for connection 
+  // New flags for connection
   bool isDeviceConnected = false;
   bool isScanning = false;
   bool deviceNotFoundError = false;
@@ -77,6 +79,10 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   final configCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120014");
   final thresholdCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120016");
   final calibrationCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120017");
+
+  //For calibration
+  int calibrationStep = 0; // 0 = Vmax, 1 = Vmin, 2 = Temp
+  bool waitingForAck = false;
 
   // Controllers
   final batteryTypeCtrl = TextEditingController(); //profile [deviceType]
@@ -103,6 +109,13 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   bool isConfigSent = true;
   bool isVoltSent = true;
   bool isTempSent = true;
+
+  //flag for Disconnect
+  bool enableDisconnect = false;
+
+  BuildContext? alertContext;
+
+
   String? fullSerial;
 
   Timer? timeoutTimer;
@@ -114,6 +127,8 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await PIDforFactoryUser();
+      if(HardWareNumber.Text!.isNotEmpty)
+      await scanAndConnect();
     });
     setState(() {
       batteryTypeCtrl.text = widget.SelectedBatch?.obj['battery']['batteryCode'];
@@ -232,7 +247,11 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                 ),
                               )
                                   : ElevatedButton(
-                                onPressed: () async {
+                                onPressed: isDeviceConnected
+                                ?() async {
+                                  await disconnect();
+                                }
+                                 : () async {
                                   resetConnectionFlags();
                                   await scanAndConnect();
                                 },
@@ -294,17 +313,16 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                           HardWareNumber.getText == "",
                                       errorMsg:
                                       "Please Select the HardWare Number"),
-                                  mainText: "Select HardWare Number",
+                                  mainText: "Select Tracker Serial Number",
                                   text: HardWareNumber.Text != ""
                                       ? HardWareNumber.getText
-                                      : "Select HardWare Number",
+                                      : "Tracker Serial Number",
                                   press: () async {
                                     await BottomSheet_Widget(context, [
                                       MapListItemBuilder(
                                           listItems: HardWareMap,
                                           press: () {
-                                            printFunc(
-                                                "Demo datacontroller - ${HardWareNumber.getText}");
+                                            printFunc("Demo datacontroller - ${HardWareNumber.getText}");
                                           },
                                           selected: HardWareNumber)
                                     ]);
@@ -315,47 +333,659 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                               SizedBox(height: 10),
                             ],
                           )),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 20, top: 15),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await handleSubmitProcess();
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: NotConnected
-                                ? MaterialStateProperty.all(darkBg.withOpacity(0.4))
-                                : MaterialStateProperty.all(darkBg),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                  side: BorderSide(color: darkBg, width: 1)),
-                            ),
-                          ),
-                          child: Container(
-                            height: 50,
-                            width: screenSize.width / 2.5,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                "Submit",
-                                maxLines: 1,
-                                style: TextStyle(
-                                  color: enableSubmit
-                                      ? Colors.white
-                                      : Color(0xFFEEEEEE),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: baseFont,
-                                  shadows: [
-                                    Shadow(color: Colors.black, blurRadius: 0.1)
-                                  ],
-                                  overflow: TextOverflow.visible,
+
+                      //BTNS [Configure, Calibration, Submit]
+                      isDeviceConnected
+                      ? Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 10, top: 15),
+                                child: ElevatedButton(
+                                  onPressed: isDeviceConnected
+                                    ? enableDisconnect
+                                       ? () async{
+                                    await disconnect();
+                                    if (mounted) {
+                                      Navigator.pop(context);
+                                    }
+                                  }
+                                       : () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext contextt) {
+                                          return AlertDialog(
+                                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                                            insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+                                            backgroundColor: second_lightBg,
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min, // keeps dialog compact
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  // Title
+                                                  Center(
+                                                    child: Text(
+                                                      "Configure Details",
+                                                      style: TextStyle(
+                                                        color: darkBg,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontFamily: baseFont,
+                                                        fontSize: 20,
+                                                        shadows: [
+                                                          Shadow(
+                                                            color: Colors.black,
+                                                            blurRadius: 0.5,
+                                                            offset: Offset(0.5, 0.5),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 15),
+
+                                                  //Battery Section
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Battery Details",
+                                                        style: TextStyle(
+                                                          color: darkBg,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontFamily: baseFont,
+                                                          fontSize: 16,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color: Colors.black,
+                                                              blurRadius: 0.5,
+                                                              offset: Offset(0.5, 0.5),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 5),
+                                                      const Expanded(child: Divider(color: Colors.black26, thickness: 1)),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 6),
+                                                  Center(
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                         Text("Battery",
+                                                          style: TextStyle(
+                                                              color: darkBg,
+                                                              fontWeight: FontWeight.w500,
+                                                              shadows: [Shadow(
+                                                                  color: Colors.black,
+                                                                  blurRadius: 0.5
+                                                              )]
+                                                          ),
+                                                        ),
+                                                        Text(widget.SelectedBatch?.getobj['battery']['batteryName'] ?? "",
+                                                          style: TextStyle(
+                                                              color: darkBg,
+                                                              fontWeight: FontWeight.w500,
+                                                              shadows: [Shadow(
+                                                                  color: Colors.black,
+                                                                  blurRadius: 0.5
+                                                              )]
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 12),
+
+                                                  // Voltage Section
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Voltage Details",
+                                                        style: TextStyle(
+                                                          color: darkBg,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontFamily: baseFont,
+                                                          fontSize: 16,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color: Colors.black,
+                                                              blurRadius: 0.5,
+                                                              offset: Offset(0.5, 0.5),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 5),
+                                                      const Expanded(child: Divider(color: Colors.black26, thickness: 1)),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Table(
+                                                    defaultColumnWidth: const FlexColumnWidth(),
+                                                    children: [
+                                                      TableRow(children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
+                                                          child: Center(child: Text("U-Volt", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
+                                                          child: Center(child: Text("L-Volt", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
+                                                          child: Center(child: Text("N-Volt", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                      ]),
+                                                      TableRow(children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 3, 6, 3),
+                                                          child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['uV'] ?? "", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 3, 6, 3),
+                                                          child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['lV'] ?? "", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 3, 6, 3),
+                                                          child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['nV'] ?? "", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                      ]),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 10),
+
+                                                  // Threshold Section
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Threshold Details",
+                                                        style: TextStyle(
+                                                          color: darkBg,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontFamily: baseFont,
+                                                          fontSize: 16,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color: Colors.black,
+                                                              blurRadius: 0.5,
+                                                              offset: Offset(0.5, 0.5),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 5),
+                                                      const Expanded(child: Divider(color: Colors.black26, thickness: 1)),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Table(
+                                                    defaultColumnWidth: const FlexColumnWidth(),
+                                                    children: [
+                                                      TableRow(children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
+                                                          child: Center(child: Text("U-Threshold", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
+                                                          child: Center(child: Text("L-Threshold", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                      ]),
+                                                      TableRow(children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 3, 6, 6),
+                                                          child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['uT'] ?? "", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 3, 6, 6),
+                                                          child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['lT'] ?? "", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                      ]),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 10),
+
+                                                  // Temperature Section
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Temperature Details",
+                                                        style: TextStyle(
+                                                          color: darkBg,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontFamily: baseFont,
+                                                          fontSize: 16,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color: Colors.black,
+                                                              blurRadius: 0.5,
+                                                              offset: Offset(0.5, 0.5),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 5),
+                                                      const Expanded(child: Divider(color: Colors.black26, thickness: 1)),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 6),
+                                                  Table(
+                                                    defaultColumnWidth: const FlexColumnWidth(),
+                                                    children: [
+                                                      TableRow(children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
+                                                          child: Center(child: Text("U-Temp", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
+                                                          child: Center(child: Text("L-Temp", textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                      ]),
+                                                      TableRow(children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 3, 6, 6),
+                                                          child: Center(child:
+                                                          Text(
+                                                              widget.SelectedBatch?.getobj['profile']['uTemp'] ?? "",
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(
+                                                                color: darkBg,
+                                                                fontWeight: FontWeight.w500,
+                                                                shadows: [Shadow(
+                                                                    color: Colors.black,
+                                                                    blurRadius: 0.5
+                                                                )]
+                                                            ),
+                                                          )),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.fromLTRB(6, 3, 6, 6),
+                                                          child: Center(
+                                                              child:
+                                                              Text(
+                                                                  widget.SelectedBatch?.getobj['profile']['lTemp'] ?? "",
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    color: darkBg,
+                                                                    fontWeight: FontWeight.w500,
+                                                                    shadows: [Shadow(
+                                                                      color: Colors.black,
+                                                                      blurRadius: 0.5
+                                                                    )]
+                                                                  ),
+                                                              )
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 15),
+
+                                                  // Send Config Button
+                                                  Center(
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        printFunc("Demo selectedBatch - ${widget.SelectedBatch?.getobj}");
+                                                        await handleConfigProcess();
+                                                      },
+                                                      style: ButtonStyle(
+                                                        backgroundColor: MaterialStateProperty.all<Color>(darkBg),
+                                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                                                        ),
+                                                      ),
+                                                      child: const Text("Send Configure", style: TextStyle(fontSize: 16)),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+
+                                        });
+                                  }
+                                    : () {
+                                    printFunc("NOT CONNECTED");
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: isDeviceConnected
+                                        ? MaterialStateProperty.all(darkBg)
+                                        : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(25),
+                                          side: BorderSide(color: darkBg, width: 1)),
+                                    ),
+                                  ),
+                                  child: Container(
+                                    height: 30,
+                                    width: screenSize.width / 3.5,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        enableDisconnect
+                                        ? "Disconnect"
+                                        : "Configure",
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: isDeviceConnected
+                                              ? Colors.white
+                                              : Color(0xFFEEEEEE),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: baseFont,
+                                          shadows: [
+                                            Shadow(color: Colors.black, blurRadius: 0.1)
+                                          ],
+                                          overflow: TextOverflow.visible,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              // Handle Calibration Btn
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 10, top: 15),
+                                child: ElevatedButton(
+                                  onPressed: isDeviceConnected
+                                    ? () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext contextt) {
+                                          return AlertDialog(
+                                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                                            insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+                                            backgroundColor: second_lightBg,
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min, // keeps dialog compact
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  // Title
+                                                  Center(
+                                                    child: Text(
+                                                      "Calibration",
+                                                      style: TextStyle(
+                                                        color: darkBg,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontFamily: baseFont,
+                                                        fontSize: 20,
+                                                        shadows: [
+                                                          Shadow(
+                                                            color: Colors.black,
+                                                            blurRadius: 0.5,
+                                                            offset: Offset(0.5, 0.5),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  //divider
+                                                  Column(
+                                                    children: [
+                                                      SizedBox(height: 10),
+                                                      Divider(color: darkBg,),
+                                                      SizedBox(height: 10),
+                                                    ],
+                                                  ),
+
+                                                  // Send Config Button
+                                                  Row(
+                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                   children: [
+                                                     Container(
+                                                       padding: EdgeInsets.all(10),
+                                                       decoration: BoxDecoration(
+                                                         border: Border.all(
+                                                           color: darkBg
+                                                         ),
+                                                         borderRadius: BorderRadius.circular(10),
+                                                         color: darkBg,
+                                                       ),
+                                                       child: GestureDetector(
+                                                         onTap: () async {
+                                                           _showInputDialog(
+                                                               Alertcontext: context,
+                                                             title: "Vmax for Calibration",
+                                                             hint: "e.g. 4200",
+                                                             onSubmit: sendVmax,
+                                                             afterText: "Calibrating Vmax...",
+                                                             labelText: "Enter Vmax(mV)"
+                                                           );
+
+
+                                                         },
+                                                         child: Text(
+                                                            "Voltage\nCalibration",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.w500
+                                                            ),
+                                                            textAlign: TextAlign.center,
+
+                                                         ),
+                                                       ),
+                                                     ),
+                                                     Container(
+                                                       padding: EdgeInsets.all(10),
+                                                       decoration: BoxDecoration(
+                                                         border: Border.all(
+                                                           color: darkBg
+                                                         ),
+                                                         borderRadius: BorderRadius.circular(10),
+                                                         color: darkBg,
+                                                       ),
+                                                       child: GestureDetector(
+                                                         onTap: () async {
+                                                           _showInputDialog(
+                                                               Alertcontext: context,
+                                                             title: "Temperature for Calibration",
+                                                             hint: "e.g. 25000",
+                                                             onSubmit: sendTemperature,
+                                                             labelText: "Enter Temperature",
+                                                             afterText: "Calibrating Temp..."
+                                                           );
+                                                         },
+                                                         child: Text(
+                                                            "Temperature\nCalibration",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.w500
+                                                            ),
+                                                            textAlign: TextAlign.center,
+
+                                                         ),
+                                                       ),
+                                                     ),
+                                                   ],
+                                                 ),
+
+                                                ],
+                                              ),
+                                            ),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: (){
+                                                  Navigator.pop(context);
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all<Color>(darkBg),
+                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                                                  ),
+                                                ),
+                                                child: Text("Cancel", style: TextStyle(fontSize: 16)),
+                                              ),
+
+                                            ],
+                                          );
+
+                                        });
+                                  }
+                                    : (){
+                                    printFunc("Not Connected");
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: isDeviceConnected
+                                        ? MaterialStateProperty.all(darkBg)
+                                        : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(25),
+                                          side: BorderSide(color: darkBg, width: 1)),
+                                    ),
+                                  ),
+                                  child: Container(
+                                    height: 30,
+                                    width: screenSize.width / 3.5,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        "Calibration",
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: isDeviceConnected
+                                              ? Colors.white
+                                              : Color(0xFFEEEEEE),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: baseFont,
+                                          shadows: [
+                                            Shadow(color: Colors.black, blurRadius: 0.1)
+                                          ],
+                                          overflow: TextOverflow.visible,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              //Submit btn
+
+                            ],
                           ),
-                        ),
-                      ),
+                        ],
+                      )
+                      : SizedBox(height: 15,),
+
+
                     ],
                   )
               ),
@@ -366,20 +996,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     );
   }
 
-  Future<void> handleSubmitProcess() async {
-    ValidateDropDown(HardWareNumber, ClientName);
-
-    if (HardWareNumber.getText == "") {
-      return; // Don't proceed if validation fails
-    }
-
-    // Reset flags before starting
-    resetConnectionFlags();
-
-    // Connect to device if not connected
-    if (!isDeviceConnected) {
-      await scanAndConnect();
-    }
+  Future<void> handleConfigProcess() async {
 
     if (isDeviceConnected && !deviceNotFoundError && !connectionFailedError) {
       AddedSuccess(HardWareNumber, ClientName);
@@ -393,8 +1010,11 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                 BatchId: widget.SelectedBatch?.obj['id'],
                 productId: HardWareNumber.obj['id'].toString());
             await deleteByHardWareNumber();
-            disconnect();
-            // Navigator.of(context).pop();
+            ShowSnackBarMessage(context, "Configure Sent!!", true);
+            Navigator.of(context).pop();
+            setState(() {
+              enableDisconnect = true;
+            });
           } else {
             showOperationFailedDialog("Temperature Not Sent");
           }
@@ -501,6 +1121,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
         showDialog(
             context: context,
+            barrierDismissible:false ,
             builder: (BuildContext contextt) {
               return AlertDialog(
                 title: Column(
@@ -532,7 +1153,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   ElevatedButton(
                     onPressed: () async {
                       Navigator.of(contextt, rootNavigator: true).pop();
-                      HardWareNumber.setText = productId['productId'];
+                      HardWareNumber.setText = productId['productId'].toString();
                       HardWareNumber.setobj = productId;
                       serialCtrl.text = HardWareNumber.getText.toString();
                       setState(() {});
@@ -692,7 +1313,12 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
                 if (c.uuid == configCharUUID) configChar = c;
                 if (c.uuid == thresholdCharUUID) thresholdChar = c;
-                if (c.uuid == calibrationCharUUID) calibrationChar = c;
+                if (c.uuid == calibrationCharUUID){
+                  calibrationChar = c;
+                  // Add Two Lines From demo
+                  await calibrationChar!.setNotifyValue(true);
+                  calibrationChar!.value.listen(_handleAck);
+                }
               }
             }
           }
@@ -975,6 +1601,257 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     }
   }
 
+  void _handleAck(List<int> data) {
+    String ack = String.fromCharCodes(data);
+    print(" Received ACK from device: $ack");
+
+    if (calibrationStep == 0 && ack.contains("ACK_VMAX")) {
+     if(mounted){
+       setState(() {
+         calibrationStep = 1;
+         waitingForAck = false;
+       });
+       Navigator.of(context, rootNavigator: true).pop();
+       ShowSnackBarMessage(alertContext!, 'Voltage_max sent for Calibration', true);
+       Future.delayed(const Duration(milliseconds: 300), () {
+         _showInputDialog(
+             Alertcontext: context,
+           title: "Vmin for Calibration",
+           hint: "e.g. 3200",
+           onSubmit: sendVmin,
+           labelText: "Enter Vmin (mV)",
+           afterText: "Calibrating Vmin..."
+         );
+       });
+     }
+      // Open Vmin popup
+    } else if (calibrationStep == 1 && ack.contains("ACK_VMIN")) {
+      print(" Vmin accepted, waiting for COMPLETE...");
+    } else if (calibrationStep == 1 && ack.contains("ACK_COMPLETE")) {
+      print(" Voltage Calibration Completed!");
+      ShowSnackBarMessage(alertContext!, 'Voltage Calibration Completed!', true);
+      if(mounted){
+        setState(() {
+          calibrationStep = 0;
+          waitingForAck = false;
+        });
+      }
+      Navigator.of(context, rootNavigator: true).pop();
+    } else if (calibrationStep == 2 && ack.contains("ACK_TEMP")) {
+      print("Temperature Calibration Completed!");
+      ShowSnackBarMessage(alertContext!, 'Temperature Calibration Completed!', true);
+      setState(() {
+        calibrationStep = 0;
+        waitingForAck = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+      print("Temperature Calibration Completed!");
+    }
+  }
+
+  Future<void> _showInputDialog({
+    required BuildContext Alertcontext,
+    required String title,
+    required String hint,
+    required String afterText,
+    required String labelText,
+    required Function(int) onSubmit,
+  }) async {
+    final TextEditingController inputCtrl = TextEditingController();
+    bool error = false;
+    setState(() {
+      alertContext = Alertcontext;
+    });
+
+    return showDialog(
+      context: Alertcontext,
+      barrierDismissible: false,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setStateDialog) {
+          return AlertDialog(
+            title: Text(title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: darkBg,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+
+              ),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
+                  children: [
+                    Divider(color: darkBg,),
+                    SizedBox(height: 10),
+                  ],
+                ),
+
+                if (!waitingForAck) Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(labelText,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: darkBg,
+                            fontFamily: baseFont,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black,
+                                blurRadius: 0.2,
+                                // offset: Offset(0.5, 0.5)
+                              )
+                            ])),
+                  ),
+                ),
+                if (!waitingForAck) Container(
+                  height: 60,
+                  width: screenSize.width,
+                  padding: EdgeInsets.symmetric(horizontal: 18),
+                  child: Center(
+                    child: TextField(
+                        cursorWidth: 1,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color:  darkBg,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: baseFont,
+                            letterSpacing: 0.2),
+                        controller: inputCtrl,
+                        cursorColor: darkBg,
+                        keyboardType: TextInputType.number,
+                        enabled: !waitingForAck,
+                        // validator: validator,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: darkBg, width: 0.5),
+                                borderRadius: BorderRadius.all(Radius.circular(8))),
+                            disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black, width: 1),
+                                borderRadius: BorderRadius.all(Radius.circular(8))),
+                            focusColor: Colors.black,
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                borderSide: BorderSide(width: 1, color: darkBg )),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                borderSide:
+                                BorderSide(width: 1, color:  Colors.black )),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                borderSide:
+                                BorderSide(width: 1, color: Colors.black )),
+                            hintText: hint,
+                            hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF9AC4C9),
+                                fontFamily: baseFont,
+                                fontWeight: FontWeight.w400),
+
+                            counterText: "")),
+                  ),
+                ),
+                // const SizedBox(height: 10),
+                if (waitingForAck)  CircularProgressIndicator(color: darkBg,),
+                if (waitingForAck)  SizedBox(height: 8),
+                if (waitingForAck)  Text(afterText,style: TextStyle(color: darkBg),),
+              ],
+            ),
+            actions: [
+              if (!waitingForAck)
+                ElevatedButton(
+                  onPressed: () {
+                    final val = int.tryParse(inputCtrl.text);
+                    if (val != null) {
+                      onSubmit(val);
+                      setState(() {
+                        waitingForAck = true;
+                      });
+                      setStateDialog(() {});
+                    } else {
+                      print(" Invalid input");
+                    }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(darkBg),
+
+                  ),
+                  child: const Text("Send"),
+                ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
+  Future<bool> sendVmax(int vmax) async {
+    final packet = Uint8List.fromList([
+      '['.codeUnitAt(0),
+      'V'.codeUnitAt(0),
+      vmax & 0xFF,
+      (vmax >> 8) & 0xFF,
+      ']'.codeUnitAt(0),
+    ]);
+    print("Sending Vmax: $vmax, Packet: $packet");
+    try {
+      await calibrationChar!.write(packet, withoutResponse: false);
+      setState(() => waitingForAck = true);
+      return true;
+    } catch (e) {
+      printFunc("Exception at Vmax : $e");
+      return false;
+    }
+  }
+
+  Future<bool> sendVmin(int vmin) async {
+    final packet = Uint8List.fromList([
+      '['.codeUnitAt(0),
+      'V'.codeUnitAt(0),
+      vmin & 0xFF,
+      (vmin >> 8) & 0xFF,
+      ']'.codeUnitAt(0),
+    ]);
+    print(" Sending Vmin: $vmin, Packet: $packet");
+    try {
+      await calibrationChar!.write(packet, withoutResponse: false);
+      setState(() => waitingForAck = true);
+      return true;
+    } catch (e) {
+      printFunc("Excpetion in VMin : $e");
+      return false;
+    }
+  }
+
+  Future<bool> sendTemperature(int temp) async {
+    final packet = Uint8List.fromList([
+      '['.codeUnitAt(0),
+      'T'.codeUnitAt(0),
+      temp & 0xFF,
+      (temp >> 8) & 0xFF,
+      ']'.codeUnitAt(0),
+    ]);
+    print("Sending Temp: $temp, Packet: $packet");
+    try {
+      await calibrationChar!.write(packet, withoutResponse: false);
+      setState(() {
+        waitingForAck = true;
+        calibrationStep = 2;
+      });
+      return true;
+    } catch (e) {
+      printFunc("Exception on Temp : $e");
+      return false;
+    }
+  }
+
+
+
   @override
   void dispose() {
     timeoutTimer?.cancel();
@@ -983,7 +1860,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 }
 
 
-//Old Class 
+//Old Class
 /*
 class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   // For Current Date

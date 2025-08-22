@@ -539,6 +539,7 @@ class AdminMainState extends State<AdminMain> {
                                                                             "Enter Client Phone-Number",
                                                                         Controller:
                                                                             _clientPhno,
+                                                                        type: TextInputType.number,
                                                                         onChanged:
                                                                             (value) {},
                                                                         maxLength: 10,
@@ -622,6 +623,7 @@ class AdminMainState extends State<AdminMain> {
                                                                             "Enter Client's code",
                                                                         Controller:
                                                                             _clientCode,
+                                                                        type: TextInputType.number,
                                                                         onChanged:
                                                                             (value) {},
                                                                         enable:
@@ -810,6 +812,7 @@ class AdminMainState extends State<AdminMain> {
                                                                               TextFeildNewUser(
                                                                                 hintText: "Enter Priority",
                                                                                 Controller: _designationPriority,
+                                                                                type: TextInputType.number,
                                                                                 onChanged: (value) {},
                                                                                 enable: true,
                                                                                 etext: designationValidator && _designationPriority.text.trim().isEmpty ? "Please Enter Priority" : "",
@@ -990,6 +993,8 @@ class AdminMainState extends State<AdminMain> {
                                                                             TextFeildNewUser(
                                                                               hintText: "Enter Battery Code",
                                                                               Controller: _batteryDescription,
+                                                                              type: TextInputType.number,
+                                                                              maxLength: 2,
                                                                               onChanged: (value) {},
                                                                               enable: true,
                                                                               etext: batteryValidator && _batteryDescription.text.trim().isEmpty ? "Please Enter Battery Code" : "",

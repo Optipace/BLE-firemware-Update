@@ -19,7 +19,6 @@ Future<bool> saveHardware(BuildContext context,{required String macId,required S
       bodyOrParams: body,
       onSuccess: (data){
         ShowSnackBarMessage(context, 'Hardware added successfully!', true);
-        Navigator.of(context).pop();
         isSuccess = true;
       }
   );

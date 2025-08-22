@@ -1531,6 +1531,8 @@ class listOverviewState extends State<listOverview> {
                                                   hintText: "Enter Battery Code",
                                                   Controller: _batteryDescription,
                                                   onChanged: (value) {},
+                                                  type: TextInputType.number,
+                                                  maxLength: 2,
                                                   enable: true,
                                                   etext: batteryValidator &&
                                                           _batteryDescription.text
