@@ -87,7 +87,7 @@ class _PairBatteryState extends State<PairBattery> {
             padding: EdgeInsets.symmetric(vertical: 15),
             child: Center(
               child: Text(
-                "ENTER THE DETAILS",
+                "PAIR DEVICE WITH BATTERY",
                 style: TextStyle(
                     fontFamily: baseFont,
                     fontWeight: FontWeight.w600,

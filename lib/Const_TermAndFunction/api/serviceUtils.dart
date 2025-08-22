@@ -22,12 +22,12 @@ class ApiHeaders {
 }
 
 class ApiEndpoints {
-  static const String _devBaseUrl = 'http://106.51.141.50:8083';
-  static const String _prodBaseUrl = 'http://106.51.141.50:8083';
+  // static const String _devBaseUrl = 'http://106.51.141.50:8083';
+  // static const String _prodBaseUrl = 'http://106.51.141.50:8083';
   // static const String _devBaseUrl = 'http://10.118.170.132:8080';
   // static const String _prodBaseUrl = 'http://10.118.170.132:8080';
-  // static const String _devBaseUrl = 'http://192.168.130.138:8080';
-  // static const String _prodBaseUrl = 'http://192.168.130.138:8080';
+  static const String _devBaseUrl = 'http://192.168.130.138:8081';
+  static const String _prodBaseUrl = 'http://192.168.130.138:8081';
   static const bool _isProd = true;
 
   static String get baseUrl => _isProd ? _prodBaseUrl : _devBaseUrl;

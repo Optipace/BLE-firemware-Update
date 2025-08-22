@@ -64,7 +64,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: lightBg),
         title: Text(
-          "Battery Pairing",
+          "Calibration",
           style: TextStyle(
               fontFamily: baseFont,
               fontWeight: FontWeight.w800,
@@ -90,7 +90,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                 padding: EdgeInsets.symmetric(vertical: 15),
                 child: Center(
                   child: Text(
-                    "ENTER THE DETAILS",
+                    "Enter or Scan MAC-ID",
                     style: TextStyle(
                         fontFamily: baseFont,
                         fontWeight: FontWeight.w600,

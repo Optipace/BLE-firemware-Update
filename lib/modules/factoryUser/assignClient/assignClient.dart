@@ -126,7 +126,7 @@ class _AssignClientState extends State<AssignClient> {
               padding: EdgeInsets.symmetric(vertical: 15),
               child: Center(
                 child: Text(
-                  "ENTER THE DETAILS",
+                  "LINK DEVICE TO CLIENT",
                   style: TextStyle(
                       fontFamily: baseFont,
                       fontWeight: FontWeight.w600,

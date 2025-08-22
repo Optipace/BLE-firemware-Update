@@ -314,7 +314,9 @@ class _DfuHomePageState extends State<DfuHomePage> {
               ],
               backgroundColor: second_lightBg,
             );
-          })
+          },
+          barrierDismissible: false
+          )
           : SizedBox();
 
 
@@ -446,8 +448,8 @@ class _DfuHomePageState extends State<DfuHomePage> {
                 ? Container(
                     color: darkBg,
                     margin: EdgeInsets.all(18),
-                    height: 22,
-                    width: 22,
+                    height: 20,
+                    width: 20,
                     child: const Center(
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(
