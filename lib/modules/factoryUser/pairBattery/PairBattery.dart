@@ -811,7 +811,10 @@ class _PairBatteryState extends State<PairBattery> {
         }
         printFunc("Connection Failed!!");
 
-        showDialog(context: context, builder: (BuildContext contextt) {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext contextt) {
           return AlertDialog(
             // title: Text(""),
             content: Text(

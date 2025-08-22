@@ -36,14 +36,11 @@ class _locateHomePageState extends State<locateHomePage> {
   final serviceUUID = Guid("f043176a-5168-11ee-be56-0242ac120012");
   final locateCharUUID = Guid("f043176a-5168-11ee-be56-0242ac120015");
 
-
   String status = "Disconnected";
   String deviceName = "-";
   bool NotConnected = false;
   bool connected = false;
   bool connecting = false;
-
-
 
   Future<void> requestPermissions() async {
     if (Platform.isAndroid) {
@@ -84,9 +81,12 @@ class _locateHomePageState extends State<locateHomePage> {
         return name.contains("eionic") || name.contains("airbird");
       }).toList();
 
-      final match = latestDevices.where(
-            (d) => d.device.remoteId.str.toUpperCase() == QRMacId?.toUpperCase(),
-      ).firstOrNull;
+      final match = latestDevices
+          .where(
+            (d) =>
+                d.device.remoteId.str.toUpperCase() == QRMacId?.toUpperCase(),
+          )
+          .firstOrNull;
 
       if (QRMacId == null) {
         printFunc("No QR — showing filtered devices.");
@@ -124,7 +124,6 @@ class _locateHomePageState extends State<locateHomePage> {
     setState(() {});
   }
 
-
   @override
   Widget build(BuildContext context) {
     getSize(context);
@@ -146,26 +145,27 @@ class _locateHomePageState extends State<locateHomePage> {
         actions: [
           isScanning
               ? Container(
-            color: darkBg,
-            margin: EdgeInsets.all(18),
-            height: 22,
-            width: 22,
-            child: const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
-          )
+                  color: darkBg,
+                  margin: EdgeInsets.all(18),
+                  height: 22,
+                  width: 22,
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  ),
+                )
               : IconButton(
-            icon: Icon(isScanning ? Icons.pause : Icons.play_arrow),
-            onPressed: isScanning ? stopScan : startScan,
-          ),
+                  icon: Icon(isScanning ? Icons.pause : Icons.play_arrow),
+                  onPressed: isScanning ? stopScan : startScan,
+                ),
           IconButton(
               onPressed: () async {
                 final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QRScannerScreen(title: "Scan QR-Code"),
+                    builder: (context) =>
+                        QRScannerScreen(title: "Scan QR-Code"),
                   ),
                 );
                 QRMacId = result;
@@ -211,25 +211,47 @@ class _locateHomePageState extends State<locateHomePage> {
                     connecting = true; // Start connecting
                   });
 
-                  showDialog(context: context,
+                  showDialog(
+                      context: context,
                       barrierDismissible: false,
                       builder: (BuildContext contextt) {
                         return StatefulBuilder(
                           builder: (context, setDialogState) {
                             // Listen to state changes and update dialog
                             return StreamBuilder(
-                              stream: Stream.periodic(Duration(milliseconds: 100)),
+                              stream:
+                                  Stream.periodic(Duration(milliseconds: 100)),
                               builder: (context, snapshot) {
                                 return AlertDialog(
                                   content: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      if (connecting) CircularProgressIndicator(color: darkBg,),
+                                      if (connecting)
+                                        CircularProgressIndicator(
+                                          color: darkBg,
+                                        ),
                                       if (connecting) SizedBox(height: 8),
-                                      if (connecting) Text("Connecting...",style: TextStyle(color: darkBg),),
-                                      if (connected && !connecting) Image.asset('assets/image/brazil.gif',width: 62,height: 62,),
-                                      if (connected && !connecting) SizedBox(height: 8),
-                                      if (connected && !connecting) Text("Locating . . .", style: TextStyle(color: darkBg,fontWeight: FontWeight.w500,fontSize: 18),),
+                                      if (connecting)
+                                        Text(
+                                          "Connecting...",
+                                          style: TextStyle(color: darkBg),
+                                        ),
+                                      if (connected && !connecting)
+                                        Image.asset(
+                                          'assets/image/brazil.gif',
+                                          width: 62,
+                                          height: 62,
+                                        ),
+                                      if (connected && !connecting)
+                                        SizedBox(height: 8),
+                                      if (connected && !connecting)
+                                        Text(
+                                          "Locating . . .",
+                                          style: TextStyle(
+                                              color: darkBg,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 18),
+                                        ),
                                     ],
                                   ),
                                 );
@@ -289,7 +311,8 @@ class _locateHomePageState extends State<locateHomePage> {
 
       if (connected) {
         if (selectedDevice!.isConnected) {
-          List<BluetoothService> services = await selectedDevice!.discoverServices();
+          List<BluetoothService> services =
+              await selectedDevice!.discoverServices();
           printFunc("Total Services Found: ${services.length}");
           printFunc("Total Services Found1: ${services}");
 
@@ -315,14 +338,12 @@ class _locateHomePageState extends State<locateHomePage> {
                 printFunc("UUID");
                 printFunc("characteristics UUID : ${c.uuid}");
 
-                if (c.uuid == locateCharUUID){
+                if (c.uuid == locateCharUUID) {
                   locateChar = c;
                 }
-
               }
             }
           }
-
         }
 
         // Update state when connected successfully
@@ -349,42 +370,42 @@ class _locateHomePageState extends State<locateHomePage> {
           });
         }
         printFunc("Connection Failed!!");
-        showDialog(context: context,
+        showDialog(
+            context: context,
             barrierDismissible: false,
             builder: (BuildContext contextt) {
-          return AlertDialog(
-            // title: Text(""),
-            content: Text(
-              "Connection Failed!!",
-              style: TextStyle(
-                color: darkBg,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            actions: [
-              //OK btn that goes for next page
-              ElevatedButton(
-                onPressed: (){
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                },
-
-                child: Text(
-                  "Re-Try",
-                  style: TextStyle(fontSize: 16),
+              return AlertDialog(
+                // title: Text(""),
+                content: Text(
+                  "Connection Failed!!",
+                  style: TextStyle(
+                    color: darkBg,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(darkBg),
-                    shape:
-                    MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18)))),
-              )
-            ],
-            backgroundColor: second_lightBg,
-          );
-        });
+                actions: [
+                  //OK btn that goes for next page
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Re-Try",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(darkBg),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18)))),
+                  )
+                ],
+                backgroundColor: second_lightBg,
+              );
+            });
       }
     } else {
       // Device not found
@@ -436,7 +457,6 @@ class _locateHomePageState extends State<locateHomePage> {
     printFunc("${mac_Id} is disconnected");
   }
 
-
   Future<void> _locateTracker() async {
     try {
       if (locateChar == null) {
@@ -454,36 +474,20 @@ class _locateHomePageState extends State<locateHomePage> {
       printFunc('Locate command sent: "$command"');
 
       Future.delayed(Duration(seconds: 3), () {
-          disconnect();
-          Navigator.of(context).pop();
+        disconnect();
+        Navigator.of(context).pop();
       });
-      
-
-
     } catch (e) {
       printFunc('Failed to send Locate Tracker command: $e');
     }
   }
-
-
-
 
   @override
   void dispose() {
     scanSub?.cancel();
     super.dispose();
   }
-
 }
-
-
-
-
-
-
-
-
-
 
 //old Class
 

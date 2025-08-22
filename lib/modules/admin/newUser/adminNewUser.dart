@@ -648,6 +648,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                           clearNewUserFields();
                           Navigator.of(context).push(
                               MaterialPageRoute(builder: (_) => AdminMain()));
+                        // }else{
+                        //   clearNewUserFields();
                         }
                       }
                     }),

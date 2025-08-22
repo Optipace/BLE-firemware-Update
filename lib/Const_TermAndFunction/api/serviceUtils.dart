@@ -182,7 +182,15 @@ class ApiService {
       }
       if (response.statusCode == 200 && responseBody['response']["code"] == 1) {
         await onSuccess(responseBody['data']);
-      } else {
+      }
+      else if (response.statusCode == 200 && responseBody['response']["code"] == -42){
+        ShowSnackBarMessage(
+          context,
+         'User already Exist!',
+          false,
+        );
+      }
+      else {
         if (errorDisplay) {
           ShowSnackBarMessage(
             context,

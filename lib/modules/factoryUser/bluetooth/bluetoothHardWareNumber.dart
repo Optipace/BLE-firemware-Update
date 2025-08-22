@@ -355,6 +355,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                        : () async {
                                     showDialog(
                                         context: context,
+                                        barrierDismissible: false,
                                         builder: (BuildContext contextt) {
                                           return AlertDialog(
                                             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -805,6 +806,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                     ? () {
                                     showDialog(
                                         context: context,
+                                        barrierDismissible: false,
                                         builder: (BuildContext contextt) {
                                           return AlertDialog(
                                             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -1030,6 +1032,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   void showOperationFailedDialog(String message) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext contextt) {
         return AlertDialog(
           content: Text(
@@ -1343,6 +1346,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
         printFunc("Connection Failed!!");
         showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (BuildContext contextt) {
             return AlertDialog(
               content: Text(
@@ -1405,6 +1409,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
       showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext contextt) {
           return AlertDialog(
             content: Text(

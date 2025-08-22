@@ -25,6 +25,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
 
   //for validation
   bool validateFields = false;
+  bool enableConnect = false;
 
   List result = [];
 
@@ -141,7 +142,8 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                     ),
 
 
-                                    NotConnected
+                                    enableConnect
+                                    ? NotConnected
                                         ? Container(
                                       color: Colors.transparent,
                                       height: 25,
@@ -169,7 +171,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                           setState(() {});
                                         }
                                       },
-                                      child: (device != null && device!.isConnected)
+                                      child: (device != null && device!.isConnected )
                                           ? Text("Connected")
                                           : Text("Connect"),
                                       style: ButtonStyle(
@@ -187,6 +189,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                         ),
                                       ),
                                     )
+                                    : SizedBox()
 
 
 
@@ -217,6 +220,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                             if (result != null) {
                                               setState(() {
                                                 _macIdController.text = result;
+                                                enableConnect = true;
                                               });
                                             }
                                           },
@@ -302,7 +306,11 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                         TextFeildNewUser(
                                           hintText: "Enter the MacID",
                                           Controller: _macIdController,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            setState(() {
+                                              enableConnect = true;
+                                            });
+                                          },
                                           enable: true,
                                           etext: validateFields &&
                                               _macIdController.text
@@ -331,7 +339,14 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                             Padding(
                               padding: EdgeInsets.only(bottom: 10, top: 15),
                               child: ElevatedButton(
-                                onPressed: (){disconnect();},
+                                onPressed: (){
+                                  setState(() {
+                                    enableConnect = false;
+                                  });
+                                  _macIdController.clear();
+                                  disconnect();
+
+                                  },
                                 style: ButtonStyle(
                                   backgroundColor: isDeviceConnected
                                       ? MaterialStateProperty.all(darkBg)

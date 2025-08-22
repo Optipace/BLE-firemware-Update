@@ -131,7 +131,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
     setState(() {});
   }
 
-    Future<void> startDfu(ScanResult device,int numberofPackets,
+  Future<void> startDfu(ScanResult device,int numberofPackets,
         {bool first = true, String oldId = ""}) async {
 
       _dfuPopUp = false;
@@ -258,6 +258,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
           isDeviceSelected
           ? showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (BuildContext contextt) {
             return AlertDialog(
               // title: Text(""),
@@ -315,7 +316,6 @@ class _DfuHomePageState extends State<DfuHomePage> {
               backgroundColor: second_lightBg,
             );
           },
-          barrierDismissible: false
           )
           : SizedBox();
 
@@ -534,19 +534,6 @@ class _DfuHomePageState extends State<DfuHomePage> {
                   child: Text('Select'),
                   // Text(percent != null ? '$percent%' :percent == -1 ?"i need a progress circle": 'DFU'),
                 ),
-                // trailing: ElevatedButton(onPressed: (){
-                //   Navigator.push(
-                //     context,// _safeContext,
-                //     MaterialPageRoute(
-                //         builder: (context) => BluetoothHardwareNumber(
-                //           safecontext:  context,
-                //           SelectedBatch: widget.SelectedBatch,
-                //           allclients: widget.allClients,
-                //           macID: mac_Id,
-                //         )
-                //     ),
-                //   );
-                // }, child: Text("child")),
               );
             },
           ),
