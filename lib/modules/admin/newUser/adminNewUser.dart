@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/DataClasses.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/admin_main.dart';
+import 'package:tracker_firmware/modules/admin/api/api.dart';
 import 'package:tracker_firmware/services/apiCall/Admin/userManagement.dart';
 import 'package:tracker_firmware/services/apiCall/designation.dart';
 import 'package:tracker_firmware/services/apiCall/logIn.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
@@ -26,6 +29,15 @@ class AdminNewUserState extends State<AdminNewUser> {
   // -- New user
   bool validateUser = false;
   bool _validateDropDown = false;
+
+
+  //flags and strings for errorText and Validation
+  bool _newUserFlag = false;
+  bool _editUserFlag = false;
+  //new-user error
+  String? nameError, empIDError, mailError, phnoError, designationError, uuidError, pwdError, rePwdError;
+  //Edit-user Error
+  String? nameError01, empIDError01, mailError01, phnoError01, designationError01, uuidError01, pwdError01, rePwdError01;
 
   //Password Validation
   bool _passwordNotSame = false;
@@ -66,6 +78,14 @@ class AdminNewUserState extends State<AdminNewUser> {
 
   bool isAdmin = false;
   bool isEditAdmin = false;
+
+  // Controllers for update password
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _Phno = TextEditingController();
+  TextEditingController _Password = TextEditingController();
+  TextEditingController _Repassword = TextEditingController();
+
 
   @override
   void initState() {
@@ -294,9 +314,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                         Controller: _name,
                         onChanged: (value) {},
                         enable: true,
-                        etext: validateUser && _name.text.trim().isEmpty
-                            ? "Please Enter the name"
-                            : "",
+                        etext: nameError ??"",
+                        // etext: validateUser && _name.text.trim().isEmpty
+                        //     ? "Please Enter the name"
+                        //     : "",
                       ),
                       SizedBox(
                         height: 10,
@@ -309,9 +330,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                         Controller: _empRegId,
                         onChanged: (value) {},
                         enable: true,
-                        etext: validateUser && _empRegId.text.trim().isEmpty
-                            ? "Please Enter the empRegID"
-                            : "",
+                        etext: empIDError ?? "",
+                        // etext: validateUser && _empRegId.text.trim().isEmpty
+                        //     ? "Please Enter the empRegID"
+                        //     : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -319,14 +341,21 @@ class AdminNewUserState extends State<AdminNewUser> {
 
                       //------email------
                       const LabelText(text: "Employee E-Mail :"),
+
                       TextFeildNewUser(
                         hintText: "Enter Employee E-Mail",
                         Controller: _email,
                         onChanged: (value) {},
+                        type: TextInputType.emailAddress,
                         enable: true,
-                        etext: validateUser && _email.text.trim().isEmpty
-                            ? "Please Enter the E-Mail"
-                            : "",
+                        etext: mailError ?? "",
+                        // etext: validateUser
+                        //     ? _email.text.trim().isEmpty
+                        //       ? "Please enter the E-Mail"
+                        //       : !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_email.text.trim())
+                        //           ? "Please enter a valid E-Mail"
+                        //           : ""
+                        //     : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -341,9 +370,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                         maxLength: 10,
                         onChanged: (value) {},
                         enable: true,
-                        etext: validateUser && _contact.text.trim().isEmpty
-                            ? "Please Enter the Phone Number"
-                            : "",
+                        etext: phnoError ??"",
+                        // etext: validateUser && _contact.text.trim().isEmpty
+                        //     ? "Please Enter the Phone Number"
+                        //     : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -354,8 +384,11 @@ class AdminNewUserState extends State<AdminNewUser> {
                         child: PrimeryDropDownButton(
                           isEnabled: true,
                           tail: ErrorContainer(
-                              show: _validateDropDown,
-                              errorMsg: "Please Select the Designation"),
+                              show: designationError != "",
+                              errorMsg: designationError ?? ""),
+                          // tail: ErrorContainer(
+                          //     show: _validateDropDown,
+                          //     errorMsg: "Please Select the Designation"),
                           mainText: "Select the desgination",
                           text: designation.Text != ""
                               ? designation.getText
@@ -577,10 +610,11 @@ class AdminNewUserState extends State<AdminNewUser> {
                                   Controller: _uuid,
                                   onChanged: (value) {},
                                   enable: true,
-                                  etext:
-                                      validateUser && _uuid.text.trim().isEmpty
-                                          ? "Please Enter the UUID"
-                                          : "",
+                                  etext: uuidError ?? "",
+                                  // etext:
+                                  //     validateUser && _uuid.text.trim().isEmpty
+                                  //         ? "Please Enter the UUID"
+                                  //         : "",
                                 ),
                                 SizedBox(
                                   height: 10,
@@ -598,9 +632,10 @@ class AdminNewUserState extends State<AdminNewUser> {
                           printFunc("IS ADMIN = ${_uuid.text.toString()}");
                         },
                         enable: true,
-                        etext: validateUser && _password.text.trim().isEmpty
-                            ? "Please Enter the Password"
-                            : "",
+                        etext: pwdError ?? "",
+                        // etext: validateUser && _password.text.trim().isEmpty
+                        //     ? "Please Enter the Password"
+                        //     : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -613,11 +648,12 @@ class AdminNewUserState extends State<AdminNewUser> {
                         Controller: _repassword,
                         onChanged: (value) {},
                         enable: true,
-                        etext: validateUser && _password.text.trim().isEmpty
-                            ? "Please Re-Entry the Password"
-                            : validateUser && _passwordNotSame
-                                ? "Password mismatched"
-                                : "",
+                        etext: rePwdError ?? "",
+                        // etext: validateUser && _password.text.trim().isEmpty
+                        //     ? "Please Re-Entry the Password"
+                        //     : validateUser && _passwordNotSame
+                        //         ? "Password mismatched"
+                        //         : "",
                       ),
                       SizedBox(
                         height: 15,
@@ -629,11 +665,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                 child: manageUserBtn(
                     text: "ADD USER",
                     onPress: () async {
-                      ValidateUser();
-                      validateDropDown(designation);
-                      validatePassword();
-
-                      if (!validateUser && !_validateDropDown) {
+                      validateNewUserFields();
+                      if (_newUserFlag) {
                         final success = await addNewUser(
                           context,
                           name: _name.text.trim(),
@@ -648,11 +681,12 @@ class AdminNewUserState extends State<AdminNewUser> {
                           clearNewUserFields();
                           Navigator.of(context).push(
                               MaterialPageRoute(builder: (_) => AdminMain()));
-                        // }else{
-                        //   clearNewUserFields();
+                        }else{
+                          clearNewUserFields();
                         }
                       }
-                    }),
+                    }
+                 ),
               )
             ],
           ),
@@ -663,376 +697,743 @@ class AdminNewUserState extends State<AdminNewUser> {
 
   Widget UpdateUser(BuildContext context) {
     return Card(
-        elevation: 5,
+        color: lightBg,
         margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
+        elevation: 0, // no shadow
+        shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20), // <-- radius here
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide.none,
         ),
-        child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-                color: second_lightBg.withOpacity(0.5),
-                border: Border.all(
-                  color: darkBg,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(20)),
-            child: SingleChildScrollView(
-                child: Column(children: [
-              //Title
-              Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Center(
-                  child: Text(
-                    "Employee's Phone number",
-                    style: TextStyle(
-                        fontFamily: baseFont,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 24,
-                        color: darkBg,
-                        shadows: [
-                          Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.5,
-                              offset: Offset(0.5, 0.5))
-                        ]),
-                  ),
-                ),
-              ),
-              //TextField
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      //----Name-----
-
-                      TextFeildNewUser(
-                        hintText: "Enter Phone number",
-                        Controller: _searchPhn,
-                        maxLength: 10,
-                        type: TextInputType.number,
-                        onChanged: (value) {},
-                        enable: true,
-                        etext: _validatePhn
-                            ? "Please Enter 10 digit Phone number"
-                            : "",
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ],
-                  )),
-              //Search btn
-              Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: SizedBox(
-                    width: screenSize.width / 3,
-                    // Set your desired width
-                    height: 40,
-                    child: manageUserBtn(
-                      text: "Search",
-                      onPress: () {
-                        validatePhn();
-                        setState(() {
-                          _userFound = false;
-                        });
-                        if (!_validatePhn) {
-                          setEmpDetails();
-                        }
-                        //api call and store in a bool var so then if the bool is true then olny set the userFound to true otherwise set to false
-
-                        if (_searchPhn.text.trim().length == 10) {
-                          setState(() {
-                            _userFound = true;
-                          });
-                        } else {
-                          setState(() {
-                            _userFound = false;
-                          });
-                        }
-                      },
-                      icon: Icon(
-                        CupertinoIcons.search,
-                        size: 20,
-                      ),
+        child: Column(
+          children: [
+            Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: darkBg,
+                      width: 1,
                     ),
-                  )),
-
-              Visibility(
-                visible: _userFound,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 20,
-                          ),
-
-                          //----Name-----
-                          LabelText(text: "Emoplyee Name :"),
-                          TextFeildNewUser(
-                            hintText: "Enter Employee name",
-                            Controller: _name01,
-                            onChanged: (value) {},
-                            enable: _activeUser,
-                            etext:
-                                _validateEditUser && _name01.text.trim().isEmpty
-                                    ? "Please Enter the name"
-                                    : "",
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-
-                          //----empRegId------
-                          LabelText(text: "Emoplyee Regestred ID[Company ID]:"),
-                          TextFeildNewUser(
-                            hintText: "Enter empRegID",
-                            Controller: _empRegId01,
-                            onChanged: (value) {},
-                            enable: _activeUser,
-                            etext: _validateEditUser &&
-                                    _empRegId01.text.trim().isEmpty
-                                ? "Please Enter the empRegID"
-                                : "",
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-
-                          //------email------
-                          LabelText(text: "Employee E-Mail :"),
-                          TextFeildNewUser(
-                            hintText: "Enter Employee E-Mail",
-                            Controller: _email01,
-                            onChanged: (value) {},
-                            enable: _activeUser,
-                            etext: _validateEditUser &&
-                                    _email01.text.trim().isEmpty
-                                ? "Please Enter the E-Mail"
-                                : "",
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-
-                          //-----Contact ------
-                          LabelText(text: "Employee Phone number :"),
-                          TextFeildNewUser(
-                            hintText: "Enter Employee Phone Number",
-                            Controller: _contact01,
-                            onChanged: (value) {},
-                            type: TextInputType.number,
-                            maxLength: 10,
-                            enable: _activeUser,
-                            etext: _validateEditUser &&
-                                    _contact01.text.trim().isEmpty
-                                ? "Please Enter the Phone Number"
-                                : "",
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-
-                          //----DesignationID---- [DROPDOWN]
-                          GestureDetector(
-                            child: PrimeryDropDownButton(
-                              isEnabled: _activeUser,
-                              tail: ErrorContainer(
-                                  show: _validateDropDown,
-                                  errorMsg: "Please Select the Designation"),
-                              mainText: "Select the desgination",
-                              text: designation01.Text != ""
-                                  ? designation01.getText
-                                  : "Select The Designation",
-                              icon: Icon(
-                                Icons.keyboard_arrow_down_sharp,
-                                color: darkBg,
-                              ),
-                              press: () async {
-                                await BottomSheet_Widget(context, [
-                                  Column(
-                                    children: [
-                                      MapListItemBuilder(
-                                        listItems: designationRoles,
-                                        press: () {},
-                                        selected: designation01,
-                                      )
-                                    ],
-                                  )
-                                ]);
-                                setState(() {});
-                                if (designation01.Text.toString()
-                                        .toLowerCase() ==
-                                    "admin") {
-                                  setState(() {
-                                    isEditAdmin = true;
-                                    _uuidEdit.text = "ADMIN_DEVICE";
-                                  });
-                                } else {
-                                  setState(() {
-                                    isEditAdmin = false;
-                                  });
-                                }
-
-                                printFunc(
-                                    "Designation Demo ${designation01.Text.toString().toLowerCase()}");
-                                printFunc(
-                                    "ADMIN DEVICE ID : ${_uuidEdit.text}");
-                              },
+                    borderRadius: BorderRadius.circular(20)),
+                child: SingleChildScrollView(
+                    child: Column(children: [
+                  //Title
+                        Padding(
+                          padding: EdgeInsets.only(top: 15),
+                          child: Center(
+                            child: Text(
+                                "Employee's Phone number",
+                              style: TextStyle(
+                                  fontFamily: baseFont,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 24,
+                                  color: darkBg,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black,
+                                        blurRadius: 0.5,
+                                        offset: Offset(0.5, 0.5))
+                                  ]),
                             ),
                           ),
-                          SizedBox(
-                            height: 8,
+                        ),
+                        SizedBox(height: 5,),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Divider(color: darkBg,),
+                        ),
+                        //TextField
+                      Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                //----Name-----
+
+                                TextFeildNewUser(
+                                  hintText: "Enter Phone number",
+                                  Controller: _searchPhn,
+                                  maxLength: 10,
+                                  type: TextInputType.number,
+                                  onChanged: (value) {},
+                                  enable: true,
+                                  etext: _validatePhn
+                                      ? "Please Enter 10 digit Phone number"
+                                      : "",
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            )),
+                        //Search btn
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 15),
+                          child: SizedBox(
+                        width: screenSize.width / 3,
+                        // Set your desired width
+                        height: 40,
+                        child: manageUserBtn(
+                          text: "Search",
+                          onPress: () {
+                            validatePhn();
+                            setState(() {
+                              _userFound = false;
+                            });
+                            if (!_validatePhn) {
+                              if(UserData().phone == _searchPhn.text.trim()){
+                                ShowSnackBarMessage(context, "Edit your profile from 'View Profile' section", null);
+                              }else{
+                                setEmpDetails();
+                              }
+                            }
+                            //api call and store in a bool var so then if the bool is true then olny set the userFound to true otherwise set to false
+
+                          },
+                          icon: Icon(
+                            CupertinoIcons.search,
+                            size: 20,
                           ),
+                        ),
+                      )),
 
-                          //------Device UUID -----------
-                          !isEditAdmin
-                              ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    LabelText(text: "Employee Device UUID :"),
-                                    TextFeildNewUser(
-                                      hintText: "Enter device UUID",
-                                      Controller: _uuidEdit,
-                                      onChanged: (value) {},
-                                      enable: _activeUser,
-                                      etext: _validateEditUser &&
-                                              _uuidEdit.text.trim().isEmpty
-                                          ? "Please Enter the UUID"
-                                          : "",
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                  ],
-                                )
-                              : SizedBox(),
 
-                          //-------BTN------
-                          Visibility(
-                              visible: _userFound && !_validatePhn,
-                              child: _activeUser
-                                  ? Container(
-                                      padding: EdgeInsets.only(
-                                          top: 15,
-                                          bottom: 30,
-                                          left: 15,
-                                          right: 15),
-                                      child: FittedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            manageUserBtn(
-                                                text: "Update",
-                                                onPress: () async {
-                                                  ValidateEditUser();
-                                                  validateEditDropDown(
-                                                      designation01);
-                                                  printFunc(
-                                                      "validate edit User : $_validateEditDropDown");
-                                                  printFunc(
-                                                      "Validate Edit Drop Down : ${_validateEditDropDown}");
-                                                  printFunc(
-                                                      "${!_validateEditUser && !_validateEditDropDown}");
-                                                  if (!_validateEditUser &&
-                                                      !_validateEditDropDown) {
-                                                    printFunc("Insid if cond");
-                                                    final success =
-                                                        await updateUser(
-                                                      context,
-                                                      id: existingUserId,
-                                                      // must be tracked somewhere in state
-                                                      name: _name01.text.trim(),
-                                                      empRegisteredId:
-                                                          _empRegId01.text
+                ]))),
+            SizedBox(height: 10,),
+            _userFound
+            ? Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: darkBg,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(20)),
+                child: SingleChildScrollView(
+                    child: Column(children: [
+                  //Title
+                        Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text( "Employee's Details",
+                                style: TextStyle(
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 24,
+                                    color: darkBg,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.black,
+                                          blurRadius: 0.5,
+                                          offset: Offset(0.5, 0.5))
+                                    ]),
+                              ),
+                              _activeUser
+                              ? manageUserBtn(
+                                  text: "Deactive",
+                                  onPress: () async {
+                                    final success =
+                                    await deActivateUser(
+                                        context,
+                                        id: existingUserId);
+                                    if (success) {
+                                      setState(() {
+                                        _activeUser = false;
+                                      });
+                                    }
+                                  },
+                                  height: 20,
+                                  width: 60
+                              )
+                              : manageUserBtn(
+                                  text: "Active",
+                                  onPress: () async {
+                                    final success =
+                                    await setUserActive(context,
+                                        id: existingUserId);
+                                    if (success) {
+                                      setState(() {
+                                        _activeUser = true;
+                                      });
+                                    }
+                                  },
+                                  height: 20,
+                                  width: 60,
+                                ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Divider(color: darkBg,),
+                        ),
+                        //TextField
+
+
+                       Visibility(
+                    visible: _userFound,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+
+                              //----Name-----
+                              LabelText(text: "Emoplyee Name :"),
+                              TextFeildNewUser(
+                                hintText: "Enter Employee name",
+                                Controller: _name01,
+                                onChanged: (value) {},
+                                enable: _activeUser,
+                                etext: nameError01,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+
+                              //----empRegId------
+                              LabelText(text: "Emoplyee Regestred ID[Company ID]:"),
+                              TextFeildNewUser(
+                                hintText: "Enter empRegID",
+                                Controller: _empRegId01,
+                                onChanged: (value) {},
+                                enable: _activeUser,
+                                etext: empIDError01 ?? "",
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+
+                              //------email------
+                              LabelText(text: "Employee E-Mail :"),
+                              TextFeildNewUser(
+                                hintText: "Enter Employee E-Mail",
+                                Controller: _email01,
+                                onChanged: (value) {},
+                                enable: _activeUser,
+                                etext: mailError01,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+
+                              //-----Contact ------
+                              LabelText(text: "Employee Phone number :"),
+                              TextFeildNewUser(
+                                hintText: "Enter Employee Phone Number",
+                                Controller: _contact01,
+                                onChanged: (value) {},
+                                type: TextInputType.number,
+                                maxLength: 10,
+                                enable: _activeUser,
+                                etext: phnoError01,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+
+                              //----DesignationID---- [DROPDOWN]
+                              GestureDetector(
+                                child: PrimeryDropDownButton(
+                                  isEnabled: _activeUser,
+                                  tail: ErrorContainer(
+                                      show: designationError01 != "",
+                                      errorMsg: designationError01 ?? ""),
+                                  mainText: "Select the desgination",
+                                  text: designation01.Text != ""
+                                      ? designation01.getText
+                                      : "Select The Designation",
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_down_sharp,
+                                    color: darkBg,
+                                  ),
+                                  press: () async {
+                                    await BottomSheet_Widget(context, [
+                                      Column(
+                                        children: [
+                                          MapListItemBuilder(
+                                            listItems: designationRoles,
+                                            press: () {},
+                                            selected: designation01,
+                                          )
+                                        ],
+                                      )
+                                    ]);
+                                    setState(() {});
+                                    if (designation01.Text.toString()
+                                            .toLowerCase() ==
+                                        "admin") {
+                                      setState(() {
+                                        isEditAdmin = true;
+                                        _uuidEdit.text = "ADMIN_DEVICE";
+                                      });
+                                    } else {
+                                      setState(() {
+                                        isEditAdmin = false;
+                                      });
+                                    }
+
+                                    printFunc(
+                                        "Designation Demo ${designation01.Text.toString().toLowerCase()}");
+                                    printFunc(
+                                        "ADMIN DEVICE ID : ${_uuidEdit.text}");
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+
+                              //------Device UUID -----------
+                              !isEditAdmin
+                                  ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        LabelText(text: "Employee Device UUID :"),
+                                        TextFeildNewUser(
+                                          hintText: "Enter device UUID",
+                                          Controller: _uuidEdit,
+                                          onChanged: (value) {},
+                                          enable: _activeUser,
+                                          etext: uuidError01 ?? "",
+                                        ),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(),
+
+                              //-------BTN------
+                              Visibility(
+                                  visible: _userFound && !_validatePhn,
+                                  child: _activeUser
+                                      ? Container(
+                                          padding: EdgeInsets.only(
+                                              top: 15,
+                                              bottom: 30,
+                                              left: 15,
+                                              right: 15),
+                                          child: FittedBox(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                manageUserBtn(
+                                                    text: "Update Details",
+                                                    onPress: () async {
+                                                      // ValidateEditUser();
+                                                      // validateEditDropDown(
+                                                      //     designation01);
+
+                                                      validateEditUserFields();
+                                                      if (_editUserFlag) {
+                                                        printFunc("Insid if cond");
+                                                      }else{
+                                                        printFunc("ELSE");
+                                                      }
+
+
+                                                      if (_editUserFlag) {
+                                                        printFunc("Insid if cond");
+                                                        final success =
+                                                            await updateUser(
+                                                          context,
+                                                          id: existingUserId,
+                                                          // must be tracked somewhere in state
+                                                          name: _name01.text.trim(),
+                                                          empRegisteredId:
+                                                              _empRegId01.text
+                                                                  .trim(),
+                                                          email:
+                                                              _email01.text.trim(),
+                                                          contact: _contact01.text
                                                               .trim(),
-                                                      email:
-                                                          _email01.text.trim(),
-                                                      contact: _contact01.text
-                                                          .trim(),
-                                                      password:
-                                                          _password.text.trim(),
-                                                      designationId: designation01
-                                                                  .obj !=
-                                                              null
-                                                          ? designation01
-                                                                  .obj!["id"]
-                                                                  ?.toString() ??
-                                                              ''
-                                                          : '',
+                                                          designationId: designation01
+                                                                      .obj !=
+                                                                  null
+                                                              ? designation01
+                                                                      .obj!["id"]
+                                                                      ?.toString() ??
+                                                                  ''
+                                                              : '',
 
-                                                      deviveId:
-                                                          _uuidEdit.text.trim(),
-                                                    );
+                                                          deviveId:
+                                                              _uuidEdit.text.trim(),
+                                                        );
 
-                                                    if (success) {
-                                                      clearEditUserFields();
-                                                      _searchPhn.clear();
+                                                        if (success) {
+                                                          clearEditUserFields();
+                                                          _searchPhn.clear();
+                                                        }
+                                                      }
+                                                      else {
+                                                        printFunc("Inside else cond");
+                                                      }
+
+                                                      setState(() {
+                                                        _userFound = false;
+                                                      });
+                                                    }),
+                                                SizedBox(width: 5),
+                                                manageUserBtn(
+                                                    text: "Change Password",
+                                                    onPress: (){
+                                                      showDialog(
+                                                          barrierDismissible: false,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Dialog(
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                  BorderRadius.circular(15),
+                                                                  side: BorderSide(
+                                                                      width: 0.5, color: darkBg)),
+                                                              child: Container(
+                                                                width: screenSize.width * 0.8,
+                                                                height: screenSize.height / 1.7,
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                  BorderRadius.circular(15),
+                                                                ),
+                                                                child: SingleChildScrollView(
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                    MainAxisAlignment.start,
+                                                                    crossAxisAlignment:
+                                                                    CrossAxisAlignment.center,
+                                                                    children: [
+                                                                      //Title
+                                                                      Padding(
+                                                                        padding:
+                                                                        const EdgeInsets.symmetric(
+                                                                            vertical: 10),
+                                                                        child: Column(
+                                                                          children: [
+                                                                            Padding(
+                                                                              padding:
+                                                                              const EdgeInsets.only(
+                                                                                  top: 20),
+                                                                              child: Text(
+                                                                                "Update Password",
+                                                                                style: TextStyle(
+                                                                                    fontFamily:
+                                                                                    baseFont,
+                                                                                    fontWeight:
+                                                                                    FontWeight.w800,
+                                                                                    fontSize: 28,
+                                                                                    color: darkBg),
+                                                                              ),
+                                                                            ),
+                                                                            Divider(
+                                                                              color: darkBg,
+                                                                              thickness: 1.5,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      //main content
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                                                        child: Form(
+                                                                          key: _formKey,
+                                                                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                                                                          child: Column(
+                                                                            mainAxisSize: MainAxisSize.min,
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              // Phone Number
+                                                                              Text("Phone number",
+                                                                                style: TextStyle(
+                                                                                    fontSize: 16,
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                    color: darkBg,
+                                                                                    fontFamily: baseFont,
+                                                                                    shadows: [
+                                                                                      Shadow(
+                                                                                        color: Colors.black,
+                                                                                        blurRadius: 0.2,
+                                                                                        // offset: Offset(0.5, 0.5)
+                                                                                      )
+                                                                                    ]),
+                                                                              ),
+                                                                              SizedBox(height: 5,),
+                                                                              TextFormField(
+                                                                                controller: _Phno,
+                                                                                keyboardType: TextInputType.phone,
+                                                                                style: TextStyle(
+                                                                                    fontSize: 18,
+                                                                                    color: darkBg ,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    fontFamily: baseFont,
+                                                                                    letterSpacing: 0.2),
+                                                                                decoration: InputDecoration(
+                                                                                  hintText: "Re-enter Password",
+                                                                                  hintStyle: TextStyle(
+                                                                                      fontSize: 16,
+                                                                                      color: Color(0xFF9AC4C9),
+                                                                                      fontFamily: baseFont,
+                                                                                      fontWeight: FontWeight.w400),
+                                                                                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                      borderSide: BorderSide(color: darkBg, width: 0.5),
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                                                                                  disabledBorder: OutlineInputBorder(
+                                                                                      borderSide: BorderSide(color: Colors.black, width: 1),
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                                                                                  focusColor: Colors.black,
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                      borderSide: BorderSide(width: 1, color:darkBg )),
+                                                                                  focusedErrorBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                      borderSide:
+                                                                                      BorderSide(width: 1, color: Colors.black )),
+                                                                                  filled: true,
+                                                                                  fillColor: lightBg,
+                                                                                ),
+                                                                                enabled: false,
+                                                                                validator: (value) {
+                                                                                  if (value == null || value.trim().isEmpty) {
+                                                                                    return "Phone number is required";
+                                                                                  }
+                                                                                  return null;
+                                                                                },
+                                                                              ),
+                                                                              SizedBox(height: 10,),
+
+                                                                              // Password
+                                                                              Text("Password",
+                                                                                style: TextStyle(
+                                                                                    fontSize: 16,
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                    color: darkBg,
+                                                                                    fontFamily: baseFont,
+                                                                                    shadows: [
+                                                                                      Shadow(
+                                                                                        color: Colors.black,
+                                                                                        blurRadius: 0.2,
+                                                                                        // offset: Offset(0.5, 0.5)
+                                                                                      )
+                                                                                    ]),
+                                                                              ),
+                                                                              SizedBox(height: 5,),
+                                                                              TextFormField(
+                                                                                controller: _Password,
+                                                                                style: TextStyle(
+                                                                                    fontSize: 18,
+                                                                                    color: darkBg ,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    fontFamily: baseFont,
+                                                                                    letterSpacing: 0.2),
+                                                                                decoration: InputDecoration(
+                                                                                  hintText: "Enter the Password",
+                                                                                  hintStyle: TextStyle(
+                                                                                      fontSize: 16,
+                                                                                      color: Color(0xFF9AC4C9),
+                                                                                      fontFamily: baseFont,
+                                                                                      fontWeight: FontWeight.w400),
+                                                                                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                      borderSide: BorderSide(color: darkBg, width: 0.5),
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                                                                                  disabledBorder: OutlineInputBorder(
+                                                                                      borderSide: BorderSide(color: Colors.black, width: 1),
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                                                                                  focusColor: Colors.black,
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                      borderSide: BorderSide(width: 1, color:darkBg )),
+                                                                                  focusedErrorBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                      borderSide:
+                                                                                      BorderSide(width: 1, color: Colors.black )),
+                                                                                  errorBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                      borderSide:
+                                                                                      BorderSide(width: 1, color: Color(0xFFFF8A80))),
+                                                                                ),
+                                                                                validator: (value) {
+                                                                                  if (value == null || value.trim().isEmpty) {
+                                                                                    return "Password is required";
+                                                                                  }
+                                                                                  //password length
+                                                                                  /*if (value.length < 6) {
+                                    return "Password must be at least 6 characters";
+                                  } */
+
+                                                                                  return null;
+                                                                                },
+                                                                              ),
+                                                                              SizedBox(height: 10,),
+
+                                                                              // Re-Password
+                                                                              Text("Re-Entry Password",
+                                                                                style: TextStyle(
+                                                                                    fontSize: 16,
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                    color: darkBg,
+                                                                                    fontFamily: baseFont,
+                                                                                    shadows: [
+                                                                                      Shadow(
+                                                                                        color: Colors.black,
+                                                                                        blurRadius: 0.2,
+                                                                                        // offset: Offset(0.5, 0.5)
+                                                                                      )
+                                                                                    ]),
+                                                                              ),
+                                                                              SizedBox(height: 5,),
+                                                                              TextFormField(
+                                                                                controller: _Repassword,
+                                                                                style: TextStyle(
+                                                                                    fontSize: 18,
+                                                                                    color: darkBg ,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    fontFamily: baseFont,
+                                                                                    letterSpacing: 0.2),
+                                                                                decoration: InputDecoration(
+                                                                                  hintText: "Re-Enter the Password",
+                                                                                  hintStyle: TextStyle(
+                                                                                      fontSize: 16,
+                                                                                      color: Color(0xFF9AC4C9),
+                                                                                      fontFamily: baseFont,
+                                                                                      fontWeight: FontWeight.w400),
+                                                                                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                      borderSide: BorderSide(color: darkBg, width: 0.5),
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                                                                                  disabledBorder: OutlineInputBorder(
+                                                                                      borderSide: BorderSide(color: Colors.black, width: 1),
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                                                                                  focusColor: Colors.black,
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                      borderSide: BorderSide(width: 1, color:darkBg )),
+                                                                                  focusedErrorBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                      borderSide:
+                                                                                      BorderSide(width: 1, color: Colors.black )),
+                                                                                  errorBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                                                      borderSide:
+                                                                                      BorderSide(width: 1, color: Color(0xFFFF8A80))),
+
+                                                                                ),
+                                                                                validator: (value) {
+                                                                                  if (value == null || value.trim().isEmpty) {
+                                                                                    return "Please re-enter password";
+                                                                                  }
+                                                                                  if (value != _Password.text) {
+                                                                                    return "Passwords do not match";
+                                                                                  }
+                                                                                  return null;
+                                                                                },
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      //Btns
+                                                                      SizedBox(
+                                                                        height: 10,
+                                                                      ),
+                                                                      ElevatedButton(
+                                                                          style: ButtonStyle(
+                                                                            backgroundColor:
+                                                                            MaterialStateProperty
+                                                                                .all(darkBg),
+                                                                            minimumSize:
+                                                                            MaterialStateProperty
+                                                                                .all(Size(100,
+                                                                                40)), // width: 80, height: 40
+                                                                          ),
+                                                                          onPressed: () async {
+                                                                            if (_formKey.currentState!.validate()) {
+                                                                              //call Update_password API
+                                                                              if(await updatePassword(context, phno: _Phno.text.trim().toString(), pwd: _Password.text.trim().toString()))
+                                                                              Navigator.pop(context);
+                                                                              _Password.clear();
+                                                                              _Repassword.clear();
+                                                                            }
+                                                                          },
+                                                                          child: Text(
+                                                                            "Update",
+                                                                            style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontFamily:
+                                                                                baseFont,
+                                                                                fontSize: 18,
+                                                                                fontWeight:
+                                                                                FontWeight.w500,
+                                                                                shadows: [
+                                                                                  Shadow(
+                                                                                    color: Colors
+                                                                                        .white,
+                                                                                    blurRadius: 0.2,
+                                                                                  )
+                                                                                ]),
+                                                                          )),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+
                                                     }
-                                                  } else {
-                                                    printFunc(
-                                                        "Inside else cond");
-                                                  }
-                                                  setState(() {
-                                                    _userFound = false;
-                                                  });
-                                                }),
-                                            SizedBox(width: 5),
-                                            manageUserBtn(
-                                                text: "Deactive",
+                                                    )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          padding:
+                                              EdgeInsets.only(top: 15, bottom: 30),
+                                          child: Center(
+                                            child: manageUserBtn(
+                                                text: "Active",
                                                 onPress: () async {
                                                   final success =
-                                                      await deActivateUser(
-                                                          context,
+                                                      await setUserActive(context,
                                                           id: existingUserId);
                                                   if (success) {
                                                     setState(() {
-                                                      _activeUser = false;
+                                                      _activeUser = true;
                                                     });
                                                   }
-                                                })
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : Container(
-                                      padding:
-                                          EdgeInsets.only(top: 15, bottom: 30),
-                                      child: Center(
-                                        child: manageUserBtn(
-                                            text: "Active",
-                                            onPress: () async {
-                                              final success =
-                                                  await setUserActive(context,
-                                                      id: existingUserId);
-                                              if (success) {
-                                                setState(() {
-                                                  _activeUser = true;
-                                                });
-                                              }
-                                            }),
-                                      ),
-                                    ))
-                        ],
-                      ),
+                                                }),
+                                          ),
+                                        )
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ]))));
+                  ),
+                ])))
+            : SizedBox()
+          ],
+        )
+    );
   }
 
+  // New User Methods
   void clearNewUserFields() {
     _name.clear();
     _empRegId.clear();
@@ -1045,6 +1446,62 @@ class AdminNewUserState extends State<AdminNewUser> {
     setState(() {});
   }
 
+  void validateNewUserFields(){
+    setState(() {
+      nameError = _name.text.trim().isEmpty ? "Please Entry the Name" : "";
+      empIDError = _empRegId.text.trim().isEmpty ? "Please Entry the empRegID" : "";
+      uuidError = _uuid.text.trim().isEmpty ? "Please Entry the UUID" : "";
+      pwdError = _password.text.trim().isEmpty ? " Please Entry the Password " : "";
+
+      //phno error
+      if (_contact.text.trim().isEmpty) {
+        phnoError = "Please enter the phone number";
+      } else if (!RegExp(r'^\d{10}$').hasMatch(_contact.text.trim())) {
+        phnoError = "Phone number must be exactly 10 digits";
+      } else {
+        phnoError = "";
+      }
+
+      //mail error
+      if (_email.text.trim().isEmpty) {
+        mailError = "Please Entry Email required";
+      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_email.text)) {
+        mailError = "Please Enter valid email";
+      } else {
+        mailError = "";
+      }
+
+      //rePassword
+      if (_repassword.text.trim().isEmpty) {
+        rePwdError = "Re-Enter password";
+      } else if (_repassword.text != _password.text) {
+        rePwdError = "Passwords do not match";
+      } else {
+        rePwdError = "";
+      }
+
+      //designation
+      designationError = designation.Text!.isEmpty ? "Select Designation" : "";
+
+    });
+
+    if(nameError == "" &&
+       empIDError == ""&&
+       mailError == "" &&
+       phnoError == "" &&
+       uuidError == "" &&
+       designationError == "" &&
+       pwdError == "" &&
+       rePwdError == ""){
+      setState(() {
+        _newUserFlag = true;
+      });
+    }
+    printFunc("_newUserFlag : $_newUserFlag");
+  }
+
+// Edit user
+
   void clearEditUserFields() {
     existingUserId = "";
     _name01.clear();
@@ -1056,32 +1513,51 @@ class AdminNewUserState extends State<AdminNewUser> {
     setState(() {});
   }
 
-  void ValidateUser() {
-    final Controllers = [
-      _name,
-      _empRegId,
-      _email,
-      _contact,
-      _password,
-      _repassword,
-    ];
-
-    printFunc(
-        "name : ${_name.text}\n EmpREGID : ${_empRegId.text}\n email : ${_email.text}\n Contact : ${_contact.text}\n password : ${_password.text} \nRePassword : ${_repassword.text}");
-
-    bool hasEmpty =
-        Controllers.any((controller) => controller.text.trim().isEmpty);
+  void validateEditUserFields(){
     setState(() {
-      validateUser = hasEmpty;
+      _editUserFlag = false;
+    });
+    setState(() {
+
+
+      nameError01 = _name01.text.trim().isEmpty ? "Please Entry the Name" : "";
+      empIDError01 = _empRegId01.text.trim().isEmpty ? "Please Entry the empRegID" : "";
+      uuidError01 = _uuidEdit.text.trim().isEmpty ? "Please Entry the UUID" : "";
+
+      //phno error
+      if (_contact01.text.trim().isEmpty) {
+        phnoError01 = "Please enter the phone number";
+      } else if (!RegExp(r'^\d{10}$').hasMatch(_contact01.text.trim())) {
+        phnoError01 = "Phone number must be exactly 10 digits";
+      } else {
+        phnoError01 = "";
+      }
+
+      //mail error
+      if (_email01.text.trim().isEmpty) {
+        mailError01 = "Please Entry Email required";
+      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_email01.text)) {
+        mailError01 = "Please Enter valid email";
+      } else {
+        mailError01 = "";
+      }
+
+      //designation
+      designationError01 = designation01.Text!.isEmpty ? "Select Designation" : "";
+
     });
 
-    // Future Delayed
-
-    Future.delayed(Duration(seconds: 3), () {
+    if(nameError01 == "" &&
+        empIDError01 == ""&&
+        mailError01 == "" &&
+        phnoError01 == "" &&
+        uuidError01 == "" &&
+        designationError01 == ""){
       setState(() {
-        validateUser = false;
+        _editUserFlag = true;
       });
-    });
+    }
+    printFunc("_editUserFlag : $_editUserFlag");
   }
 
   void ValidateEditUser() {
@@ -1110,23 +1586,6 @@ class AdminNewUserState extends State<AdminNewUser> {
     });
   }
 
-  void validatePassword() {
-    printFunc("Demo validatePassword ${_passwordNotSame}");
-    if (_password.text != _repassword.text!) {
-      setState(() {
-        _passwordNotSame = true;
-      });
-    } else {
-      setState(() {
-        _passwordNotSame = false;
-      });
-    }
-    Future.delayed(Duration(seconds: 3), () {
-      setState(() {
-        _passwordNotSame = false;
-      });
-    });
-  }
 
   void validatePhn() {
     final phn = _searchPhn.text.trim();
@@ -1196,6 +1655,7 @@ class AdminNewUserState extends State<AdminNewUser> {
         _contact01.text = empObj["phone"] ?? '';
         designation01.setText = empObj["designation"];
         _uuidEdit.text = empObj["deviceId"];
+        _Phno.text = empObj["phone"] ?? '';
 
         designation01.setobj = designationRoles[empObj[
             "designation"]]; //Designation.getEmpDetails(int.parse(empObj["designationCode"]));

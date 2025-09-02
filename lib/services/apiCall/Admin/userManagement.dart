@@ -47,7 +47,6 @@ Future<bool> updateUser(
   required String empRegisteredId,
   required String email,
   required String contact,
-  required String password,
   required String designationId,
   required String deviveId,
 }) async {
@@ -57,7 +56,7 @@ Future<bool> updateUser(
     "empRegisteredId": empRegisteredId,
     "email": email,
     "contact": contact,
-    "password": password,
+    // "password": password,
     // "createdBy": UserData.instance.userId,
     // "modifiedBy": UserData.instance.userId,
     // "password":"abc@123",

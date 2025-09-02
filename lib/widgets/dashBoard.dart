@@ -13,7 +13,10 @@ class Dashboard extends StatelessWidget {
   final bool? userProfile;
   final Function? onLogout;
   final Widget? add_Device;
-  final Widget? add_Client;
+  final Widget? view_Profile;
+  final Widget? add_client;
+  final Widget? add_battery;
+  final Widget? add_designation;
   final Widget? floatingBtn;
 
   Dashboard({
@@ -22,7 +25,10 @@ class Dashboard extends StatelessWidget {
     required this.child,
     this.onLogout,
     this.add_Device,
-    this.add_Client,
+    this.view_Profile,
+    this.add_client,
+    this.add_battery,
+    this.add_designation,
     this.floatingBtn
   });
 
@@ -36,7 +42,7 @@ class Dashboard extends StatelessWidget {
       // Createing Key
       key: _scaffoldKey,
       floatingActionButton: floatingBtn,
-      drawer: UserProfileSlider(context, onLogout,add_Device,add_Client),
+      drawer: UserProfileSlider(context, onLogout,add_Device,view_Profile,add_client,add_battery,add_designation,),
       body: InternetStatusWatcher(
         child: Column(
           children: [
@@ -53,7 +59,14 @@ class Dashboard extends StatelessWidget {
                       height: screenSize.height / 3.5,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                          color: darkBg,
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFF56B6C2),
+                              Color(0xFF358A94),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(300),
                             bottomRight: Radius.circular(300),
@@ -104,7 +117,7 @@ class Dashboard extends StatelessWidget {
                             fontFamily: baseFont,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 1.1,
-                            backgroundColor: darkBg,
+                            // backgroundColor: darkBg,
                             shadows: [
                               Shadow(
                                 blurRadius: 2,
@@ -131,171 +144,134 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-UserProfileSlider(context, Function? onlogout, Widget? add_Device,Widget? add_Client) {
+UserProfileSlider(context, Function? onlogout, Widget? add_Device,Widget? view_Profile, Widget? add_client,Widget? add_battery, Widget? add_designation) {
   return Drawer(
     width: screenSize.width * 0.75,
-    elevation: 20,
-    backgroundColor: lightBg,
+    elevation: 100,
+    backgroundColor: darkBg.withOpacity(0.8),
     child: SafeArea(
         child: Column(
-
+          crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Icon
         Padding(
-            padding: EdgeInsets.only(top: screenSize.height * 0.05),
-            child: CircleAvatar(
-              radius: 50,
-              backgroundColor: darkBg,
-              child: Center(
-                child: Icon(
-                  Icons.person,
-                  color: lightBg,
-                  size: 58,
-                ),
-              ),
-            )
-
-            /* Icon(CupertinoIcons.person_circle_fill,color: darkBg,size: 100,shadows: [
-                    Shadow(color: Colors.black,blurRadius: 0.5,offset: Offset(0.4, 0.4))
-                  ])*/
-            ),
-        SizedBox(
-          height: 20,
-        ),
-
-        // Name
-        Text("${UserData().name}",
-            style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w900,
-                fontFamily: baseFont,
-                color: darkBg,
-                shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.4))])),
-        Divider(),
-
-        // Phone number, mail and Desiganation
-        Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
           child: Row(
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //Designation
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Text(
-                            "${UserData().designation}",
-                            style: TextStyle(
-                                fontFamily: baseFont,
-                                color: darkBg,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black,
-                                    blurRadius: 0.3,
-                                    offset: Offset(0.5, 0.4),
-                                  )
-                                ]),
-                          )
-                        ],
-                      ),
+              // Profile Avatar
+              Padding(
+                padding: EdgeInsets.only(
+                  top: screenSize.height * 0.05,
+                  right: 12.0, // Added spacing between avatar and text
+                ),
+                child: CircleAvatar(
+                  radius: 32, // Increased from 30
+                  backgroundColor: Colors.white,
+                  child: Center(
+                    child: Icon(
+                      Icons.person,
+                      color: darkBg,
+                      size: 40, // Increased from 32
                     ),
-                    //Phone
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Icon(
-                            CupertinoIcons.phone,
-                            color: darkBg,
-                            size: 20,
-                            shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))],
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "${UserData().phone}",
-                            style: TextStyle(
-                                fontFamily: baseFont,
-                                color: darkBg,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black,
-                                    blurRadius: 0.3,
-                                    offset: Offset(0.5, 0.4),
-                                  )
-                                ]),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Icon(CupertinoIcons.mail,
-                              color: darkBg,
-                              size: 20,
-                              shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))]),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Container(
-                              width: screenSize.width * 0.52,
-                              child: Text(
-                                "${UserData().email}",
-                                style: TextStyle(
-                                    fontFamily: baseFont,
-                                    color: darkBg,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    shadows: [
-                                      Shadow(
-                                        color: Colors.black,
-                                        blurRadius: 0.3,
-                                        offset: Offset(0.5, 0.4),
-                                      )
-                                    ]),
-                              ),
+                  ),
+                ),
+              ),
+
+              // User Information
+              Expanded( // Added Expanded to prevent overflow
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: screenSize.height * 0.05,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // User Name
+                      Text(
+                        UserData().name,
+                        style: TextStyle(
+                          fontSize: 24, // Reduced from 32
+                          fontWeight: FontWeight.w900,
+                          fontFamily: baseFont,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.4),
                             ),
-                          )
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+
+                      // User Email
+                      SizedBox(height: 4), // Added spacing between name and email
+                      Text(
+                        UserData().email,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: baseFont,
+                          color: Colors.white,
+                          fontSize: 14, // Reduced from 18
+                          fontWeight: FontWeight.w500,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.3,
+                              offset: Offset(0.5, 0.4),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        add_Device??SizedBox(),
-        add_Client??SizedBox(),
-        Spacer(),
-        Divider(),
 
-        // Logout and Version at bottom
-        ListTile(
-          leading: Icon(Icons.logout,
-              color: darkBg,
-              size: 28,
-              shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))]),
-          title: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "Logout",
+        Divider(color: Colors.white,),
+        SizedBox(height: 10,),
+
+
+        // Phone number, mail and Desiganation
+
+        view_Profile??SizedBox(),
+
+        add_Device??SizedBox(),
+        // SizedBox(height: 15,),
+        // SizedBox(height: 15,),
+        add_client??SizedBox(),
+        // SizedBox(height: 15,),
+        add_battery??SizedBox(),
+        // SizedBox(height: 15,),
+        add_designation??SizedBox(),
+        // SizedBox(height: 15,),
+        Container(
+          margin: EdgeInsets.only(left: 15),
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: GestureDetector(
+            onTap: () async {
+            Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
+            await setSharedPreference(await getEmployeeDetail(context, UserData().phone));
+            await setUserData();
+          },
+            child: Row(
+              children: [
+                Icon(Icons.refresh_outlined,size: 22,color: Colors.white,shadows: [Shadow(
+                  color: Colors.black,
+                  blurRadius: 0.3,
+                  offset: Offset(0.5, 0.4),
+                )],),
+                SizedBox(width: 20),
+                Text(
+                  "Refresh",
                   style: TextStyle(
                       fontFamily: baseFont,
-                      color: darkBg,
-                      fontSize: 20,
+                      color: Colors.white,
+                      fontSize: 18,
                       fontWeight: FontWeight.w500,
                       shadows: [
                         Shadow(
@@ -305,33 +281,106 @@ UserProfileSlider(context, Function? onlogout, Widget? add_Device,Widget? add_Cl
                         )
                       ]),
                 ),
-              ),
-              IconButton(
-                onPressed: () async {
-                  Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
-                  await setSharedPreference(await getEmployeeDetail(context, UserData().phone));
-                  await setUserData();
-                },
-                icon: Icon(Icons.refresh_outlined,
-                    color: darkBg,
-                    size: 28,
-                    shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))]),
-              )
+              ],
+            ),
+          ),
+        ),
+        SizedBox(),
+
+        Spacer(),
+        // Divider(color: Colors.white,),
+
+        // Logout and Version at bottom
+        // ListTile(
+        //   leading: Icon(Icons.logout,
+        //       color: Colors.white,
+        //       size: 28,
+        //       shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))]),
+        //   title: Row(
+        //     children: [
+        //       Expanded(
+        //         child: Text(
+        //           "Logout",
+        //           style: TextStyle(
+        //               fontFamily: baseFont,
+        //               color: Colors.white,
+        //               fontSize: 20,
+        //               fontWeight: FontWeight.w500,
+        //               shadows: [
+        //                 Shadow(
+        //                   color: Colors.black,
+        //                   blurRadius: 0.3,
+        //                   offset: Offset(0.5, 0.4),
+        //                 )
+        //               ]),
+        //         ),
+        //       ),
+        //       IconButton(
+        //         onPressed: () async {
+        //           Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
+        //           await setSharedPreference(await getEmployeeDetail(context, UserData().phone));
+        //           await setUserData();
+        //         },
+        //         icon: Icon(Icons.refresh_outlined,
+        //             color: Colors.white,
+        //             size: 28,
+        //             shadows: [Shadow(color: darkBg, blurRadius: 0.5, offset: Offset(0.4, 0.4))]),
+        //       )
+        //     ],
+        //   ),
+        //   onTap: onlogout != null
+        //       ? onlogout as void Function()
+        //       : () async {
+        //           Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
+        //           await Future.delayed(Duration(milliseconds: 300)); // Small delay for smooth UX
+        //           await LogOutUser(context);
+        //         },
+        // ),
+
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.redAccent
+          ),
+          margin: EdgeInsets.symmetric(horizontal: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  onPressed: () async {
+                    Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
+                    await Future.delayed(Duration(milliseconds: 300)); // Small delay for smooth UX
+                    await LogOutUser(context);
+                  },
+               child: Text(
+                "Logout",
+                style: TextStyle(
+                    fontFamily: baseFont,
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black,
+                        blurRadius: 0.3,
+                        offset: Offset(0.5, 0.4),
+                      )
+                    ]),
+              )),
+              Icon(Icons.logout,size: 22,color: Colors.white,shadows: [Shadow(
+                color: Colors.black,
+                blurRadius: 0.3,
+                offset: Offset(0.5, 0.4),
+              )],),
             ],
           ),
-          onTap: onlogout != null
-              ? onlogout as void Function()
-              : () async {
-                  Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
-                  await Future.delayed(Duration(milliseconds: 300)); // Small delay for smooth UX
-                  await LogOutUser(context);
-                },
         ),
         Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Text(
-            "Version ${appVersion}",
-            style: TextStyle(color: secondaryText, fontFamily: baseFont, fontWeight: FontWeight.w300),
+          child: Center(
+            child: Text(
+              "Version ${appVersion}",
+              style: TextStyle(color: Colors.white.withOpacity(0.8), fontFamily: baseFont, fontWeight: FontWeight.w300),
+            ),
           ),
         ),
       ],

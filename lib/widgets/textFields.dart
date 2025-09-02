@@ -14,7 +14,7 @@ class TextFeildNewUser extends StatelessWidget {
   final onChanged;
   final etext;
   final dynamic alignemnt;
-  final dynamic validator;
+  final dynamic validators;
   final bool enable;
   final dynamic inputFormatters;
   final double? width;
@@ -33,7 +33,7 @@ class TextFeildNewUser extends StatelessWidget {
       this.alignemnt,
       this.height,
       this.width,
-      this.validator,
+      this.validators,
       this.inputFormatters,
       required this.enable})
       : super(key: key);
@@ -64,7 +64,7 @@ class TextFeildNewUser extends StatelessWidget {
               onChanged: onChanged,
               enabled: enable,
               textAlign: alignemnt ?? TextAlign.left,
-              // validator: validator,
+
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   enabledBorder: OutlineInputBorder(
@@ -95,7 +95,11 @@ class TextFeildNewUser extends StatelessWidget {
                       fontWeight: FontWeight.w400),
                   errorText: etext == "" ? null : etext,
                   errorStyle: TextStyle(color: errorText),
-                  counterText: "")),
+
+                  counterText: ""),
+              // validator: validators,
+
+          ),
         ),
       ),
     );

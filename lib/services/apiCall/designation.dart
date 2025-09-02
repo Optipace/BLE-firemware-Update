@@ -50,7 +50,6 @@ Future<bool> addNewDesgination(BuildContext context, {required String name, requ
       bodyOrParams: body,
       onSuccess: (data) {
         ShowSnackBarMessage(context, 'Designation added successfully!', true);
-        Navigator.of(context).pop();
         isSuccess = true;
       });
   return isSuccess;

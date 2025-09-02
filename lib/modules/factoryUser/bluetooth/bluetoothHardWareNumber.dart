@@ -1046,6 +1046,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.of(context).pop();
                 // Reset flags and allow retry
                 resetConnectionFlags();
               },
@@ -1210,12 +1211,12 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     final box = Hive.box<GetNumberModel>('$getNumberHiveBox');
     printFunc("Hive box : ${box.values}");
     for (var item in box.values)
-      printFunc("item.productId :${item.productId.toString().substring(0, 4)}");
+      // printFunc("item.productId :${item.productId.toString()}");
     HardWareMap = {
       for (var item in box.values)
         item.productId.toString(): {
           'id': item.id,
-          'productId': item.productId.toString().substring(0, 4),
+          'productId': item.productId.toString(),
           'discription': item.discription,
           'createdOn': item.createdOn,
           'active': item.active
@@ -2462,7 +2463,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   ],
                 ),
                 content: Text(
-                  "This Device is Assign with this ${fullSerialno.substring(0, 4)} Tracker Serial Number. Do you want too?",
+                  "This Device is Assign with this ${fullSerialno} Tracker Serial Number. Do you want too?",
                   style: TextStyle(
                     color: darkBg,
                     fontWeight: FontWeight.w500,
@@ -2533,12 +2534,12 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     final box = Hive.box<GetNumberModel>('$getNumberHiveBox');
     printFunc("Hive box : ${box.values}");
     for (var item in box.values)
-      printFunc("item.productId :${item.productId.toString().substring(0, 4)}");
+      printFunc("item.productId :${item.productId.toString()}");
     HardWareMap = {
       for (var item in box.values)
         item.productId.toString(): {
           'id': item.id,
-          'productId': item.productId.toString().substring(0, 4),
+          'productId': item.productId.toString(),
           'discription': item.discription,
           'createdOn': item.createdOn,
           'active': item.active

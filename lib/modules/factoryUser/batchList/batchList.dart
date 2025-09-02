@@ -466,17 +466,20 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                           style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
                                         ),
                                         SizedBox(height: 5),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.battery_6_bar_outlined, size: 14, color: secondaryText),
-                                            Text(
-                                              "${currentItem!["profile"]['uV']} V",
-                                              style: CardText(
-                                                  font_Weight: FontWeight.w800,
-                                                  size: 14,
-                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                                            ),
-                                          ],
+                                        FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.battery_6_bar_outlined, size: 14, color: secondaryText),
+                                              Text(
+                                                "${currentItem!["profile"]['uV']} V",
+                                                style: CardText(
+                                                    font_Weight: FontWeight.w800,
+                                                    size: 14,
+                                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),

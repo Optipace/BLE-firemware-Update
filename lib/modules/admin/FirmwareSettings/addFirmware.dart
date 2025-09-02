@@ -549,16 +549,16 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ----- Upper threshold -------
-                      const LabelText(text: "Upper Threshold :"),
+                      const LabelText(text: "Cycle Thershold  [Upper Limit]:"),
                       TextFeildNewUser(
-                        hintText: "Enter Upper Threshold",
+                        hintText: "Enter Cycle Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],
                         type: TextInputType.number,
                         Controller: _upperTreshold,
                         onChanged: (value) {},
                         enable: true,
                         etext: configValidator && _upperTreshold.text.trim().isEmpty
-                            ? "Please Enter the Upper Threshold"
+                            ? "Please Enter the Cycle Threshold"
                             : "",
                       ),
                       SizedBox(
@@ -566,9 +566,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // -------- Upper Voltage--------
-                      const LabelText(text: "Upper Voltage :"),
+                      const LabelText(text: "Alarm Threshold  [Upper Limit] :"),
                       TextFeildNewUser(
-                        hintText: "Enter Upper Voltage",
+                        hintText: "Enter Alarm Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],
                         // Correct
                         type: TextInputType.number,
@@ -577,7 +577,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         onChanged: (value) {},
                         enable: true,
                         etext: configValidator && _upperVoltage.text.trim().isEmpty
-                            ? "Please Enter the Upper Voltage"
+                            ? "Please Enter the Alarm Threshold"
                             : "",
                       ),
                       SizedBox(
@@ -585,16 +585,16 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ---------- Lower Threshold ----------
-                      const LabelText(text: "Lower Threshold :"),
+                      const LabelText(text: "Cycle Threshold  [Lower Limit] :"),
                       TextFeildNewUser(
-                        hintText: "Enter Lower Threshold",
+                        hintText: "Enter Cycle Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],
                         type: TextInputType.number,
                         Controller: _lowerTreshold,
                         onChanged: (value) {},
                         enable: true,
                         etext: configValidator && _lowerTreshold.text.trim().isEmpty
-                            ? "Please Enter the Lower Threshold"
+                            ? "Please Enter the Cycle Threshold"
                             : "",
                       ),
                       SizedBox(
@@ -602,16 +602,16 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ---------- Lower Voltage -------
-                      const LabelText(text: "Lower Voltage :"),
+                      const LabelText(text: "Alarm Threshold  [Lower Limit]:"),
                       TextFeildNewUser(
-                        hintText: "Enter Lower Voltage",
+                        hintText: "Enter Alarm Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],
                         type: TextInputType.number,
                         Controller: _lowerVoltage,
                         onChanged: (value) {},
                         enable: true,
                         etext: configValidator && _lowerVoltage.text.trim().isEmpty
-                            ? "Please Enter the Lower Voltage"
+                            ? "Please Enter the Alarm Threshold"
                             : "",
                       ),
                       SizedBox(

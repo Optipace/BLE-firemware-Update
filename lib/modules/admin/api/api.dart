@@ -75,3 +75,30 @@ Future<bool> saveClient(
   );
   return isSuccess;
 }
+
+
+Future<bool> updatePassword(
+    BuildContext context,{
+      required String phno,
+      required String pwd,
+    }) async{
+  final body =
+  {
+    "contact": phno,
+    "password":pwd
+  };
+
+  bool isSuccess = false;
+
+  await ApiService.callApi(
+      context: context,
+      method: 'PUT',
+      endpoint: ApiEndpoints.updatePassword,
+      bodyOrParams: body,
+      onSuccess: (data){
+        ShowSnackBarMessage(context, 'Password Changed!!', true);
+        isSuccess = true;
+      }
+  );
+  return isSuccess;
+}

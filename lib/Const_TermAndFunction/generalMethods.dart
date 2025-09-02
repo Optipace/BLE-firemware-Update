@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/entity/getNumberModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
@@ -153,6 +156,10 @@ Future<dynamic> LogOutUser(BuildContext context) async {
 
     ApiService.performLogoutApiCall(context);
     await forceLogOut(context);
+    final box = Hive.box<GetNumberModel>('$getNumberHiveBox');
+    printFunc("Before logout : ${box.values}");
+
+    await box.clear();
   }, () {
     Navigator.of(context, rootNavigator: true).pop();
   }, "Yes","No"

@@ -13,6 +13,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/hive/hiveOperation.dart';
 import 'package:tracker_firmware/widgets/splash_screen.dart';
 
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveService.init();
@@ -105,7 +106,7 @@ void main() async {
     } else {
       runApp(MyApp());
     }
-  });  */
+  }); */
 }
 
 class MyApp extends StatelessWidget {
@@ -131,3 +132,19 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+class DevOptionsChecker {
+  static const MethodChannel _channel = MethodChannel('dev_options_channel');
+
+  static Future<bool> isDevOptionsEnabled() async {
+    try {
+      final bool result = await _channel.invokeMethod('checkDevOptions');
+      return result;
+    } catch (e) {
+      print("Error checking developer options: $e");
+      return false;
+    }
+  }
+}
+

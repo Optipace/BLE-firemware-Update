@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/modules/Profile/main_profile.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/ScanBluetooth/bluetoothBatches.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/batchList/fieldBatchUser.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/firmwares/firmwareFieldManagement.dart';
@@ -14,6 +16,90 @@ class FieldMain extends StatelessWidget {
     return Dashboard(
         text: 'Field User',
         userProfile: true,
+        //View profile
+        view_Profile: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 15),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: GestureDetector(
+                onTap: (){
+                  // printFunc("DEMO USER DATA : ${UserData()}");
+
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => mainProfile()));
+                },
+                child: Row(
+                  children: [
+                    Icon(CupertinoIcons.person,size: 22,color: Colors.white,shadows: [Shadow(
+                      color: Colors.black,
+                      blurRadius: 0.3,
+                      offset: Offset(0.5, 0.4),
+                    )],),
+                    SizedBox(width: 20,),
+                    Text(
+                      "View Profile",
+                      style: TextStyle(
+                          fontFamily: baseFont,
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.3,
+                              offset: Offset(0.5, 0.4),
+                            )
+                          ]),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 15,)
+          ],
+        ),
+        //Download Batches
+        add_Device: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 15),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute<void>(builder: (_) => BatchFeildManagement()));
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.download,size: 22,color: Colors.white,shadows: [Shadow(
+                      color: Colors.black,
+                      blurRadius: 0.3,
+                      offset: Offset(0.5, 0.4),
+                    )],),
+                    SizedBox(width: 20,),
+                    Text(
+                      "Download Batches",
+                      style: TextStyle(
+                          fontFamily: baseFont,
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.3,
+                              offset: Offset(0.5, 0.4),
+                            )
+                          ]),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 15,)
+          ],
+        ),
+
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -93,6 +179,7 @@ class FieldMain extends StatelessWidget {
               ),
             ],
           ),
-        ));
+        )
+    );
   }
 }
