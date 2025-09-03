@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class QRScannerScreen extends StatefulWidget {
 
@@ -77,14 +78,16 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
           iconTheme: IconThemeData(color: lightBg),
           title: Text(widget.title),
       ),
-      body: Stack(
-        children: [
-          MobileScanner(
-            controller: controller,
-            onDetect:_onDetect,
-          ),
-          QRScannerOverlay(isDetected: isDetected),
-        ],
+      body: InternetStatusWatcher(
+        child: Stack(
+          children: [
+            MobileScanner(
+              controller: controller,
+              onDetect:_onDetect,
+            ),
+            QRScannerOverlay(isDetected: isDetected),
+          ],
+        ),
       ),
     );
   }

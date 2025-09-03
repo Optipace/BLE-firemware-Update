@@ -15,6 +15,7 @@ import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
 class AddNewFirmware extends StatefulWidget {
@@ -115,172 +116,111 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
         shadowColor: darkBg,
       ),
       backgroundColor: lightBg,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Card(
-                // // elevation: ,
-                // // shadowColor: Colors.black,
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(22))),
-                color: lightBg,
-                child: Container(
-                  height: screenSize.height / 9,
-                  width: screenSize.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //NEW Firmware
-                      InkWell(
+      body: InternetStatusWatcher(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Card(
+                  // // elevation: ,
+                  // // shadowColor: Colors.black,
+                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(22))),
+                  color: lightBg,
+                  child: Container(
+                    height: screenSize.height / 9,
+                    width: screenSize.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        //NEW Firmware
+                        InkWell(
+                            onTap: () {
+                              setState(() {
+                                selectedbutton = 1;
+                              });
+                            },
+                            child: Container(
+                              width: selectedbutton == 1 ? screenSize.width / 1.85 : (screenSize.width / 2) / 2.2,
+                              height: 120,
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: selectedbutton == 1 ? darkBg : Colors.white,
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                                  border: Border.all(width: 0.8, color: darkBg),
+                                  boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                              child: Center(
+                                heightFactor: 2,
+                                child: selectedbutton == 1
+                                    ? Center(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.system_update_outlined,
+                                              color: lightBg,
+                                              size: 28,
+                                            ),
+                                            Text(
+                                              "New Firmware",
+                                              style: TextStyle(
+                                                fontSize: 24,
+                                                fontFamily: baseFont,
+                                                fontWeight: FontWeight.w600,
+                                                color: lightBg,
+                                                shadows: [
+                                                  Shadow(offset: Offset(0.3, 0.3), color: lightBg),
+                                                  Shadow(offset: Offset(-0.3, 0.3), color: lightBg),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    : Center(
+                                        child: Text("Firmware",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontFamily: baseFont,
+                                                fontWeight: FontWeight.w600,
+                                                color: darkBg,
+                                                shadows: [
+                                                  Shadow(offset: Offset(0.3, 0.3), color: darkBg),
+                                                ])),
+                                      ),
+                              ),
+                            )),
+                        //New config
+                        InkWell(
                           onTap: () {
                             setState(() {
-                              selectedbutton = 1;
+                              selectedbutton = 2;
                             });
                           },
                           child: Container(
-                            width: selectedbutton == 1 ? screenSize.width / 1.85 : (screenSize.width / 2) / 2.2,
+                            width: selectedbutton == 2 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
                             height: 120,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
-                                color: selectedbutton == 1 ? darkBg : Colors.white,
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                                color: selectedbutton == 2 ? darkBg : Colors.white,
                                 border: Border.all(width: 0.8, color: darkBg),
                                 boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
                             child: Center(
                               heightFactor: 2,
-                              child: selectedbutton == 1
+                              child: selectedbutton == 2
                                   ? Center(
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.system_update_outlined,
-                                            color: lightBg,
-                                            size: 28,
-                                          ),
-                                          Text(
-                                            "New Firmware",
-                                            style: TextStyle(
-                                              fontSize: 24,
-                                              fontFamily: baseFont,
-                                              fontWeight: FontWeight.w600,
-                                              color: lightBg,
-                                              shadows: [
-                                                Shadow(offset: Offset(0.3, 0.3), color: lightBg),
-                                                Shadow(offset: Offset(-0.3, 0.3), color: lightBg),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  : Center(
-                                      child: Text("Firmware",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontFamily: baseFont,
-                                              fontWeight: FontWeight.w600,
-                                              color: darkBg,
-                                              shadows: [
-                                                Shadow(offset: Offset(0.3, 0.3), color: darkBg),
-                                              ])),
-                                    ),
-                            ),
-                          )),
-                      //New config
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedbutton = 2;
-                          });
-                        },
-                        child: Container(
-                          width: selectedbutton == 2 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
-                          height: 120,
-                          decoration: BoxDecoration(
-                              color: selectedbutton == 2 ? darkBg : Colors.white,
-                              border: Border.all(width: 0.8, color: darkBg),
-                              boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
-                          child: Center(
-                            heightFactor: 2,
-                            child: selectedbutton == 2
-                                ? Center(
-                                    child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.handyman_outlined,
-                                        color: lightBg,
-                                        size: 26,
-                                      ),
-                                      Text(
-                                        "New Config",
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontFamily: baseFont,
-                                          fontWeight: FontWeight.w600,
-                                          color: lightBg,
-                                          shadows: [
-                                            Shadow(
-                                              offset: Offset(0.3, 0.3),
-                                              color: lightBg,
-                                            ),
-                                            Shadow(
-                                              offset: Offset(-0.3, 0.3),
-                                              color: lightBg,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ))
-                                : Text("Config",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: baseFont,
-                                        fontWeight: FontWeight.w600,
-                                        color: darkBg,
-                                        shadows: [
-                                          Shadow(offset: Offset(0.3, 0.3), color: darkBg),
-                                        ])),
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedbutton = 3;
-                          });
-                        },
-                        child: Container(
-                          width: selectedbutton == 3 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
-                          height: 120,
-                          decoration: BoxDecoration(
-                              color: selectedbutton == 3 ? darkBg : Colors.white,
-                              borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-                              border: Border.all(width: 0.8, color: darkBg),
-                              boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
-                          child: Center(
-                            heightFactor: 2,
-                            child: selectedbutton == 3
-                                ? Center(
-                                    child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.handyman_outlined,
-                                          color: selectedbutton == 3 ? lightBg : darkBg,
+                                          color: lightBg,
                                           size: 26,
                                         ),
                                         Text(
-                                          "New Batch",
+                                          "New Config",
                                           style: TextStyle(
                                             fontSize: 24,
                                             fontFamily: baseFont,
@@ -291,43 +231,109 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                 offset: Offset(0.3, 0.3),
                                                 color: lightBg,
                                               ),
-                                              Shadow(offset: Offset(-0.3, 0.3), color: lightBg),
+                                              Shadow(
+                                                offset: Offset(-0.3, 0.3),
+                                                color: lightBg,
+                                              ),
                                             ],
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  )
-                                : Text("Batch",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: baseFont,
-                                        fontWeight: FontWeight.w600,
-                                        color: darkBg,
-                                        shadows: [
-                                          Shadow(offset: Offset(0.3, 0.3), color: darkBg),
-                                        ])),
+                                    ))
+                                  : Text("Config",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: baseFont,
+                                          fontWeight: FontWeight.w600,
+                                          color: darkBg,
+                                          shadows: [
+                                            Shadow(offset: Offset(0.3, 0.3), color: darkBg),
+                                          ])),
+                            ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                )),
-            if (selectedbutton == 1)
-              newFirmware(context)
-            else if (selectedbutton == 2)
-              newConfiguration(context)
-            else
-              newBatch(context)
-          ],
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedbutton = 3;
+                            });
+                          },
+                          child: Container(
+                            width: selectedbutton == 3 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
+                            height: 120,
+                            decoration: BoxDecoration(
+                                color: selectedbutton == 3 ? darkBg : Colors.white,
+                                borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                                border: Border.all(width: 0.8, color: darkBg),
+                                boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                            child: Center(
+                              heightFactor: 2,
+                              child: selectedbutton == 3
+                                  ? Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.handyman_outlined,
+                                            color: selectedbutton == 3 ? lightBg : darkBg,
+                                            size: 26,
+                                          ),
+                                          Text(
+                                            "New Batch",
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontFamily: baseFont,
+                                              fontWeight: FontWeight.w600,
+                                              color: lightBg,
+                                              shadows: [
+                                                Shadow(
+                                                  offset: Offset(0.3, 0.3),
+                                                  color: lightBg,
+                                                ),
+                                                Shadow(offset: Offset(-0.3, 0.3), color: lightBg),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Text("Batch",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: baseFont,
+                                          fontWeight: FontWeight.w600,
+                                          color: darkBg,
+                                          shadows: [
+                                            Shadow(offset: Offset(0.3, 0.3), color: darkBg),
+                                          ])),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
+              if (selectedbutton == 1)
+                newFirmware(context)
+              else if (selectedbutton == 2)
+                newConfiguration(context)
+              else
+                newBatch(context)
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget newFirmware(context) {
+    clearConfig();
+    clearBattery();
+    clearBatch();
     return Card(
       elevation: 5,
       margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
@@ -566,7 +572,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // -------- Upper Voltage--------
-                      const LabelText(text: "Alarm Threshold  [Upper Limit] :"),
+                      const LabelText(text: "Alarm Threshold   [Upper Limit] :"),
                       TextFeildNewUser(
                         hintText: "Enter Alarm Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],

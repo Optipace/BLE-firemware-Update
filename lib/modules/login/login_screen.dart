@@ -338,11 +338,11 @@ class LoginScreenState extends State<LoginScreen> {
                             // await DataBase.database;
                             // final exists = await DataBase.isDatabaseCreated();
                             // if(exists){
-                            //   print("Database is created!!");
+                            //   printFunc("Database is created!!");
                             // }else{
-                            //   print("Some issues");
+                            //   printFunc("Some issues");
                             // }
-                            // print("Device Information : \n"
+                            // printFunc("Device Information : \n"
                             //     "uuid :  ${sharedPreferences.getString("UUID")}"
                             //     "\n version : ${sharedPreferences.getString("osVersion")}"
                             //     "\n model : ${sharedPreferences.getString("deviceModel")}");
@@ -373,13 +373,11 @@ class LoginScreenState extends State<LoginScreen> {
                             printFunc(
                                 "DEMO DEMO ${checkPhnNum(phoneNumber.toString()) && checkPass(_password.toString())}");
 
-                            if ((checkPhnNum(phoneNumber.text) && checkPass(_password.text)) || true) {
+                            if ((checkPhnNum(phoneNumber.text) && checkPass(_password.text)) ) {
                               printFunc("Inside if cond");
                               printFunc("SIZE : $screenSize");
                               // await getEmpDetails(context, phoneNumber.text, _password.text);
                               await logInAPICall(context, phoneNumber.text, _password.text);
-                            } else {
-                              printFunc("inside Else cond");
                             }
                           },
                           child: Text(

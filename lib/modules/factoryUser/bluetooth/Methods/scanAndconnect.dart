@@ -44,7 +44,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 Future<BluetoothDevice?> scanDeviceByMACId(String macID) async {
   BluetoothDevice? selectedDevice;
-  print("Old MACId: $macID");
+  printFunc("Old MACId: $macID");
 
   await FlutterBluePlus.startScan(timeout: const Duration(seconds: 45));
 
@@ -55,23 +55,23 @@ Future<BluetoothDevice?> scanDeviceByMACId(String macID) async {
     final results = await FlutterBluePlus.scanResults.first;
 
     for (var r in results) {
-      print("Device MACId's : ${r.device.remoteId}");
+      printFunc("Device MACId's : ${r.device.remoteId}");
 
       if (r.device.remoteId.toString() == macID) {
         await FlutterBluePlus.stopScan();
 
         ////////// Printing Advertisement Data ///////////
         AdvertisementData advData = r.advertisementData;
-        print("Connected: ${r.device.isConnected}");
-        print("adv Data: ${advData}");
-        print("Manufacturer Data: ${advData.manufacturerData}");
-        print("Service UUIDs: ${advData.serviceUuids}");
-        print("Tx Power: ${advData.txPowerLevel}");
-        print("Connectable: ${advData.connectable}");
-        print("Local Name: ${advData.localName}");
+        printFunc("Connected: ${r.device.isConnected}");
+        printFunc("adv Data: ${advData}");
+        printFunc("Manufacturer Data: ${advData.manufacturerData}");
+        printFunc("Service UUIDs: ${advData.serviceUuids}");
+        printFunc("Tx Power: ${advData.txPowerLevel}");
+        printFunc("Connectable: ${advData.connectable}");
+        printFunc("Local Name: ${advData.localName}");
         //////////////////////////////////////////////////////
 
-        print("Device returning from the Scan Method: ${r.device.remoteId}");
+        printFunc("Device returning from the Scan Method: ${r.device.remoteId}");
         return r.device;
       }
     }
@@ -81,7 +81,7 @@ Future<BluetoothDevice?> scanDeviceByMACId(String macID) async {
   }
 
   await FlutterBluePlus.stopScan();
-  print("$macID this Device is not found");
+  printFunc("$macID this Device is not found");
   return selectedDevice;
 }
 

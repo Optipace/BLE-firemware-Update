@@ -70,7 +70,7 @@ Future<List<Map<String, dynamic>>> getBatchList(
           // printFunc("Formatted data : $formatted");
         }
 
-        print("Formatted data list : $batchList");
+        printFunc("Formatted data list : $batchList");
       });
 
   // batchList = [

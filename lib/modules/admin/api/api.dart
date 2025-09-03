@@ -26,7 +26,7 @@ Future<bool> getAllLogs(BuildContext context) async {
     }
     //  --else cond --
     /*else{
-      print("Login Failed");
+      printFunc("Login Failed");
     }*/
   }
   //--else cond --

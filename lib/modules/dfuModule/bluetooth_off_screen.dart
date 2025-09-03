@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 // import 'package:tracker_firmware/modules/bluetoothManeger/utils/snackbar.dart';
 
@@ -51,8 +52,8 @@ class BluetoothOffScreen extends StatelessWidget {
           } catch (e, backtrace) {
             //showsnack bar
             ShowSnackBarMessage(context, prettyException('Error Turning On :',e), false);
-            print("$e");
-            print("backtrace: $backtrace");
+            printFunc("$e");
+            printFunc("backtrace: $backtrace");
           }
         },
       ),

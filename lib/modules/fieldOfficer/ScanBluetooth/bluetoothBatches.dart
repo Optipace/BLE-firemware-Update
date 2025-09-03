@@ -8,6 +8,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/dfuModule/bluetoothMain.dart';
 import 'package:tracker_firmware/modules/dfuModule/dfuModule.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/hardWareNumber.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class SavedBatches extends StatefulWidget {
   const SavedBatches({super.key});
@@ -69,7 +70,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
 
   @override
   Widget build(BuildContext context) {
-    print("Inside Logs Page");
+    printFunc("Inside Logs Page");
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -88,10 +89,12 @@ class BlueetoothBatchesState extends State<SavedBatches> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: Container(
-            child: SingleChildScrollView(
-          child: Column(children: seriesSix()),
-        )));
+        body: InternetStatusWatcher(
+          child: Container(
+              child: SingleChildScrollView(
+            child: Column(children: seriesSix()),
+          )),
+        ));
   }
 
   List<Widget> seriesSix() {

@@ -14,6 +14,7 @@ import 'package:tracker_firmware/widgets/CustomCard.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
 class AdminNewUser extends StatefulWidget {
@@ -115,149 +116,151 @@ class AdminNewUserState extends State<AdminNewUser> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: SingleChildScrollView(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Card(
-              // elevation: ,
-              // shadowColor: Colors.black,
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: darkBg, width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(22))),
-              color: lightBg,
-              child: Container(
-                height: screenSize.height / 9,
-                width: screenSize.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    //NEW USER
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedbutton = 1;
-                        });
-                      },
-                      child: Container(
-                        width: screenSize.width * 0.49,
-                        height: 120,
-                        decoration: BoxDecoration(
-                            color: selectedbutton == 1 ? darkBg : lightBg,
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20)),
-                            border: Border.all(width: 0.5, color: darkBg),
-                            boxShadow: [
-                              BoxShadow(blurRadius: 0.5, color: darkBg)
-                            ]),
-                        child: Center(
-                            heightFactor: 2,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/image/user.png',
-                                    width: 32,
-                                    height: 32,
-                                    color:
-                                        selectedbutton == 1 ? lightBg : darkBg,
-                                  ),
-                                  Text(
-                                    "New User",
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w600,
-                                      color: selectedbutton == 1
-                                          ? lightBg
-                                          : darkBg,
-                                      shadows: [
-                                        Shadow(
+        body: InternetStatusWatcher(
+          child: SingleChildScrollView(
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Card(
+                // elevation: ,
+                // shadowColor: Colors.black,
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(color: darkBg, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(22))),
+                color: lightBg,
+                child: Container(
+                  height: screenSize.height / 9,
+                  width: screenSize.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      //NEW USER
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedbutton = 1;
+                          });
+                        },
+                        child: Container(
+                          width: screenSize.width * 0.49,
+                          height: 120,
+                          decoration: BoxDecoration(
+                              color: selectedbutton == 1 ? darkBg : lightBg,
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20)),
+                              border: Border.all(width: 0.5, color: darkBg),
+                              boxShadow: [
+                                BoxShadow(blurRadius: 0.5, color: darkBg)
+                              ]),
+                          child: Center(
+                              heightFactor: 2,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/image/user.png',
+                                      width: 32,
+                                      height: 32,
+                                      color:
+                                          selectedbutton == 1 ? lightBg : darkBg,
+                                    ),
+                                    Text(
+                                      "New User",
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontFamily: baseFont,
+                                        fontWeight: FontWeight.w600,
+                                        color: selectedbutton == 1
+                                            ? lightBg
+                                            : darkBg,
+                                        shadows: [
+                                          Shadow(
+                                              offset: Offset(0.3, 0.3),
+                                              color: selectedbutton == 1
+                                                  ? lightBg
+                                                  : darkBg),
+                                          Shadow(
+                                              offset: Offset(-0.3, 0.3),
+                                              color: selectedbutton == 1
+                                                  ? lightBg
+                                                  : darkBg),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )),
+                        ),
+                      ),
+                      //EDIT USER
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedbutton = 2;
+                          });
+                        },
+                        child: Container(
+                          width: screenSize.width * 0.48,
+                          height: 120,
+                          decoration: BoxDecoration(
+                              color: selectedbutton == 2 ? darkBg : lightBg,
+                              borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
+                              boxShadow: [
+                                BoxShadow(blurRadius: 0.5, color: darkBg)
+                              ]),
+                          child: Center(
+                              heightFactor: 2,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/image/editUser.png',
+                                      width: 32,
+                                      height: 32,
+                                      color:
+                                          selectedbutton == 1 ? darkBg : lightBg,
+                                    ),
+                                    Text(
+                                      "Edit User",
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontFamily: baseFont,
+                                        fontWeight: FontWeight.w600,
+                                        color: selectedbutton == 1
+                                            ? darkBg
+                                            : lightBg,
+                                        shadows: [
+                                          Shadow(
                                             offset: Offset(0.3, 0.3),
                                             color: selectedbutton == 1
-                                                ? lightBg
-                                                : darkBg),
-                                        Shadow(
+                                                ? darkBg
+                                                : lightBg,
+                                          ),
+                                          Shadow(
                                             offset: Offset(-0.3, 0.3),
                                             color: selectedbutton == 1
-                                                ? lightBg
-                                                : darkBg),
-                                      ],
+                                                ? darkBg
+                                                : lightBg,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  )
-                                ],
-                              ),
-                            )),
-                      ),
-                    ),
-                    //EDIT USER
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedbutton = 2;
-                        });
-                      },
-                      child: Container(
-                        width: screenSize.width * 0.48,
-                        height: 120,
-                        decoration: BoxDecoration(
-                            color: selectedbutton == 2 ? darkBg : lightBg,
-                            borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
-                            boxShadow: [
-                              BoxShadow(blurRadius: 0.5, color: darkBg)
-                            ]),
-                        child: Center(
-                            heightFactor: 2,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/image/editUser.png',
-                                    width: 32,
-                                    height: 32,
-                                    color:
-                                        selectedbutton == 1 ? darkBg : lightBg,
-                                  ),
-                                  Text(
-                                    "Edit User",
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w600,
-                                      color: selectedbutton == 1
-                                          ? darkBg
-                                          : lightBg,
-                                      shadows: [
-                                        Shadow(
-                                          offset: Offset(0.3, 0.3),
-                                          color: selectedbutton == 1
-                                              ? darkBg
-                                              : lightBg,
-                                        ),
-                                        Shadow(
-                                          offset: Offset(-0.3, 0.3),
-                                          color: selectedbutton == 1
-                                              ? darkBg
-                                              : lightBg,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
-                      ),
-                    )
-                  ],
-                ),
-              )),
-          if (selectedbutton == 1) AddNewUser(context) else UpdateUser(context)
-        ])));
+                                  ],
+                                ),
+                              )),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+            if (selectedbutton == 1) AddNewUser(context) else UpdateUser(context)
+          ])),
+        ));
   }
 
   Widget AddNewUser(BuildContext context) {
@@ -1518,8 +1521,6 @@ class AdminNewUserState extends State<AdminNewUser> {
       _editUserFlag = false;
     });
     setState(() {
-
-
       nameError01 = _name01.text.trim().isEmpty ? "Please Entry the Name" : "";
       empIDError01 = _empRegId01.text.trim().isEmpty ? "Please Entry the empRegID" : "";
       uuidError01 = _uuidEdit.text.trim().isEmpty ? "Please Entry the UUID" : "";

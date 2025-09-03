@@ -20,178 +20,139 @@ class FactoryMain extends StatelessWidget {
     return Dashboard(
         text: 'Factory User',
         userProfile: true,
-        // view profile
-        view_Profile: Column(
+        sliderChild: Column(
           children: [
-            Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: GestureDetector(
-                onTap: (){
-                  // printFunc("DEMO USER DATA : ${UserData()}");
-
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => mainProfile()));
-                },
-                child: Row(
-                  children: [
-                    Icon(CupertinoIcons.person,size: 22,color: Colors.white,shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius: 0.3,
-                      offset: Offset(0.5, 0.4),
-                    )],),
-                    SizedBox(width: 20,),
-                    Text(
-                      "View Profile",
-                      style: TextStyle(
-                          fontFamily: baseFont,
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.3,
-                              offset: Offset(0.5, 0.4),
-                            )
-                          ]),
+            //Download Batches
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute<void>(builder: (_) => BatchFactoryManagement()));
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.download,size: 22,color: Colors.white,shadows: [Shadow(
+                          color: Colors.black,
+                          blurRadius: 0.3,
+                          offset: Offset(0.5, 0.4),
+                        )],),
+                        SizedBox(width: 20,),
+                        Text(
+                          "Download Batches",
+                          style: TextStyle(
+                              fontFamily: baseFont,
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0.3,
+                                  offset: Offset(0.5, 0.4),
+                                )
+                              ]),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                SizedBox(height: 15,)
+              ],
             ),
-            SizedBox(height: 15,)
+            //locate device
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute<void>(
+                          builder: (_) => BluetoothMainScreen(onBluetoothOn: () => locateHomePage(),)
+                      ));
+                    },
+                    child: Row(
+                      children: [
+                        Icon(CupertinoIcons.location_solid,size: 22,color: Colors.white,shadows: [Shadow(
+                          color: Colors.black,
+                          blurRadius: 0.3,
+                          offset: Offset(0.5, 0.4),
+                        )],),
+                        SizedBox(width: 20,),
+                        Text(
+                          "Locate Device",
+                          style: TextStyle(
+                              fontFamily: baseFont,
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0.3,
+                                  offset: Offset(0.5, 0.4),
+                                )
+                              ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15,)
+              ],
+            ),
+            //calibration
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute<void>(builder: (_) => BluetoothMainScreen(
+                        onBluetoothOn: () => CalibrateDevice(),
+                      )
+                      )
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.settings_input_component,size: 22,color: Colors.white,shadows: [Shadow(
+                          color: Colors.black,
+                          blurRadius: 0.3,
+                          offset: Offset(0.5, 0.4),
+                        )],),
+                        SizedBox(width: 20,),
+                        Text(
+                          "Calibration",
+                          style: TextStyle(
+                              fontFamily: baseFont,
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0.3,
+                                  offset: Offset(0.5, 0.4),
+                                )
+                              ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15,)
+              ],
+            ),
           ],
         ),
-        //Download Batches
-        add_Device: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute<void>(builder: (_) => BatchFactoryManagement()));
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.download,size: 22,color: Colors.white,shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius: 0.3,
-                      offset: Offset(0.5, 0.4),
-                    )],),
-                    SizedBox(width: 20,),
-                    Text(
-                      "Download Batches",
-                      style: TextStyle(
-                          fontFamily: baseFont,
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.3,
-                              offset: Offset(0.5, 0.4),
-                            )
-                          ]),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 15,)
-          ],
-        ),
-        //locate device
-        add_battery: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute<void>(
-                      builder: (_) => BluetoothMainScreen(onBluetoothOn: () => locateHomePage(),)
-                  ));
-                },
-                child: Row(
-                  children: [
-                    Icon(CupertinoIcons.location_solid,size: 22,color: Colors.white,shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius: 0.3,
-                      offset: Offset(0.5, 0.4),
-                    )],),
-                    SizedBox(width: 20,),
-                    Text(
-                      "Locate Device",
-                      style: TextStyle(
-                          fontFamily: baseFont,
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.3,
-                              offset: Offset(0.5, 0.4),
-                            )
-                          ]),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 15,)
-          ],
-        ),
-        //calibration
-        add_designation: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute<void>(builder: (_) => BluetoothMainScreen(
-                    onBluetoothOn: () => CalibrateDevice(),
-                  )
-                  )
-                  );
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.settings_input_component,size: 22,color: Colors.white,shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius: 0.3,
-                      offset: Offset(0.5, 0.4),
-                    )],),
-                    SizedBox(width: 20,),
-                    Text(
-                      "Calibration",
-                      style: TextStyle(
-                          fontFamily: baseFont,
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.3,
-                              offset: Offset(0.5, 0.4),
-                            )
-                          ]),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 15,)
-          ],
-        ),
-
 
 
         floatingBtn: Container(

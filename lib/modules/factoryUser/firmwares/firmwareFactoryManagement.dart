@@ -52,7 +52,7 @@ class FirmwareFactoryManagementState extends State<FirmwareFactoryManagement> {
 
   @override
   Widget build(BuildContext context) {
-    print("Inside Logs Page");
+    printFunc("Inside Logs Page");
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(

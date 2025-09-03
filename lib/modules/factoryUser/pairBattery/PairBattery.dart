@@ -10,6 +10,7 @@ import 'package:tracker_firmware/modules/factoryUser/api/pairBattery.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
 class PairBattery extends StatefulWidget {
@@ -74,637 +75,643 @@ class _PairBatteryState extends State<PairBattery> {
         shadowColor: darkBg,
       ),
       backgroundColor: lightBg,
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
-            decoration: BoxDecoration(
-              border: Border.all(color: darkBg),
-              color: Colors.white,
-              // borderRadius: BorderRadius.circular(15)
-            ),
-            padding: EdgeInsets.symmetric(vertical: 15),
-            child: Center(
-              child: Text(
-                "PAIR DEVICE WITH BATTERY",
-                style: TextStyle(
-                    fontFamily: baseFont,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 24,
-                    color: darkBg,
-                    shadows: [
-                      Shadow(
-                          color: Colors.black,
-                          blurRadius: 0.5,
-                          offset: Offset(0.5, 0.5))
-                    ]),
+      body: InternetStatusWatcher(
+        child: SingleChildScrollView(
+            child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
+              decoration: BoxDecoration(
+                border: Border.all(color: darkBg),
+                color: Colors.white,
+                // borderRadius: BorderRadius.circular(15)
+              ),
+              padding: EdgeInsets.symmetric(vertical: 15),
+              child: Center(
+                child: Text(
+                  "PAIR DEVICE WITH BATTERY",
+                  style: TextStyle(
+                      fontFamily: baseFont,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 24,
+                      color: darkBg,
+                      shadows: [
+                        Shadow(
+                            color: Colors.black,
+                            blurRadius: 0.5,
+                            offset: Offset(0.5, 0.5))
+                      ]),
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
-            decoration: BoxDecoration(
-              border: Border.all(color: darkBg),
-              color: Colors.white,
-              // borderRadius: BorderRadius.circular(15)
-            ),
-            child: Column(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //QR CODE
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 15,right: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "MAC-ID  ",
-                                  style: TextStyle(
-                                      color: darkBg,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      shadows: [
-                                        Shadow(color: Colors.black, blurRadius: 0.3)
-                                      ]),
-                                ),
-
-
-                                enableBarCode
-                                ? NotConnected
-                                    ? Container(
-                                  color: Colors.transparent,
-                                  height: 25,
-                                  width: 25,
-                                  child:  Center(
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.grey),
-                                    ),
-                                  ),
-                                )
-                                    :ElevatedButton(
-                                  onPressed: enableSubmit
-                                      ? () {}
-                                      : () async {
-                                    validateField();
-                                    !validateFields;
-
-                                    // await scanAndConnect();
-
-                                    setState(() {});
-                                  },
-                                  child: (device != null && device!.isConnected)
-                                      ? Text("Connected")
-                                      : Text("Connect"),
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all(darkBg),
-                                    elevation: MaterialStateProperty.all(5),
-                                    shadowColor:
-                                    MaterialStateProperty.all(darkBg),
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          side: BorderSide(
-                                              color: darkBg, width: 1)),
-                                    ),
-                                  ),
-                                )
-                                : SizedBox(),
-
-
-
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border: Border.all(color: darkBg),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Column(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () async {
-                                        final result = await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                QRScannerScreen(title: "Scan QR-Code"),
-                                          ),
-                                        );
-                                        if (result != null) {
-                                          setState(() {
-                                            _macIdController.text = result;
-                                          });
-                                        }
-                                      },
-                                      child: Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(30, 15, 30, 5),
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: darkBg),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(CupertinoIcons.qrcode,
-                                                    size: 35,
-                                                    color: darkBg,
-                                                    shadows: [
-                                                      Shadow(
-                                                          color: Colors.black,
-                                                          blurRadius: 0.4)
-                                                    ]),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  "Scan QR-Code",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: darkBg,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      shadows: [
-                                                        Shadow(
-                                                            color: Colors.black,
-                                                            blurRadius: 0.4)
-                                                      ]),
-                                                ),
-                                              ],
-                                            ),
-                                            Icon(
-                                              CupertinoIcons.chevron_right_2,
-                                              color: darkBg,
-                                              shadows: [
-                                                Shadow(
-                                                    color: Colors.black,
-                                                    blurRadius: 0.4)
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            child: Container(
-                                          margin: EdgeInsets.only(left: 30),
-                                          height: 1,
-                                          color: Colors.black,
-                                        )),
-                                        Padding(
-                                          padding: const EdgeInsets.all(15),
-                                          child: Text(
-                                            "OR",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                        Expanded(
-                                            child: Container(
-                                          margin: EdgeInsets.only(right: 30),
-                                          height: 1,
-                                          color: Colors.black,
-                                        )),
-                                      ],
-                                    ),
-                                    TextFeildNewUser(
-                                      hintText: "Enter the MacID",
-                                      Controller: _macIdController,
-                                      onChanged: (value) {},
-                                      enable: true,
-                                      etext: validateFields &&
-                                              _macIdController.text
-                                                  .trim()
-                                                  .isEmpty
-                                          ? "Please Enter MAC-Id"
-                                          : "",
-                                    ),
-                                  ],
-                                ),
-                                Visibility(
-                                    visible: !enableBarCode,
-                                    child: Container(
-                                      width: screenSize.width / 3,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              darkBg),
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      20))),
-                                        ),
-                                        onPressed: () async {
-                                          validateField();
-                                          result = await getBatteryByMac(
-                                              context,
-                                              macID: _macIdController.text);
-                                          bool batteryAvailable = result[0];
-                                          Map<String, dynamic> batteryDetail =
-                                          result[1];
-
-                                          printFunc(
-                                              "Demo battery details : ${batteryAvailable} \n ${batteryDetail}");
-
-                                          if (batteryAvailable &&
-                                              batteryDetail.isNotEmpty) {
-                                            showDialog(
-                                                context: context,
-                                                barrierDismissible: false,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Column(
-                                                      children: [
-                                                        Text(
-                                                          "BATTERY FOUND",
-                                                          style: TextStyle(
-                                                              color: darkBg,
-                                                              fontSize: 24,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w800,
-                                                              shadows: [
-                                                                Shadow(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    blurRadius:
-                                                                    0.4)
-                                                              ]),
-                                                        ),
-                                                        Divider(
-                                                          color: darkBg,
-                                                          thickness: 0.5,
-                                                        )
-                                                      ],
-                                                    ),
-                                                    content: Text(
-                                                        "This Device is Paired with this ${batteryDetail['batterySerialNumber']} Battery. Do you want too?"),
-                                                    actions: [
-                                                      //Continue btn
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          //Go back
-                                                          enableBarCode = true;
-                                                          setState(() {
-                                                            _batteryController.text = batteryDetail['batterySerialNumber'];
-                                                          });
-                                                          Navigator.of(context)
-                                                              .pop(); //Save Log API
-
-                                                        },
-                                                        child: Text(
-                                                          "Continue",
-                                                          style: TextStyle(
-                                                              fontSize: 16),
-                                                        ),
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all<Color>(
-                                                                darkBg),
-                                                            shape: MaterialStateProperty.all<
-                                                                RoundedRectangleBorder>(
-                                                                RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                    BorderRadius.circular(
-                                                                        18)))),
-                                                      ),
-                                                      //Assign new Btn
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          enableBarCode = true;
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          setState(() {});
-                                                        },
-                                                        child: Text(
-                                                          "Assign New",
-                                                          style: TextStyle(
-                                                              fontSize: 16),
-                                                        ),
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all<Color>(
-                                                                darkBg),
-                                                            shape: MaterialStateProperty.all<
-                                                                RoundedRectangleBorder>(
-                                                                RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                    BorderRadius.circular(
-                                                                        18)))),
-                                                      )
-                                                    ],
-                                                  );
-                                                });
-                                          } else if (batteryAvailable &&
-                                              batteryDetail.isEmpty) {
-                                            enableBarCode = true;
-                                            ShowSnackBarMessage(context,
-                                                'No Battery is Paired!', true);
-                                            setState(() {});
-                                          } else if(!batteryAvailable){
-                                            enableBarCode = false;
-                                            // ShowSnackBarMessage(context, 'No MacID found!', false);
-                                            _macIdController.clear();
-                                            setState(() {});
-                                          }
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.search),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              "Search",
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                  shadows: [
-                                                    Shadow(color: Colors.black)
-                                                  ]),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ),
-
-
-                        ],
-                      ),
-                    ),
-                    //BAR CODE
-                    enableBarCode
-                        ? Container(
-                            margin: EdgeInsets.all(10),
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: Text(
-                                    "BATTERY NUMBER",
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
+              decoration: BoxDecoration(
+                border: Border.all(color: darkBg),
+                color: Colors.white,
+                // borderRadius: BorderRadius.circular(15)
+              ),
+              child: Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //QR CODE
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(left: 15,right: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "MAC-ID  ",
                                     style: TextStyle(
                                         color: darkBg,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         shadows: [
-                                          Shadow(
-                                              color: Colors.black,
-                                              blurRadius: 0.3)
+                                          Shadow(color: Colors.black, blurRadius: 0.3)
                                         ]),
                                   ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.all(10),
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: darkBg),
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
+
+
+                                  enableBarCode
+                                  ? NotConnected
+                                      ? Container(
+                                    color: Colors.transparent,
+                                    height: 25,
+                                    width: 25,
+                                    child:  Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                            Colors.grey),
+                                      ),
+                                    ),
+                                  )
+                                      :ElevatedButton(
+                                    onPressed: enableSubmit
+                                        ? () {}
+                                        : () async {
+                                      validateField();
+                                      !validateFields;
+
+                                      // await scanAndConnect();
+
+                                      setState(() {});
+                                    },
+                                    child: (device != null && device!.isConnected)
+                                        ? Text("Connected")
+                                        : Text("Connect"),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(darkBg),
+                                      elevation: MaterialStateProperty.all(5),
+                                      shadowColor:
+                                      MaterialStateProperty.all(darkBg),
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(10),
+                                            side: BorderSide(
+                                                color: darkBg, width: 1)),
+                                      ),
+                                    ),
+                                  )
+                                  : SizedBox(),
+
+
+
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: darkBg),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () async {
-                                              final result = await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      QRScannerScreen(title: "Scan Barcode"),
-                                                ),
-                                              );
-
-
-                                              printFunc("DEMO RESULT : ${result.replaceAll("-","")}");
-
-                                              if (result != null) {
-                                                setState(() {
-                                                  _batteryController.text =
-                                                      result.replaceAll("-","");
-                                                });
-                                              }
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  30, 15, 30, 5),
-                                              padding: EdgeInsets.all(10),
-                                              decoration: BoxDecoration(
-                                                border:
-                                                    Border.all(color: darkBg),
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                      GestureDetector(
+                                        onTap: () async {
+                                          final result = await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  QRScannerScreen(title: "Scan QR-Code"),
+                                            ),
+                                          );
+                                          if (result != null) {
+                                            setState(() {
+                                              _macIdController.text = result;
+                                            });
+                                          }
+                                        },
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.fromLTRB(30, 15, 30, 5),
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: darkBg),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
                                                 children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                          CupertinoIcons
-                                                              .barcode,
-                                                          size: 35,
-                                                          color: darkBg,
-                                                          shadows: [
-                                                            Shadow(
-                                                                color: Colors
-                                                                    .black,
-                                                                blurRadius: 0.4)
-                                                          ]),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        "Scan Barcode",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
+                                                  Icon(CupertinoIcons.qrcode,
+                                                      size: 35,
+                                                      color: darkBg,
+                                                      shadows: [
+                                                        Shadow(
+                                                            color: Colors.black,
+                                                            blurRadius: 0.4)
+                                                      ]),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    "Scan QR-Code",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: darkBg,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        shadows: [
+                                                          Shadow(
+                                                              color: Colors.black,
+                                                              blurRadius: 0.4)
+                                                        ]),
+                                                  ),
+                                                ],
+                                              ),
+                                              Icon(
+                                                CupertinoIcons.chevron_right_2,
+                                                color: darkBg,
+                                                shadows: [
+                                                  Shadow(
+                                                      color: Colors.black,
+                                                      blurRadius: 0.4)
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              child: Container(
+                                            margin: EdgeInsets.only(left: 30),
+                                            height: 1,
+                                            color: Colors.black,
+                                          )),
+                                          Padding(
+                                            padding: const EdgeInsets.all(15),
+                                            child: Text(
+                                              "OR",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ),
+                                          Expanded(
+                                              child: Container(
+                                            margin: EdgeInsets.only(right: 30),
+                                            height: 1,
+                                            color: Colors.black,
+                                          )),
+                                        ],
+                                      ),
+                                      TextFeildNewUser(
+                                        hintText: "Enter the MacID",
+                                        Controller: _macIdController,
+                                        onChanged: (value) {},
+                                        enable: true,
+                                        etext: validateFields &&
+                                                _macIdController.text
+                                                    .trim()
+                                                    .isEmpty
+                                            ? "Please Enter MAC-Id"
+                                            : "",
+                                      ),
+                                    ],
+                                  ),
+                                  Visibility(
+                                      visible: !enableBarCode,
+                                      child: Container(
+                                        width: screenSize.width / 3,
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                darkBg),
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        20))),
+                                          ),
+                                          onPressed: () async {
+                                            validateField();
+                                            if(_macIdController.text.trim().isNotEmpty){
+
+                                              result = await getBatteryByMac(
+                                                  context,
+                                                  macID: _macIdController.text);
+
+                                            bool batteryAvailable = result[0];
+                                            Map<String, dynamic> batteryDetail =
+                                            result[1];
+
+                                            printFunc(
+                                                "Demo battery details : ${batteryAvailable} \n ${batteryDetail}");
+
+                                            if (batteryAvailable &&
+                                                batteryDetail.isNotEmpty) {
+                                              showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Column(
+                                                        children: [
+                                                          Text(
+                                                            "BATTERY FOUND",
+                                                            style: TextStyle(
+                                                                color: darkBg,
+                                                                fontSize: 24,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .w800,
+                                                                shadows: [
+                                                                  Shadow(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      blurRadius:
+                                                                      0.4)
+                                                                ]),
+                                                          ),
+                                                          Divider(
                                                             color: darkBg,
-                                                            fontWeight:
-                                                                FontWeight.w500,
+                                                            thickness: 0.5,
+                                                          )
+                                                        ],
+                                                      ),
+                                                      content: Text(
+                                                          "This Device is Paired with this ${batteryDetail['batterySerialNumber']} Battery. Do you want too?"),
+                                                      actions: [
+                                                        //Continue btn
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            //Go back
+                                                            enableBarCode = true;
+                                                            setState(() {
+                                                              _batteryController.text = batteryDetail['batterySerialNumber'];
+                                                            });
+                                                            Navigator.of(context)
+                                                                .pop(); //Save Log API
+
+                                                          },
+                                                          child: Text(
+                                                            "Continue",
+                                                            style: TextStyle(
+                                                                fontSize: 16),
+                                                          ),
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(
+                                                                  darkBg),
+                                                              shape: MaterialStateProperty.all<
+                                                                  RoundedRectangleBorder>(
+                                                                  RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          18)))),
+                                                        ),
+                                                        //Assign new Btn
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            enableBarCode = true;
+                                                            Navigator.of(context)
+                                                                .pop();
+                                                            setState(() {});
+                                                          },
+                                                          child: Text(
+                                                            "Assign New",
+                                                            style: TextStyle(
+                                                                fontSize: 16),
+                                                          ),
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(
+                                                                  darkBg),
+                                                              shape: MaterialStateProperty.all<
+                                                                  RoundedRectangleBorder>(
+                                                                  RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          18)))),
+                                                        )
+                                                      ],
+                                                    );
+                                                  });
+                                            } else if (batteryAvailable &&
+                                                batteryDetail.isEmpty) {
+                                              enableBarCode = true;
+                                              ShowSnackBarMessage(context,
+                                                  'No Battery is Paired!', true);
+                                              setState(() {});
+                                            } else if(!batteryAvailable){
+                                              enableBarCode = false;
+                                              // ShowSnackBarMessage(context, 'No MacID found!', false);
+                                              _macIdController.clear();
+                                              setState(() {});
+                                            }
+                                            }
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.search),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                "Search",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    shadows: [
+                                                      Shadow(color: Colors.black)
+                                                    ]),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                            ),
+
+
+                          ],
+                        ),
+                      ),
+                      //BAR CODE
+                      enableBarCode
+                          ? Container(
+                              margin: EdgeInsets.all(10),
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(left: 15),
+                                    child: Text(
+                                      "BATTERY NUMBER",
+                                      style: TextStyle(
+                                          color: darkBg,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black,
+                                                blurRadius: 0.3)
+                                          ]),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: darkBg),
+                                        borderRadius: BorderRadius.circular(15)),
+                                    child: Column(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                final result = await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        QRScannerScreen(title: "Scan Barcode"),
+                                                  ),
+                                                );
+
+
+                                                printFunc("DEMO RESULT : ${result.replaceAll("-","")}");
+
+                                                if (result != null) {
+                                                  setState(() {
+                                                    _batteryController.text =
+                                                        result.replaceAll("-","");
+                                                  });
+                                                }
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    30, 15, 30, 5),
+                                                padding: EdgeInsets.all(10),
+                                                decoration: BoxDecoration(
+                                                  border:
+                                                      Border.all(color: darkBg),
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                            CupertinoIcons
+                                                                .barcode,
+                                                            size: 35,
+                                                            color: darkBg,
                                                             shadows: [
                                                               Shadow(
                                                                   color: Colors
                                                                       .black,
-                                                                  blurRadius:
-                                                                      0.4)
+                                                                  blurRadius: 0.4)
                                                             ]),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Icon(
-                                                    CupertinoIcons
-                                                        .chevron_right_2,
-                                                    color: darkBg,
-                                                    shadows: [
-                                                      Shadow(
-                                                          color: Colors.black,
-                                                          blurRadius: 0.4)
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                  child: Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 30),
-                                                height: 1,
-                                                color: Colors.black,
-                                              )),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(15),
-                                                child: Text(
-                                                  "OR",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w600),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          "Scan Barcode",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: darkBg,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              shadows: [
+                                                                Shadow(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    blurRadius:
+                                                                        0.4)
+                                                              ]),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Icon(
+                                                      CupertinoIcons
+                                                          .chevron_right_2,
+                                                      color: darkBg,
+                                                      shadows: [
+                                                        Shadow(
+                                                            color: Colors.black,
+                                                            blurRadius: 0.4)
+                                                      ],
+                                                    )
+                                                  ],
                                                 ),
                                               ),
-                                              Expanded(
-                                                  child: Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 30),
-                                                height: 1,
-                                                color: Colors.black,
-                                              )),
-                                            ],
-                                          ),
-                                          TextFeildNewUser(
-                                            hintText:
-                                                "Enter Battery Serial Number",
-                                            Controller: _batteryController,
-                                            type: TextInputType.number,
-                                            onChanged: (value) {},
-                                            enable: true,
-                                            // etext: validateFields
-                                            //     ? "Please Enter Battery Serial number"
-                                            //     : "",
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                    child: Container(
+                                                  margin:
+                                                      EdgeInsets.only(left: 30),
+                                                  height: 1,
+                                                  color: Colors.black,
+                                                )),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(15),
+                                                  child: Text(
+                                                    "OR",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                    child: Container(
+                                                  margin:
+                                                      EdgeInsets.only(right: 30),
+                                                  height: 1,
+                                                  color: Colors.black,
+                                                )),
+                                              ],
+                                            ),
+                                            TextFeildNewUser(
+                                              hintText:
+                                                  "Enter Battery Serial Number",
+                                              Controller: _batteryController,
+                                              type: TextInputType.number,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              // etext: validateFields
+                                              //     ? "Please Enter Battery Serial number"
+                                              //     : "",
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Center(
-                                  child: Container(
-                                    width: screenSize.width / 3,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor: NotConnected
-                                          ? MaterialStateProperty.all<Color>(
-                                            Color(0xFF358A94).withOpacity(0.4))
-                                            : MaterialStateProperty.all<Color>(
-                                                darkBg),
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20))),
-                                      ),
-                                      onPressed: () async {
-                                        //After this everything goes to the server
-                                        validateField();
-                                        printFunc(
-                                            "MacID : ${_macIdController.text} \n Battery SErial number : ${_batteryController.text}");
-                                        if (!validateFields) {
-                                          await scanAndConnect();
-                                          isBatterySnoSent = await sendBatterySerialNumber(_batteryController.text.toString());
-                                          if(isBatterySnoSent){
-                                            disconnect();
-                                            await saveMacandBattery(context,
-                                                macId: _macIdController.text,
-                                                BatterySerialNo:
-                                                _batteryController.text);
-                                            _batteryController.clear();
-                                            _macIdController.clear();
-                                            enableBarCode = false;
-                                            validateFields = false;
+                                  Center(
+                                    child: Container(
+                                      width: screenSize.width / 3,
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor: NotConnected
+                                            ? MaterialStateProperty.all<Color>(
+                                              Color(0xFF358A94).withOpacity(0.4))
+                                              : MaterialStateProperty.all<Color>(
+                                                  darkBg),
+                                          shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20))),
+                                        ),
+                                        onPressed: () async {
+                                          //After this everything goes to the server
+                                          validateField();
+                                          printFunc(
+                                              "MacID : ${_macIdController.text} \n Battery SErial number : ${_batteryController.text}");
+                                          if (!validateFields) {
+                                            await scanAndConnect();
+                                            isBatterySnoSent = await sendBatterySerialNumber(_batteryController.text.toString());
+                                            if(isBatterySnoSent){
+                                              disconnect();
+                                              await saveMacandBattery(context,
+                                                  macId: _macIdController.text,
+                                                  BatterySerialNo:
+                                                  _batteryController.text);
+                                              _batteryController.clear();
+                                              _macIdController.clear();
+                                              enableBarCode = false;
+                                              validateFields = false;
+
+                                              setState(() {});
+                                              // Navigator.popUntil(context, (route) => route.isFirst);
+                                            }
+                                            else{
+                                              // _batteryController.clear();
+                                              // _macIdController.clear();
+                                              // enableBarCode = false;
+                                              // validateFields = false;
+                                              await disconnect();
+                                              setState(() {});
+                                            }
+                                          }
+                                          if(mounted){
 
                                             setState(() {});
-                                            // Navigator.popUntil(context, (route) => route.isFirst);
                                           }
-                                          else{
-                                            // _batteryController.clear();
-                                            // _macIdController.clear();
-                                            // enableBarCode = false;
-                                            // validateFields = false;
-                                            await disconnect();
-                                            setState(() {});
-                                          }
-                                        }
-                                        if(mounted){
-
-                                          setState(() {});
-                                        }
-                                      },
-                                      child: Text(
-                                        "SUBMIT",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            shadows: [
-                                              Shadow(color: Colors.black)
-                                            ]),
+                                        },
+                                        child: Text(
+                                          "SUBMIT",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              shadows: [
+                                                Shadow(color: Colors.black)
+                                              ]),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
 
 
-                              ],
-                            ),
-                          )
-                        : SizedBox(),
-                  ],
-                ),
-              ],
+                                ],
+                              ),
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      )),
+          ],
+        )),
+      ),
     );
   }
 
@@ -727,7 +734,7 @@ class _PairBatteryState extends State<PairBattery> {
 
   Future<void> scanAndConnect() async {
   if(_macIdController.text.isNotEmpty){
-    print("BEFORe Device Connected -- $status");
+    printFunc("BEFORe Device Connected -- $status");
 
     setState(() {
       status = "Scanning...";
@@ -735,7 +742,7 @@ class _PairBatteryState extends State<PairBattery> {
     });
 
 
-    print("Found Old macid: ${_macIdController.text}");
+    printFunc("Found Old macid: ${_macIdController.text}");
     await requestPermissions();
 
     printFunc("device present : ${device != null}");
@@ -759,19 +766,19 @@ class _PairBatteryState extends State<PairBattery> {
       if (connected) {
         if (device!.isConnected) {
           List<BluetoothService> services = await device!.discoverServices();
-          print("Total Services Found: ${services.length}");
-          print("Total Services Found1: ${services}");
+          printFunc("Total Services Found: ${services.length}");
+          printFunc("Total Services Found1: ${services}");
 
           //for Printing
           for (var service in services) {
-            print("Service UUID: ${service.uuid}");
+            printFunc("Service UUID: ${service.uuid}");
             for (var characteristic in service.characteristics) {
-              print("  Characteristic UUID: ${characteristic.uuid}");
-              print("    Properties: ${characteristic.properties}");
+              printFunc("  Characteristic UUID: ${characteristic.uuid}");
+              printFunc("    Properties: ${characteristic.properties}");
             }
           }
 
-          print("Services Found: $services");
+          printFunc("Services Found: $services");
 
           for (var s in services) {
             printFunc(

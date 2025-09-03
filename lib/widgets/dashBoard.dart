@@ -4,6 +4,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
+import 'package:tracker_firmware/modules/Profile/main_profile.dart';
 import 'package:tracker_firmware/services/apiCall/logIn.dart';
 import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
@@ -12,11 +13,7 @@ class Dashboard extends StatelessWidget {
   final Widget child;
   final bool? userProfile;
   final Function? onLogout;
-  final Widget? add_Device;
-  final Widget? view_Profile;
-  final Widget? add_client;
-  final Widget? add_battery;
-  final Widget? add_designation;
+  final Widget? sliderChild;
   final Widget? floatingBtn;
 
   Dashboard({
@@ -24,11 +21,7 @@ class Dashboard extends StatelessWidget {
     this.userProfile = false,
     required this.child,
     this.onLogout,
-    this.add_Device,
-    this.view_Profile,
-    this.add_client,
-    this.add_battery,
-    this.add_designation,
+    this.sliderChild,
     this.floatingBtn
   });
 
@@ -42,7 +35,7 @@ class Dashboard extends StatelessWidget {
       // Createing Key
       key: _scaffoldKey,
       floatingActionButton: floatingBtn,
-      drawer: UserProfileSlider(context, onLogout,add_Device,view_Profile,add_client,add_battery,add_designation,),
+      drawer: UserProfileSlider(context, onLogout,sliderChild),
       body: InternetStatusWatcher(
         child: Column(
           children: [
@@ -144,7 +137,7 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-UserProfileSlider(context, Function? onlogout, Widget? add_Device,Widget? view_Profile, Widget? add_client,Widget? add_battery, Widget? add_designation) {
+UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
   return Drawer(
     width: screenSize.width * 0.75,
     elevation: 100,
@@ -238,17 +231,52 @@ UserProfileSlider(context, Function? onlogout, Widget? add_Device,Widget? view_P
 
         // Phone number, mail and Desiganation
 
-        view_Profile??SizedBox(),
+        //profile
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 15),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: GestureDetector(
+                onTap: (){
+                  // printFunc("DEMO USER DATA : ${UserData()}");
 
-        add_Device??SizedBox(),
-        // SizedBox(height: 15,),
-        // SizedBox(height: 15,),
-        add_client??SizedBox(),
-        // SizedBox(height: 15,),
-        add_battery??SizedBox(),
-        // SizedBox(height: 15,),
-        add_designation??SizedBox(),
-        // SizedBox(height: 15,),
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => mainProfile()));
+                },
+                child: Row(
+                  children: [
+                    Icon(CupertinoIcons.person,size: 22,color: Colors.white,shadows: [Shadow(
+                      color: Colors.black,
+                      blurRadius: 0.3,
+                      offset: Offset(0.5, 0.4),
+                    )],),
+                    SizedBox(width: 20,),
+                    Text(
+                      "View Profile",
+                      style: TextStyle(
+                          fontFamily: baseFont,
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.3,
+                              offset: Offset(0.5, 0.4),
+                            )
+                          ]),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 15,)
+          ],
+        ),
+        //Extra Btns
+        sliderChild??SizedBox(),
+
+        //Refersh
         Container(
           margin: EdgeInsets.only(left: 15),
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -337,6 +365,7 @@ UserProfileSlider(context, Function? onlogout, Widget? add_Device,Widget? view_P
         //         },
         // ),
 
+        //Logout
         Container(
           decoration: BoxDecoration(
             color: Colors.redAccent

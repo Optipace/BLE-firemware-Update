@@ -9,6 +9,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/batch/methods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class BatchFactoryManagement extends StatefulWidget {
   const BatchFactoryManagement({super.key});
@@ -49,10 +50,10 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
       // Add request
       batchList = await getBatchList(context, Status: "Y");
       for(int i = 0;i<batchList.length;i++){
-        print("DEMO BATCHES FROM API - ${batchList[i]['batteryDetails']}");
+        printFunc("DEMO BATCHES FROM API - ${batchList[i]['batteryDetails']}");
       }
       seriesSixData = await getSeriesData();
-      print("SERIES DATA : $seriesSixData");
+      printFunc("SERIES DATA : $seriesSixData");
       // addBatch(BatchModel.fromJson(batchList[0]));
 
       setState(() {});
@@ -65,7 +66,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
 
   @override
   Widget build(BuildContext context) {
-    print("Inside Logs Page");
+    printFunc("Inside Logs Page");
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -80,18 +81,20 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: Container(
-            child: SingleChildScrollView(
-          child: Column(children: seriesSix()),
-        )));
+        body: InternetStatusWatcher(
+          child: Container(
+              child: SingleChildScrollView(
+            child: Column(children: seriesSix()),
+          )),
+        ));
   }
 
   List<Widget> seriesSix() {
-    print("Series six Data : $seriesSixData");
+    printFunc("Series six Data : $seriesSixData");
     List<Widget> seriesSixWidgetList = [];
 
     for (int index = 0; index < ((seriesSixData != null) ? seriesSixData.length : 0); index++) {
-      print("DEMO DEMO Firmware logs 23: ${seriesSixData[index]}");
+      printFunc("DEMO DEMO Firmware logs 23: ${seriesSixData[index]}");
 
       // Store the current item's ID for reference
       final currentItemId = seriesSixData[index]['id'];
@@ -218,7 +221,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  currentItem!["description"].toString(),
+                                  currentItem["description"].toString(),
                                   style: CardText(
                                       font_Weight: FontWeight.w800,
                                       size: 19,
@@ -234,7 +237,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                               children: [
                                 Text(
                                   moreInfo.value
-                                      ? currentItem!["battery"]['batteryCode'].toString()
+                                      ? currentItem["battery"]['batteryCode'].toString()
                                       : batchList.firstWhere((b) => b['id'] == currentItemId,
                                       orElse: () => {'batteryDetails': {'Battery-Code': 'N/A'}})['batteryDetails']['Battery-Code'],
                                   style: CardText(
@@ -330,7 +333,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          currentItem!["firmware"]['version'].toString(),
+                                          currentItem["firmware"]['version'].toString(),
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 19,
@@ -345,7 +348,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          currentItem!["firmware"]['versionName'].toString(),
+                                          currentItem["firmware"]['versionName'].toString(),
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 19,
@@ -402,7 +405,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                 children: [
                                   Text("Config : ",
                                       style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText)),
-                                  Text(currentItem!["profile"]["name"],
+                                  Text(currentItem["profile"]["name"],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
@@ -443,7 +446,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                             Icon(Icons.battery_charging_full_outlined,
                                                 size: 14, color: secondaryText),
                                             Text(
-                                              "${currentItem!["profile"]['uT']} V",
+                                              "${currentItem["profile"]['uT']} V",
                                               style: CardText(
                                                   font_Weight: FontWeight.w800,
                                                   size: 14,
@@ -472,7 +475,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                             children: [
                                               Icon(Icons.battery_6_bar_outlined, size: 14, color: secondaryText),
                                               Text(
-                                                "${currentItem!["profile"]['uV']} V",
+                                                "${currentItem["profile"]['uV']} V",
                                                 style: CardText(
                                                     font_Weight: FontWeight.w800,
                                                     size: 14,
@@ -499,7 +502,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                           children: [
                                             Icon(Icons.battery_alert_outlined, size: 13, color: secondaryText),
                                             Text(
-                                              "${currentItem!["profile"]['lT']} V",
+                                              "${currentItem["profile"]['lT']} V",
                                               style: CardText(
                                                   font_Weight: FontWeight.w800,
                                                   size: 14,
@@ -524,7 +527,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                           children: [
                                             Icon(Icons.battery_1_bar_rounded, size: 13, color: secondaryText),
                                             Text(
-                                              "${currentItem!["profile"]['lV']} V",
+                                              "${currentItem["profile"]['lV']} V",
                                               style: CardText(
                                                   font_Weight: FontWeight.w800,
                                                   size: 14,
@@ -558,7 +561,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                             Icon(Icons.battery_charging_full_outlined,
                                                 size: 14, color: secondaryText),
                                             Text(
-                                              "${currentItem!["profile"]['nV']} V",
+                                              "${currentItem["profile"]['nV']} V",
                                               style: CardText(
                                                   font_Weight: FontWeight.w800,
                                                   size: 14,
@@ -581,7 +584,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                         ),
                                         SizedBox(height: 5),
                                         Text(
-                                          "${currentItem!["profile"]['uTemp']} ' C",
+                                          "${currentItem["profile"]['uTemp']} ' C",
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 14,
@@ -602,7 +605,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                         ),
                                         SizedBox(height: 5),
                                         Text(
-                                          "${currentItem!["profile"]['lTemp']}'c",
+                                          "${currentItem["profile"]['lTemp']}'c",
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 14,
@@ -635,8 +638,8 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     final allBatches = batchBox.values.toList();
     final allBatchMap = batchBox.toMap();
 
-    print("allBatches : ${allBatches}");
-    print("allBatchMap : ${allBatchMap.keys}");
+    printFunc("allBatches : ${allBatches}");
+    printFunc("allBatchMap : ${allBatchMap.keys}");
 
     for (var entry in allBatchMap.entries) {
       final key = entry.key;
@@ -700,11 +703,11 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
 /*
 
   List<Widget> seriesSix() {
-    print("Serice six Data : $seriesSixData");
+    printFunc("Serice six Data : $seriesSixData");
     List<Widget> seriesSixWidgetList = [];
 
     for (int index = 0; index < ((seriesSixData != null) ? seriesSixData.length : 0); index++) {
-      print("DEMO DEMO Firmware logs 23: ${seriesSixData[index]}");
+      printFunc("DEMO DEMO Firmware logs 23: ${seriesSixData[index]}");
       ValueNotifier moreInfo = ValueNotifier<bool>(seriesSixData[index]['saved'] ?? false);
       seriesSixWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
@@ -1241,8 +1244,8 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     List<Map<String, dynamic>> totalBatchList = [];
     final allBatches = batchBox.values.toList(); // List<BatchModel>
     final allBatchMap = batchBox.toMap(); // Map<dynamic, BatchModel>
-    print("allBatches : ${allBatches}");
-    print("allBatchMap : ${allBatchMap.keys}");
+    printFunc("allBatches : ${allBatches}");
+    printFunc("allBatchMap : ${allBatchMap.keys}");
 
     for (var entry in allBatchMap.entries) {
       final key = entry.key;
@@ -1262,7 +1265,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     }).toList();
     // final batchFromHive = batchBox.get("$id");
 
-    print("DEMO BATCH WITH KEYS : $allBatchesWithKeys");
+    printFunc("DEMO BATCH WITH KEYS : $allBatchesWithKeys");
 
     if(allBatchMap.containsKey(batchList)){
       printFunc("Demo batch ID : ${allBatchMap.keys}");

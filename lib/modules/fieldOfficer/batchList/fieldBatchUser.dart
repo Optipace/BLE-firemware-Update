@@ -6,6 +6,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/batch/methods.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class BatchFeildManagement extends StatefulWidget {
   const BatchFeildManagement({super.key});
@@ -51,7 +52,7 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
 
   @override
   Widget build(BuildContext context) {
-    print("Inside Logs Page");
+    printFunc("Inside Logs Page");
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -66,10 +67,12 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: Container(
-            child: SingleChildScrollView(
-          child: Column(children: seriesSix()),
-        )));
+        body: InternetStatusWatcher(
+          child: Container(
+              child: SingleChildScrollView(
+            child: Column(children: seriesSix()),
+          )),
+        ));
   }
 
   List<Widget> seriesSix() {

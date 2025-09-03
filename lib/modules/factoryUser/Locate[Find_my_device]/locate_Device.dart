@@ -10,6 +10,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class locateHomePage extends StatefulWidget {
   const locateHomePage({super.key});
@@ -175,7 +176,7 @@ class _locateHomePageState extends State<locateHomePage> {
               icon: Icon(Icons.qr_code_2_outlined)),
         ],
       ),
-      body: DeviceList(),
+      body: InternetStatusWatcher(child: DeviceList()),
     );
   }
 

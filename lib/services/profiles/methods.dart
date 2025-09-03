@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileSeriesModel.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 /////////////////////////NOT IN USED/////////////////////////////////////////
 
 Future<void> saveProfileListToHive(List<Map<String, dynamic>> profileList) async {
@@ -79,7 +80,7 @@ final newProfile = ProfileModel(
 
     // Save to box
     await profileBox.put(newProfile.deviceTypeId, series);
-    print("Series ${newProfile.deviceTypeId} created and profile ${newProfile.name} added.");
+    printFunc("Series ${newProfile.deviceTypeId} created and profile ${newProfile.name} added.");
   } else {
     // Series exists, add new profile
     series.profile.add(newProfile);

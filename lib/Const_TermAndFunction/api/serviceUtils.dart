@@ -247,8 +247,8 @@ class ApiService {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'accessToken': UserData.instance.accessToken ?? "",
-          'refreshToken': UserData.instance.refreshToken ?? "",
+          'accessToken': UserData.instance.accessToken ,
+          'refreshToken': UserData.instance.refreshToken ,
         }),
       );
       printFunc("URL : ${url}");

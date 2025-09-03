@@ -9,6 +9,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareSeriesMode
 import 'package:tracker_firmware/Const_TermAndFunction/entity/getNumberModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileSeriesModel.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/hive/hiveOperation.dart';
 import 'package:tracker_firmware/widgets/splash_screen.dart';
 
@@ -142,7 +143,7 @@ class DevOptionsChecker {
       final bool result = await _channel.invokeMethod('checkDevOptions');
       return result;
     } catch (e) {
-      print("Error checking developer options: $e");
+      printFunc("Error checking developer options: $e");
       return false;
     }
   }

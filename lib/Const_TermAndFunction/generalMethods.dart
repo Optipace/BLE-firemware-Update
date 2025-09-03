@@ -24,7 +24,7 @@ void printFunc(var str) {
 
 void printLog(var str) {
   // if(isTesting)
-  // print(str.toString());
+  // printFunc(str.toString());
   // dev.log(str.toString());
   // debugPrint(str.toString());
 }

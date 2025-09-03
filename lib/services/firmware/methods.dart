@@ -45,7 +45,7 @@ Future<FirmwareModel?> getFirmwareByVersion(String seriesId, String version) asy
   /*
   var firmware = await getFirmwareByVersion("3", "321.0.31");
   if (firmware != null) {
-  print("Found firmware: ${firmware.versionName}");
+  printFunc("Found firmware: ${firmware.versionName}");
 }
    */
 }

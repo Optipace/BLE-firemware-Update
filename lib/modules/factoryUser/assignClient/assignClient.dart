@@ -16,6 +16,7 @@ import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
 class AssignClient extends StatefulWidget {
@@ -113,491 +114,555 @@ class _AssignClientState extends State<AssignClient> {
         shadowColor: darkBg,
       ),
       backgroundColor: lightBg,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
-              decoration: BoxDecoration(
-                border: Border.all(color: darkBg),
-                color: Colors.white,
-                // borderRadius: BorderRadius.circular(15)
-              ),
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Center(
-                child: Text(
-                  "LINK DEVICE TO CLIENT",
-                  style: TextStyle(
-                      fontFamily: baseFont,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 24,
-                      color: darkBg,
-                      shadows: [
-                        Shadow(
-                            color: Colors.black,
-                            blurRadius: 0.5,
-                            offset: Offset(0.5, 0.5))
-                      ]),
+      body: InternetStatusWatcher(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
+                decoration: BoxDecoration(
+                  border: Border.all(color: darkBg),
+                  color: Colors.white,
+                  // borderRadius: BorderRadius.circular(15)
+                ),
+                padding: EdgeInsets.symmetric(vertical: 15),
+                child: Center(
+                  child: Text(
+                    "LINK DEVICE TO CLIENT",
+                    style: TextStyle(
+                        fontFamily: baseFont,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 24,
+                        color: darkBg,
+                        shadows: [
+                          Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.5))
+                        ]),
+                  ),
                 ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
-              decoration: BoxDecoration(
-                border: Border.all(color: darkBg),
-                color: Colors.white,
-                // borderRadius: BorderRadius.circular(15)
-              ),
-              child: Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            //MACID
-                            Container(
-                              padding: EdgeInsets.only(left: 15,right: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "MAC-ID  ",
-                                    style: TextStyle(
-                                        color: darkBg,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                        shadows: [
-                                          Shadow(color: Colors.black, blurRadius: 0.3)
-                                        ]),
-                                  ),
-                                  enableClientField
-                                  ?NotConnected
-                                      ? Container(
-                                    color: Colors.transparent,
-                                    height: 25,
-                                    width: 25,
-                                    child:  Center(
-                                      child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            Colors.grey),
-                                      ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
+                decoration: BoxDecoration(
+                  border: Border.all(color: darkBg),
+                  color: Colors.white,
+                  // borderRadius: BorderRadius.circular(15)
+                ),
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //MACID
+                              Container(
+                                padding: EdgeInsets.only(left: 15,right: 15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "MAC-ID  ",
+                                      style: TextStyle(
+                                          color: darkBg,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          shadows: [
+                                            Shadow(color: Colors.black, blurRadius: 0.3)
+                                          ]),
                                     ),
-                                  )
-                                      : ElevatedButton(
-                                    onPressed: enableSubmit
-                                        ? () {}
-                                        : () async {
-                                      validateFields();
-
-                                      !validateFileds;
-                                      // await scanAndConnect();
-
-
-                                      setState(() {});
-                                    },
-                                    child: enableSubmit
-                                        ? Text("Connected")
-                                        : Text("Connect"),
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                      MaterialStateProperty.all(darkBg),
-                                      elevation: MaterialStateProperty.all(5),
-                                      shadowColor:
-                                      MaterialStateProperty.all(darkBg),
-                                      shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(10),
-                                            side: BorderSide(
-                                                color: darkBg, width: 1)),
+                                    enableClientField
+                                    ?NotConnected
+                                        ? Container(
+                                      color: Colors.transparent,
+                                      height: 25,
+                                      width: 25,
+                                      child:  Center(
+                                        child: CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation<Color>(
+                                              Colors.grey),
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                  : SizedBox() ,
+                                    )
+                                        : ElevatedButton(
+                                      onPressed: enableSubmit
+                                          ? () {}
+                                          : () async {
+                                        validateFields();
+
+                                        !validateFileds;
+                                        // await scanAndConnect();
 
 
-                                ],
+                                        setState(() {});
+                                      },
+                                      child: enableSubmit
+                                          ? Text("Connected")
+                                          : Text("Connect"),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                        MaterialStateProperty.all(darkBg),
+                                        elevation: MaterialStateProperty.all(5),
+                                        shadowColor:
+                                        MaterialStateProperty.all(darkBg),
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(10),
+                                              side: BorderSide(
+                                                  color: darkBg, width: 1)),
+                                        ),
+                                      ),
+                                    )
+                                    : SizedBox() ,
+
+
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: darkBg),
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Column(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () async {
-                                          final result = await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => QRScannerScreen(title: "Scan QR-Code"),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: darkBg),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Column(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final result = await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => QRScannerScreen(title: "Scan QR-Code"),
+                                              ),
+                                            );
+                                            if (result != null) {
+                                              setState(() {
+                                                _macIdController.text = result;
+                                              });
+                                            }
+
+
+                                          },
+                                          child: Container(
+                                            margin:
+                                            EdgeInsets.fromLTRB(30, 15, 30, 5),
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: darkBg),
+                                              borderRadius:
+                                              BorderRadius.circular(15),
                                             ),
-                                          );
-                                          if (result != null) {
-                                            setState(() {
-                                              _macIdController.text = result;
-                                            });
-                                          }
-
-
-                                        },
-                                        child: Container(
-                                          margin:
-                                          EdgeInsets.fromLTRB(30, 15, 30, 5),
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: darkBg),
-                                            borderRadius:
-                                            BorderRadius.circular(15),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Icon(CupertinoIcons.qrcode,
-                                                      size: 35,
-                                                      color: darkBg,
-                                                      shadows: [
-                                                        Shadow(
-                                                            color: Colors.black,
-                                                            blurRadius: 0.4)
-                                                      ]),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    "Scan QR-Code",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(CupertinoIcons.qrcode,
+                                                        size: 35,
                                                         color: darkBg,
-                                                        fontWeight:
-                                                        FontWeight.w500,
                                                         shadows: [
                                                           Shadow(
                                                               color: Colors.black,
                                                               blurRadius: 0.4)
                                                         ]),
-                                                  ),
-                                                ],
-                                              ),
-                                              Icon(
-                                                CupertinoIcons.chevron_right_2,
-                                                color: darkBg,
-                                                shadows: [
-                                                  Shadow(
-                                                      color: Colors.black,
-                                                      blurRadius: 0.4)
-                                                ],
-                                              )
-                                            ],
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      "Scan QR-Code",
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: darkBg,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          shadows: [
+                                                            Shadow(
+                                                                color: Colors.black,
+                                                                blurRadius: 0.4)
+                                                          ]),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Icon(
+                                                  CupertinoIcons.chevron_right_2,
+                                                  color: darkBg,
+                                                  shadows: [
+                                                    Shadow(
+                                                        color: Colors.black,
+                                                        blurRadius: 0.4)
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                              child: Container(
-                                                margin: EdgeInsets.only(left: 30),
-                                                height: 1,
-                                                color: Colors.black,
-                                              )),
-                                          Padding(
-                                            padding: const EdgeInsets.all(15),
-                                            child: Text(
-                                              "OR",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ),
-                                          Expanded(
-                                              child: Container(
-                                                margin: EdgeInsets.only(right: 30),
-                                                height: 1,
-                                                color: Colors.black,
-                                              )),
-                                        ],
-                                      ),
-                                      TextFeildNewUser(
-                                        hintText: "Enter the MacID",
-                                        Controller: _macIdController,
-                                        onChanged: (value) {
-                                        },
-
-                                        enable: true,
-                                        etext: validateFileds &&
-                                            _macIdController.text
-                                                .trim()
-                                                .isEmpty
-                                            ? "Please Enter MAC ID "
-                                            : "",
-                                      ),
-
-                                      Visibility(
-                                          visible: !enableClientField,
-                                          child: Container(
-                                            width: screenSize.width / 3,
-                                            child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                MaterialStateProperty.all<Color>(
-                                                    darkBg),
-                                                shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                        borderRadius:
-                                                        BorderRadius.circular(
-                                                            20))),
-                                              ),
-                                              onPressed: () async {
-                                                //POP UP GOES HERE
-
-                                                result = await GetClientByMac(context,macId: _macIdController.text.toString());
-                                                bool clientAvaliable = result[0];
-                                                Map<String,dynamic> ClientDetails = result[1];
-                                                print("clientAvaliable : $clientAvaliable");
-                                                print("ClientDetails : $ClientDetails");
-
-
-                                                if(clientAvaliable && ClientDetails.isNotEmpty){
-                                                  printFunc("Client List : $clientList");
-                                                  clientList.add({
-                                                    "id": null,
-                                                    "name": "Deselect",
-                                                    "address": "",
-                                                    "contactNumber": "",
-                                                    "email": "",
-                                                    "contactPerson": "",
-                                                    "discription": "",
-                                                    "createdBy": null,
-                                                    "code":""
-                                                  });
-                                                  clientListIntoMap();
-                                                  setState(() {});
-
-                                                  ClientName.setText = ClientDetails['name'];
-                                                  ClientName.setobj = {
-                                                    "id": ClientDetails['id'],
-                                                    "name": ClientDetails['name'],
-                                                    "address": ClientDetails['address'],
-                                                    "contactNumber": ClientDetails['contactNumber'],
-                                                    "email": ClientDetails['email'],
-                                                    "contactPerson": ClientDetails['contactPerson'],
-                                                    "discription":ClientDetails['discription'],
-                                                    "createdBy": ClientDetails['createdBy'],
-                                                    "code":ClientDetails['code']
-                                                  };
-
-
-                                                  showDialog(
-                                                      context: context,
-                                                      barrierDismissible: false,
-                                                      builder: (BuildContext context) {
-                                                        return AlertDialog(
-                                                          title: Column(
-                                                            children: [
-                                                              Text("CLIENT FOUND",style: TextStyle(color: darkBg,fontSize: 24,fontWeight: FontWeight.w800,shadows: [Shadow(color: Colors.black,blurRadius: 0.4)]),),
-                                                              Divider(color: darkBg,thickness: 0.5,)
-                                                            ],
-                                                          ),
-                                                          content: Text(
-                                                            "This Device is Assigned to ${ClientDetails['name']}. Do you want too?",style: TextStyle(color: darkBg,fontWeight: FontWeight.w500,),),
-                                                          actions: [
-                                                            //Continue btn
-                                                            ElevatedButton(
-                                                              onPressed: () {
-                                                                //Go back
-                                                                enableClientField = true;
-                                                                Navigator.of(context).pop();                                                            //Save Log API
-                                                                setState(() { });
-                                                              },
-                                                              child: Text("Continue",style: TextStyle(fontSize: 16),),
-                                                              style: ButtonStyle(
-                                                                  backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                                      RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.circular(18)
-                                                                      )
-                                                                  )
-                                                              ),
-                                                            ),
-                                                            //Assign new Btn
-                                                            ElevatedButton(
-                                                              onPressed: () {
-                                                                enableClientField = true;
-                                                                Navigator.of(context).pop();
-                                                                ClientName.cleardata();
-                                                                setState(() { });
-                                                              },
-                                                              child: Text("Assign New",style: TextStyle(fontSize: 16),),
-                                                              style: ButtonStyle(
-                                                                  backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                                      RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.circular(18)
-                                                                      )
-                                                                  )
-                                                              ),
-                                                            )
-                                                          ],
-                                                        );
-                                                      }
-                                                  );
-                                                }
-                                                else if(clientAvaliable && ClientDetails.isEmpty){
-                                                  enableClientField = true;
-                                                  ShowSnackBarMessage(context, 'No Client is Assigned!', null);
-                                                  setState(() {});
-
-                                                }
-                                                else if(!clientAvaliable){
-                                                  enableClientField = false;
-                                                  ShowSnackBarMessage(context, 'No MacID found!', false);
-                                                  _macIdController.clear();
-                                                  setState(() {});
-                                                }
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Icon(Icons.search),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    "Search",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.w500,
-                                                        shadows: [
-                                                          Shadow(color: Colors.black)
-                                                        ]),
-                                                  )
-                                                ],
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Container(
+                                                  margin: EdgeInsets.only(left: 30),
+                                                  height: 1,
+                                                  color: Colors.black,
+                                                )),
+                                            Padding(
+                                              padding: const EdgeInsets.all(15),
+                                              child: Text(
+                                                "OR",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600),
                                               ),
                                             ),
-                                          )),
+                                            Expanded(
+                                                child: Container(
+                                                  margin: EdgeInsets.only(right: 30),
+                                                  height: 1,
+                                                  color: Colors.black,
+                                                )),
+                                          ],
+                                        ),
+                                        TextFeildNewUser(
+                                          hintText: "Enter the MacID",
+                                          Controller: _macIdController,
+                                          onChanged: (value) {
+                                          },
 
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
+                                          enable: true,
+                                          etext: validateFileds &&
+                                              _macIdController.text
+                                                  .trim()
+                                                  .isEmpty
+                                              ? "Please Enter MAC ID "
+                                              : "",
+                                        ),
 
-                            //Client Name
-                            enableClientField
-                            ? Container(
-                              margin: EdgeInsets.fromLTRB(0, 15, 0, 5),
-                              child: GestureDetector(
-                                child: PrimeryDropDownButton(
-                                  isEnabled: true,
-                                  tail: ErrorContainer(
-                                      show: validateFileds && ClientName.getText== "",
-                                      errorMsg: "Please Select the Client"),
-                                  mainText: "SELECT CLIENT" ,
-                                  text: ClientName.Text != "" ? ClientName.getText : "Select Client Name",
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_sharp,
-                                    color: darkBg,
-                                  ),
-                                  press: () async {
-                                    await BottomSheet_Widget(context, [
-                                      MapListItemBuilder(
-                                          listItems: AllClient,
-                                          press: () {},
-                                          selected: ClientName
-                                      )
-                                    ]);
-                                    setState(() {});
-                                  },
+                                        Visibility(
+                                            visible: !enableClientField,
+                                            child: Container(
+                                              width: screenSize.width / 3,
+                                              child: ElevatedButton(
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                  MaterialStateProperty.all<Color>(
+                                                      darkBg),
+                                                  shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              20))),
+                                                ),
+                                                onPressed: () async {
+                                                  //POP UP GOES HERE
+                                                  validateFields();
+                                                  if(_macIdController.text.trim().isNotEmpty) {
+                                                    result = await GetClientByMac(
+                                                        context,
+                                                        macId: _macIdController
+                                                            .text.toString());
+                                                    bool clientAvaliable = result[0];
+                                                    Map<String,
+                                                        dynamic> ClientDetails = result[1];
+                                                    printFunc(
+                                                        "clientAvaliable : $clientAvaliable");
+                                                    printFunc(
+                                                        "ClientDetails : $ClientDetails");
+
+
+                                                    if (clientAvaliable &&
+                                                        ClientDetails
+                                                            .isNotEmpty) {
+                                                      printFunc(
+                                                          "Client List : $clientList");
+                                                      clientList.add({
+                                                        "id": null,
+                                                        "name": "Deselect",
+                                                        "address": "",
+                                                        "contactNumber": "",
+                                                        "email": "",
+                                                        "contactPerson": "",
+                                                        "discription": "",
+                                                        "createdBy": null,
+                                                        "code": ""
+                                                      });
+                                                      clientListIntoMap();
+                                                      setState(() {});
+
+                                                      ClientName.setText =
+                                                      ClientDetails['name'];
+                                                      ClientName.setobj = {
+                                                        "id": ClientDetails['id'],
+                                                        "name": ClientDetails['name'],
+                                                        "address": ClientDetails['address'],
+                                                        "contactNumber": ClientDetails['contactNumber'],
+                                                        "email": ClientDetails['email'],
+                                                        "contactPerson": ClientDetails['contactPerson'],
+                                                        "discription": ClientDetails['discription'],
+                                                        "createdBy": ClientDetails['createdBy'],
+                                                        "code": ClientDetails['code']
+                                                      };
+
+
+                                                      showDialog(
+                                                          context: context,
+                                                          barrierDismissible: false,
+                                                          builder: (
+                                                              BuildContext context) {
+                                                            return AlertDialog(
+                                                              title: Column(
+                                                                children: [
+                                                                  Text(
+                                                                    "CLIENT FOUND",
+                                                                    style: TextStyle(
+                                                                        color: darkBg,
+                                                                        fontSize: 24,
+                                                                        fontWeight: FontWeight
+                                                                            .w800,
+                                                                        shadows: [
+                                                                          Shadow(
+                                                                              color: Colors
+                                                                                  .black,
+                                                                              blurRadius: 0.4)
+                                                                        ]),),
+                                                                  Divider(
+                                                                    color: darkBg,
+                                                                    thickness: 0.5,)
+                                                                ],
+                                                              ),
+                                                              content: Text(
+                                                                "This Device is Assigned to ${ClientDetails['name']}. Do you want too?",
+                                                                style: TextStyle(
+                                                                  color: darkBg,
+                                                                  fontWeight: FontWeight
+                                                                      .w500,),),
+                                                              actions: [
+                                                                //Continue btn
+                                                                ElevatedButton(
+                                                                  onPressed: () {
+                                                                    //Go back
+                                                                    enableClientField =
+                                                                    true;
+                                                                    Navigator.of(
+                                                                        context)
+                                                                        .pop(); //Save Log API
+                                                                    setState(() {});
+                                                                  },
+                                                                  child: Text(
+                                                                    "Continue",
+                                                                    style: TextStyle(
+                                                                        fontSize: 16),),
+                                                                  style: ButtonStyle(
+                                                                      backgroundColor: MaterialStateProperty
+                                                                          .all<
+                                                                          Color>(
+                                                                          darkBg),
+                                                                      shape: MaterialStateProperty
+                                                                          .all<
+                                                                          RoundedRectangleBorder>(
+                                                                          RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius
+                                                                                  .circular(
+                                                                                  18)
+                                                                          )
+                                                                      )
+                                                                  ),
+                                                                ),
+                                                                //Assign new Btn
+                                                                ElevatedButton(
+                                                                  onPressed: () {
+                                                                    enableClientField =
+                                                                    true;
+                                                                    Navigator.of(
+                                                                        context)
+                                                                        .pop();
+                                                                    ClientName
+                                                                        .cleardata();
+                                                                    setState(() {});
+                                                                  },
+                                                                  child: Text(
+                                                                    "Assign New",
+                                                                    style: TextStyle(
+                                                                        fontSize: 16),),
+                                                                  style: ButtonStyle(
+                                                                      backgroundColor: MaterialStateProperty
+                                                                          .all<
+                                                                          Color>(
+                                                                          darkBg),
+                                                                      shape: MaterialStateProperty
+                                                                          .all<
+                                                                          RoundedRectangleBorder>(
+                                                                          RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius
+                                                                                  .circular(
+                                                                                  18)
+                                                                          )
+                                                                      )
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            );
+                                                          }
+                                                      );
+                                                    }
+                                                    else if (clientAvaliable &&
+                                                        ClientDetails.isEmpty) {
+                                                      enableClientField = true;
+                                                      ShowSnackBarMessage(context,
+                                                          'No Client is Assigned!',
+                                                          null);
+                                                      setState(() {});
+                                                    }
+                                                    else if (!clientAvaliable) {
+                                                      enableClientField = false;
+                                                      ShowSnackBarMessage(context,
+                                                          'No MacID found!',
+                                                          false);
+                                                      _macIdController.clear();
+                                                      setState(() {});
+                                                    }
+                                                  }
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Icons.search),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      "Search",
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.w500,
+                                                          shadows: [
+                                                            Shadow(color: Colors.black)
+                                                          ]),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )),
+
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-                            )
-                            : SizedBox(),
-                            //submit btn
-                            enableClientField
-                            ? Center(
-                              child: Container(
-                                width: screenSize.width / 3,
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: NotConnected
-                                      ? MaterialStateProperty.all<
-                                        Color>(darkBg.withOpacity(0.3))
-                                      : MaterialStateProperty.all<
-                                        Color>(darkBg),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                20))),
-                                  ),
 
-                                  onPressed: () async{
-                                    printFunc("DEMO DEMO ClientName : ${ClientName.getobj['code'].toString()}");
-                                    validateFields();
-                                    if(!validateFileds){
-                                       await scanAndConnect();
-                                      isCustomerIDSent = await sendCustomerID(ClientName.getobj!['code'].toString());
-                                     if(isCustomerIDSent){
-                                       await disconnect();
-                                       await saveMacandClient(context,
-                                         macId: _macIdController.text,
-                                         clientId: ClientName.getobj['id'].toString(),
-                                       );
-                                       _macIdController.clear();
-                                       ClientName.cleardata();
-                                       enableClientField = false;
-                                       setState(() { });
-                                       // Navigator.popUntil(context, (route) => route.isFirst);
-                                     }
-                                     else{
-                                       _macIdController.clear();
-                                       ClientName.cleardata();
-                                       enableClientField = false;
-                                       setState(() { });
-                                     }
-                                    }
-
-                                    setState(() {});
-
-
-                                  },
-                                  child: Text(
-                                    "SUBMIT",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        shadows: [
-                                          Shadow(color: Colors.black)
-                                        ]),
+                              //Client Name
+                              enableClientField
+                              ? Container(
+                                margin: EdgeInsets.fromLTRB(0, 15, 0, 5),
+                                child: GestureDetector(
+                                  child: PrimeryDropDownButton(
+                                    isEnabled: true,
+                                    tail: ErrorContainer(
+                                        show: validateFileds && ClientName.getText== "",
+                                        errorMsg: "Please Select the Client"),
+                                    mainText: "SELECT CLIENT" ,
+                                    text: ClientName.Text != "" ? ClientName.getText : "Select Client Name",
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down_sharp,
+                                      color: darkBg,
+                                    ),
+                                    press: () async {
+                                      await BottomSheet_Widget(context, [
+                                        MapListItemBuilder(
+                                            listItems: AllClient,
+                                            press: () {},
+                                            selected: ClientName
+                                        )
+                                      ]);
+                                      setState(() {});
+                                    },
                                   ),
                                 ),
-                              ),
-                            )
-                            : SizedBox(),
+                              )
+                              : SizedBox(),
+                              //submit btn
+                              enableClientField
+                              ? Center(
+                                child: Container(
+                                  width: screenSize.width / 3,
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: NotConnected
+                                        ? MaterialStateProperty.all<
+                                          Color>(darkBg.withOpacity(0.3))
+                                        : MaterialStateProperty.all<
+                                          Color>(darkBg),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  20))),
+                                    ),
 
-                          ],
+                                    onPressed: () async{
+                                      printFunc("DEMO DEMO ClientName : ${ClientName.getobj['code'].toString()}");
+                                      validateFields();
+                                      if(!validateFileds){
+                                         await scanAndConnect();
+                                        isCustomerIDSent = await sendCustomerID(ClientName.getobj!['code'].toString());
+                                       if(isCustomerIDSent){
+                                         await disconnect();
+                                         await saveMacandClient(context,
+                                           macId: _macIdController.text,
+                                           clientId: ClientName.getobj['id'].toString(),
+                                         );
+                                         _macIdController.clear();
+                                         ClientName.cleardata();
+                                         enableClientField = false;
+                                         setState(() { });
+                                         // Navigator.popUntil(context, (route) => route.isFirst);
+                                       }
+                                       else{
+                                         _macIdController.clear();
+                                         ClientName.cleardata();
+                                         enableClientField = false;
+                                         setState(() { });
+                                       }
+                                      }
+
+                                      setState(() {});
+
+
+                                    },
+                                    child: Text(
+                                      "SUBMIT",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          shadows: [
+                                            Shadow(color: Colors.black)
+                                          ]),
+                                    ),
+                                  ),
+                                ),
+                              )
+                              : SizedBox(),
+
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -624,13 +689,13 @@ class _AssignClientState extends State<AssignClient> {
   Future<void> scanAndConnect() async {
 
    if(_macIdController.text.isNotEmpty){
-     print("BEFORe Device Connected -- $status");
+     printFunc("BEFORe Device Connected -- $status");
 
      setState(() {
        status = "Scanning...";
        NotConnected = true;
      });
-     print("Found Old macid: ${_macIdController.text}");
+     printFunc("Found Old macid: ${_macIdController.text}");
      await requestPermissions();
 
      printFunc("device present : ${device != null}");
@@ -656,19 +721,19 @@ class _AssignClientState extends State<AssignClient> {
          if (device!.isConnected) {
            // timeoutTimer?.cancel();
            List<BluetoothService> services = await device!.discoverServices();
-           print("Total Services Found: ${services.length}");
-           print("Total Services Found1: ${services}");
+           printFunc("Total Services Found: ${services.length}");
+           printFunc("Total Services Found1: ${services}");
 
            //for Printing
            for (var service in services) {
-             print("Service UUID: ${service.uuid}");
+             printFunc("Service UUID: ${service.uuid}");
              for (var characteristic in service.characteristics) {
-               print("  Characteristic UUID: ${characteristic.uuid}");
-               print("    Properties: ${characteristic.properties}");
+               printFunc("  Characteristic UUID: ${characteristic.uuid}");
+               printFunc("    Properties: ${characteristic.properties}");
              }
            }
 
-           print("Services Found: $services");
+           printFunc("Services Found: $services");
 
            for (var s in services) {
              printFunc(
@@ -722,7 +787,7 @@ class _AssignClientState extends State<AssignClient> {
                    Navigator.of(context).pop();
                  },
 
-                 child: Text(
+                 child: const Text(
                    "Re-Try",
                    style: TextStyle(fontSize: 16),
                  ),
@@ -759,14 +824,8 @@ class _AssignClientState extends State<AssignClient> {
        await FlutterBluePlus.stopScan();
 
        printFunc("Device not found");
-       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-         duration: Duration(seconds: 5),
-         content: Text(
-           "Device not found",
-           style: TextStyle(color: Colors.white),
-         ),
-         backgroundColor: Colors.redAccent,
-       ));
+       ShowSnackBarMessage(context, "Device not found", false);
+
      }
 
      printFunc("DEMO STReet : $NotConnected");
@@ -806,7 +865,7 @@ class _AssignClientState extends State<AssignClient> {
       if (customerID < 0 || customerID > 99) {
         printFunc("Customer ID out of bounds: $customerID");
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Customer ID must be between 0 and 99")),
+          const SnackBar(content: Text("Customer ID must be between 0 and 99")),
         );
         return false;
       }

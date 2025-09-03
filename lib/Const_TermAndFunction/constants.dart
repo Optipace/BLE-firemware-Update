@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+bool futureScope = true;
+
 // Dark background
 Color darkBg = Color(0xFF358A94);
 // Color.fromRGBO(58, 80, 153, 1.0);

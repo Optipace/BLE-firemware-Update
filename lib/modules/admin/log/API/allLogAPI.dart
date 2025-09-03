@@ -94,7 +94,7 @@ Future<List<dynamic>> getAllCount(BuildContext context) async{
 
         }
 
-        print("DEMO ALL LOGS : ${finalResponse}");
+        printFunc("DEMO ALL LOGS : ${finalResponse}");
 
       }
   );

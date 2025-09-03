@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/modules/Profile/main_profile.dart';
 import 'package:tracker_firmware/modules/admin/ListOverview/listOverview.dart';
 import 'package:tracker_firmware/modules/admin/api/api.dart';
+import 'package:tracker_firmware/modules/admin/device_info.dart';
 import 'package:tracker_firmware/modules/admin/log/admin_logs.dart';
 import 'package:tracker_firmware/modules/admin/newUser/adminNewUser.dart';
 import 'package:tracker_firmware/widgets/BottomSheet.dart';
+import 'package:tracker_firmware/widgets/alertBoxes.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
@@ -82,703 +85,177 @@ class AdminMainState extends State<AdminMain> {
         text: 'ADMIN\nDASH-BOARD',
         userProfile: true,
 
-        //add devce or Register device
-        /*add_Device: Column(
+        sliderChild: Column(
           children: [
-            Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: GestureDetector(
-                onTap: () async{
-                  await BottomSheet_Widget(context, color: lightBg, [
-                    StatefulBuilder(builder:
-                        (thisLowerContext, checkListDeviceState) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(thisLowerContext).viewInsets.bottom,
-                        ),
-                        child: SingleChildScrollView(
-                          child: Container(
-                            height: screenSize.height / 1.5,
-                            width: screenSize.width,
-                            color: lightBg,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 20),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SingleChildScrollView(
-                                    child: Container(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Device Details!",
-                                            style: TextStyle(
-                                                fontFamily: baseFont,
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: 28,
-                                                color: darkBg,
-                                                shadows: [
-                                                  Shadow(
-                                                      color: Colors.black,
-                                                      blurRadius: 0.5,
-                                                      offset: Offset(0.5, 0.5))
-                                                ]),
-                                          ),
-                                          Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap :(){
-                                                  checkListDeviceState(() {
-                                                    _newuuid.text = sharedPreferences.getString("UUID")!;
-                                                    _newbrand.text = sharedPreferences.getString("deviceBrand")!;
-                                                    _newmodel.text = sharedPreferences.getString("deviceModel")!;
-                                                  });
-                                                 printFunc( "\n version : ${sharedPreferences.getString("osVersion")}"
-                                                     "\n model : ${sharedPreferences.getString("deviceModel")}"
-                                                     "\n deviceBrand : ${sharedPreferences.getString("deviceBrand")}");
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 8),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(color: Colors.black,width: 0.3),
-                                                    borderRadius: BorderRadius.circular(12),
-                                                    color: darkBg
-                                                  ),
-                                                  child:  Column(
-                                                    children: [
-                                                      Text("Register This",style: TextStyle(color: Colors.white),),
-                                                      Text("Device",style: TextStyle(color: Colors.white),),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      margin: EdgeInsets.fromLTRB(5, 0, 15,0),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-
-                                  Container(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        // UUID
-                                        LabelText(text: "UUID :"),
-                                        TextFeildNewUser(
-                                          hintText: "Enter Device UUID ",
-                                          Controller: _newuuid,
-                                          onChanged: (value) {},
-                                          enable: true,
-                                          etext: deviceValidator &&
-                                              _newuuid.text
-                                                  .trim()
-                                                  .isEmpty
-                                              ? "Please Enter Device UUID"
-                                              : "",
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        // Model
-                                        LabelText(text: "Model"),
-                                        TextFeildNewUser(
-                                          hintText: "Enter Device Model",
-                                          Controller: _newmodel,
-                                          onChanged: (value) {},
-                                          enable: true,
-                                          etext: deviceValidator &&
-                                              _newmodel.text
-                                                  .trim()
-                                                  .isEmpty
-                                              ? "Please Enter Device Model"
-                                              : "",
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        // Brand
-                                        LabelText(text: "Brand"),
-                                        TextFeildNewUser(
-                                          hintText: "Enter Device Brand",
-                                          Controller: _newbrand,
-                                          onChanged: (value) {},
-                                          enable: true,
-                                          etext: deviceValidator &&
-                                              _newbrand.text
-                                                  .trim()
-                                                  .isEmpty
-                                              ? "Please Enter Device Brand"
-                                              : "",
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  // Add Btn
-                                  manageUserBtn(
-                                      text: "Register Device",
-                                      onPress: () async {
-                                        checkListDeviceState(() {
-                                          ValidateDeviceFields();
-                                        });
-                                        if(deviceValidator == false){
-                                          checkListDeviceState(() {
-                                            apicall =true;
-                                          });
-                                          if(apicall){
-                                            Navigator.of(context).pop();
-                                            ShowSnackBarMessage(context, 'Device Registerd successfully.', true);
-                                            _newuuid.clear();
-                                            _newbrand.clear();
-                                            _newmodel.clear();
-                                            setState(() {});
-                                          }
-                                        }
-                                        setState(() {});
-                                      }
-                                      )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    })
-                  ]);
-                  setState(() {});
-                  print("Device Information : \n"
-                      "uuid :  ${sharedPreferences.getString("UUID")}"
-                      "\n version : ${sharedPreferences.getString("osVersion")}"
-                      "\n model : ${sharedPreferences.getString("deviceModel")}"
-                      "\n deviceBrand : ${sharedPreferences.getString("deviceBrand")}");
-                },
-                child: Text(
-                  "Add Device",
-                  style: TextStyle(
-                      fontFamily: baseFont,
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black,
-                          blurRadius: 0.3,
-                          offset: Offset(0.5, 0.4),
-                        )
-                      ]),
-                ),
-              ),
-            ),
-            SizedBox(height: 15,)
-          ],
-        ), */
-        //view_Profile
-        view_Profile: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: GestureDetector(
-                onTap: (){
-                  printFunc("DEMO USER DATA : ${UserData()}");
-
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => mainProfile()));
-                },
-                child: Row(
-                  children: [
-                    Icon(CupertinoIcons.person,size: 22,color: Colors.white,shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius: 0.3,
-                      offset: Offset(0.5, 0.4),
-                    )],),
-                    SizedBox(width: 20,),
-                    Text(
-                      "View Profile",
-                      style: TextStyle(
-                          fontFamily: baseFont,
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.3,
-                              offset: Offset(0.5, 0.4),
-                            )
-                          ]),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 15,)
-          ],
-        ),
-        //Add_Client
-        add_client: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: GestureDetector(
-                onTap: () async {
-                  // Add Client
-                  clearClient();
-                  await showModalBottomSheet(
-                    context: context,
-                    isScrollControlled:
-                    true, // important for keyboard handling
-                    backgroundColor: lightBg,
-                    shape:
-                    RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius.vertical(
-                          top: Radius
-                              .circular(
-                              10.0)),
-                    ),
-                    builder: (context) {
-                      return StatefulBuilder(
-                        builder: (thisLowerContext,
-                            checkClientState) {
+            //Add Device
+            /*Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: GestureDetector(
+                    onTap: () async{
+                      await BottomSheet_Widget(context, color: lightBg, [
+                        StatefulBuilder(builder:
+                            (thisLowerContext, checkListDeviceState) {
                           return Padding(
-                            padding:
-                            EdgeInsets.only(
-                              bottom: MediaQuery.of(
-                                  thisLowerContext)
-                                  .viewInsets
-                                  .bottom,
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(thisLowerContext).viewInsets.bottom,
                             ),
-                            child: Container(
-                              height: screenSize
-                                  .height /
-                                  1.5,
-                              decoration:
-                              BoxDecoration(
-                                borderRadius:
-                                BorderRadius
-                                    .vertical(
-                                  top: Radius
-                                      .circular(
-                                      10.0),
-                                ),
-                              ),
-                              child:
-                              SingleChildScrollView(
-                                child:
-                                Container(
-                                  width:
-                                  screenSize
-                                      .width,
-                                  color:
-                                  lightBg,
-                                  padding: const EdgeInsets
-                                      .symmetric(
-                                      vertical:
-                                      20,
-                                      horizontal:
-                                      16),
-                                  margin: EdgeInsets
-                                      .symmetric(
-                                      vertical:
-                                      15),
+                            child: SingleChildScrollView(
+                              child: Container(
+                                height: screenSize.height / 1.5,
+                                width: screenSize.width,
+                                color: lightBg,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
                                   child: Column(
-                                    mainAxisSize:
-                                    MainAxisSize
-                                        .min, // wrap content
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment
-                                        .start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Center(
-                                        child:
-                                        Text(
-                                          "Enter Client Details!",
-                                          style:
-                                          TextStyle(
-                                            fontFamily:
-                                            baseFont,
-                                            fontWeight:
-                                            FontWeight.w800,
-                                            fontSize:
-                                            28,
-                                            color:
-                                            darkBg,
-                                            shadows: [
-                                              Shadow(
-                                                color: Colors.black,
-                                                blurRadius: 0.5,
-                                                offset: Offset(0.5, 0.5),
+                                      SingleChildScrollView(
+                                        child: Container(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Device Details!",
+                                                style: TextStyle(
+                                                    fontFamily: baseFont,
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 28,
+                                                    color: darkBg,
+                                                    shadows: [
+                                                      Shadow(
+                                                          color: Colors.black,
+                                                          blurRadius: 0.5,
+                                                          offset: Offset(0.5, 0.5))
+                                                    ]),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap :(){
+                                                      checkListDeviceState(() {
+                                                        _newuuid.text = sharedPreferences.getString("UUID")!;
+                                                        _newbrand.text = sharedPreferences.getString("deviceBrand")!;
+                                                        _newmodel.text = sharedPreferences.getString("deviceModel")!;
+                                                      });
+                                                      printFunc( "\n version : ${sharedPreferences.getString("osVersion")}"
+                                                          "\n model : ${sharedPreferences.getString("deviceModel")}"
+                                                          "\n deviceBrand : ${sharedPreferences.getString("deviceBrand")}");
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(horizontal: 15,vertical: 8),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(color: Colors.black,width: 0.3),
+                                                          borderRadius: BorderRadius.circular(12),
+                                                          color: darkBg
+                                                      ),
+                                                      child:  Column(
+                                                        children: [
+                                                          Text("Register This",style: TextStyle(color: Colors.white),),
+                                                          Text("Device",style: TextStyle(color: Colors.white),),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
                                               )
                                             ],
                                           ),
+                                          margin: EdgeInsets.fromLTRB(5, 0, 15,0),
                                         ),
                                       ),
-                                      const SizedBox(
-                                          height:
-                                          20),
-                                      LabelText(
-                                          text:
-                                          "Client Name :"),
-                                      TextFeildNewUser(
-                                        hintText:
-                                        "Enter Client Name",
-                                        Controller:
-                                        _clientName,
-                                        onChanged:
-                                            (value) {},
-                                        enable:
-                                        true,
-                                        etext: clientValidator &&
-                                            _clientName.text.trim().isEmpty
-                                            ? "Please Enter Client Name"
-                                            : "",
+                                      SizedBox(
+                                        height: 20,
                                       ),
-                                      const SizedBox(
-                                          height:
-                                          8),
-                                      LabelText(
-                                          text:
-                                          "Client Address"),
-                                      TextFeildNewUser(
-                                        hintText:
-                                        "Enter Client Address",
-                                        Controller:
-                                        _clientAddress,
-                                        onChanged:
-                                            (value) {},
-                                        enable:
-                                        true,
-                                        etext: clientValidator &&
-                                            _clientAddress.text.trim().isEmpty
-                                            ? "Please Enter Client Address"
-                                            : "",
-                                      ),
-                                      const SizedBox(
-                                          height:
-                                          8),
-                                      LabelText(
-                                          text:
-                                          "Client Phone-Number"),
-                                      TextFeildNewUser(
-                                        hintText:
-                                        "Enter Client Phone-Number",
-                                        Controller:
-                                        _clientPhno,
-                                        type: TextInputType.number,
-                                        onChanged:
-                                            (value) {},
-                                        maxLength: 10,
 
-                                        enable:
-                                        true,
-                                        etext: clientValidator &&
-                                            _clientPhno.text.trim().isEmpty
-                                            ? "Please Enter Client Phone-Number"
-                                            : "",
-                                      ),
-                                      const SizedBox(
-                                          height:
-                                          8),
-                                      LabelText(
-                                          text:
-                                          "Client E-mail"),
-                                      TextFeildNewUser(
-                                        hintText:
-                                        "Enter Client E-mail",
-                                        Controller:
-                                        _clientEmail,
-                                        onChanged:
-                                            (value) {},
-                                        enable:
-                                        true,
-                                        etext: clientValidator &&
-                                            _clientEmail.text.trim().isEmpty
-                                            ? "Please Enter Client E-mail"
-                                            : "",
-                                      ),
-                                      const SizedBox(
-                                          height:
-                                          8),
-                                      LabelText(
-                                          text:
-                                          "Client's Contact Person"),
-                                      TextFeildNewUser(
-                                        hintText:
-                                        "Enter Client's Contact Person",
-                                        Controller:
-                                        _clientContactPerson,
-                                        onChanged:
-                                            (value) {},
-                                        maxLength: 10,
-                                        enable:
-                                        true,
-                                        etext: clientValidator &&
-                                            _clientContactPerson.text.trim().isEmpty
-                                            ? "Please Enter Client's Contact Person"
-                                            : "",
-                                      ),
-                                      const SizedBox(
-                                          height:
-                                          8),
-                                      LabelText(
-                                          text:
-                                          "Description"),
-                                      TextFeildNewUser(
-                                        hintText:
-                                        "Enter Description",
-                                        Controller:
-                                        _clientDiscription,
-                                        onChanged:
-                                            (value) {},
-                                        enable:
-                                        true,
-                                        etext: clientValidator &&
-                                            _clientDiscription.text.trim().isEmpty
-                                            ? "Please Enter Description"
-                                            : "",
-                                      ),
-                                      const SizedBox(
-                                          height:
-                                          8),
-                                      LabelText(
-                                          text:
-                                          "Client's code"),
-                                      TextFeildNewUser(
-                                        hintText:
-                                        "Enter Client's code",
-                                        Controller:
-                                        _clientCode,
-                                        type: TextInputType.number,
-                                        onChanged:
-                                            (value) {},
-                                        enable:
-                                        true,
-                                        etext: clientValidator &&
-                                            _clientCode.text.trim().isEmpty
-                                            ? "Please Enter Client's code"
-                                            : "",
-                                      ),
-                                      const SizedBox(
-                                          height:
-                                          20),
-                                      Center(
-                                        child:
-                                        manageUserBtn(
-                                          text:
-                                          "Add Client",
-                                          onPress:
-                                              () async {
-                                            checkClientState(() {
-                                              ValidateClientFields();
-                                            });
-                                            if (!clientValidator) {
-                                              if (await saveClient(
-                                                context,
-                                                name: _clientName.text.trim(),
-                                                address: _clientAddress.text.trim(),
-                                                contactNumber: _clientPhno.text.trim(),
-                                                email: _clientEmail.text.trim(),
-                                                contactPerson: _clientContactPerson.text.trim(),
-                                                discription: _clientDiscription.text.trim(),
-                                                code: _clientCode.text.trim(),
-                                              )) {
-                                                clearClient();
-                                                Navigator.of(context).pop();
-                                              }
-                                            }
-                                            setState(() {});
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-                child: Row(
-                  children: [
-                    Icon(CupertinoIcons.person_add,size: 22,color: Colors.white,shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius: 0.3,
-                      offset: Offset(0.5, 0.4),
-                    )],),
-                    SizedBox(width: 20,),
-                    Text(
-                      "Add Client",
-                      style: TextStyle(
-                          fontFamily: baseFont,
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.3,
-                              offset: Offset(0.5, 0.4),
-                            )
-                          ]),
-                    ),
-                    // Icon(Icons.chevron_right,color: Colors.white,size: 20,)
-
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 15,)
-          ],
-        ),
-        //Add_battery
-        add_battery: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: GestureDetector(
-                onTap: () async {
-                  // Add Battery
-
-                  await BottomSheet_Widget(
-                      context,
-                      color: lightBg,
-                      [
-                        StatefulBuilder(builder:
-                            (thisLowerContext,
-                            checkBoxState) {
-                          return Padding(
-                            padding:
-                            EdgeInsets.only(
-                              bottom: MediaQuery.of(
-                                  thisLowerContext)
-                                  .viewInsets
-                                  .bottom,
-                            ),
-                            child:
-                            SingleChildScrollView(
-                              child: Container(
-                                height: screenSize
-                                    .height /
-                                    1.5,
-                                width:
-                                screenSize
-                                    .width,
-                                color: lightBg,
-                                child:
-                                SingleChildScrollView(
-                                  child:
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical:
-                                        20),
-                                    child:
-                                    Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .center,
-                                      children: [
-                                        Text(
-                                          "Enter Battery Details!",
-                                          style: TextStyle(
-                                              fontFamily: baseFont,
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 24,
-                                              color: darkBg,
-                                              shadows: [
-                                                Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))
-                                              ]),
-                                        ),
-                                        SizedBox(
-                                          height:
-                                          20,
-                                        ),
-
-                                        Column(
+                                      Container(
+                                        child: Column(
                                           mainAxisAlignment:
                                           MainAxisAlignment.start,
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                           children: [
-                                            // Battery Name
-                                            LabelText(text: "Battery Name :"),
+                                            // UUID
+                                            LabelText(text: "UUID :"),
                                             TextFeildNewUser(
-                                              hintText: "Enter Battery Name",
-                                              Controller: _newbname,
+                                              hintText: "Enter Device UUID ",
+                                              Controller: _newuuid,
                                               onChanged: (value) {},
                                               enable: true,
-                                              etext: batteryValidator && _newbname.text.trim().isEmpty ? "Please Enter Battery Name" : "",
+                                              etext: deviceValidator &&
+                                                  _newuuid.text
+                                                      .trim()
+                                                      .isEmpty
+                                                  ? "Please Enter Device UUID"
+                                                  : "",
                                             ),
                                             SizedBox(
                                               height: 8,
                                             ),
-                                            // Relase Note
-                                            LabelText(text: "Battery Code"),
+                                            // Model
+                                            LabelText(text: "Model"),
                                             TextFeildNewUser(
-                                              hintText: "Enter Battery Code",
-                                              Controller: _batteryDescription,
-                                              type: TextInputType.number,
-                                              maxLength: 2,
+                                              hintText: "Enter Device Model",
+                                              Controller: _newmodel,
                                               onChanged: (value) {},
                                               enable: true,
-                                              etext: batteryValidator && _batteryDescription.text.trim().isEmpty ? "Please Enter Battery Code" : "",
+                                              etext: deviceValidator &&
+                                                  _newmodel.text
+                                                      .trim()
+                                                      .isEmpty
+                                                  ? "Please Enter Device Model"
+                                                  : "",
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            // Brand
+                                            LabelText(text: "Brand"),
+                                            TextFeildNewUser(
+                                              hintText: "Enter Device Brand",
+                                              Controller: _newbrand,
+                                              onChanged: (value) {},
+                                              enable: true,
+                                              etext: deviceValidator &&
+                                                  _newbrand.text
+                                                      .trim()
+                                                      .isEmpty
+                                                  ? "Please Enter Device Brand"
+                                                  : "",
                                             ),
                                             SizedBox(
                                               height: 8,
                                             ),
                                           ],
                                         ),
-                                        // Add Btn
-                                        manageUserBtn(
-                                            text:
-                                            "Add Battery",
-                                            onPress:
-                                                () async {
-                                              printFunc("BEFORE : $batteryValidator");
-                                              checkBoxState(() {
-                                                ValidateBatteryFields();
+                                      ),
+                                      // Add Btn
+                                      manageUserBtn(
+                                          text: "Register Device",
+                                          onPress: () async {
+                                            checkListDeviceState(() {
+                                              ValidateDeviceFields();
+                                            });
+                                            if(deviceValidator == false){
+                                              checkListDeviceState(() {
+                                                apicall =true;
                                               });
-                                              printFunc("DEMO DEMO : ${batteryValidator && _newbname.text.trim().isEmpty}");
-                                              printFunc("DEMODEMO");
-                                              printFunc(batteryValidator);
-                                              printFunc(_newbname.text.trim().isEmpty);
-
-                                              if (!batteryValidator) {
-                                                printFunc("Inside IF COND");
-                                                if (await addNewDeviceType(
-                                                  context,
-                                                  name: _newbname.text.trim(),
-                                                  description: _batteryDescription.text.trim(),
-                                                )) {
-
-                                                  clearBattery();
-                                                  Navigator.of(context, rootNavigator: true).pop();
-
-                                                  // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
-                                                }
+                                              if(apicall){
+                                                Navigator.of(context).pop();
+                                                ShowSnackBarMessage(context, 'Device Registerd successfully.', true);
+                                                _newuuid.clear();
+                                                _newbrand.clear();
+                                                _newmodel.clear();
+                                                setState(() {});
                                               }
-
-                                              setState(() {});
-                                            })
-                                      ],
-                                    ),
+                                            }
+                                            setState(() {});
+                                          }
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
@@ -786,17 +263,15 @@ class AdminMainState extends State<AdminMain> {
                           );
                         })
                       ]);
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.battery_0_bar_outlined,size: 22,color: Colors.white,shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius: 0.3,
-                      offset: Offset(0.5, 0.4),
-                    )],),
-                    SizedBox(width: 20),
-                    Text(
-                      "Add Battery",
+                      setState(() {});
+                      printFunc("Device Information : \n"
+                          "uuid :  ${sharedPreferences.getString("UUID")}"
+                          "\n version : ${sharedPreferences.getString("osVersion")}"
+                          "\n model : ${sharedPreferences.getString("deviceModel")}"
+                          "\n deviceBrand : ${sharedPreferences.getString("deviceBrand")}");
+                    },
+                    child: Text(
+                      "Add Device",
                       style: TextStyle(
                           fontFamily: baseFont,
                           color: Colors.white,
@@ -810,174 +285,705 @@ class AdminMainState extends State<AdminMain> {
                             )
                           ]),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                SizedBox(height: 15,)
+              ],
+            ), */
+            //Add Client
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: GestureDetector(
+                    onTap: () async {
+                      // Add Client
+                      clearClient();
+                      await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled:
+                        true, // important for keyboard handling
+                        backgroundColor: lightBg,
+                        shape:
+                        RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.vertical(
+                              top: Radius
+                                  .circular(
+                                  10.0)),
+                        ),
+                        builder: (context) {
+                          return StatefulBuilder(
+                            builder: (thisLowerContext,
+                                checkClientState) {
+                              return Padding(
+                                padding:
+                                EdgeInsets.only(
+                                  bottom: MediaQuery.of(
+                                      thisLowerContext)
+                                      .viewInsets
+                                      .bottom,
+                                ),
+                                child: Container(
+                                  height: screenSize
+                                      .height /
+                                      1.5,
+                                  decoration:
+                                  BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius
+                                        .vertical(
+                                      top: Radius
+                                          .circular(
+                                          10.0),
+                                    ),
+                                  ),
+                                  child:
+                                  SingleChildScrollView(
+                                    child:
+                                    Container(
+                                      width:
+                                      screenSize
+                                          .width,
+                                      color:
+                                      lightBg,
+                                      padding: const EdgeInsets
+                                          .symmetric(
+                                          vertical:
+                                          20,
+                                          horizontal:
+                                          16),
+                                      margin: EdgeInsets
+                                          .symmetric(
+                                          vertical:
+                                          15),
+                                      child: Column(
+                                        mainAxisSize:
+                                        MainAxisSize
+                                            .min, // wrap content
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          Center(
+                                            child:
+                                            Text(
+                                              "Enter Client Details!",
+                                              style:
+                                              TextStyle(
+                                                fontFamily:
+                                                baseFont,
+                                                fontWeight:
+                                                FontWeight.w800,
+                                                fontSize:
+                                                28,
+                                                color:
+                                                darkBg,
+                                                shadows: [
+                                                  Shadow(
+                                                    color: Colors.black,
+                                                    blurRadius: 0.5,
+                                                    offset: Offset(0.5, 0.5),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                              height:
+                                              20),
+                                          LabelText(
+                                              text:
+                                              "Client Name :"),
+                                          TextFeildNewUser(
+                                            hintText:
+                                            "Enter Client Name",
+                                            Controller:
+                                            _clientName,
+                                            onChanged:
+                                                (value) {},
+                                            enable:
+                                            true,
+                                            etext: clientValidator &&
+                                                _clientName.text.trim().isEmpty
+                                                ? "Please Enter Client Name"
+                                                : "",
+                                          ),
+                                          const SizedBox(
+                                              height:
+                                              8),
+                                          LabelText(
+                                              text:
+                                              "Client Address"),
+                                          TextFeildNewUser(
+                                            hintText:
+                                            "Enter Client Address",
+                                            Controller:
+                                            _clientAddress,
+                                            onChanged:
+                                                (value) {},
+                                            enable:
+                                            true,
+                                            etext: clientValidator &&
+                                                _clientAddress.text.trim().isEmpty
+                                                ? "Please Enter Client Address"
+                                                : "",
+                                          ),
+                                          const SizedBox(
+                                              height:
+                                              8),
+                                          LabelText(
+                                              text:
+                                              "Client Phone-Number"),
+                                          TextFeildNewUser(
+                                            hintText:
+                                            "Enter Client Phone-Number",
+                                            Controller:
+                                            _clientPhno,
+                                            type: TextInputType.number,
+                                            onChanged:
+                                                (value) {},
+                                            maxLength: 10,
+
+                                            enable:
+                                            true,
+                                            etext: clientValidator &&
+                                                _clientPhno.text.trim().isEmpty
+                                                ? "Please Enter Client Phone-Number"
+                                                : "",
+                                          ),
+                                          const SizedBox(
+                                              height:
+                                              8),
+                                          LabelText(
+                                              text:
+                                              "Client E-mail"),
+                                          TextFeildNewUser(
+                                            hintText:
+                                            "Enter Client E-mail",
+                                            Controller:
+                                            _clientEmail,
+                                            onChanged:
+                                                (value) {},
+                                            enable:
+                                            true,
+                                            etext: clientValidator &&
+                                                _clientEmail.text.trim().isEmpty
+                                                ? "Please Enter Client E-mail"
+                                                : "",
+                                          ),
+                                          const SizedBox(
+                                              height:
+                                              8),
+                                          LabelText(
+                                              text:
+                                              "Client's Contact Person"),
+                                          TextFeildNewUser(
+                                            hintText:
+                                            "Enter Client's Contact Person",
+                                            Controller:
+                                            _clientContactPerson,
+                                            onChanged:
+                                                (value) {},
+                                            maxLength: 10,
+                                            enable:
+                                            true,
+                                            etext: clientValidator &&
+                                                _clientContactPerson.text.trim().isEmpty
+                                                ? "Please Enter Client's Contact Person"
+                                                : "",
+                                          ),
+                                          const SizedBox(
+                                              height:
+                                              8),
+                                          LabelText(
+                                              text:
+                                              "Description"),
+                                          TextFeildNewUser(
+                                            hintText:
+                                            "Enter Description",
+                                            Controller:
+                                            _clientDiscription,
+                                            onChanged:
+                                                (value) {},
+                                            enable:
+                                            true,
+                                            etext: clientValidator &&
+                                                _clientDiscription.text.trim().isEmpty
+                                                ? "Please Enter Description"
+                                                : "",
+                                          ),
+                                          const SizedBox(
+                                              height:
+                                              8),
+                                          LabelText(
+                                              text:
+                                              "Client's code"),
+                                          TextFeildNewUser(
+                                            hintText:
+                                            "Enter Client's code",
+                                            Controller:
+                                            _clientCode,
+                                            type: TextInputType.number,
+                                            onChanged:
+                                                (value) {},
+                                            enable:
+                                            true,
+                                            etext: clientValidator &&
+                                                _clientCode.text.trim().isEmpty
+                                                ? "Please Enter Client's code"
+                                                : "",
+                                          ),
+                                          const SizedBox(
+                                              height:
+                                              20),
+                                          Center(
+                                            child:
+                                            manageUserBtn(
+                                              text:
+                                              "Add Client",
+                                              onPress:
+                                                  () async {
+                                                checkClientState(() {
+                                                  ValidateClientFields();
+                                                });
+                                                if (!clientValidator) {
+                                                  if (await saveClient(
+                                                    context,
+                                                    name: _clientName.text.trim(),
+                                                    address: _clientAddress.text.trim(),
+                                                    contactNumber: _clientPhno.text.trim(),
+                                                    email: _clientEmail.text.trim(),
+                                                    contactPerson: _clientContactPerson.text.trim(),
+                                                    discription: _clientDiscription.text.trim(),
+                                                    code: _clientCode.text.trim(),
+                                                  )) {
+                                                    clearClient();
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                }
+                                                setState(() {});
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Icon(CupertinoIcons.person_add,size: 22,color: Colors.white,shadows: [Shadow(
+                          color: Colors.black,
+                          blurRadius: 0.3,
+                          offset: Offset(0.5, 0.4),
+                        )],),
+                        SizedBox(width: 20,),
+                        Text(
+                          "Add Client",
+                          style: TextStyle(
+                              fontFamily: baseFont,
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0.3,
+                                  offset: Offset(0.5, 0.4),
+                                )
+                              ]),
+                        ),
+                        // Icon(Icons.chevron_right,color: Colors.white,size: 20,)
+
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15,)
+              ],
             ),
-            SizedBox(height: 15,)
-          ],
-        ),
-        //Add_designation
-        add_designation: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: GestureDetector(
-                onTap: () async {
-                  await BottomSheet_Widget(
-                      context,
-                      color: lightBg,
-                      [
-                        StatefulBuilder(builder:
-                            (thisLowerContext,
-                            CheckDesignationState) {
-                          return Padding(
-                            padding:
-                            EdgeInsets.only(
-                              bottom: MediaQuery.of(
-                                  thisLowerContext)
-                                  .viewInsets
-                                  .bottom,
-                            ),
-                            child:
-                            SingleChildScrollView(
-                              child: Container(
-                                height: screenSize
-                                    .height /
-                                    1.5,
-                                width:
-                                screenSize
-                                    .width,
-                                color: lightBg,
+            //Add Battery
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: GestureDetector(
+                    onTap: () async {
+                      // Add Battery
+
+                      await BottomSheet_Widget(
+                          context,
+                          color: lightBg,
+                          [
+                            StatefulBuilder(builder:
+                                (thisLowerContext,
+                                checkBoxState) {
+                              return Padding(
+                                padding:
+                                EdgeInsets.only(
+                                  bottom: MediaQuery.of(
+                                      thisLowerContext)
+                                      .viewInsets
+                                      .bottom,
+                                ),
                                 child:
                                 SingleChildScrollView(
-                                  child:
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical:
-                                        20),
+                                  child: Container(
+                                    height: screenSize
+                                        .height /
+                                        1.5,
+                                    width:
+                                    screenSize
+                                        .width,
+                                    color: lightBg,
                                     child:
-                                    Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .center,
-                                      children: [
-                                        Text(
-                                          "Enter Designation Details!",
-                                          style: TextStyle(
-                                              fontFamily: baseFont,
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 24,
-                                              color: darkBg,
-                                              shadows: [
-                                                Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))
-                                              ]),
-                                        ),
-                                        SizedBox(
-                                          height:
-                                          20,
-                                        ),
+                                    SingleChildScrollView(
+                                      child:
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical:
+                                            20),
+                                        child:
+                                        Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .center,
+                                          children: [
+                                            Text(
+                                              "Enter Battery Details!",
+                                              style: TextStyle(
+                                                  fontFamily: baseFont,
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 24,
+                                                  color: darkBg,
+                                                  shadows: [
+                                                    Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))
+                                                  ]),
+                                            ),
+                                            SizedBox(
+                                              height:
+                                              20,
+                                            ),
 
-                                        Container(
-                                          child:
-                                          Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              // Battery Name
-                                              LabelText(text: "Designation :"),
-                                              TextFeildNewUser(
-                                                hintText: "Enter Designation",
-                                                Controller: _newDesgination,
-                                                onChanged: (value) {},
-                                                enable: true,
-                                                etext: designationValidator && _newDesgination.text.trim().isEmpty ? "Please Enter Designation" : "",
-                                              ),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                              // Relase Note
-                                              LabelText(text: "Priority"),
-                                              TextFeildNewUser(
-                                                hintText: "Enter Priority",
-                                                Controller: _designationPriority,
-                                                type: TextInputType.number,
-                                                onChanged: (value) {},
-                                                enable: true,
-                                                etext: designationValidator && _designationPriority.text.trim().isEmpty ? "Please Enter Priority" : "",
-                                              ),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                            ],
-                                          ),
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                // Battery Name
+                                                LabelText(text: "Battery Name :"),
+                                                TextFeildNewUser(
+                                                  hintText: "Enter Battery Name",
+                                                  Controller: _newbname,
+                                                  onChanged: (value) {},
+                                                  enable: true,
+                                                  etext: batteryValidator && _newbname.text.trim().isEmpty ? "Please Enter Battery Name" : "",
+                                                ),
+                                                SizedBox(
+                                                  height: 8,
+                                                ),
+                                                // Relase Note
+                                                LabelText(text: "Battery Code"),
+                                                TextFeildNewUser(
+                                                  hintText: "Enter Battery Code",
+                                                  Controller: _batteryDescription,
+                                                  type: TextInputType.number,
+                                                  maxLength: 2,
+                                                  onChanged: (value) {},
+                                                  enable: true,
+                                                  etext: batteryValidator && _batteryDescription.text.trim().isEmpty ? "Please Enter Battery Code" : "",
+                                                ),
+                                                SizedBox(
+                                                  height: 8,
+                                                ),
+                                              ],
+                                            ),
+                                            // Add Btn
+                                            manageUserBtn(
+                                                text:
+                                                "Add Battery",
+                                                onPress:
+                                                    () async {
+                                                  printFunc("BEFORE : $batteryValidator");
+                                                  checkBoxState(() {
+                                                    ValidateBatteryFields();
+                                                  });
+                                                  printFunc("DEMO DEMO : ${batteryValidator && _newbname.text.trim().isEmpty}");
+                                                  printFunc("DEMODEMO");
+                                                  printFunc(batteryValidator);
+                                                  printFunc(_newbname.text.trim().isEmpty);
+
+                                                  if (!batteryValidator) {
+                                                    printFunc("Inside IF COND");
+                                                    if (await addNewDeviceType(
+                                                      context,
+                                                      name: _newbname.text.trim(),
+                                                      description: _batteryDescription.text.trim(),
+                                                    )) {
+
+                                                      clearBattery();
+                                                      Navigator.of(context, rootNavigator: true).pop();
+
+                                                      // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                                                    }
+                                                  }
+
+                                                  setState(() {});
+                                                })
+                                          ],
                                         ),
-                                        // Add Btn
-                                        manageUserBtn(
-                                            text:
-                                            "Add Designation",
-                                            onPress: () async {
-                                              CheckDesignationState(() {
-                                                ValidateDesignationFields();
-                                              });
-
-                                              if (!designationValidator) {
-                                                printFunc("Inside IF COND");
-                                                if (await addNewDesgination(
-                                                  context,
-                                                  name: _newDesgination.text.trim(),
-                                                  priority: int.tryParse(_designationPriority.text) ?? 0,
-                                                )) {
-                                                  clearDesignationFields();
-
-                                                  Navigator.of(context).pop(); // Close inner sheet
-                                                  // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
-                                                }
-                                              }
-                                              setState(() {});
-                                            })
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        })
-                      ]);
-                  clearDesignationFields();
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.supervised_user_circle_outlined,size: 22,color: Colors.white,shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius: 0.3,
-                      offset: Offset(0.5, 0.4),
-                    )],),
-                    SizedBox(width: 20,),
-                    Text(
-                      "Add Designation",
-                      style: TextStyle(
-                          fontFamily: baseFont,
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.3,
-                              offset: Offset(0.5, 0.4),
-                            )
-                          ]),
+                              );
+                            })
+                          ]);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.battery_0_bar_outlined,size: 22,color: Colors.white,shadows: [Shadow(
+                          color: Colors.black,
+                          blurRadius: 0.3,
+                          offset: Offset(0.5, 0.4),
+                        )],),
+                        SizedBox(width: 20),
+                        Text(
+                          "Add Battery",
+                          style: TextStyle(
+                              fontFamily: baseFont,
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0.3,
+                                  offset: Offset(0.5, 0.4),
+                                )
+                              ]),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                SizedBox(height: 15,)
+              ],
             ),
-            SizedBox(height: 15,)
+            //Add Designation
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: GestureDetector(
+                    onTap: () async {
+                      await BottomSheet_Widget(
+                          context,
+                          color: lightBg,
+                          [
+                            StatefulBuilder(builder:
+                                (thisLowerContext,
+                                CheckDesignationState) {
+                              return Padding(
+                                padding:
+                                EdgeInsets.only(
+                                  bottom: MediaQuery.of(
+                                      thisLowerContext)
+                                      .viewInsets
+                                      .bottom,
+                                ),
+                                child:
+                                SingleChildScrollView(
+                                  child: Container(
+                                    height: screenSize
+                                        .height /
+                                        1.5,
+                                    width:
+                                    screenSize
+                                        .width,
+                                    color: lightBg,
+                                    child:
+                                    SingleChildScrollView(
+                                      child:
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical:
+                                            20),
+                                        child:
+                                        Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .center,
+                                          children: [
+                                            Text(
+                                              "Enter Designation Details!",
+                                              style: TextStyle(
+                                                  fontFamily: baseFont,
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 24,
+                                                  color: darkBg,
+                                                  shadows: [
+                                                    Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))
+                                                  ]),
+                                            ),
+                                            SizedBox(
+                                              height:
+                                              20,
+                                            ),
+
+                                            Container(
+                                              child:
+                                              Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  // Battery Name
+                                                  LabelText(text: "Designation :"),
+                                                  TextFeildNewUser(
+                                                    hintText: "Enter Designation",
+                                                    Controller: _newDesgination,
+                                                    onChanged: (value) {},
+                                                    enable: true,
+                                                    etext: designationValidator && _newDesgination.text.trim().isEmpty ? "Please Enter Designation" : "",
+                                                  ),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  // Relase Note
+                                                  LabelText(text: "Priority"),
+                                                  TextFeildNewUser(
+                                                    hintText: "Enter Priority",
+                                                    Controller: _designationPriority,
+                                                    type: TextInputType.number,
+                                                    onChanged: (value) {},
+                                                    enable: true,
+                                                    etext: designationValidator && _designationPriority.text.trim().isEmpty ? "Please Enter Priority" : "",
+                                                  ),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            // Add Btn
+                                            manageUserBtn(
+                                                text:
+                                                "Add Designation",
+                                                onPress: () async {
+                                                  CheckDesignationState(() {
+                                                    ValidateDesignationFields();
+                                                  });
+
+                                                  if (!designationValidator) {
+                                                    printFunc("Inside IF COND");
+                                                    if (await addNewDesgination(
+                                                      context,
+                                                      name: _newDesgination.text.trim(),
+                                                      priority: int.tryParse(_designationPriority.text) ?? 0,
+                                                    )) {
+                                                      clearDesignationFields();
+
+                                                      Navigator.of(context).pop(); // Close inner sheet
+                                                      // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                                                    }
+                                                  }
+                                                  setState(() {});
+                                                })
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            })
+                          ]);
+                      clearDesignationFields();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.supervised_user_circle_outlined,size: 22,color: Colors.white,shadows: [Shadow(
+                          color: Colors.black,
+                          blurRadius: 0.3,
+                          offset: Offset(0.5, 0.4),
+                        )],),
+                        SizedBox(width: 20,),
+                        Text(
+                          "Add Designation",
+                          style: TextStyle(
+                              fontFamily: baseFont,
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0.3,
+                                  offset: Offset(0.5, 0.4),
+                                )
+                              ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15,)
+              ],
+            ),
+            futureScope
+            ? Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_) => deviceInfo()));
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.perm_device_information_outlined,size: 22,color: Colors.white,shadows: [Shadow(
+                          color: Colors.black,
+                          blurRadius: 0.3,
+                          offset: Offset(0.5, 0.4),
+                        )],),
+                        SizedBox(width: 20,),
+                        Text(
+                          "Device Information",
+                          style: TextStyle(
+                              fontFamily: baseFont,
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0.3,
+                                  offset: Offset(0.5, 0.4),
+                                )
+                              ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15,)
+              ],
+            )
+            : SizedBox(),
           ],
         ),
 

@@ -16,6 +16,7 @@ import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class DfuHomePage extends StatefulWidget {
   const DfuHomePage(
@@ -484,20 +485,22 @@ class _DfuHomePageState extends State<DfuHomePage> {
           ),
         ],
       ),
-      body: WillPopScope(
-        onWillPop: () async {
-          if (isDeviceSelected) {
-            setState(() {
-              isDeviceSelected = false;
-              scanedDevcice = null;
-            });
-            return false;
-          } else {
-            // Navigator.of(context,rootNavigator: true).pop();
-            return true;
-          }
-        },
-        child: isDeviceSelected ? DFUConfirm() : DeviceList(),
+      body: InternetStatusWatcher(
+        child: WillPopScope(
+          onWillPop: () async {
+            if (isDeviceSelected) {
+              setState(() {
+                isDeviceSelected = false;
+                scanedDevcice = null;
+              });
+              return false;
+            } else {
+              // Navigator.of(context,rootNavigator: true).pop();
+              return true;
+            }
+          },
+          child: isDeviceSelected ? DFUConfirm() : DeviceList(),
+        ),
       ),
     );
   }
@@ -528,7 +531,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                     isDeviceSelected = true;
                     scanedDevcice = results[i];
                     percent = null; // progressMap[id];
-                    print("Demo dfu device : $scanedDevcice");
+                    printFunc("Demo dfu device : $scanedDevcice");
                     stopScan;
                   }), //startDfu(scanedDevcice),
                   child: Text('Select'),

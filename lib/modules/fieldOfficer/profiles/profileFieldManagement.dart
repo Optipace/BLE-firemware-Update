@@ -5,6 +5,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/profileSeriesModel
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/services/apiCall/profile.dart';
 import 'package:tracker_firmware/services/profiles/methods.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class ProfileFieldManagement extends StatefulWidget {
   const ProfileFieldManagement({super.key});
@@ -48,7 +49,7 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
 
   @override
   Widget build(BuildContext context) {
-    print("Inside Logs Page");
+    printFunc("Inside Logs Page");
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -63,94 +64,136 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: Column(
-          children: [
-            SizedBox(
-              height: 5,
-            ),
-            Card(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: darkBg,
-                    width: 0.5,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(28))),
-              color: lightBg,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        selectedbutton = 1;
-                      });
-                    },
-                    child: Container(
-                      width: screenSize.width * 0.32,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          color: selectedbutton == 1 ? darkBg : lightBg,
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(28), bottomLeft: Radius.circular(28)),
-                          border: Border.all(width: 0.5, color: darkBg),
-                          boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
-                      child: Center(
-                          heightFactor: 2,
-                          child: Center(
-                            child: Text(
-                              "B-6",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontFamily: baseFont,
-                                fontWeight: FontWeight.w600,
-                                color: selectedbutton == 1 ? lightBg : darkBg,
-                                shadows: [
-                                  Shadow(
-                                      offset: Offset(0.3, 0.3),
-                                      color: selectedbutton == 1 ? lightBg : darkBg),
-                                  Shadow(
-                                      offset: Offset(-0.3, 0.3),
-                                      color: selectedbutton == 1 ? lightBg : darkBg),
-                                ],
-                              ),
-                            ),
-                          )),
+        body: InternetStatusWatcher(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 5,
+              ),
+              Card(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: darkBg,
+                      width: 0.5,
                     ),
-                  ),
-                  Expanded(
-                    child: InkWell(
+                    borderRadius: BorderRadius.all(Radius.circular(28))),
+                color: lightBg,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
                       onTap: () {
                         setState(() {
-                          selectedbutton = 2;
+                          selectedbutton = 1;
                         });
                       },
                       child: Container(
-                        // width: size.width * 0.3,
+                        width: screenSize.width * 0.32,
                         height: 60,
                         decoration: BoxDecoration(
-                            color: selectedbutton == 2 ? darkBg : lightBg,
-                            // borderRadius: const BorderRadius.only(
-                            //     topRight: Radius.circular(28), bottomRight: Radius.circular(28)),
+                            color: selectedbutton == 1 ? darkBg : lightBg,
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(28), bottomLeft: Radius.circular(28)),
+                            border: Border.all(width: 0.5, color: darkBg),
+                            boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                        child: Center(
+                            heightFactor: 2,
+                            child: Center(
+                              child: Text(
+                                "B-6",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontFamily: baseFont,
+                                  fontWeight: FontWeight.w600,
+                                  color: selectedbutton == 1 ? lightBg : darkBg,
+                                  shadows: [
+                                    Shadow(
+                                        offset: Offset(0.3, 0.3),
+                                        color: selectedbutton == 1 ? lightBg : darkBg),
+                                    Shadow(
+                                        offset: Offset(-0.3, 0.3),
+                                        color: selectedbutton == 1 ? lightBg : darkBg),
+                                  ],
+                                ),
+                              ),
+                            )),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedbutton = 2;
+                          });
+                        },
+                        child: Container(
+                          // width: size.width * 0.3,
+                          height: 60,
+                          decoration: BoxDecoration(
+                              color: selectedbutton == 2 ? darkBg : lightBg,
+                              // borderRadius: const BorderRadius.only(
+                              //     topRight: Radius.circular(28), bottomRight: Radius.circular(28)),
+                              boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                          child: Center(
+                            heightFactor: 2,
+                            child: Center(
+                              child: Text(
+                                "B-9",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontFamily: baseFont,
+                                  fontWeight: FontWeight.w600,
+                                  color: selectedbutton == 2 ? lightBg : darkBg,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(0.3, 0.3),
+                                      color: selectedbutton == 2 ? lightBg : darkBg,
+                                    ),
+                                    Shadow(
+                                      offset: Offset(-0.3, 0.3),
+                                      color: selectedbutton == 2 ? lightBg : darkBg,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          selectedbutton = 3;
+                        });
+                      },
+                      child: Container(
+                        width: screenSize.width * 0.3,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            color: selectedbutton == 3 ? darkBg : lightBg,
+                            borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(28), bottomRight: Radius.circular(28)),
                             boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
                         child: Center(
                           heightFactor: 2,
                           child: Center(
                             child: Text(
-                              "B-9",
+                              "B-12",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontFamily: baseFont,
                                 fontWeight: FontWeight.w600,
-                                color: selectedbutton == 2 ? lightBg : darkBg,
+                                color: selectedbutton == 3 ? lightBg : darkBg,
                                 shadows: [
                                   Shadow(
                                     offset: Offset(0.3, 0.3),
-                                    color: selectedbutton == 2 ? lightBg : darkBg,
+                                    color: selectedbutton == 3 ? lightBg : darkBg,
                                   ),
                                   Shadow(
                                     offset: Offset(-0.3, 0.3),
-                                    color: selectedbutton == 2 ? lightBg : darkBg,
+                                    color: selectedbutton == 3 ? lightBg : darkBg,
                                   ),
                                 ],
                               ),
@@ -159,61 +202,21 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                         ),
                       ),
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        selectedbutton = 3;
-                      });
-                    },
-                    child: Container(
-                      width: screenSize.width * 0.3,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          color: selectedbutton == 3 ? darkBg : lightBg,
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(28), bottomRight: Radius.circular(28)),
-                          boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
-                      child: Center(
-                        heightFactor: 2,
-                        child: Center(
-                          child: Text(
-                            "B-12",
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontFamily: baseFont,
-                              fontWeight: FontWeight.w600,
-                              color: selectedbutton == 3 ? lightBg : darkBg,
-                              shadows: [
-                                Shadow(
-                                  offset: Offset(0.3, 0.3),
-                                  color: selectedbutton == 3 ? lightBg : darkBg,
-                                ),
-                                Shadow(
-                                  offset: Offset(-0.3, 0.3),
-                                  color: selectedbutton == 3 ? lightBg : darkBg,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-                child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  if (selectedbutton == 1) ...?seriesSix(),
-                  if (selectedbutton == 2) ...?seriesNine(),
-                  if (selectedbutton == 3) ...?seriesTwelve(),
-                ],
-              ),
-            )),
-          ],
+              Expanded(
+                  child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    if (selectedbutton == 1) ...?seriesSix(),
+                    if (selectedbutton == 2) ...?seriesNine(),
+                    if (selectedbutton == 3) ...?seriesTwelve(),
+                  ],
+                ),
+              )),
+            ],
+          ),
         ));
   }
 

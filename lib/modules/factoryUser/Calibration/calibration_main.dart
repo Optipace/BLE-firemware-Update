@@ -9,6 +9,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
+import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
 class CalibrateDevice extends StatefulWidget {
@@ -78,499 +79,501 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
         shadowColor: darkBg,
       ),
       backgroundColor: lightBg,
-      body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
-                decoration: BoxDecoration(
-                  border: Border.all(color: darkBg),
-                  color: Colors.white,
-                  // borderRadius: BorderRadius.circular(15)
-                ),
-                padding: EdgeInsets.symmetric(vertical: 15),
-                child: Center(
-                  child: Text(
-                    "Enter or Scan MAC-ID",
-                    style: TextStyle(
-                        fontFamily: baseFont,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 24,
-                        color: darkBg,
-                        shadows: [
-                          Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.5,
-                              offset: Offset(0.5, 0.5))
-                        ]),
+      body: InternetStatusWatcher(
+        child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: darkBg),
+                    color: Colors.white,
+                    // borderRadius: BorderRadius.circular(15)
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: Center(
+                    child: Text(
+                      "Enter or Scan MAC-ID",
+                      style: TextStyle(
+                          fontFamily: baseFont,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 24,
+                          color: darkBg,
+                          shadows: [
+                            Shadow(
+                                color: Colors.black,
+                                blurRadius: 0.5,
+                                offset: Offset(0.5, 0.5))
+                          ]),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
-                decoration: BoxDecoration(
-                  border: Border.all(color: darkBg),
-                  color: Colors.white,
-                  // borderRadius: BorderRadius.circular(15)
-                ),
-                child: Column(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //QR CODE
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(left: 15,right: 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "MAC-ID  ",
-                                      style: TextStyle(
-                                          color: darkBg,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          shadows: [
-                                            Shadow(color: Colors.black, blurRadius: 0.3)
-                                          ]),
-                                    ),
-
-
-                                    enableConnect
-                                    ? NotConnected
-                                        ? Container(
-                                      color: Colors.transparent,
-                                      height: 25,
-                                      width: 25,
-                                      child:  Center(
-                                        child: CircularProgressIndicator(
-                                          valueColor: AlwaysStoppedAnimation<Color>(
-                                              Colors.grey),
-                                        ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: darkBg),
+                    color: Colors.white,
+                    // borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //QR CODE
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(left: 15,right: 15),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "MAC-ID  ",
+                                        style: TextStyle(
+                                            color: darkBg,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            shadows: [
+                                              Shadow(color: Colors.black, blurRadius: 0.3)
+                                            ]),
                                       ),
-                                    )
-                                        : ElevatedButton(
-                                      onPressed: (device != null && device!.isConnected)
-                                          ? () {}
-                                          : () async {
-                                        //After this everything goes to the server
-                                        validateField();
-                                        !validateFields;
-                                        if (!validateFields) {
-                                          await scanAndConnect();
 
-                                        }
-                                        if(mounted){
 
-                                          setState(() {});
-                                        }
-                                      },
-                                      child: (device != null && device!.isConnected )
-                                          ? Text("Connected")
-                                          : Text("Connect"),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                        MaterialStateProperty.all(darkBg),
-                                        elevation: MaterialStateProperty.all(5),
-                                        shadowColor:
-                                        MaterialStateProperty.all(darkBg),
-                                        shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(10),
-                                              side: BorderSide(
-                                                  color: darkBg, width: 1)),
+                                      enableConnect
+                                      ? NotConnected
+                                          ? Container(
+                                        color: Colors.transparent,
+                                        height: 25,
+                                        width: 25,
+                                        child:  Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor: AlwaysStoppedAnimation<Color>(
+                                                Colors.grey),
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                    : SizedBox()
+                                      )
+                                          : ElevatedButton(
+                                        onPressed: (device != null && device!.isConnected)
+                                            ? () {}
+                                            : () async {
+                                          //After this everything goes to the server
+                                          validateField();
+                                          !validateFields;
+                                          if (!validateFields) {
+                                            await scanAndConnect();
+
+                                          }
+                                          if(mounted){
+
+                                            setState(() {});
+                                          }
+                                        },
+                                        child: (device != null && device!.isConnected )
+                                            ? Text("Connected")
+                                            : Text("Connect"),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                          MaterialStateProperty.all(darkBg),
+                                          elevation: MaterialStateProperty.all(5),
+                                          shadowColor:
+                                          MaterialStateProperty.all(darkBg),
+                                          shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                                side: BorderSide(
+                                                    color: darkBg, width: 1)),
+                                          ),
+                                        ),
+                                      )
+                                      : SizedBox()
 
 
 
 
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: darkBg),
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Column(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () async {
-                                            final result = await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    QRScannerScreen(title: "Scan QR-Code"),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: darkBg),
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Column(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final result = await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      QRScannerScreen(title: "Scan QR-Code"),
+                                                ),
+                                              );
+                                              if (result != null) {
+                                                setState(() {
+                                                  _macIdController.text = result;
+                                                  enableConnect = true;
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              margin:
+                                              EdgeInsets.fromLTRB(30, 15, 30, 5),
+                                              padding: EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(color: darkBg),
+                                                borderRadius:
+                                                BorderRadius.circular(15),
                                               ),
-                                            );
-                                            if (result != null) {
-                                              setState(() {
-                                                _macIdController.text = result;
-                                                enableConnect = true;
-                                              });
-                                            }
-                                          },
-                                          child: Container(
-                                            margin:
-                                            EdgeInsets.fromLTRB(30, 15, 30, 5),
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(color: darkBg),
-                                              borderRadius:
-                                              BorderRadius.circular(15),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Icon(CupertinoIcons.qrcode,
-                                                        size: 35,
-                                                        color: darkBg,
-                                                        shadows: [
-                                                          Shadow(
-                                                              color: Colors.black,
-                                                              blurRadius: 0.4)
-                                                        ]),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Text(
-                                                      "Scan QR-Code",
-                                                      style: TextStyle(
-                                                          fontSize: 16,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Icon(CupertinoIcons.qrcode,
+                                                          size: 35,
                                                           color: darkBg,
-                                                          fontWeight:
-                                                          FontWeight.w500,
                                                           shadows: [
                                                             Shadow(
                                                                 color: Colors.black,
                                                                 blurRadius: 0.4)
                                                           ]),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Icon(
-                                                  CupertinoIcons.chevron_right_2,
-                                                  color: darkBg,
-                                                  shadows: [
-                                                    Shadow(
-                                                        color: Colors.black,
-                                                        blurRadius: 0.4)
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                                child: Container(
-                                                  margin: EdgeInsets.only(left: 30),
-                                                  height: 1,
-                                                  color: Colors.black,
-                                                )),
-                                            Padding(
-                                              padding: const EdgeInsets.all(15),
-                                              child: Text(
-                                                "OR",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w600),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        "Scan QR-Code",
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: darkBg,
+                                                            fontWeight:
+                                                            FontWeight.w500,
+                                                            shadows: [
+                                                              Shadow(
+                                                                  color: Colors.black,
+                                                                  blurRadius: 0.4)
+                                                            ]),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Icon(
+                                                    CupertinoIcons.chevron_right_2,
+                                                    color: darkBg,
+                                                    shadows: [
+                                                      Shadow(
+                                                          color: Colors.black,
+                                                          blurRadius: 0.4)
+                                                    ],
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                            Expanded(
-                                                child: Container(
-                                                  margin: EdgeInsets.only(right: 30),
-                                                  height: 1,
-                                                  color: Colors.black,
-                                                )),
-                                          ],
-                                        ),
-                                        TextFeildNewUser(
-                                          hintText: "Enter the MacID",
-                                          Controller: _macIdController,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              enableConnect = true;
-                                            });
-                                          },
-                                          enable: true,
-                                          etext: validateFields &&
-                                              _macIdController.text
-                                                  .trim()
-                                                  .isEmpty
-                                              ? "Please Enter MAC-Id"
-                                              : "",
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-
-                            ],
-                          ),
-                        ),
-
-
-
-                        (device != null && device!.isConnected)
-                        ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 10, top: 15),
-                              child: ElevatedButton(
-                                onPressed: (){
-                                  setState(() {
-                                    enableConnect = false;
-                                  });
-                                  _macIdController.clear();
-                                  disconnect();
-
-                                  },
-                                style: ButtonStyle(
-                                  backgroundColor: isDeviceConnected
-                                      ? MaterialStateProperty.all(darkBg)
-                                      : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(25),
-                                        side: BorderSide(color: darkBg, width: 1)),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(left: 30),
+                                                    height: 1,
+                                                    color: Colors.black,
+                                                  )),
+                                              Padding(
+                                                padding: const EdgeInsets.all(15),
+                                                child: Text(
+                                                  "OR",
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w600),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(right: 30),
+                                                    height: 1,
+                                                    color: Colors.black,
+                                                  )),
+                                            ],
+                                          ),
+                                          TextFeildNewUser(
+                                            hintText: "Enter the MacID",
+                                            Controller: _macIdController,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                enableConnect = true;
+                                              });
+                                            },
+                                            enable: true,
+                                            etext: validateFields &&
+                                                _macIdController.text
+                                                    .trim()
+                                                    .isEmpty
+                                                ? "Please Enter MAC-Id"
+                                                : "",
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                child: Container(
-                                  height: 30,
-                                  width: screenSize.width / 3.5,
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      "Disconnect",
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: baseFont,
-                                        shadows: [
-                                          Shadow(color: Colors.black, blurRadius: 0.1)
-                                        ],
-                                        overflow: TextOverflow.visible,
+
+
+                              ],
+                            ),
+                          ),
+
+
+
+                          (device != null && device!.isConnected)
+                          ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 10, top: 15),
+                                child: ElevatedButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      enableConnect = false;
+                                    });
+                                    _macIdController.clear();
+                                    disconnect();
+
+                                    },
+                                  style: ButtonStyle(
+                                    backgroundColor: isDeviceConnected
+                                        ? MaterialStateProperty.all(darkBg)
+                                        : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(25),
+                                          side: BorderSide(color: darkBg, width: 1)),
+                                    ),
+                                  ),
+                                  child: Container(
+                                    height: 30,
+                                    width: screenSize.width / 3.5,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        "Disconnect",
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: baseFont,
+                                          shadows: [
+                                            Shadow(color: Colors.black, blurRadius: 0.1)
+                                          ],
+                                          overflow: TextOverflow.visible,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            // Handle Calibration Btn
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 10, top: 15),
-                              child: ElevatedButton(
-                                onPressed: isDeviceConnected
-                                    ? () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext contextt) {
-                                        return AlertDialog(
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                                          insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
-                                          backgroundColor: second_lightBg,
-                                          content: SingleChildScrollView(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min, // keeps dialog compact
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                // Title
-                                                Center(
-                                                  child: Text(
-                                                    "Calibration",
-                                                    style: TextStyle(
-                                                      color: darkBg,
-                                                      fontWeight: FontWeight.w500,
-                                                      fontFamily: baseFont,
-                                                      fontSize: 20,
-                                                      shadows: [
-                                                        Shadow(
-                                                          color: Colors.black,
-                                                          blurRadius: 0.5,
-                                                          offset: Offset(0.5, 0.5),
-                                                        )
-                                                      ],
+                              // Handle Calibration Btn
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 10, top: 15),
+                                child: ElevatedButton(
+                                  onPressed: isDeviceConnected
+                                      ? () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext contextt) {
+                                          return AlertDialog(
+                                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                                            insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+                                            backgroundColor: second_lightBg,
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min, // keeps dialog compact
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  // Title
+                                                  Center(
+                                                    child: Text(
+                                                      "Calibration",
+                                                      style: TextStyle(
+                                                        color: darkBg,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontFamily: baseFont,
+                                                        fontSize: 20,
+                                                        shadows: [
+                                                          Shadow(
+                                                            color: Colors.black,
+                                                            blurRadius: 0.5,
+                                                            offset: Offset(0.5, 0.5),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                //divider
-                                                Column(
-                                                  children: [
-                                                    SizedBox(height: 10),
-                                                    Divider(color: darkBg,),
-                                                    SizedBox(height: 10),
-                                                  ],
-                                                ),
+                                                  //divider
+                                                  Column(
+                                                    children: [
+                                                      SizedBox(height: 10),
+                                                      Divider(color: darkBg,),
+                                                      SizedBox(height: 10),
+                                                    ],
+                                                  ),
 
-                                                // Send Config Button
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Container(
-                                                      padding: EdgeInsets.all(10),
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color: darkBg
-                                                        ),
-                                                        borderRadius: BorderRadius.circular(10),
-                                                        color: darkBg,
-                                                      ),
-                                                      child: GestureDetector(
-                                                        onTap: () async {
-                                                          _showInputDialog(
-                                                              Alertcontext: context,
-                                                              title: "Vmax for Calibration",
-                                                              hint: "e.g. 4200",
-                                                              onSubmit: sendVmax,
-                                                              afterText: "Calibrating Vmax...",
-                                                              labelText: "Enter Vmax(mV)"
-                                                          );
-
-
-                                                        },
-                                                        child: Text(
-                                                          "Voltage\nCalibration",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Colors.white,
-                                                              fontWeight: FontWeight.w500
+                                                  // Send Config Button
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets.all(10),
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color: darkBg
                                                           ),
-                                                          textAlign: TextAlign.center,
+                                                          borderRadius: BorderRadius.circular(10),
+                                                          color: darkBg,
+                                                        ),
+                                                        child: GestureDetector(
+                                                          onTap: () async {
+                                                            _showInputDialog(
+                                                                Alertcontext: context,
+                                                                title: "Vmax for Calibration",
+                                                                hint: "e.g. 4200",
+                                                                onSubmit: sendVmax,
+                                                                afterText: "Calibrating Vmax...",
+                                                                labelText: "Enter Vmax(mV)"
+                                                            );
 
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      padding: EdgeInsets.all(10),
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color: darkBg
-                                                        ),
-                                                        borderRadius: BorderRadius.circular(10),
-                                                        color: darkBg,
-                                                      ),
-                                                      child: GestureDetector(
-                                                        onTap: () async {
-                                                          _showInputDialog(
-                                                              Alertcontext: context,
-                                                              title: "Temperature for Calibration",
-                                                              hint: "e.g. 25000",
-                                                              onSubmit: sendTemperature,
-                                                              labelText: "Enter Temperature",
-                                                              afterText: "Calibrating Temp..."
-                                                          );
-                                                        },
-                                                        child: Text(
-                                                          "Temperature\nCalibration",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Colors.white,
-                                                              fontWeight: FontWeight.w500
+
+                                                          },
+                                                          child: Text(
+                                                            "Voltage\nCalibration",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.w500
+                                                            ),
+                                                            textAlign: TextAlign.center,
+
                                                           ),
-                                                          textAlign: TextAlign.center,
-
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                      Container(
+                                                        padding: EdgeInsets.all(10),
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color: darkBg
+                                                          ),
+                                                          borderRadius: BorderRadius.circular(10),
+                                                          color: darkBg,
+                                                        ),
+                                                        child: GestureDetector(
+                                                          onTap: () async {
+                                                            _showInputDialog(
+                                                                Alertcontext: context,
+                                                                title: "Temperature for Calibration",
+                                                                hint: "e.g. 25000",
+                                                                onSubmit: sendTemperature,
+                                                                labelText: "Enter Temperature",
+                                                                afterText: "Calibrating Temp..."
+                                                            );
+                                                          },
+                                                          child: Text(
+                                                            "Temperature\nCalibration",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.w500
+                                                            ),
+                                                            textAlign: TextAlign.center,
 
-                                              ],
-                                            ),
-                                          ),
-                                          actions: [
-                                            ElevatedButton(
-                                              onPressed: (){
-                                                Navigator.pop(context);
-                                              },
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+
+                                                ],
                                               ),
-                                              child: Text("Cancel", style: TextStyle(fontSize: 16)),
                                             ),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: (){
+                                                  Navigator.pop(context);
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all<Color>(darkBg),
+                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                                                  ),
+                                                ),
+                                                child: Text("Cancel", style: TextStyle(fontSize: 16)),
+                                              ),
 
-                                          ],
-                                        );
+                                            ],
+                                          );
 
-                                      });
-                                }
-                                    : (){
-                                  printFunc("Not Connected");
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: isDeviceConnected
-                                      ? MaterialStateProperty.all(darkBg)
-                                      : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(25),
-                                        side: BorderSide(color: darkBg, width: 1)),
+                                        });
+                                  }
+                                      : (){
+                                    printFunc("Not Connected");
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: isDeviceConnected
+                                        ? MaterialStateProperty.all(darkBg)
+                                        : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(25),
+                                          side: BorderSide(color: darkBg, width: 1)),
+                                    ),
                                   ),
-                                ),
-                                child: Container(
-                                  height: 30,
-                                  width: screenSize.width / 3.5,
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      "Calibration",
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        color: isDeviceConnected
-                                            ? Colors.white
-                                            : Color(0xFFEEEEEE),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: baseFont,
-                                        shadows: [
-                                          Shadow(color: Colors.black, blurRadius: 0.1)
-                                        ],
-                                        overflow: TextOverflow.visible,
+                                  child: Container(
+                                    height: 30,
+                                    width: screenSize.width / 3.5,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        "Calibration",
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: isDeviceConnected
+                                              ? Colors.white
+                                              : Color(0xFFEEEEEE),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: baseFont,
+                                          shadows: [
+                                            Shadow(color: Colors.black, blurRadius: 0.1)
+                                          ],
+                                          overflow: TextOverflow.visible,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        )
-                        : SizedBox(height: 20,),
+                            ],
+                          )
+                          : SizedBox(height: 20,),
 
 
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          )),
+              ],
+            )),
+      ),
     );
   }
 
@@ -593,7 +596,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
 
   Future<void> scanAndConnect() async {
     if(_macIdController.text.isNotEmpty){
-      print("BEFORe Device Connected -- $status");
+      printFunc("BEFORe Device Connected -- $status");
 
       setState(() {
         status = "Scanning...";
@@ -601,7 +604,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       });
 
 
-      print("Found Old macid: ${_macIdController.text}");
+      printFunc("Found Old macid: ${_macIdController.text}");
       await requestPermissions();
 
       printFunc("device present : ${device != null}");
@@ -625,19 +628,19 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
         if (connected) {
           if (device!.isConnected) {
             List<BluetoothService> services = await device!.discoverServices();
-            print("Total Services Found: ${services.length}");
-            print("Total Services Found1: ${services}");
+            printFunc("Total Services Found: ${services.length}");
+            printFunc("Total Services Found1: ${services}");
 
             //for Printing
             for (var service in services) {
-              print("Service UUID: ${service.uuid}");
+              printFunc("Service UUID: ${service.uuid}");
               for (var characteristic in service.characteristics) {
-                print("  Characteristic UUID: ${characteristic.uuid}");
-                print("    Properties: ${characteristic.properties}");
+                printFunc("  Characteristic UUID: ${characteristic.uuid}");
+                printFunc("    Properties: ${characteristic.properties}");
               }
             }
 
-            print("Services Found: $services");
+            printFunc("Services Found: $services");
 
             for (var s in services) {
               printFunc(
@@ -769,7 +772,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
 
   void _handleAck(List<int> data) {
     String ack = String.fromCharCodes(data);
-    print(" Received ACK from device: $ack");
+    printFunc(" Received ACK from device: $ack");
 
     if (calibrationStep == 0 && ack.contains("ACK_VMAX")) {
       if(mounted){
@@ -792,9 +795,9 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       }
       // Open Vmin popup
     } else if (calibrationStep == 1 && ack.contains("ACK_VMIN")) {
-      print(" Vmin accepted, waiting for COMPLETE...");
+      printFunc(" Vmin accepted, waiting for COMPLETE...");
     } else if (calibrationStep == 1 && ack.contains("ACK_COMPLETE")) {
-      print(" Voltage Calibration Completed!");
+      printFunc(" Voltage Calibration Completed!");
       ShowSnackBarMessage(context, 'Voltage Calibration Completed!', true);
       if(mounted){
         setState(() {
@@ -804,14 +807,14 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       }
       Navigator.of(context, rootNavigator: true).pop();
     } else if (calibrationStep == 2 && ack.contains("ACK_TEMP")) {
-      print("Temperature Calibration Completed!");
+      printFunc("Temperature Calibration Completed!");
       ShowSnackBarMessage(context, 'Temperature Calibration Completed!', true);
       setState(() {
         calibrationStep = 0;
         waitingForAck = false;
       });
       Navigator.of(context, rootNavigator: true).pop();
-      print("Temperature Calibration Completed!");
+      printFunc("Temperature Calibration Completed!");
     }
   }
 
@@ -938,7 +941,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                       });
                       setStateDialog(() {});
                     } else {
-                      print(" Invalid input");
+                      printFunc(" Invalid input");
                     }
                   },
                   style: ButtonStyle(
@@ -962,7 +965,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       (vmax >> 8) & 0xFF,
       ']'.codeUnitAt(0),
     ]);
-    print("Sending Vmax: $vmax, Packet: $packet");
+    printFunc("Sending Vmax: $vmax, Packet: $packet");
     try {
       await calibrationChar!.write(packet, withoutResponse: false);
       setState(() => waitingForAck = true);
@@ -981,7 +984,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       (vmin >> 8) & 0xFF,
       ']'.codeUnitAt(0),
     ]);
-    print(" Sending Vmin: $vmin, Packet: $packet");
+    printFunc(" Sending Vmin: $vmin, Packet: $packet");
     try {
       await calibrationChar!.write(packet, withoutResponse: false);
       setState(() => waitingForAck = true);
@@ -1000,7 +1003,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       (temp >> 8) & 0xFF,
       ']'.codeUnitAt(0),
     ]);
-    print("Sending Temp: $temp, Packet: $packet");
+    printFunc("Sending Temp: $temp, Packet: $packet");
     try {
       await calibrationChar!.write(packet, withoutResponse: false);
       setState(() {
