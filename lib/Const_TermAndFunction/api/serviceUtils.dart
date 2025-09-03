@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -93,8 +94,6 @@ class ApiEndpoints {
   static const String getAllCount = "/api/software-log/getAllCount";
   static const String getAllBatchDetailLogResponse = "/api/software-log/getAllBatchDetailLogResponse";
 
-
-
 }
 
 String getUrl(String endpoint) => ApiEndpoints.fullUrl(endpoint); //getUrl(ApiEndpoints.login);
@@ -122,7 +121,8 @@ class ApiService {
         showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (context) => loadingDialog(),
+          // builder: (context) => loadingDialog(),
+          builder: (context) => loadingDialogWithGif(),
         );
       }
       headers = headerAuth ? ApiHeaders().authHeader : ApiHeaders().header;
@@ -283,4 +283,31 @@ class ApiService {
         .join('&');
     return '?$query';
   }
+  static Future<int> checkInternet(context) async {
+    // await checkDeviceSettings(context);
+    // return 0;
+    try {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        // builder: (context) => loadingDialog(),
+        builder: (context) => loadingDialogWithGif(),
+      );
+      final result = await InternetAddress.lookup('google.com');
+      Navigator.of(context, rootNavigator: true).pop();
+
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        //print_func(connected");
+        // Navigator.of(context, rootNavigator: true).pop();
+        return 0;
+      }
+      return 1;
+    } on SocketException catch (_) {
+      printFunc(" exception not connected");
+      Navigator.of(context, rootNavigator: true).pop();
+      return 1;
+    }
+    return 1;
+  }
+
 }

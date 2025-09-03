@@ -26,7 +26,6 @@ TextStyle CardText(
       fontSize: size ?? 16,
       shadows: [Shadow(color: Colors.black)]);
 }
-
 TextStyle tileTextStyle = TextStyle(
     color: darkBg,
     fontFamily: baseFont,

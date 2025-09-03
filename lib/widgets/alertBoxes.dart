@@ -104,13 +104,43 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> ShowSnackBarMessage(
     ),
   );
 }
+Widget loadingDialogWithGif() {
+  printFunc("Loading with gif");
+  return WillPopScope(
+    onWillPop: () async => true,//false, //false for  ❌ disable back button
+    child: Container(
+      color: Colors.black.withOpacity(0.5),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              "assets/image/circuteLoading.gif",
+              height: 150,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              "Loading ...",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
 Widget loadingDialog() {
-  return Container(
-    color: Colors.black.withOpacity(0.5),
-    child: const Center(
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+  printFunc("Loading with out gif");
+
+  return WillPopScope(
+    onWillPop: () async => true,//false, //false for  ❌ disable back button
+    child: Container(
+      color: Colors.black.withOpacity(0.5),
+      child: const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
       ),
     ),
   );

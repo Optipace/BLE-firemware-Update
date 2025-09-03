@@ -10,6 +10,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/getNumberModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
@@ -150,7 +151,7 @@ Future<dynamic> forceLogOut(BuildContext context) async {
 
 Future<dynamic> LogOutUser(BuildContext context) async {
   sharedPreferences = await SharedPreferences.getInstance();
-
+  await syncLog(context);
   showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () async {
     Navigator.of(context, rootNavigator: true).pop();
 

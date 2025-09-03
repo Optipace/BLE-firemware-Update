@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/dataBase/table_curl.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 
 class InternetStatusWatcher extends StatefulWidget {
   final Widget child;
@@ -29,7 +31,7 @@ class _InternetStatusWatcherState extends State<InternetStatusWatcher> {
     _updateConnectionStatus(result);
   }
 
-  void _updateConnectionStatus(ConnectivityResult result) {
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     final hasConnection = result != ConnectivityResult.none;
     if (hasConnection != _isConnected) {
       if (!mounted) return;
@@ -47,6 +49,9 @@ class _InternetStatusWatcherState extends State<InternetStatusWatcher> {
             duration: const Duration(seconds: 2),
           ),
         );
+      }
+      if(hasConnection){
+     syncLog(context);
       }
     }
   }

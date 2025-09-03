@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/dataBase/table_curl.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 Future<bool> saveLog(BuildContext context,{
@@ -23,6 +24,7 @@ Future<bool> saveLog(BuildContext context,{
   };
 
   printFunc("In Save Log API : ${DateAndTime},${deviceID},${macID},${empID},${batchID},${status},${reason}");
+  if (await checkInternet(context) == 0) {
 
   await ApiService.callApi(
       context: context,
@@ -31,8 +33,30 @@ Future<bool> saveLog(BuildContext context,{
       bodyOrParams: body,
       onSuccess: (data){
         printFunc("LOG SAVED!!!!!");
+
         isSuccess =true;
       }
-  );
+  );}
+  else{
+await     insertIntoLogs(body);
+  }
   return isSuccess;
+}
+Future<void> syncLog(BuildContext context)
+async {
+  if(await checkInternet(context)==0){
+    if (await hasLogs()) {
+      for (var log in await getAllLogs()) {
+        String msg = log["message"].toString().replaceAll("- offline", "").trim();
+        if (await saveLog(context,
+            DateAndTime: log["actionTimestamp"],
+            deviceID: log["mobileDeviceId"],
+            macID: log["motherboardId"],
+            empID: log["employeeId"],
+            batchID: log["softwareVersion"],
+            status: log["status"],
+            reason: "${msg} - offline")) await deleteFromLogs(log);
+      }
+    }
+  }
 }

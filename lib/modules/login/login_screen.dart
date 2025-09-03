@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/dataBase/table_curl.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/services/apiCall/logIn.dart';
@@ -28,8 +29,8 @@ class LoginScreenState extends State<LoginScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       sharedPreferences = await SharedPreferences.getInstance();
       await setDeviceId();
-
       _uuid = (await sharedPreferences.getString("UUID")) ?? "";
+      await createLogTable();
     });
   }
 

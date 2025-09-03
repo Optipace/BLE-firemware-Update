@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/dataBase/dbSetUp.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/battery_model.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
@@ -17,7 +18,7 @@ import 'package:tracker_firmware/widgets/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveService.init();
-
+  DataBase.initializeDatabase();
   // final hiveService = HiveService('$firmwareBox');
 
   await Hive.openBox<ProfileSeriesModel>('$serviceHiveBox');
