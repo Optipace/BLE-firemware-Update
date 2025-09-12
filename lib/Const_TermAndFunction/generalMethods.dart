@@ -10,6 +10,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/getNumberModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 import 'package:tracker_firmware/modules/login/login_screen.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
@@ -102,7 +103,7 @@ Future<int> checkInternet(context) async {
     return 1;
   } on SocketException catch (_) {
     printFunc(" exception not connected");
-    Navigator.of(context, rootNavigator: true).pop();
+    // Navigator.of(context, rootNavigator: true).pop();
     return 1;
   }
 }
@@ -118,10 +119,9 @@ getSize(BuildContext context) {
   }
 }
 
-
-
 class ThreeDecimalInputFormatter extends TextInputFormatter {
-  final RegExp _regExp = RegExp(r'^\d{0,2}(\.\d{0,3})?$'); // Adjust digits as needed
+  final RegExp _regExp =
+      RegExp(r'^\d{0,2}(\.\d{0,3})?$'); // Adjust digits as needed
 
   @override
   TextEditingValue formatEditUpdate(
@@ -150,8 +150,9 @@ Future<dynamic> forceLogOut(BuildContext context) async {
 
 Future<dynamic> LogOutUser(BuildContext context) async {
   sharedPreferences = await SharedPreferences.getInstance();
-
-  showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT", () async {
+  await syncLog(context);
+  showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT",
+      () async {
     Navigator.of(context, rootNavigator: true).pop();
 
     ApiService.performLogoutApiCall(context);
@@ -162,6 +163,5 @@ Future<dynamic> LogOutUser(BuildContext context) async {
     await box.clear();
   }, () {
     Navigator.of(context, rootNavigator: true).pop();
-  }, "Yes","No"
-  );
+  }, "Yes", "No");
 }

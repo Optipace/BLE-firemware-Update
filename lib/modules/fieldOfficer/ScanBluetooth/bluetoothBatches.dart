@@ -8,7 +8,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/dfuModule/bluetoothMain.dart';
 import 'package:tracker_firmware/modules/dfuModule/dfuModule.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/hardWareNumber.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class SavedBatches extends StatefulWidget {
   const SavedBatches({super.key});
@@ -64,8 +63,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
     AllClient = {
       for (var client in clientList) client['name'].toString(): client
     };
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -89,12 +87,10 @@ class BlueetoothBatchesState extends State<SavedBatches> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: InternetStatusWatcher(
-          child: Container(
-              child: SingleChildScrollView(
-            child: Column(children: seriesSix()),
-          )),
-        ));
+        body: Container(
+            child: SingleChildScrollView(
+              child: Column(children: seriesSix()),
+            )),);
   }
 
   List<Widget> seriesSix() {
@@ -104,8 +100,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
     for (int index = 0;
         index < ((getAllseriesData != null) ? getAllseriesData.length : 0);
         index++) {
-      printFunc(
-          "DEMO DEMO Firmware logs : ${getAllseriesData[index]}");
+      printFunc("DEMO DEMO Firmware logs : ${getAllseriesData[index]}");
       ValueNotifier moreInfo =
           ValueNotifier<bool>(getAllseriesData[index]['saved'] ?? false);
       seriesWidgetList.add(ValueListenableBuilder(
@@ -194,7 +189,9 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -206,7 +203,9 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(getAllseriesData[index]["name"].toString(),
+                                  Text(
+                                      getAllseriesData[index]["name"]
+                                          .toString(),
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 19,
@@ -224,7 +223,8 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    getAllseriesData[index]["description"].toString(),
+                                    getAllseriesData[index]["description"]
+                                        .toString(),
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
@@ -243,7 +243,8 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    getAllseriesData[index]["battery"]['batteryCode']
+                                    getAllseriesData[index]["battery"]
+                                            ['batteryCode']
                                         .toString(),
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
@@ -297,8 +298,10 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                   Container(
                                     width: 150,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           "Firmware Version",
@@ -313,8 +316,10 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                   Container(
                                     width: 150,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           "Firmware Name",
@@ -329,8 +334,10 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                   Container(
                                     width: 50,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           "Flash",
@@ -343,7 +350,9 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 5,),
+                              SizedBox(
+                                height: 5,
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,12 +361,14 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                   Container(
                                     width: 150,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           getAllseriesData[index]["firmware"]
-                                          ['version']
+                                                  ['version']
                                               .toString(),
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
@@ -373,12 +384,14 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                   Container(
                                     width: 150,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           getAllseriesData[index]["firmware"]
-                                          ['versionName']
+                                                  ['versionName']
                                               .toString(),
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
@@ -394,8 +407,10 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                   Container(
                                     width: 50,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         IconButton(
                                             onPressed: () async {
@@ -406,25 +421,34 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                               clientListIntoMap();
                                               BatchSelected.cleardata();
                                               var batchObj =
-                                              getAllseriesData[index];
+                                                  getAllseriesData[index];
                                               setState(() {});
 
                                               BatchSelected.setobj =
-                                              getAllseriesData[index];
+                                                  getAllseriesData[index];
 
                                               FlutterBluePlus.setLogLevel(
                                                   LogLevel.verbose,
                                                   color: true);
 
-                                              printFunc("DEMO DEMO DEMO BatchSelected : ${BatchSelected.Text} \n ${BatchSelected.obj.toString()}");
+                                              printFunc(
+                                                  "DEMO DEMO DEMO BatchSelected : ${BatchSelected.Text} \n ${BatchSelected.obj.toString()}");
                                               /* BLUEETOOTH SCREEN*/
 
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute<void>(
-                                                /*BluetoothMainScreen(SelectedBatch: BatchSelected, allClients: AllClient)*/
-                                                /*DfuHomePage(SelectedBatch:BatchSelected,allClients: AllClient,)*/
-                                                  builder: (_) => BluetoothMainScreen(onBluetoothOn: () => DfuHomePage(SelectedBatch:BatchSelected,allClients: AllClient,),)
-                                              ));
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute<void>(
+                                                      /*BluetoothMainScreen(SelectedBatch: BatchSelected, allClients: AllClient)*/
+                                                      /*DfuHomePage(SelectedBatch:BatchSelected,allClients: AllClient,)*/
+                                                      builder: (_) =>
+                                                          BluetoothMainScreen(
+                                                            onBluetoothOn: () =>
+                                                                DfuHomePage(
+                                                              SelectedBatch:
+                                                                  BatchSelected,
+                                                              allClients:
+                                                                  AllClient,
+                                                            ),
+                                                          )));
                                               setState(() {});
                                             },
                                             icon: Icon(Icons.flash_on_outlined,
@@ -542,7 +566,8 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                           child: Row(
                                             children: [
                                               Icon(Icons.battery_6_bar_outlined,
-                                                  size: 14, color: secondaryText),
+                                                  size: 14,
+                                                  color: secondaryText),
                                               FittedBox(
                                                 fit: BoxFit.scaleDown,
                                                 child: Text(
@@ -551,7 +576,8 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                                       font_Weight:
                                                           FontWeight.w800,
                                                       size: 14,
-                                                      FontColor: !(moreInfo.value)
+                                                      FontColor: !(moreInfo
+                                                              .value)
                                                           ? SuccessCardText
                                                           : FailureCardText),
                                                 ),
@@ -618,31 +644,36 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                               size: 13),
                                         ),
                                         SizedBox(height: 5),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.battery_1_bar_rounded,
-                                                size: 13, color: secondaryText),
-                                            FittedBox(
-                                              fit: BoxFit.scaleDown,
-                                              child: Text(
-                                                "${getAllseriesData[index]["profile"]['lV']} V",
-                                                style: CardText(
-                                                    font_Weight:
-                                                        FontWeight.w800,
-                                                    size: 14,
-                                                    FontColor: !(moreInfo.value)
-                                                        ? SuccessCardText
-                                                        : FailureCardText),
+                                        FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.battery_1_bar_rounded,
+                                                  size: 13, color: secondaryText),
+                                              FittedBox(
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(
+                                                  "${getAllseriesData[index]["profile"]['lV']} V",
+                                                  style: CardText(
+                                                      font_Weight:
+                                                          FontWeight.w800,
+                                                      size: 14,
+                                                      FontColor: !(moreInfo.value)
+                                                          ? SuccessCardText
+                                                          : FailureCardText),
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 15,),
+                              SizedBox(
+                                height: 15,
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -712,8 +743,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                           child: Text(
                                             "${getAllseriesData[index]["profile"]['uTemp']}",
                                             style: CardText(
-                                                font_Weight:
-                                                FontWeight.w800,
+                                                font_Weight: FontWeight.w800,
                                                 size: 14,
                                                 FontColor: !(moreInfo.value)
                                                     ? SuccessCardText
@@ -745,8 +775,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
                                           child: Text(
                                             "${getAllseriesData[index]["profile"]['lTemp']}",
                                             style: CardText(
-                                                font_Weight:
-                                                FontWeight.w800,
+                                                font_Weight: FontWeight.w800,
                                                 size: 14,
                                                 FontColor: !(moreInfo.value)
                                                     ? SuccessCardText
@@ -808,7 +837,7 @@ class BlueetoothBatchesState extends State<SavedBatches> {
         'description': batch.batchDescription,
         'firmware': batch.firmware.toJson(),
         'profile': batch.profile.toJson(),
-        'battery':batch.battery.toJson(),
+        'battery': batch.battery.toJson(),
         'saved': true,
       });
     });

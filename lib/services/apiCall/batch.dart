@@ -25,7 +25,6 @@ Future<List<Map<String, dynamic>>> getBatchList(
           final config = item['configuration'] ?? {};
           final device = item['configuration']['device'] ?? {};
 
-
           Map<String, dynamic> formatted = {
             "id": item['id'].toString(),
             "name": item['batchName'] ?? '',
@@ -47,20 +46,21 @@ Future<List<Map<String, dynamic>>> getBatchList(
               "file": "Base64Data",
               "saved": false,
               "deviceType": config['deviceId']?.toString() ?? '',
-
             },
             "firmware": {
               "id": firmware['id'],
               "version": firmware['versionName'] ?? '',
               "releaseDate": firmware['versionReleasedDate'] ?? '',
               "versionName": firmware['versionName'] ?? '',
-              "deviceTypeId": firmware['deviceTypeId']?.toString() ?? config['deviceId']?.toString() ?? '',
+              "deviceTypeId": firmware['deviceTypeId']?.toString() ??
+                  config['deviceId']?.toString() ??
+                  '',
               "file": firmware['file'],
               "saved": false,
               "deviceType": firmware['deviceTypeId']?.toString() ?? '',
             },
-            "batteryDetails":{
-              "id":   device['id']?.toString() ?? '',
+            "batteryDetails": {
+              "id": device['id']?.toString() ?? '',
               "name": device['deviceName']?.toString() ?? '',
               "Battery-Code": device['discription']?.toString() ?? '',
             }
@@ -222,7 +222,8 @@ Future<List<Map<String, dynamic>>> getBatchList(
 }
 
 ////////////////////// NOT IN USED /////////////////////////////////////
-Future<List<Map<String, dynamic>>> getBatchByID(BuildContext context, String id) async {
+Future<List<Map<String, dynamic>>> getBatchByID(
+    BuildContext context, String id) async {
   List<Map<String, dynamic>> batchList = [{}];
   List<Map<String, dynamic>> batchByID = [{}];
 
@@ -237,8 +238,6 @@ Future<List<Map<String, dynamic>>> getBatchByID(BuildContext context, String id)
   return batchByID;
 }
 ////////////////////// NOT IN USED /////////////////////////////////////
-
-
 
 Future<bool> addNewBatch(
   BuildContext context, {

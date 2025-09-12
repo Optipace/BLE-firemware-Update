@@ -80,7 +80,8 @@ Future setTokenInfo(responseBody) async {
 
   UserData.instance.accessToken = responseBody['accessToken'];
   UserData.instance.refreshToken = responseBody['refreshToken'];
-  printFunc("user token after update ${UserData.instance.accessToken}\n${UserData.instance.refreshToken}");
+  printFunc(
+      "user token after update ${UserData.instance.accessToken}\n${UserData.instance.refreshToken}");
 }
 
 Future setDeviceId() async {
@@ -92,7 +93,8 @@ Future setDeviceId() async {
     var iosDeviceInfo = await deviceInfo.iosInfo;
     // String? deviceId = await PlatformDeviceId.getDeviceId;
 
-    sharedPreferences.setString("UUID", iosDeviceInfo.identifierForVendor ?? ' ');
+    sharedPreferences.setString(
+        "UUID", iosDeviceInfo.identifierForVendor ?? ' ');
   }
   // else if (Platform.isAndroid) {
   //   var androidDeviceInfo = await deviceInfo.androidInfo;
@@ -113,9 +115,12 @@ Future setDeviceId() async {
     String? deviceId = await PlatformDeviceId.getDeviceId;
 
     sharedPreferences.setString("UUID", deviceId.toString());
-    sharedPreferences.setString("osVersion", androidDeviceInfo.version.release.toString());
-    sharedPreferences.setString("deviceModel", androidDeviceInfo.model.toString());
-    sharedPreferences.setString("deviceBrand", androidDeviceInfo.brand.toString());
+    sharedPreferences.setString(
+        "osVersion", androidDeviceInfo.version.release.toString());
+    sharedPreferences.setString(
+        "deviceModel", androidDeviceInfo.model.toString());
+    sharedPreferences.setString(
+        "deviceBrand", androidDeviceInfo.brand.toString());
 
     /*sharedPreferences.setString(
         "deviceModel", "${androidDeviceInfo.brand.toString()} - ${androidDeviceInfo.model.toString()}");*/

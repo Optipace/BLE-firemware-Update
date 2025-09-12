@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class QRScannerScreen extends StatefulWidget {
-
-
   final String title;
 
   @override
@@ -66,32 +63,28 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          toolbarHeight: screenSize.height / 11.5,
-          backgroundColor: darkBg,
-          elevation: 5,
-          shadowColor: darkBg,
-          iconTheme: IconThemeData(color: lightBg),
-          title: Text(widget.title),
+        toolbarHeight: screenSize.height / 11.5,
+        backgroundColor: darkBg,
+        elevation: 5,
+        shadowColor: darkBg,
+        iconTheme: IconThemeData(color: lightBg),
+        title: Text(widget.title),
       ),
-      body: InternetStatusWatcher(
-        child: Stack(
-          children: [
-            MobileScanner(
-              controller: controller,
-              onDetect:_onDetect,
-            ),
-            QRScannerOverlay(isDetected: isDetected),
-          ],
-        ),
+      body: Stack(
+        children: [
+          MobileScanner(
+            controller: controller,
+            onDetect: _onDetect,
+          ),
+          QRScannerOverlay(isDetected: isDetected),
+        ],
       ),
     );
   }
-
 
   /* (BarcodeCapture capture)   {
               if (isScanned) return;
@@ -109,7 +102,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     controller.dispose();
     super.dispose();
   }
-
 }
 
 // for Square border over the screen

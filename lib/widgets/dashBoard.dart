@@ -16,14 +16,13 @@ class Dashboard extends StatelessWidget {
   final Widget? sliderChild;
   final Widget? floatingBtn;
 
-  Dashboard({
-    required this.text,
-    this.userProfile = false,
-    required this.child,
-    this.onLogout,
-    this.sliderChild,
-    this.floatingBtn
-  });
+  Dashboard(
+      {required this.text,
+      this.userProfile = false,
+      required this.child,
+      this.onLogout,
+      this.sliderChild,
+      this.floatingBtn});
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -31,108 +30,109 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     printFunc("DEMO IN DASHBOARD : ${sharedPreferences.toString()}");
     // TODO: implement build
-    return Scaffold(
-      // Createing Key
-      key: _scaffoldKey,
-      floatingActionButton: floatingBtn,
-      drawer: UserProfileSlider(context, onLogout,sliderChild),
-      body: InternetStatusWatcher(
-        child: Column(
-          children: [
-            Container(
-              height: screenSize.height / 3.5 + 30,
-              child: Stack(
-                children: [
-                  Container(
-                    color: lightBg,
-                  ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      height: screenSize.height / 3.5,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color(0xFF56B6C2),
-                              Color(0xFF358A94),
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(300),
-                            bottomRight: Radius.circular(300),
-                          ),
-                          border: Border.all(color: Colors.black, width: 0.5),
-                          boxShadow: [
-                            BoxShadow(
-                              color: darkBg,
-                              blurRadius: 30,
-                            )
-                          ]),
+    return InternetStatusWatcher(
+        child: Scaffold(
+          // Createing Key
+          key: _scaffoldKey,
+          floatingActionButton: floatingBtn,
+          drawer: UserProfileSlider(context, onLogout, sliderChild),
+          body: Column(
+            children: [
+              Container(
+                height: screenSize.height / 3.5 + 30,
+                child: Stack(
+                  children: [
+                    Container(
+                      color: lightBg,
                     ),
-                  ),
-
-                  // View Profile
-                  userProfile == true
-                      ? Positioned(
-                          top: screenSize.height * 0.05,
-                          left: 10,
-                          child: IconButton(
-                              onPressed: () {
-                                // Useing key
-                                _scaffoldKey.currentState?.openDrawer();
-                              },
-                              icon: Icon(
-                                CupertinoIcons.line_horizontal_3_decrease_circle_fill,
-                                size: 40,
-                                color: lightBg,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black,
-                                    blurRadius: 2.5,
-                                  )
-                                ],
-                              )))
-                      : SizedBox(),
-                  Container(
-                    padding: EdgeInsets.only(top: screenSize.height * 0.1),
-                    width: screenSize.width,
-                    child: Center(
-                        child: Column(
-                      children: [
-                        Text(
-                          text,
-                          style: TextStyle(
-                            fontSize: 34,
-                            color: lightBg,
-                            fontFamily: baseFont,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1.1,
-                            // backgroundColor: darkBg,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 2,
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        height: screenSize.height / 3.5,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFF56B6C2),
+                                Color(0xFF358A94),
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(300),
+                              bottomRight: Radius.circular(300),
+                            ),
+                            border: Border.all(color: Colors.black, width: 0.5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: darkBg,
+                                blurRadius: 30,
                               )
+                            ]),
+                      ),
+                    ),
+
+                    // View Profile
+                    userProfile == true
+                        ? Positioned(
+                        top: screenSize.height * 0.05,
+                        left: 10,
+                        child: IconButton(
+                            onPressed: () {
+                              // Useing key
+                              _scaffoldKey.currentState?.openDrawer();
+                            },
+                            icon: Icon(
+                              CupertinoIcons
+                                  .line_horizontal_3_decrease_circle_fill,
+                              size: 40,
+                              color: lightBg,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 2.5,
+                                )
+                              ],
+                            )))
+                        : SizedBox(),
+                    Container(
+                      padding: EdgeInsets.only(top: screenSize.height * 0.1),
+                      width: screenSize.width,
+                      child: Center(
+                          child: Column(
+                            children: [
+                              Text(
+                                text,
+                                style: TextStyle(
+                                  fontSize: 34,
+                                  color: lightBg,
+                                  fontFamily: baseFont,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1.1,
+                                  // backgroundColor: darkBg,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 2,
+                                    )
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ],
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    )),
-                  ),
-                ],
+                          )),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    color: lightBg,
-                    child: SingleChildScrollView(child: child)))
-          ],
-        ),
-      ),
+              Expanded(
+                  child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      color: lightBg,
+                      child: SingleChildScrollView(child: child)))
+            ],
+          ),
+        )
     );
   }
 }
@@ -144,90 +144,103 @@ UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
     backgroundColor: darkBg.withOpacity(0.8),
     child: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Icon
         Padding(
           padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-          child: Row(
-            children: [
-              // Profile Avatar
-              Padding(
-                padding: EdgeInsets.only(
-                  top: screenSize.height * 0.05,
-                  right: 12.0, // Added spacing between avatar and text
-                ),
-                child: CircleAvatar(
-                  radius: 32, // Increased from 30
-                  backgroundColor: Colors.white,
-                  child: Center(
-                    child: Icon(
-                      Icons.person,
-                      color: darkBg,
-                      size: 40, // Increased from 32
+          child: InkWell(
+            onTap: (){
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => mainProfile()));
+            },
+            child: Row(
+              children: [
+                // Profile Avatar
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: screenSize.height * 0.05,
+                    right: 12.0, // Added spacing between avatar and text
+                  ),
+                  child: CircleAvatar(
+                    radius: 32, // Increased from 30
+                    backgroundColor: Colors.white,
+                    child: Center(
+                      child: Icon(
+                        Icons.person,
+                        color: darkBg,
+                        size: 40, // Increased from 32
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              // User Information
-              Expanded( // Added Expanded to prevent overflow
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: screenSize.height * 0.05,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // User Name
-                      Text(
-                        UserData().name,
-                        style: TextStyle(
-                          fontSize: 24, // Reduced from 32
-                          fontWeight: FontWeight.w900,
-                          fontFamily: baseFont,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.5,
-                              offset: Offset(0.5, 0.4),
-                            ),
-                          ],
+                // User Information
+                Expanded(
+                  // Added Expanded to prevent overflow
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: screenSize.height * 0.05,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // User Name
+                        Text(
+                          UserData().name,
+                          style: TextStyle(
+                            fontSize: 24,
+                            // Reduced from 32
+                            fontWeight: FontWeight.w900,
+                            fontFamily: baseFont,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black,
+                                blurRadius: 0.5,
+                                offset: Offset(0.5, 0.4),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
 
-                      // User Email
-                      SizedBox(height: 4), // Added spacing between name and email
-                      Text(
-                        UserData().email,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: baseFont,
-                          color: Colors.white,
-                          fontSize: 14, // Reduced from 18
-                          fontWeight: FontWeight.w500,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.3,
-                              offset: Offset(0.5, 0.4),
-                            ),
-                          ],
+                        // User Email
+                        SizedBox(height: 4),
+                        // Added spacing between name and email
+                        Text(
+                          UserData().phone,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: baseFont,
+                            color: Colors.white,
+                            fontSize: 14,
+                            // Reduced from 18
+                            fontWeight: FontWeight.w500,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black,
+                                blurRadius: 0.3,
+                                offset: Offset(0.5, 0.4),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
 
-        Divider(color: Colors.white,),
-        SizedBox(height: 10,),
-
+        Divider(
+          color: Colors.white,
+        ),
+        SizedBox(
+          height: 10,
+        ),
 
         // Phone number, mail and Desiganation
 
@@ -238,19 +251,29 @@ UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
               margin: EdgeInsets.only(left: 15),
               padding: EdgeInsets.symmetric(vertical: 10),
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   // printFunc("DEMO USER DATA : ${UserData()}");
 
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => mainProfile()));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => mainProfile()));
                 },
                 child: Row(
                   children: [
-                    Icon(CupertinoIcons.person,size: 22,color: Colors.white,shadows: [Shadow(
-                      color: Colors.black,
-                      blurRadius: 0.3,
-                      offset: Offset(0.5, 0.4),
-                    )],),
-                    SizedBox(width: 20,),
+                    Icon(
+                      CupertinoIcons.person,
+                      size: 22,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 0.3,
+                          offset: Offset(0.5, 0.4),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
                     Text(
                       "View Profile",
                       style: TextStyle(
@@ -270,11 +293,13 @@ UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
                 ),
               ),
             ),
-            SizedBox(height: 15,)
+            SizedBox(
+              height: 15,
+            )
           ],
         ),
         //Extra Btns
-        sliderChild??SizedBox(),
+        sliderChild ?? SizedBox(),
 
         //Refersh
         Container(
@@ -282,17 +307,26 @@ UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: GestureDetector(
             onTap: () async {
-            Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
-            await setSharedPreference(await getEmployeeDetail(context, UserData().phone));
-            await setUserData();
-          },
+              Navigator.of(context, rootNavigator: true)
+                  .pop(); // Close the drawer first
+              await setSharedPreference(
+                  await getEmployeeDetail(context, UserData().phone));
+              await setUserData();
+            },
             child: Row(
               children: [
-                Icon(Icons.refresh_outlined,size: 22,color: Colors.white,shadows: [Shadow(
-                  color: Colors.black,
-                  blurRadius: 0.3,
-                  offset: Offset(0.5, 0.4),
-                )],),
+                Icon(
+                  Icons.refresh_outlined,
+                  size: 22,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black,
+                      blurRadius: 0.3,
+                      offset: Offset(0.5, 0.4),
+                    )
+                  ],
+                ),
                 SizedBox(width: 20),
                 Text(
                   "Refresh",
@@ -367,39 +401,46 @@ UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
 
         //Logout
         Container(
-          decoration: BoxDecoration(
-            color: Colors.redAccent
-          ),
+          decoration: BoxDecoration(color: Colors.redAccent),
           margin: EdgeInsets.symmetric(horizontal: 30),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
                   onPressed: () async {
-                    Navigator.of(context, rootNavigator: true).pop(); // Close the drawer first
-                    await Future.delayed(Duration(milliseconds: 300)); // Small delay for smooth UX
+                    Navigator.of(context, rootNavigator: true)
+                        .pop(); // Close the drawer first
+                    await Future.delayed(Duration(
+                        milliseconds: 300)); // Small delay for smooth UX
                     await LogOutUser(context);
                   },
-               child: Text(
-                "Logout",
-                style: TextStyle(
-                    fontFamily: baseFont,
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black,
-                        blurRadius: 0.3,
-                        offset: Offset(0.5, 0.4),
-                      )
-                    ]),
-              )),
-              Icon(Icons.logout,size: 22,color: Colors.white,shadows: [Shadow(
-                color: Colors.black,
-                blurRadius: 0.3,
-                offset: Offset(0.5, 0.4),
-              )],),
+                  child: Text(
+                    "Logout",
+                    style: TextStyle(
+                        fontFamily: baseFont,
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black,
+                            blurRadius: 0.3,
+                            offset: Offset(0.5, 0.4),
+                          )
+                        ]),
+                  )),
+              Icon(
+                Icons.logout,
+                size: 22,
+                color: Colors.white,
+                shadows: [
+                  Shadow(
+                    color: Colors.black,
+                    blurRadius: 0.3,
+                    offset: Offset(0.5, 0.4),
+                  )
+                ],
+              ),
             ],
           ),
         ),
@@ -408,7 +449,10 @@ UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
           child: Center(
             child: Text(
               "Version ${appVersion}",
-              style: TextStyle(color: Colors.white.withOpacity(0.8), fontFamily: baseFont, fontWeight: FontWeight.w300),
+              style: TextStyle(
+                  color: Colors.white.withOpacity(0.8),
+                  fontFamily: baseFont,
+                  fontWeight: FontWeight.w300),
             ),
           ),
         ),

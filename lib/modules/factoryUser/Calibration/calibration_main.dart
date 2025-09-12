@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -9,7 +10,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
 class CalibrateDevice extends StatefulWidget {
@@ -22,7 +22,6 @@ class CalibrateDevice extends StatefulWidget {
 class _CalibrateDeviceState extends State<CalibrateDevice> {
   //controllers for barcode and qr code
   TextEditingController _macIdController = new TextEditingController();
-
 
   //for validation
   bool validateFields = false;
@@ -52,13 +51,11 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
   bool enablePopUp = false;
   bool isBatterySnoSent = false;
 
-
   //For calibration
   int calibrationStep = 0;
   bool waitingForAck = false;
 
   bool isDeviceConnected = true;
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,508 +76,594 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
         shadowColor: darkBg,
       ),
       backgroundColor: lightBg,
-      body: InternetStatusWatcher(
-        child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: darkBg),
-                    color: Colors.white,
-                    // borderRadius: BorderRadius.circular(15)
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Center(
-                    child: Text(
-                      "Enter or Scan MAC-ID",
-                      style: TextStyle(
-                          fontFamily: baseFont,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 24,
-                          color: darkBg,
-                          shadows: [
-                            Shadow(
-                                color: Colors.black,
-                                blurRadius: 0.5,
-                                offset: Offset(0.5, 0.5))
-                          ]),
-                    ),
+      body:  SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
+                decoration: BoxDecoration(
+                  border: Border.all(color: darkBg),
+                  color: Colors.white,
+                  // borderRadius: BorderRadius.circular(15)
+                ),
+                padding: EdgeInsets.symmetric(vertical: 15),
+                child: Center(
+                  child: Text(
+                    "Enter or Scan MAC-ID",
+                    style: TextStyle(
+                        fontFamily: baseFont,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 24,
+                        color: darkBg,
+                        shadows: [
+                          Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.5))
+                        ]),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: darkBg),
-                    color: Colors.white,
-                    // borderRadius: BorderRadius.circular(15)
-                  ),
-                  child: Column(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //QR CODE
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(left: 15,right: 15),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "MAC-ID  ",
-                                        style: TextStyle(
-                                            color: darkBg,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                            shadows: [
-                                              Shadow(color: Colors.black, blurRadius: 0.3)
-                                            ]),
-                                      ),
-
-
-                                      enableConnect
-                                      ? NotConnected
-                                          ? Container(
-                                        color: Colors.transparent,
-                                        height: 25,
-                                        width: 25,
-                                        child:  Center(
-                                          child: CircularProgressIndicator(
-                                            valueColor: AlwaysStoppedAnimation<Color>(
-                                                Colors.grey),
-                                          ),
-                                        ),
-                                      )
-                                          : ElevatedButton(
-                                        onPressed: (device != null && device!.isConnected)
-                                            ? () {}
-                                            : () async {
-                                          //After this everything goes to the server
-                                          validateField();
-                                          !validateFields;
-                                          if (!validateFields) {
-                                            await scanAndConnect();
-
-                                          }
-                                          if(mounted){
-
-                                            setState(() {});
-                                          }
-                                        },
-                                        child: (device != null && device!.isConnected )
-                                            ? Text("Connected")
-                                            : Text("Connect"),
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                          MaterialStateProperty.all(darkBg),
-                                          elevation: MaterialStateProperty.all(5),
-                                          shadowColor:
-                                          MaterialStateProperty.all(darkBg),
-                                          shape: MaterialStateProperty.all(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(10),
-                                                side: BorderSide(
-                                                    color: darkBg, width: 1)),
-                                          ),
-                                        ),
-                                      )
-                                      : SizedBox()
-
-
-
-
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: darkBg),
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () async {
-                                              final result = await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      QRScannerScreen(title: "Scan QR-Code"),
-                                                ),
-                                              );
-                                              if (result != null) {
-                                                setState(() {
-                                                  _macIdController.text = result;
-                                                  enableConnect = true;
-                                                });
-                                              }
-                                            },
-                                            child: Container(
-                                              margin:
-                                              EdgeInsets.fromLTRB(30, 15, 30, 5),
-                                              padding: EdgeInsets.all(10),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(color: darkBg),
-                                                borderRadius:
-                                                BorderRadius.circular(15),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(CupertinoIcons.qrcode,
-                                                          size: 35,
-                                                          color: darkBg,
-                                                          shadows: [
-                                                            Shadow(
-                                                                color: Colors.black,
-                                                                blurRadius: 0.4)
-                                                          ]),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        "Scan QR-Code",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            color: darkBg,
-                                                            fontWeight:
-                                                            FontWeight.w500,
-                                                            shadows: [
-                                                              Shadow(
-                                                                  color: Colors.black,
-                                                                  blurRadius: 0.4)
-                                                            ]),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Icon(
-                                                    CupertinoIcons.chevron_right_2,
-                                                    color: darkBg,
-                                                    shadows: [
-                                                      Shadow(
-                                                          color: Colors.black,
-                                                          blurRadius: 0.4)
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(left: 30),
-                                                    height: 1,
-                                                    color: Colors.black,
-                                                  )),
-                                              Padding(
-                                                padding: const EdgeInsets.all(15),
-                                                child: Text(
-                                                  "OR",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w600),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(right: 30),
-                                                    height: 1,
-                                                    color: Colors.black,
-                                                  )),
-                                            ],
-                                          ),
-                                          TextFeildNewUser(
-                                            hintText: "Enter the MacID",
-                                            Controller: _macIdController,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                enableConnect = true;
-                                              });
-                                            },
-                                            enable: true,
-                                            etext: validateFields &&
-                                                _macIdController.text
-                                                    .trim()
-                                                    .isEmpty
-                                                ? "Please Enter MAC-Id"
-                                                : "",
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-
-                              ],
-                            ),
-                          ),
-
-
-
-                          (device != null && device!.isConnected)
-                          ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
+                decoration: BoxDecoration(
+                  border: Border.all(color: darkBg),
+                  color: Colors.white,
+                  // borderRadius: BorderRadius.circular(15)
+                ),
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //QR CODE
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 10, top: 15),
-                                child: ElevatedButton(
-                                  onPressed: (){
-                                    setState(() {
-                                      enableConnect = false;
-                                    });
-                                    _macIdController.clear();
-                                    disconnect();
-
-                                    },
-                                  style: ButtonStyle(
-                                    backgroundColor: isDeviceConnected
-                                        ? MaterialStateProperty.all(darkBg)
-                                        : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(25),
-                                          side: BorderSide(color: darkBg, width: 1)),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    height: 30,
-                                    width: screenSize.width / 3.5,
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Text(
-                                        "Disconnect",
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          color: Colors.white,
+                              Container(
+                                padding: EdgeInsets.only(left: 15, right: 15),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "MAC-ID  ",
+                                      style: TextStyle(
+                                          color: darkBg,
                                           fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: baseFont,
+                                          fontWeight: FontWeight.w600,
                                           shadows: [
-                                            Shadow(color: Colors.black, blurRadius: 0.1)
-                                          ],
-                                          overflow: TextOverflow.visible,
+                                            Shadow(
+                                                color: Colors.black,
+                                                blurRadius: 0.3)
+                                          ]),
+                                    ),
+                                    enableConnect
+                                        ? NotConnected
+                                        ? Container(
+                                      color: Colors.transparent,
+                                      height: 25,
+                                      width: 25,
+                                      child: Center(
+                                        child:
+                                        CircularProgressIndicator(
+                                          valueColor:
+                                          AlwaysStoppedAnimation<
+                                              Color>(Colors.grey),
                                         ),
                                       ),
-                                    ),
-                                  ),
+                                    )
+                                        : ElevatedButton(
+                                      onPressed: (device != null &&
+                                          device!.isConnected)
+                                          ? () {}
+                                          : () async {
+                                        //After this everything goes to the server
+                                        validateField();
+                                        !validateFields;
+                                        if (!validateFields) {
+                                          await scanAndConnect();
+                                        }
+                                        if (mounted) {
+                                          setState(() {});
+                                        }
+                                      },
+                                      child: (device != null &&
+                                          device!.isConnected)
+                                          ? Text("Connected")
+                                          : Text("Connect"),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                        MaterialStateProperty.all(
+                                            darkBg),
+                                        elevation:
+                                        MaterialStateProperty.all(
+                                            5),
+                                        shadowColor:
+                                        MaterialStateProperty.all(
+                                            darkBg),
+                                        shape:
+                                        MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  10),
+                                              side: BorderSide(
+                                                  color: darkBg,
+                                                  width: 1)),
+                                        ),
+                                      ),
+                                    )
+                                        : SizedBox()
+                                  ],
                                 ),
                               ),
-                              // Handle Calibration Btn
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 10, top: 15),
-                                child: ElevatedButton(
-                                  onPressed: isDeviceConnected
-                                      ? () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext contextt) {
-                                          return AlertDialog(
-                                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                                            insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
-                                            backgroundColor: second_lightBg,
-                                            content: SingleChildScrollView(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min, // keeps dialog compact
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  // Title
-                                                  Center(
-                                                    child: Text(
-                                                      "Calibration",
-                                                      style: TextStyle(
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: darkBg),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Column(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final result = await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QRScannerScreen(
+                                                        title: "Scan QR-Code"),
+                                              ),
+                                            );
+                                            if (result != null) {
+                                              setState(() {
+                                                _macIdController.text = result;
+                                                enableConnect = true;
+                                              });
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                30, 15, 30, 5),
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: darkBg),
+                                              borderRadius:
+                                              BorderRadius.circular(15),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(CupertinoIcons.qrcode,
+                                                        size: 35,
                                                         color: darkBg,
-                                                        fontWeight: FontWeight.w500,
-                                                        fontFamily: baseFont,
-                                                        fontSize: 20,
                                                         shadows: [
                                                           Shadow(
-                                                            color: Colors.black,
-                                                            blurRadius: 0.5,
-                                                            offset: Offset(0.5, 0.5),
-                                                          )
-                                                        ],
-                                                      ),
+                                                              color: Colors.black,
+                                                              blurRadius: 0.4)
+                                                        ]),
+                                                    SizedBox(
+                                                      width: 10,
                                                     ),
-                                                  ),
-                                                  //divider
-                                                  Column(
-                                                    children: [
-                                                      SizedBox(height: 10),
-                                                      Divider(color: darkBg,),
-                                                      SizedBox(height: 10),
-                                                    ],
-                                                  ),
-
-                                                  // Send Config Button
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                    children: [
-                                                      Container(
-                                                        padding: EdgeInsets.all(10),
-                                                        decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              color: darkBg
-                                                          ),
-                                                          borderRadius: BorderRadius.circular(10),
+                                                    Text(
+                                                      "Scan QR-Code",
+                                                      style: TextStyle(
+                                                          fontSize: 16,
                                                           color: darkBg,
-                                                        ),
-                                                        child: GestureDetector(
-                                                          onTap: () async {
-                                                            _showInputDialog(
-                                                                Alertcontext: context,
-                                                                title: "Vmax for Calibration",
-                                                                hint: "e.g. 4200",
-                                                                onSubmit: sendVmax,
-                                                                afterText: "Calibrating Vmax...",
-                                                                labelText: "Enter Vmax(mV)"
-                                                            );
-
-
-                                                          },
-                                                          child: Text(
-                                                            "Voltage\nCalibration",
-                                                            style: TextStyle(
-                                                                fontSize: 16,
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.w500
-                                                            ),
-                                                            textAlign: TextAlign.center,
-
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        padding: EdgeInsets.all(10),
-                                                        decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              color: darkBg
-                                                          ),
-                                                          borderRadius: BorderRadius.circular(10),
-                                                          color: darkBg,
-                                                        ),
-                                                        child: GestureDetector(
-                                                          onTap: () async {
-                                                            _showInputDialog(
-                                                                Alertcontext: context,
-                                                                title: "Temperature for Calibration",
-                                                                hint: "e.g. 25000",
-                                                                onSubmit: sendTemperature,
-                                                                labelText: "Enter Temperature",
-                                                                afterText: "Calibrating Temp..."
-                                                            );
-                                                          },
-                                                          child: Text(
-                                                            "Temperature\nCalibration",
-                                                            style: TextStyle(
-                                                                fontSize: 16,
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.w500
-                                                            ),
-                                                            textAlign: TextAlign.center,
-
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-
-                                                ],
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          shadows: [
+                                                            Shadow(
+                                                                color:
+                                                                Colors.black,
+                                                                blurRadius: 0.4)
+                                                          ]),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Icon(
+                                                  CupertinoIcons.chevron_right_2,
+                                                  color: darkBg,
+                                                  shadows: [
+                                                    Shadow(
+                                                        color: Colors.black,
+                                                        blurRadius: 0.4)
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Container(
+                                                  margin: EdgeInsets.only(left: 30),
+                                                  height: 1,
+                                                  color: Colors.black,
+                                                )),
+                                            Padding(
+                                              padding: const EdgeInsets.all(15),
+                                              child: Text(
+                                                "OR",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600),
                                               ),
                                             ),
-                                            actions: [
-                                              ElevatedButton(
-                                                onPressed: (){
-                                                  Navigator.pop(context);
-                                                },
-                                                style: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                                                  ),
-                                                ),
-                                                child: Text("Cancel", style: TextStyle(fontSize: 16)),
-                                              ),
-
-                                            ],
-                                          );
-
-                                        });
-                                  }
-                                      : (){
-                                    printFunc("Not Connected");
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: isDeviceConnected
-                                        ? MaterialStateProperty.all(darkBg)
-                                        : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(25),
-                                          side: BorderSide(color: darkBg, width: 1)),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    height: 30,
-                                    width: screenSize.width / 3.5,
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Text(
-                                        "Calibration",
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          color: isDeviceConnected
-                                              ? Colors.white
-                                              : Color(0xFFEEEEEE),
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: baseFont,
-                                          shadows: [
-                                            Shadow(color: Colors.black, blurRadius: 0.1)
+                                            Expanded(
+                                                child: Container(
+                                                  margin: EdgeInsets.only(right: 30),
+                                                  height: 1,
+                                                  color: Colors.black,
+                                                )),
                                           ],
-                                          overflow: TextOverflow.visible,
                                         ),
-                                      ),
+                                        TextFeildNewUser(
+                                          hintText: "Enter the MacID",
+                                          Controller: _macIdController,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              enableConnect = true;
+                                            });
+                                          },
+                                          enable: true,
+                                          etext: validateFields &&
+                                              _macIdController.text
+                                                  .trim()
+                                                  .isEmpty
+                                              ? "Please Enter MAC-Id"
+                                              : "",
+                                        ),
+                                      ],
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
                             ],
-                          )
-                          : SizedBox(height: 20,),
+                          ),
+                        ),
 
+                        (device != null && device!.isConnected)
+                            ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 10, top: 15),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    enableConnect = false;
+                                  });
+                                  _macIdController.clear();
+                                  disconnect();
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: isDeviceConnected
+                                      ? MaterialStateProperty.all(darkBg)
+                                      : MaterialStateProperty.all(
+                                      darkBg.withOpacity(0.4)),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(25),
+                                        side: BorderSide(
+                                            color: darkBg, width: 1)),
+                                  ),
+                                ),
+                                child: Container(
+                                  height: 30,
+                                  width: screenSize.width / 3.5,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      "Disconnect",
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: baseFont,
+                                        shadows: [
+                                          Shadow(
+                                              color: Colors.black,
+                                              blurRadius: 0.1)
+                                        ],
+                                        overflow: TextOverflow.visible,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Handle Calibration Btn
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 10, top: 15),
+                              child: ElevatedButton(
+                                onPressed: isDeviceConnected
+                                    ? () {
+                                  showDialog(
+                                      context: context,
+                                      builder:
+                                          (BuildContext contextt) {
+                                        return AlertDialog(
+                                          contentPadding:
+                                          const EdgeInsets
+                                              .symmetric(
+                                              horizontal: 20,
+                                              vertical: 16),
+                                          insetPadding:
+                                          const EdgeInsets
+                                              .symmetric(
+                                              horizontal: 40,
+                                              vertical: 24),
+                                          backgroundColor:
+                                          second_lightBg,
+                                          content:
+                                          SingleChildScrollView(
+                                            child: Column(
+                                              mainAxisSize:
+                                              MainAxisSize.min,
+                                              // keeps dialog compact
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                // Title
+                                                Center(
+                                                  child: Text(
+                                                    "Calibration",
+                                                    style: TextStyle(
+                                                      color: darkBg,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w500,
+                                                      fontFamily:
+                                                      baseFont,
+                                                      fontSize: 20,
+                                                      shadows: [
+                                                        Shadow(
+                                                          color: Colors
+                                                              .black,
+                                                          blurRadius:
+                                                          0.5,
+                                                          offset:
+                                                          Offset(
+                                                              0.5,
+                                                              0.5),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                //divider
+                                                Column(
+                                                  children: [
+                                                    SizedBox(
+                                                        height: 10),
+                                                    Divider(
+                                                      color: darkBg,
+                                                    ),
+                                                    SizedBox(
+                                                        height: 10),
+                                                  ],
+                                                ),
 
-                        ],
-                      ),
-                    ],
-                  ),
+                                                // Send Config Button
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceEvenly,
+                                                  children: [
+                                                    Container(
+                                                      padding:
+                                                      EdgeInsets
+                                                          .all(
+                                                          10),
+                                                      decoration:
+                                                      BoxDecoration(
+                                                        border: Border
+                                                            .all(
+                                                            color:
+                                                            darkBg),
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            10),
+                                                        color: darkBg,
+                                                      ),
+                                                      child:
+                                                      GestureDetector(
+                                                        onTap:
+                                                            () async {
+                                                          _showInputDialog(
+                                                              Alertcontext:
+                                                              context,
+                                                              title:
+                                                              "Vmax for Calibration",
+                                                              hint:
+                                                              "e.g. 4200",
+                                                              onSubmit:
+                                                              sendVmax,
+                                                              afterText:
+                                                              "Calibrating Vmax...",
+                                                              labelText:
+                                                              "Enter Vmax(mV)");
+                                                        },
+                                                        child: Text(
+                                                          "Voltage\nCalibration",
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                              16,
+                                                              color: Colors
+                                                                  .white,
+                                                              fontWeight:
+                                                              FontWeight.w500),
+                                                          textAlign:
+                                                          TextAlign
+                                                              .center,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                      EdgeInsets
+                                                          .all(
+                                                          10),
+                                                      decoration:
+                                                      BoxDecoration(
+                                                        border: Border
+                                                            .all(
+                                                            color:
+                                                            darkBg),
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            10),
+                                                        color: darkBg,
+                                                      ),
+                                                      child:
+                                                      GestureDetector(
+                                                        onTap:
+                                                            () async {
+                                                          _showInputDialog(
+                                                              Alertcontext:
+                                                              context,
+                                                              title:
+                                                              "Temperature for Calibration",
+                                                              hint:
+                                                              "e.g. 25000",
+                                                              onSubmit:
+                                                              sendTemperature,
+                                                              labelText:
+                                                              "Enter Temperature",
+                                                              afterText:
+                                                              "Calibrating Temp...");
+                                                        },
+                                                        child: Text(
+                                                          "Temperature\nCalibration",
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                              16,
+                                                              color: Colors
+                                                                  .white,
+                                                              fontWeight:
+                                                              FontWeight.w500),
+                                                          textAlign:
+                                                          TextAlign
+                                                              .center,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(
+                                                    context);
+                                              },
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                MaterialStateProperty
+                                                    .all<Color>(
+                                                    darkBg),
+                                                shape: MaterialStateProperty
+                                                    .all<
+                                                    RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          18)),
+                                                ),
+                                              ),
+                                              child: Text("Cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 16)),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                }
+                                    : () {
+                                  printFunc("Not Connected");
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: isDeviceConnected
+                                      ? MaterialStateProperty.all(darkBg)
+                                      : MaterialStateProperty.all(
+                                      darkBg.withOpacity(0.4)),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(25),
+                                        side: BorderSide(
+                                            color: darkBg, width: 1)),
+                                  ),
+                                ),
+                                child: Container(
+                                  height: 30,
+                                  width: screenSize.width / 3.5,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      "Calibration",
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: isDeviceConnected
+                                            ? Colors.white
+                                            : Color(0xFFEEEEEE),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: baseFont,
+                                        shadows: [
+                                          Shadow(
+                                              color: Colors.black,
+                                              blurRadius: 0.1)
+                                        ],
+                                        overflow: TextOverflow.visible,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                            : SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            )),
-      ),
+              ),
+            ],
+          )),
     );
   }
 
   void validateField() {
-    final Controllers = [_macIdController, ];
+    final Controllers = [
+      _macIdController,
+    ];
     bool hasEmpty =
-    Controllers.any((controller) => controller.text.trim().isEmpty);
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
       validateFields = hasEmpty;
     });
@@ -595,14 +678,13 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
   }
 
   Future<void> scanAndConnect() async {
-    if(_macIdController.text.isNotEmpty){
+    if (_macIdController.text.isNotEmpty) {
       printFunc("BEFORe Device Connected -- $status");
 
       setState(() {
         status = "Scanning...";
         NotConnected = true;
       });
-
 
       printFunc("Found Old macid: ${_macIdController.text}");
       await requestPermissions();
@@ -620,7 +702,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
 
       //Scanning the device and returing
       device = await scanDeviceByMACId(_macIdController.text);
-      printFunc( "DEMO DEVICE : $device");
+      printFunc("DEMO DEVICE : $device");
 
       if (device != null) {
         connected = await connectToDevice(device!);
@@ -672,51 +754,54 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
             connect = true;
             deviceName = device!.advName;
           });
-          printFunc("DEmo is device Connected enableSubmit: $enableSubmit \n NotConnected :  $NotConnected  ");
+          printFunc(
+              "DEmo is device Connected enableSubmit: $enableSubmit \n NotConnected :  $NotConnected  ");
 
           printFunc("charterstics : configChar : $configChar");
           return;
         } else {
-          if(mounted){
+          if (mounted) {
             setState(() {
               NotConnected = false;
             });
           }
           printFunc("Connection Failed!!");
 
-          showDialog(context: context, builder: (BuildContext contextt) {
-            return AlertDialog(
-              // title: Text(""),
-              content: Text(
-                "Connection Failed!!",
-                style: TextStyle(
-                  color: darkBg,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              actions: [
-                //OK btn that goes for next page
-                ElevatedButton(
-                  onPressed: (){
-                    Navigator.of(context).pop();
-                  },
-
-                  child: Text(
-                    "Re-Try",
-                    style: TextStyle(fontSize: 16),
+          showDialog(
+              context: context,
+              builder: (BuildContext contextt) {
+                return AlertDialog(
+                  // title: Text(""),
+                  content: Text(
+                    "Connection Failed!!",
+                    style: TextStyle(
+                      color: darkBg,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all<Color>(darkBg),
-                      shape:
-                      MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18)))),
-                )
-              ],
-              backgroundColor: second_lightBg,
-            );
-          });
+                  actions: [
+                    //OK btn that goes for next page
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "Re-Try",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(darkBg),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(18)))),
+                    )
+                  ],
+                  backgroundColor: second_lightBg,
+                );
+              });
 
           // ScaffoldMessenger.of(context).showSnackBar(
           //     SnackBar(
@@ -725,17 +810,16 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
           //       duration: Duration(seconds: 3),
           //
           // ));
-
         }
-      }
-      else {
-        if(mounted){
-          setState(() {NotConnected = false;});
+      } else {
+        if (mounted) {
+          setState(() {
+            NotConnected = false;
+          });
         }
         printFunc("DEVICE NOT FOund in else Cond");
         await FlutterBluePlus.stopScan();
         printFunc("${_macIdController.text} is not found");
-
 
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
@@ -747,8 +831,10 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       }
 
       printFunc("DEMO STReet : $NotConnected");
-      if(mounted){
-        setState(() {NotConnected = false;});
+      if (mounted) {
+        setState(() {
+          NotConnected = false;
+        });
       }
       printFunc("DEMO STReet1 : $NotConnected");
     }
@@ -757,7 +843,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
   Future<void> disconnect() async {
     if (device != null) {
       await device!.disconnect();
-      if(mounted){
+      if (mounted) {
         setState(() {
           status = "Disconnected";
           deviceName = "-";
@@ -775,7 +861,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
     printFunc(" Received ACK from device: $ack");
 
     if (calibrationStep == 0 && ack.contains("ACK_VMAX")) {
-      if(mounted){
+      if (mounted) {
         setState(() {
           calibrationStep = 1;
           waitingForAck = false;
@@ -789,8 +875,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
               hint: "e.g. 3200",
               onSubmit: sendVmin,
               labelText: "Enter Vmin (mV)",
-              afterText: "Calibrating Vmin..."
-          );
+              afterText: "Calibrating Vmin...");
         });
       }
       // Open Vmin popup
@@ -799,7 +884,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
     } else if (calibrationStep == 1 && ack.contains("ACK_COMPLETE")) {
       printFunc(" Voltage Calibration Completed!");
       ShowSnackBarMessage(context, 'Voltage Calibration Completed!', true);
-      if(mounted){
+      if (mounted) {
         setState(() {
           calibrationStep = 0;
           waitingForAck = false;
@@ -829,20 +914,19 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
     final TextEditingController inputCtrl = TextEditingController();
     bool error = false;
 
-
     return showDialog(
       context: Alertcontext,
       barrierDismissible: false,
       builder: (context) {
         return StatefulBuilder(builder: (context, setStateDialog) {
           return AlertDialog(
-            title: Text(title,
+            title: Text(
+              title,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: darkBg,
                 fontWeight: FontWeight.w700,
                 fontSize: 18,
-
               ),
             ),
             content: Column(
@@ -850,83 +934,102 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
               children: [
                 Column(
                   children: [
-                    Divider(color: darkBg,),
+                    Divider(
+                      color: darkBg,
+                    ),
                     SizedBox(height: 10),
                   ],
                 ),
 
-                if (!waitingForAck) Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(labelText,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: darkBg,
-                            fontFamily: baseFont,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black,
-                                blurRadius: 0.2,
-                                // offset: Offset(0.5, 0.5)
-                              )
-                            ])),
+                if (!waitingForAck)
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(labelText,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: darkBg,
+                              fontFamily: baseFont,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0.2,
+                                  // offset: Offset(0.5, 0.5)
+                                )
+                              ])),
+                    ),
                   ),
-                ),
-                if (!waitingForAck) Container(
-                  height: 60,
-                  width: screenSize.width,
-                  padding: EdgeInsets.symmetric(horizontal: 18),
-                  child: Center(
-                    child: TextField(
-                        cursorWidth: 1,
-                        style: TextStyle(
-                            fontSize: 18,
-                            color:  darkBg,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: baseFont,
-                            letterSpacing: 0.2),
-                        controller: inputCtrl,
-                        cursorColor: darkBg,
-                        keyboardType: TextInputType.number,
-                        enabled: !waitingForAck,
-                        // validator: validator,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: darkBg, width: 0.5),
-                                borderRadius: BorderRadius.all(Radius.circular(8))),
-                            disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black, width: 1),
-                                borderRadius: BorderRadius.all(Radius.circular(8))),
-                            focusColor: Colors.black,
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
-                                borderSide: BorderSide(width: 1, color: darkBg )),
-                            focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
-                                borderSide:
-                                BorderSide(width: 1, color:  Colors.black )),
-                            errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
-                                borderSide:
-                                BorderSide(width: 1, color: Colors.black )),
-                            hintText: hint,
-                            hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF9AC4C9),
-                                fontFamily: baseFont,
-                                fontWeight: FontWeight.w400),
-
-                            counterText: "")),
+                if (!waitingForAck)
+                  Container(
+                    height: 60,
+                    width: screenSize.width,
+                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    child: Center(
+                      child: TextField(
+                          cursorWidth: 1,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: darkBg,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: baseFont,
+                              letterSpacing: 0.2),
+                          controller: inputCtrl,
+                          cursorColor: darkBg,
+                          keyboardType: TextInputType.number,
+                          enabled: !waitingForAck,
+                          // validator: validator,
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: darkBg, width: 0.5),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8))),
+                              disabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.black, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8))),
+                              focusColor: Colors.black,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                  borderSide:
+                                      BorderSide(width: 1, color: darkBg)),
+                              focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                  borderSide: BorderSide(
+                                      width: 1, color: Colors.black)),
+                              errorBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                  borderSide: BorderSide(
+                                      width: 1, color: Colors.black)),
+                              hintText: hint,
+                              hintStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF9AC4C9),
+                                  fontFamily: baseFont,
+                                  fontWeight: FontWeight.w400),
+                              counterText: "")),
+                    ),
                   ),
-                ),
                 // const SizedBox(height: 10),
-                if (waitingForAck)  CircularProgressIndicator(color: darkBg,),
-                if (waitingForAck)  SizedBox(height: 8),
-                if (waitingForAck)  Text(afterText,style: TextStyle(color: darkBg),),
+                if (waitingForAck)
+                  CircularProgressIndicator(
+                    color: darkBg,
+                  ),
+                if (waitingForAck) SizedBox(height: 8),
+                if (waitingForAck)
+                  Text(
+                    afterText,
+                    style: TextStyle(color: darkBg),
+                  ),
               ],
             ),
             actions: [
@@ -946,7 +1049,6 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(darkBg),
-
                   ),
                   child: const Text("Send"),
                 ),
@@ -1016,7 +1118,6 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       return false;
     }
   }
-
 
   @override
   void dispose() {

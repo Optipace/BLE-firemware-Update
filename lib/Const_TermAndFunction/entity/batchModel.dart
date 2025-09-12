@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'battery_model.dart';
 
+import 'battery_model.dart';
 import 'firmwareModel.dart';
 import 'profileModel.dart';
 
@@ -66,7 +66,7 @@ class BatchModel extends HiveObject {
       'description': batchDescription,
       'firmware': firmware.toJson(),
       'profile': profile.toJson(),
-      'battery' : battery.toJson(),
+      'battery': battery.toJson(),
       'saved': saved,
     };
   }

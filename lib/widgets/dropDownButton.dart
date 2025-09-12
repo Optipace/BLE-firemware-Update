@@ -244,8 +244,9 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
         ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount:
-              search.text == "null" || search.text == "" ? widget.listItems.length : suggestionList.length,
+          itemCount: search.text == "null" || search.text == ""
+              ? widget.listItems.length
+              : suggestionList.length,
           itemBuilder: (context, index) {
             final entry = search.text == "null" || search.text == ""
                 ? widget.listItems.entries.toList()[index]
@@ -337,7 +338,8 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
                   margin: EdgeInsets.only(right: 20),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white70), borderRadius: BorderRadius.circular(10)),
+                      border: Border.all(color: Colors.white70),
+                      borderRadius: BorderRadius.circular(10)),
                   child: Padding(
                       padding: EdgeInsets.only(right: 5, left: 15),
                       child: Row(
@@ -352,7 +354,11 @@ class _MapListItemBuilderState extends State<MapListItemBuilder> {
                                     fontFamily: baseFont,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
-                                    shadows: [Shadow(color: Colors.black26, blurRadius: 0.4)]),
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.black26,
+                                          blurRadius: 0.4)
+                                    ]),
                               ),
                             ],
                           ),

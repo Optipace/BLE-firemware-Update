@@ -10,7 +10,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/Methods/scanAndconnect.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class locateHomePage extends StatefulWidget {
   const locateHomePage({super.key});
@@ -148,11 +147,14 @@ class _locateHomePageState extends State<locateHomePage> {
               ? Container(
                   color: darkBg,
                   margin: EdgeInsets.all(18),
-                  height: 22,
-                  width: 22,
                   child: const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    child: SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3.5,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
                     ),
                   ),
                 )
@@ -176,7 +178,7 @@ class _locateHomePageState extends State<locateHomePage> {
               icon: Icon(Icons.qr_code_2_outlined)),
         ],
       ),
-      body: InternetStatusWatcher(child: DeviceList()),
+      body: DeviceList(),
     );
   }
 
@@ -196,76 +198,79 @@ class _locateHomePageState extends State<locateHomePage> {
               leading: const Icon(Icons.bluetooth),
               title: Text(name),
               subtitle: Text(id),
-              trailing: IconButton(onPressed: () async {
-                printFunc("DEMO DEMO MACID - ${id}");
+              trailing: IconButton(
+                  onPressed: () async {
+                    printFunc("DEMO DEMO MACID - ${id}");
 
-                if (selectedDevice != null) {
-                  printFunc("Already device");
-                  await disconnect();
-                }
+                    if (selectedDevice != null) {
+                      printFunc("Already device");
+                      await disconnect();
+                    }
 
-                setState(() {
-                  mac_Id = id;
-                  selectedDevice = device;
-                  connecting = true; // Start connecting
-                });
+                    setState(() {
+                      mac_Id = id;
+                      selectedDevice = device;
+                      connecting = true; // Start connecting
+                    });
 
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext contextt) {
-                      return StatefulBuilder(
-                        builder: (context, setDialogState) {
-                          // Listen to state changes and update dialog
-                          return StreamBuilder(
-                            stream:
-                            Stream.periodic(Duration(milliseconds: 100)),
-                            builder: (context, snapshot) {
-                              return AlertDialog(
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (connecting)
-                                      CircularProgressIndicator(
-                                        color: darkBg,
-                                      ),
-                                    if (connecting) SizedBox(height: 8),
-                                    if (connecting)
-                                      Text(
-                                        "Connecting...",
-                                        style: TextStyle(color: darkBg),
-                                      ),
-                                    if (connected && !connecting)
-                                      Image.asset(
-                                        'assets/image/alarm.gif',
-                                        width: 80,
-                                        height: 80,
-                                      ),
-                                    if (connected && !connecting)
-                                      SizedBox(height: 8),
-                                    if (connected && !connecting)
-                                      Text(
-                                        "Buzzing . . .",
-                                        style: TextStyle(
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext contextt) {
+                          return StatefulBuilder(
+                            builder: (context, setDialogState) {
+                              // Listen to state changes and update dialog
+                              return StreamBuilder(
+                                stream: Stream.periodic(
+                                    Duration(milliseconds: 100)),
+                                builder: (context, snapshot) {
+                                  return AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        if (connecting)
+                                          CircularProgressIndicator(
                                             color: darkBg,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 18),
-                                      ),
-                                  ],
-                                ),
+                                          ),
+                                        if (connecting) SizedBox(height: 8),
+                                        if (connecting)
+                                          Text(
+                                            "Connecting...",
+                                            style: TextStyle(color: darkBg),
+                                          ),
+                                        if (connected && !connecting)
+                                          Image.asset(
+                                            'assets/image/alarm.gif',
+                                            width: 80,
+                                            height: 80,
+                                          ),
+                                        if (connected && !connecting)
+                                          SizedBox(height: 8),
+                                        if (connected && !connecting)
+                                          Text(
+                                            "Buzzing . . .",
+                                            style: TextStyle(
+                                                color: darkBg,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18),
+                                          ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               );
                             },
                           );
-                        },
-                      );
-                    });
+                        });
 
-                scanAndConnect(selectedDevice!);
+                    scanAndConnect(selectedDevice!);
 
-                printFunc("Demo mac_Id : $mac_Id");
-              },
-                  icon: Icon(Icons.notifications_active_outlined,color: darkBg,)
-              ),
+                    printFunc("Demo mac_Id : $mac_Id");
+                  },
+                  icon: Icon(
+                    Icons.notifications_active_outlined,
+                    color: darkBg,
+                  )),
             );
           },
         ),
@@ -385,9 +390,94 @@ class _locateHomePageState extends State<locateHomePage> {
                 actions: [
                   //OK btn that goes for next page
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
+
+                    },
+                    child: Text(
+                      "Back",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(darkBg),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18)))),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      printFunc("selectedDevice : $selectedDevice");
+                      // printFunc("DEMO DEMO MACID - ${id}");
+
+                      // if (selectedDevice != null) {
+                      //   printFunc("Already device");
+                      //   await disconnect();
+                      // }
+
+                      // setState(() {
+                      //   mac_Id = id;
+                      //   selectedDevice = device;
+                      //   connecting = true; // Start connecting
+                      // });
+
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext contextt) {
+                            return StatefulBuilder(
+                              builder: (context, setDialogState) {
+                                // Listen to state changes and update dialog
+                                return StreamBuilder(
+                                  stream: Stream.periodic(
+                                      Duration(milliseconds: 100)),
+                                  builder: (context, snapshot) {
+                                    return AlertDialog(
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          if (connecting)
+                                            CircularProgressIndicator(
+                                              color: darkBg,
+                                            ),
+                                          if (connecting) SizedBox(height: 8),
+                                          if (connecting)
+                                            Text(
+                                              "Connecting...",
+                                              style: TextStyle(color: darkBg),
+                                            ),
+                                          if (connected && !connecting)
+                                            Image.asset(
+                                              'assets/image/alarm.gif',
+                                              width: 80,
+                                              height: 80,
+                                            ),
+                                          if (connected && !connecting)
+                                            SizedBox(height: 8),
+                                          if (connected && !connecting)
+                                            Text(
+                                              "Buzzing . . .",
+                                              style: TextStyle(
+                                                  color: darkBg,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18),
+                                            ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          });
+
+                      scanAndConnect(selectedDevice!);
+
+                      printFunc("Demo mac_Id : $mac_Id");
                     },
                     child: Text(
                       "Re-Try",
@@ -400,7 +490,8 @@ class _locateHomePageState extends State<locateHomePage> {
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18)))),
-                  )
+                  ),
+
                 ],
                 backgroundColor: second_lightBg,
               );

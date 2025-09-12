@@ -39,10 +39,13 @@ class BluetoothHardwareNumber extends StatefulWidget {
       BluetoothHardwareNumberState();
 }
 
-
 class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   // For Current Date
   DateTime now = DateTime.now();
+
+  bool _initialNetworkCheckDone = false;
+  bool _isPidLoading = false;
+
 
   //Hardware number and Client Details
   Map<String, dynamic> HardWareMap = {};
@@ -116,23 +119,43 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
   BuildContext? alertContext;
 
-
   String? fullSerial;
 
   Timer? timeoutTimer;
+
+  bool isOffline = false;
 
   @override
   void initState() {
     super.initState();
     generateHardWareMap();
 
+    printFunc("_initialNetworkCheckDone 01 -- ${_initialNetworkCheckDone}");
+    InternetStatus.isOnline.addListener(_onInternetChange);
+    printFunc("InternetStatus.isOnline 01 - ${InternetStatus.isOnline.value}");
+    printFunc("_initialNetworkCheckDone 01 -- ${_initialNetworkCheckDone}");
+
+    if(InternetStatus.isOnline.value == false){
+      setState(() {
+        isOffline = true;
+      });
+    }else{
+      PIDforFactoryUser();
+      scanAndConnect();
+    }
+
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await PIDforFactoryUser();
-      if(HardWareNumber.Text!.isNotEmpty)
-      await scanAndConnect();
+      if(!isOffline) {
+        // PIDforFactoryUser();
+        // await scanAndConnect();
+      }else{
+        printFunc("OFFLINE");
+      }
     });
     setState(() {
-      batteryTypeCtrl.text = widget.SelectedBatch?.obj['battery']['batteryCode'];
+      batteryTypeCtrl.text =
+          widget.SelectedBatch?.obj['battery']['batteryCode'];
       dateCtrl.text = DateFormat('yyyy-MM-dd').format(now);
       HardWareNumber.getText.toString();
       custIdCtrl.text = "1";
@@ -196,813 +219,1043 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
           elevation: 5,
           shadowColor: darkBg,
         ),
-        body: InternetStatusWatcher(
-          child: Center(
-            child: Card(
-              elevation: 5,
-              margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                    color: second_lightBg.withOpacity(0.5),
-                    border: Border.all(
-                      color: darkBg,
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.circular(20)),
-                child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 15, left: 25, right: 25),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "DETAILS ",
-                                  style: TextStyle(
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 24,
-                                      color: darkBg,
-                                      shadows: [
-                                        Shadow(
-                                            color: Colors.black,
-                                            blurRadius: 0.5,
-                                            offset: Offset(0.5, 0.5))
-                                      ]),
-                                ),
-                                isScanning
-                                    ? Container(
-                                  color: second_lightBg,
-                                  height: 25,
-                                  width: 25,
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.grey),
-                                    ),
+        body: Center(
+          child: Card(
+            elevation: 5,
+            margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                  color: second_lightBg.withOpacity(0.5),
+                  border: Border.all(
+                    color: darkBg,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(20)),
+              child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 15, left: 25, right: 25),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "DETAILS ",
+                                style: TextStyle(
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 24,
+                                    color: darkBg,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.black,
+                                          blurRadius: 0.5,
+                                          offset: Offset(0.5, 0.5))
+                                    ]),
+                              ),
+                              isScanning
+                                  ? Container(
+                                color: second_lightBg,
+                                height: 25,
+                                width: 25,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor:
+                                    AlwaysStoppedAnimation<Color>(
+                                        Colors.grey),
                                   ),
-                                )
-                                    : ElevatedButton(
-                                  onPressed: isDeviceConnected
-                                  ?() async {
-                                    await disconnect();
-                                  }
-                                   : () async {
-                                    resetConnectionFlags();
-                                    await scanAndConnect();
+                                ),
+                              )
+                                  : ElevatedButton(
+                                onPressed: !isOffline
+                                    ? isDeviceConnected
+                                    ? () async {
+                                  await disconnect();
+                                }
+                                    : () async {
+                                  printFunc("NETWORK IS THEIR : $isOffline");
+                                  resetConnectionFlags();
+                                  PIDforFactoryUser();
+                                  await scanAndConnect();
+                                }
+                                    : null,
+                                child: Text(isDeviceConnected
+                                    ? "Connected"
+                                    : "Connect"),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                  !isOffline
+                                      ? MaterialStateProperty.all(darkBg)
+                                      : MaterialStateProperty.all(Color(0xFFB0BEC5)),
+                                  elevation: MaterialStateProperty.all(5),
+                                  shadowColor:
+                                  MaterialStateProperty.all(darkBg),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(10),
+                                        side: BorderSide(
+                                            color: darkBg, width: 1)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 20),
+                              const LabelText(text: "Batch Name :"),
+                              TextFeildNewUser(
+                                hintText: batchName.text,
+                                Controller: batchName,
+                                onChanged: (value) {},
+                                enable: false,
+                              ),
+                              SizedBox(height: 10),
+                              const LabelText(text: "FirmWare Name :"),
+                              TextFeildNewUser(
+                                hintText: firmWareName.text,
+                                Controller: firmWareName,
+                                onChanged: (value) {},
+                                enable: false,
+                              ),
+                              SizedBox(height: 10),
+                              const LabelText(text: "Config Name :"),
+                              TextFeildNewUser(
+                                hintText: configName.text,
+                                Controller: configName,
+                                onChanged: (value) {},
+                                enable: false,
+                              ),
+                              SizedBox(height: 10),
+                              GestureDetector(
+                                child: PrimeryDropDownButton(
+                                  isEnabled: false,
+                                  tail: ErrorContainer(
+                                      show: _validateDropDown &&
+                                          HardWareNumber.getText == "",
+                                      errorMsg:
+                                      "Please Select the HardWare Number"),
+                                  mainText: "Select Tracker Serial Number",
+                                  text: HardWareNumber.Text != ""
+                                      ? HardWareNumber.getText
+                                      : "Tracker Serial Number",
+                                  press: () async {
+                                    await BottomSheet_Widget(context, [
+                                      MapListItemBuilder(
+                                          listItems: HardWareMap,
+                                          press: () {
+                                            printFunc(
+                                                "Demo datacontroller - ${HardWareNumber.getText}");
+                                          },
+                                          selected: HardWareNumber)
+                                    ]);
+                                    setState(() {});
                                   },
-                                  child: Text(isDeviceConnected ? "Connected" : "Connect"),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                            ],
+                          )),
+
+                      //BTNS [Configure, Calibration, Submit]
+                      isDeviceConnected
+                          ? Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding:
+                                EdgeInsets.only(bottom: 10, top: 15),
+                                child: ElevatedButton(
+                                  onPressed: isDeviceConnected
+                                      ? enableDisconnect
+                                      ? () async {
+                                    await disconnect();
+                                    if (mounted) {
+                                      Navigator.pop(context);
+                                    }
+                                  }
+                                      : () async {
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext
+                                        contextt) {
+                                          return AlertDialog(
+                                            contentPadding:
+                                            const EdgeInsets
+                                                .symmetric(
+                                                horizontal:
+                                                20,
+                                                vertical: 16),
+                                            insetPadding:
+                                            const EdgeInsets
+                                                .symmetric(
+                                                horizontal:
+                                                40,
+                                                vertical: 24),
+                                            backgroundColor:
+                                            second_lightBg,
+                                            content:
+                                            SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize:
+                                                MainAxisSize
+                                                    .min,
+                                                // keeps dialog compact
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  // Title
+                                                  Center(
+                                                    child: Text(
+                                                      "Configure Details",
+                                                      style:
+                                                      TextStyle(
+                                                        color:
+                                                        darkBg,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w500,
+                                                        fontFamily:
+                                                        baseFont,
+                                                        fontSize:
+                                                        20,
+                                                        shadows: [
+                                                          Shadow(
+                                                            color:
+                                                            Colors.black,
+                                                            blurRadius:
+                                                            0.5,
+                                                            offset: Offset(
+                                                                0.5,
+                                                                0.5),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 15),
+
+                                                  //Battery Section
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Battery Details",
+                                                        style:
+                                                        TextStyle(
+                                                          color:
+                                                          darkBg,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          baseFont,
+                                                          fontSize:
+                                                          16,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color:
+                                                              Colors.black,
+                                                              blurRadius:
+                                                              0.5,
+                                                              offset:
+                                                              Offset(0.5, 0.5),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          width:
+                                                          5),
+                                                      const Expanded(
+                                                          child: Divider(
+                                                              color:
+                                                              Colors.black26,
+                                                              thickness: 1)),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 6),
+                                                  Center(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      children: [
+                                                        Text(
+                                                          "Battery",
+                                                          style: TextStyle(
+                                                              color:
+                                                              darkBg,
+                                                              fontWeight: FontWeight.w500,
+                                                              shadows: [
+                                                                Shadow(color: Colors.black, blurRadius: 0.5)
+                                                              ]),
+                                                        ),
+                                                        Text(
+                                                          widget.SelectedBatch?.getobj['battery']['batteryName'] ??
+                                                              "",
+                                                          style: TextStyle(
+                                                              color:
+                                                              darkBg,
+                                                              fontWeight: FontWeight.w500,
+                                                              shadows: [
+                                                                Shadow(color: Colors.black, blurRadius: 0.5)
+                                                              ]),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 12),
+
+                                                  // Voltage Section
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Voltage Details",
+                                                        style:
+                                                        TextStyle(
+                                                          color:
+                                                          darkBg,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          baseFont,
+                                                          fontSize:
+                                                          16,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color:
+                                                              Colors.black,
+                                                              blurRadius:
+                                                              0.5,
+                                                              offset:
+                                                              Offset(0.5, 0.5),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          width:
+                                                          5),
+                                                      const Expanded(
+                                                          child: Divider(
+                                                              color:
+                                                              Colors.black26,
+                                                              thickness: 1)),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 5),
+                                                  Table(
+                                                    defaultColumnWidth:
+                                                    const FlexColumnWidth(),
+                                                    children: [
+                                                      TableRow(
+                                                          children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  6,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    "U-Volt",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  6,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    "L-Volt",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  6,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    "N-Volt",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                          ]),
+                                                      TableRow(
+                                                          children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  3,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    widget.SelectedBatch?.getobj['profile']['uV'] ?? "",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  3,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    widget.SelectedBatch?.getobj['profile']['lV'] ?? "",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  3,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    widget.SelectedBatch?.getobj['profile']['nV'] ?? "",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                          ]),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 10),
+
+                                                  // Threshold Section
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Threshold Details",
+                                                        style:
+                                                        TextStyle(
+                                                          color:
+                                                          darkBg,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          baseFont,
+                                                          fontSize:
+                                                          16,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color:
+                                                              Colors.black,
+                                                              blurRadius:
+                                                              0.5,
+                                                              offset:
+                                                              Offset(0.5, 0.5),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          width:
+                                                          5),
+                                                      const Expanded(
+                                                          child: Divider(
+                                                              color:
+                                                              Colors.black26,
+                                                              thickness: 1)),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 5),
+                                                  Table(
+                                                    defaultColumnWidth:
+                                                    const FlexColumnWidth(),
+                                                    children: [
+                                                      TableRow(
+                                                          children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  6,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    "U-Threshold",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  6,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    "L-Threshold",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                          ]),
+                                                      TableRow(
+                                                          children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  3,
+                                                                  6,
+                                                                  6),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    widget.SelectedBatch?.getobj['profile']['uT'] ?? "",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  3,
+                                                                  6,
+                                                                  6),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    widget.SelectedBatch?.getobj['profile']['lT'] ?? "",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                          ]),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 10),
+
+                                                  // Temperature Section
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Temperature Details",
+                                                        style:
+                                                        TextStyle(
+                                                          color:
+                                                          darkBg,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          baseFont,
+                                                          fontSize:
+                                                          16,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color:
+                                                              Colors.black,
+                                                              blurRadius:
+                                                              0.5,
+                                                              offset:
+                                                              Offset(0.5, 0.5),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          width:
+                                                          5),
+                                                      const Expanded(
+                                                          child: Divider(
+                                                              color:
+                                                              Colors.black26,
+                                                              thickness: 1)),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 6),
+                                                  Table(
+                                                    defaultColumnWidth:
+                                                    const FlexColumnWidth(),
+                                                    children: [
+                                                      TableRow(
+                                                          children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  6,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    "U-Temp",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  6,
+                                                                  6,
+                                                                  3),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    "L-Temp",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                          ]),
+                                                      TableRow(
+                                                          children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  3,
+                                                                  6,
+                                                                  6),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    widget.SelectedBatch?.getobj['profile']['uTemp'] ?? "",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(
+                                                                  6,
+                                                                  3,
+                                                                  6,
+                                                                  6),
+                                                              child: Center(
+                                                                  child: Text(
+                                                                    widget.SelectedBatch?.getobj['profile']['lTemp'] ?? "",
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(color: darkBg, fontWeight: FontWeight.w500, shadows: [
+                                                                      Shadow(color: Colors.black, blurRadius: 0.5)
+                                                                    ]),
+                                                                  )),
+                                                            ),
+                                                          ]),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 15),
+
+                                                  // Send Config Button
+                                                  Center(
+                                                    child:
+                                                    ElevatedButton(
+                                                      onPressed:
+                                                          () async {
+                                                        printFunc(
+                                                            "Demo selectedBatch - ${widget.SelectedBatch?.getobj}");
+                                                        printFunc("DEMO DEVICE SELECTED : $device");
+                                                        await handleConfigProcess();
+                                                      },
+                                                      style:
+                                                      ButtonStyle(
+                                                        backgroundColor:
+                                                        MaterialStateProperty.all<Color>(
+                                                            darkBg),
+                                                        shape: MaterialStateProperty
+                                                            .all<
+                                                            RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              BorderRadius.circular(18)),
+                                                        ),
+                                                      ),
+                                                      child: const Text(
+                                                          "Send Configure",
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                              16)),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  }
+                                      : () {
+                                    printFunc("NOT CONNECTED");
+                                  },
                                   style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all(darkBg),
-                                    elevation: MaterialStateProperty.all(5),
-                                    shadowColor:
-                                    MaterialStateProperty.all(darkBg),
+                                    backgroundColor: isDeviceConnected
+                                        ? MaterialStateProperty.all(darkBg)
+                                        : MaterialStateProperty.all(
+                                        darkBg.withOpacity(0.4)),
                                     shape: MaterialStateProperty.all(
                                       RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(10),
+                                          BorderRadius.circular(25),
                                           side: BorderSide(
                                               color: darkBg, width: 1)),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 20),
-                                const LabelText(text: "Batch Name :"),
-                                TextFeildNewUser(
-                                  hintText: batchName.text,
-                                  Controller: batchName,
-                                  onChanged: (value) {},
-                                  enable: false,
-                                ),
-                                SizedBox(height: 10),
-                                const LabelText(text: "FirmWare Name :"),
-                                TextFeildNewUser(
-                                  hintText: firmWareName.text,
-                                  Controller: firmWareName,
-                                  onChanged: (value) {},
-                                  enable: false,
-                                ),
-                                SizedBox(height: 10),
-                                const LabelText(text: "Config Name :"),
-                                TextFeildNewUser(
-                                  hintText: configName.text,
-                                  Controller: configName,
-                                  onChanged: (value) {},
-                                  enable: false,
-                                ),
-                                SizedBox(height: 10),
-                                GestureDetector(
-                                  child: PrimeryDropDownButton(
-                                    isEnabled: false,
-                                    tail: ErrorContainer(
-                                        show: _validateDropDown &&
-                                            HardWareNumber.getText == "",
-                                        errorMsg:
-                                        "Please Select the HardWare Number"),
-                                    mainText: "Select Tracker Serial Number",
-                                    text: HardWareNumber.Text != ""
-                                        ? HardWareNumber.getText
-                                        : "Tracker Serial Number",
-                                    press: () async {
-                                      await BottomSheet_Widget(context, [
-                                        MapListItemBuilder(
-                                            listItems: HardWareMap,
-                                            press: () {
-                                              printFunc("Demo datacontroller - ${HardWareNumber.getText}");
-                                            },
-                                            selected: HardWareNumber)
-                                      ]);
-                                      setState(() {});
-                                    },
+                                  child: Container(
+                                    height: 30,
+                                    width: screenSize.width / 3.5,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        enableDisconnect
+                                            ? "Disconnect"
+                                            : "Configure",
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: isDeviceConnected
+                                              ? Colors.white
+                                              : Color(0xFFEEEEEE),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: baseFont,
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black,
+                                                blurRadius: 0.1)
+                                          ],
+                                          overflow: TextOverflow.visible,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                SizedBox(height: 10),
-                              ],
-                            )),
-
-                        //BTNS [Configure, Calibration, Submit]
-                        isDeviceConnected
-                        ? Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 10, top: 15),
-                                  child: ElevatedButton(
-                                    onPressed: isDeviceConnected
-                                      ? enableDisconnect
-                                         ? () async{
-                                      await disconnect();
-                                      if (mounted) {
-                                        Navigator.pop(context);
-                                      }
-                                    }
-                                         : () async {
-                                      showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (BuildContext contextt) {
-                                            return AlertDialog(
-                                              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                                              insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
-                                              backgroundColor: second_lightBg,
-                                              content: SingleChildScrollView(
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min, // keeps dialog compact
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    // Title
-                                                    Center(
-                                                      child: Text(
-                                                        "Configure Details",
-                                                        style: TextStyle(
-                                                          color: darkBg,
-                                                          fontWeight: FontWeight.w500,
-                                                          fontFamily: baseFont,
-                                                          fontSize: 20,
-                                                          shadows: [
-                                                            Shadow(
-                                                              color: Colors.black,
-                                                              blurRadius: 0.5,
-                                                              offset: Offset(0.5, 0.5),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 15),
-
-                                                    //Battery Section
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "Battery Details",
-                                                          style: TextStyle(
-                                                            color: darkBg,
-                                                            fontWeight: FontWeight.w500,
-                                                            fontFamily: baseFont,
-                                                            fontSize: 16,
-                                                            shadows: [
-                                                              Shadow(
-                                                                color: Colors.black,
-                                                                blurRadius: 0.5,
-                                                                offset: Offset(0.5, 0.5),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        const SizedBox(width: 5),
-                                                        const Expanded(child: Divider(color: Colors.black26, thickness: 1)),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 6),
-                                                    Center(
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                           Text("Battery",
-                                                            style: TextStyle(
-                                                                color: darkBg,
-                                                                fontWeight: FontWeight.w500,
-                                                                shadows: [Shadow(
-                                                                    color: Colors.black,
-                                                                    blurRadius: 0.5
-                                                                )]
-                                                            ),
-                                                          ),
-                                                          Text(widget.SelectedBatch?.getobj['battery']['batteryName'] ?? "",
-                                                            style: TextStyle(
-                                                                color: darkBg,
-                                                                fontWeight: FontWeight.w500,
-                                                                shadows: [Shadow(
-                                                                    color: Colors.black,
-                                                                    blurRadius: 0.5
-                                                                )]
-                                                            ),
-                                                          ),
+                              ),
+                              // Handle Calibration Btn
+                              Padding(
+                                padding:
+                                EdgeInsets.only(bottom: 10, top: 15),
+                                child: ElevatedButton(
+                                  onPressed: isDeviceConnected
+                                      ? () {
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder:
+                                            (BuildContext contextt) {
+                                          return AlertDialog(
+                                            contentPadding:
+                                            const EdgeInsets
+                                                .symmetric(
+                                                horizontal: 20,
+                                                vertical: 16),
+                                            insetPadding:
+                                            const EdgeInsets
+                                                .symmetric(
+                                                horizontal: 40,
+                                                vertical: 24),
+                                            backgroundColor:
+                                            second_lightBg,
+                                            content:
+                                            SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize:
+                                                MainAxisSize.min,
+                                                // keeps dialog compact
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  // Title
+                                                  Center(
+                                                    child: Text(
+                                                      "Calibration",
+                                                      style:
+                                                      TextStyle(
+                                                        color: darkBg,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w500,
+                                                        fontFamily:
+                                                        baseFont,
+                                                        fontSize: 20,
+                                                        shadows: [
+                                                          Shadow(
+                                                            color: Colors
+                                                                .black,
+                                                            blurRadius:
+                                                            0.5,
+                                                            offset: Offset(
+                                                                0.5,
+                                                                0.5),
+                                                          )
                                                         ],
                                                       ),
                                                     ),
-                                                    const SizedBox(height: 12),
-
-                                                    // Voltage Section
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "Voltage Details",
-                                                          style: TextStyle(
-                                                            color: darkBg,
-                                                            fontWeight: FontWeight.w500,
-                                                            fontFamily: baseFont,
-                                                            fontSize: 16,
-                                                            shadows: [
-                                                              Shadow(
-                                                                color: Colors.black,
-                                                                blurRadius: 0.5,
-                                                                offset: Offset(0.5, 0.5),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        const SizedBox(width: 5),
-                                                        const Expanded(child: Divider(color: Colors.black26, thickness: 1)),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                    Table(
-                                                      defaultColumnWidth: const FlexColumnWidth(),
-                                                      children: [
-                                                        TableRow(children: [
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
-                                                            child: Center(child: Text("U-Volt", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
-                                                            child: Center(child: Text("L-Volt", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
-                                                            child: Center(child: Text("N-Volt", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                        ]),
-                                                        TableRow(children: [
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 3, 6, 3),
-                                                            child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['uV'] ?? "", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 3, 6, 3),
-                                                            child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['lV'] ?? "", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 3, 6, 3),
-                                                            child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['nV'] ?? "", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                        ]),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 10),
-
-                                                    // Threshold Section
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "Threshold Details",
-                                                          style: TextStyle(
-                                                            color: darkBg,
-                                                            fontWeight: FontWeight.w500,
-                                                            fontFamily: baseFont,
-                                                            fontSize: 16,
-                                                            shadows: [
-                                                              Shadow(
-                                                                color: Colors.black,
-                                                                blurRadius: 0.5,
-                                                                offset: Offset(0.5, 0.5),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        const SizedBox(width: 5),
-                                                        const Expanded(child: Divider(color: Colors.black26, thickness: 1)),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                    Table(
-                                                      defaultColumnWidth: const FlexColumnWidth(),
-                                                      children: [
-                                                        TableRow(children: [
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
-                                                            child: Center(child: Text("U-Threshold", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
-                                                            child: Center(child: Text("L-Threshold", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                        ]),
-                                                        TableRow(children: [
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 3, 6, 6),
-                                                            child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['uT'] ?? "", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 3, 6, 6),
-                                                            child: Center(child: Text(widget.SelectedBatch?.getobj['profile']['lT'] ?? "", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                        ]),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 10),
-
-                                                    // Temperature Section
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "Temperature Details",
-                                                          style: TextStyle(
-                                                            color: darkBg,
-                                                            fontWeight: FontWeight.w500,
-                                                            fontFamily: baseFont,
-                                                            fontSize: 16,
-                                                            shadows: [
-                                                              Shadow(
-                                                                color: Colors.black,
-                                                                blurRadius: 0.5,
-                                                                offset: Offset(0.5, 0.5),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        const SizedBox(width: 5),
-                                                        const Expanded(child: Divider(color: Colors.black26, thickness: 1)),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 6),
-                                                    Table(
-                                                      defaultColumnWidth: const FlexColumnWidth(),
-                                                      children: [
-                                                        TableRow(children: [
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
-                                                            child: Center(child: Text("U-Temp", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 6, 6, 3),
-                                                            child: Center(child: Text("L-Temp", textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                        ]),
-                                                        TableRow(children: [
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 3, 6, 6),
-                                                            child: Center(child:
-                                                            Text(
-                                                                widget.SelectedBatch?.getobj['profile']['uTemp'] ?? "",
-                                                                textAlign: TextAlign.center,
-                                                                style: TextStyle(
-                                                                  color: darkBg,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  shadows: [Shadow(
-                                                                      color: Colors.black,
-                                                                      blurRadius: 0.5
-                                                                  )]
-                                                              ),
-                                                            )),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.fromLTRB(6, 3, 6, 6),
-                                                            child: Center(
-                                                                child:
-                                                                Text(
-                                                                    widget.SelectedBatch?.getobj['profile']['lTemp'] ?? "",
-                                                                    textAlign: TextAlign.center,
-                                                                    style: TextStyle(
-                                                                      color: darkBg,
-                                                                      fontWeight: FontWeight.w500,
-                                                                      shadows: [Shadow(
-                                                                        color: Colors.black,
-                                                                        blurRadius: 0.5
-                                                                      )]
-                                                                    ),
-                                                                )
-                                                            ),
-                                                          ),
-                                                        ]),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 15),
-
-                                                    // Send Config Button
-                                                    Center(
-                                                      child: ElevatedButton(
-                                                        onPressed: () async {
-                                                          printFunc("Demo selectedBatch - ${widget.SelectedBatch?.getobj}");
-                                                          await handleConfigProcess();
-                                                        },
-                                                        style: ButtonStyle(
-                                                          backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                                                          ),
-                                                        ),
-                                                        child: const Text("Send Configure", style: TextStyle(fontSize: 16)),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-
-                                          });
-                                    }
-                                      : () {
-                                      printFunc("NOT CONNECTED");
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor: isDeviceConnected
-                                          ? MaterialStateProperty.all(darkBg)
-                                          : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
-                                      shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(25),
-                                            side: BorderSide(color: darkBg, width: 1)),
-                                      ),
-                                    ),
-                                    child: Container(
-                                      height: 30,
-                                      width: screenSize.width / 3.5,
-                                      child: FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: Text(
-                                          enableDisconnect
-                                          ? "Disconnect"
-                                          : "Configure",
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            color: isDeviceConnected
-                                                ? Colors.white
-                                                : Color(0xFFEEEEEE),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: baseFont,
-                                            shadows: [
-                                              Shadow(color: Colors.black, blurRadius: 0.1)
-                                            ],
-                                            overflow: TextOverflow.visible,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                // Handle Calibration Btn
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 10, top: 15),
-                                  child: ElevatedButton(
-                                    onPressed: isDeviceConnected
-                                      ? () {
-                                      showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (BuildContext contextt) {
-                                            return AlertDialog(
-                                              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                                              insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
-                                              backgroundColor: second_lightBg,
-                                              content: SingleChildScrollView(
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min, // keeps dialog compact
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    // Title
-                                                    Center(
-                                                      child: Text(
-                                                        "Calibration",
-                                                        style: TextStyle(
-                                                          color: darkBg,
-                                                          fontWeight: FontWeight.w500,
-                                                          fontFamily: baseFont,
-                                                          fontSize: 20,
-                                                          shadows: [
-                                                            Shadow(
-                                                              color: Colors.black,
-                                                              blurRadius: 0.5,
-                                                              offset: Offset(0.5, 0.5),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    //divider
-                                                    Column(
-                                                      children: [
-                                                        SizedBox(height: 10),
-                                                        Divider(color: darkBg,),
-                                                        SizedBox(height: 10),
-                                                      ],
-                                                    ),
-
-                                                    // Send Config Button
-                                                    Row(
-                                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                     children: [
-                                                       Container(
-                                                         padding: EdgeInsets.all(10),
-                                                         decoration: BoxDecoration(
-                                                           border: Border.all(
-                                                             color: darkBg
-                                                           ),
-                                                           borderRadius: BorderRadius.circular(10),
-                                                           color: darkBg,
-                                                         ),
-                                                         child: GestureDetector(
-                                                           onTap: () async {
-                                                             _showInputDialog(
-                                                                 Alertcontext: context,
-                                                               title: "Vmax for Calibration",
-                                                               hint: "e.g. 4200",
-                                                               onSubmit: sendVmax,
-                                                               afterText: "Calibrating Vmax...",
-                                                               labelText: "Enter Vmax(mV)"
-                                                             );
-
-
-                                                           },
-                                                           child: Text(
-                                                              "Voltage\nCalibration",
-                                                              style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.w500
-                                                              ),
-                                                              textAlign: TextAlign.center,
-
-                                                           ),
-                                                         ),
-                                                       ),
-                                                       Container(
-                                                         padding: EdgeInsets.all(10),
-                                                         decoration: BoxDecoration(
-                                                           border: Border.all(
-                                                             color: darkBg
-                                                           ),
-                                                           borderRadius: BorderRadius.circular(10),
-                                                           color: darkBg,
-                                                         ),
-                                                         child: GestureDetector(
-                                                           onTap: () async {
-                                                             _showInputDialog(
-                                                                 Alertcontext: context,
-                                                               title: "Temperature for Calibration",
-                                                               hint: "e.g. 25000",
-                                                               onSubmit: sendTemperature,
-                                                               labelText: "Enter Temperature",
-                                                               afterText: "Calibrating Temp..."
-                                                             );
-                                                           },
-                                                           child: Text(
-                                                              "Temperature\nCalibration",
-                                                              style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.w500
-                                                              ),
-                                                              textAlign: TextAlign.center,
-
-                                                           ),
-                                                         ),
-                                                       ),
-                                                     ],
-                                                   ),
-
-                                                  ],
-                                                ),
-                                              ),
-                                              actions: [
-                                                ElevatedButton(
-                                                  onPressed: (){
-                                                    Navigator.pop(context);
-                                                  },
-                                                  style: ButtonStyle(
-                                                    backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                                                    ),
                                                   ),
-                                                  child: Text("Cancel", style: TextStyle(fontSize: 16)),
+                                                  //divider
+                                                  Column(
+                                                    children: [
+                                                      SizedBox(
+                                                          height: 10),
+                                                      Divider(
+                                                        color: darkBg,
+                                                      ),
+                                                      SizedBox(
+                                                          height: 10),
+                                                    ],
+                                                  ),
+
+                                                  // Send Config Button
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                        EdgeInsets
+                                                            .all(
+                                                            10),
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                              darkBg),
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                          color:
+                                                          darkBg,
+                                                        ),
+                                                        child:
+                                                        GestureDetector(
+                                                          onTap:
+                                                              () async {
+                                                            _showInputDialog(
+                                                                Alertcontext:
+                                                                context,
+                                                                title:
+                                                                "Vmax for Calibration",
+                                                                hint:
+                                                                "e.g. 4200",
+                                                                onSubmit:
+                                                                sendVmax,
+                                                                afterText:
+                                                                "Calibrating Vmax...",
+                                                                labelText:
+                                                                "Enter Vmax(mV)");
+                                                          },
+                                                          child: Text(
+                                                            "Voltage\nCalibration",
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                16,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                FontWeight.w500),
+                                                            textAlign:
+                                                            TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                        EdgeInsets
+                                                            .all(
+                                                            10),
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                              darkBg),
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                          color:
+                                                          darkBg,
+                                                        ),
+                                                        child:
+                                                        GestureDetector(
+                                                          onTap:
+                                                              () async {
+                                                            _showInputDialog(
+                                                                Alertcontext:
+                                                                context,
+                                                                title:
+                                                                "Temperature for Calibration",
+                                                                hint:
+                                                                "e.g. 25000",
+                                                                onSubmit:
+                                                                sendTemperature,
+                                                                labelText:
+                                                                "Enter Temperature",
+                                                                afterText:
+                                                                "Calibrating Temp...");
+                                                          },
+                                                          child: Text(
+                                                            "Temperature\nCalibration",
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                16,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                FontWeight.w500),
+                                                            textAlign:
+                                                            TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(
+                                                      context);
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                  MaterialStateProperty
+                                                      .all<Color>(
+                                                      darkBg),
+                                                  shape: MaterialStateProperty
+                                                      .all<
+                                                      RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            18)),
+                                                  ),
                                                 ),
-
-                                              ],
-                                            );
-
-                                          });
-                                    }
-                                      : (){
-                                      printFunc("Not Connected");
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor: isDeviceConnected
-                                          ? MaterialStateProperty.all(darkBg)
-                                          : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
-                                      shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(25),
-                                            side: BorderSide(color: darkBg, width: 1)),
-                                      ),
-                                    ),
-                                    child: Container(
-                                      height: 30,
-                                      width: screenSize.width / 3.5,
-                                      child: FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: Text(
-                                          "Calibration",
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            color: isDeviceConnected
-                                                ? Colors.white
-                                                : Color(0xFFEEEEEE),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: baseFont,
-                                            shadows: [
-                                              Shadow(color: Colors.black, blurRadius: 0.1)
+                                                child: Text("Cancel",
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                        16)),
+                                              ),
                                             ],
-                                            overflow: TextOverflow.visible,
-                                          ),
+                                          );
+                                        });
+                                  }
+                                      : () {
+                                    printFunc("Not Connected");
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: isDeviceConnected
+                                        ? MaterialStateProperty.all(darkBg)
+                                        : MaterialStateProperty.all(
+                                        darkBg.withOpacity(0.4)),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(25),
+                                          side: BorderSide(
+                                              color: darkBg, width: 1)),
+                                    ),
+                                  ),
+                                  child: Container(
+                                    height: 30,
+                                    width: screenSize.width / 3.5,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        "Calibration",
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: isDeviceConnected
+                                              ? Colors.white
+                                              : Color(0xFFEEEEEE),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: baseFont,
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black,
+                                                blurRadius: 0.1)
+                                          ],
+                                          overflow: TextOverflow.visible,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
+                              ),
 
-                                //Submit btn
-
-                              ],
-                            ),
-                          ],
-                        )
-                        : SizedBox(height: 15,),
-
-
-                      ],
-                    )
-                ),
-              ),
+                              //Submit btn
+                            ],
+                          ),
+                        ],
+                      )
+                          : SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  )),
             ),
           ),
-        ),
+        )
       ),
     );
   }
 
-  Future<void> handleConfigProcess() async {
 
+
+  Future<void> handleConfigProcess() async {
     if (isDeviceConnected && !deviceNotFoundError && !connectionFailedError) {
       AddedSuccess(HardWareNumber, ClientName);
 
@@ -1047,11 +1300,14 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
           ),
           actions: [
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 // Reset flags and allow retry
                 resetConnectionFlags();
+                disconnect();
+                await scanAndConnect();
+
               },
               child: Text(
                 "Re-try",
@@ -1078,7 +1334,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18)))),
             ),
-
           ],
           backgroundColor: second_lightBg,
         );
@@ -1086,25 +1341,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     );
   }
 
-  void ValidateDropDown(
-      DataController HardwareNumber, DataController ClientName) {
-    if (HardWareNumber.getText == "" && ClientName.getText == "") {
-      setState(() {
-        _validateDropDown = true;
-      });
-    } else {
-      setState(() {
-        _validateDropDown = false;
-      });
-    }
-    Future.delayed(Duration(seconds: 3), () {
-      if (mounted) {
-        setState(() {
-          _validateDropDown = false;
-        });
-      }
-    });
-  }
 
   void AddedSuccess(DataController hardWareNumber, DataController clientName) {
     if (HardWareNumber.getText != "" && ClientName.getText != "") {
@@ -1118,17 +1354,21 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   Future<void> PIDforFactoryUser() async {
     if (UserData().designationCode.toString() == "3") {
       result =
-      await getProductIdbyMac(context, mac_ID: widget.macID.toString());
+          await getProductIdbyMac(context, mac_ID: widget.macID.toString());
       printFunc("result demo ${result[0]} \n ${result[1]}");
       bool macaAvailable = result[0];
+
+      if (!mounted) return;
 
       if (macaAvailable) {
         Map<String, dynamic> productId = result[1];
         printFunc("productIdproductId : ${productId['productId']}");
 
+        if (!mounted) return;
+
         showDialog(
             context: context,
-            barrierDismissible:false ,
+            barrierDismissible: false,
             builder: (BuildContext contextt) {
               return AlertDialog(
                 title: Column(
@@ -1160,10 +1400,11 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   ElevatedButton(
                     onPressed: () async {
                       Navigator.of(contextt, rootNavigator: true).pop();
-                      HardWareNumber.setText = productId['productId'].toString();
+                      HardWareNumber.setText =
+                          productId['productId'].toString();
                       HardWareNumber.setobj = productId;
                       serialCtrl.text = HardWareNumber.getText.toString();
-                      setState(() {});
+                      if (mounted) setState(() {});
                     },
                     child: Text(
                       "Continue",
@@ -1171,11 +1412,11 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                     ),
                     style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all<Color>(darkBg),
+                            MaterialStateProperty.all<Color>(darkBg),
                         shape:
-                        MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18)))),
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18)))),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -1183,7 +1424,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                       HardWareNumber.setText = HardWareMap.entries.first.key;
                       HardWareNumber.setobj = HardWareMap.entries.first.value;
                       serialCtrl.text = HardWareNumber.getText.toString();
-                      setState(() {});
+                      if (mounted) setState(() {});
                     },
                     child: Text(
                       "Assign New",
@@ -1191,21 +1432,22 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                     ),
                     style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all<Color>(darkBg),
+                            MaterialStateProperty.all<Color>(darkBg),
                         shape:
-                        MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18)))),
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18)))),
                   )
                 ],
                 backgroundColor: second_lightBg,
               );
             });
+
       } else {
         HardWareNumber.setText = HardWareMap.entries.first.key;
         HardWareNumber.setobj = HardWareMap.entries.first.value;
         serialCtrl.text = HardWareNumber.getText.toString();
-        setState(() {});
+        if (mounted) setState(() {});;
       }
     }
   }
@@ -1215,23 +1457,23 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     printFunc("Hive box : ${box.values}");
     for (var item in box.values)
       // printFunc("item.productId :${item.productId.toString()}");
-    HardWareMap = {
-      for (var item in box.values)
-        item.productId.toString(): {
-          'id': item.id,
-          'productId': item.productId.toString(),
-          'discription': item.discription,
-          'createdOn': item.createdOn,
-          'active': item.active
-        }
-    };
+      HardWareMap = {
+        for (var item in box.values)
+          item.productId.toString(): {
+            'id': item.id,
+            'productId': item.productId.toString(),
+            'discription': item.discription,
+            'createdOn': item.createdOn,
+            'active': item.active
+          }
+      };
   }
 
   Future<void> deleteByHardWareNumber() async {
     final box = Hive.box<GetNumberModel>('$getNumberHiveBox');
 
     final keyToDelete = box.keys.firstWhere(
-            (key) => box.get(key)?.productId.toString() == HardWareNumber.getText,
+        (key) => box.get(key)?.productId.toString() == HardWareNumber.getText,
         orElse: () => null);
     if (keyToDelete != null) {
       await box.delete(keyToDelete);
@@ -1320,7 +1562,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
 
                 if (c.uuid == configCharUUID) configChar = c;
                 if (c.uuid == thresholdCharUUID) thresholdChar = c;
-                if (c.uuid == calibrationCharUUID){
+                if (c.uuid == calibrationCharUUID) {
                   calibrationChar = c;
                   // Add Two Lines From demo
                   await calibrationChar!.setNotifyValue(true);
@@ -1615,31 +1857,32 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     printFunc(" Received ACK from device: $ack");
 
     if (calibrationStep == 0 && ack.contains("ACK_VMAX")) {
-     if(mounted){
-       setState(() {
-         calibrationStep = 1;
-         waitingForAck = false;
-       });
-       Navigator.of(context, rootNavigator: true).pop();
-       ShowSnackBarMessage(alertContext!, 'Voltage_max sent for Calibration', true);
-       Future.delayed(const Duration(milliseconds: 300), () {
-         _showInputDialog(
-             Alertcontext: context,
-           title: "Vmin for Calibration",
-           hint: "e.g. 3200",
-           onSubmit: sendVmin,
-           labelText: "Enter Vmin (mV)",
-           afterText: "Calibrating Vmin..."
-         );
-       });
-     }
+      if (mounted) {
+        setState(() {
+          calibrationStep = 1;
+          waitingForAck = false;
+        });
+        Navigator.of(context, rootNavigator: true).pop();
+        ShowSnackBarMessage(
+            alertContext!, 'Voltage_max sent for Calibration', true);
+        Future.delayed(const Duration(milliseconds: 300), () {
+          _showInputDialog(
+              Alertcontext: context,
+              title: "Vmin for Calibration",
+              hint: "e.g. 3200",
+              onSubmit: sendVmin,
+              labelText: "Enter Vmin (mV)",
+              afterText: "Calibrating Vmin...");
+        });
+      }
       // Open Vmin popup
     } else if (calibrationStep == 1 && ack.contains("ACK_VMIN")) {
       printFunc(" Vmin accepted, waiting for COMPLETE...");
     } else if (calibrationStep == 1 && ack.contains("ACK_COMPLETE")) {
       printFunc(" Voltage Calibration Completed!");
-      ShowSnackBarMessage(alertContext!, 'Voltage Calibration Completed!', true);
-      if(mounted){
+      ShowSnackBarMessage(
+          alertContext!, 'Voltage Calibration Completed!', true);
+      if (mounted) {
         setState(() {
           calibrationStep = 0;
           waitingForAck = false;
@@ -1648,7 +1891,8 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       Navigator.of(context, rootNavigator: true).pop();
     } else if (calibrationStep == 2 && ack.contains("ACK_TEMP")) {
       printFunc("Temperature Calibration Completed!");
-      ShowSnackBarMessage(alertContext!, 'Temperature Calibration Completed!', true);
+      ShowSnackBarMessage(
+          alertContext!, 'Temperature Calibration Completed!', true);
       setState(() {
         calibrationStep = 0;
         waitingForAck = false;
@@ -1678,13 +1922,13 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       builder: (context) {
         return StatefulBuilder(builder: (context, setStateDialog) {
           return AlertDialog(
-            title: Text(title,
+            title: Text(
+              title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: darkBg,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 18,
-
+                color: darkBg,
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
               ),
             ),
             content: Column(
@@ -1692,83 +1936,102 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
               children: [
                 Column(
                   children: [
-                    Divider(color: darkBg,),
+                    Divider(
+                      color: darkBg,
+                    ),
                     SizedBox(height: 10),
                   ],
                 ),
 
-                if (!waitingForAck) Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(labelText,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: darkBg,
-                            fontFamily: baseFont,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black,
-                                blurRadius: 0.2,
-                                // offset: Offset(0.5, 0.5)
-                              )
-                            ])),
+                if (!waitingForAck)
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(labelText,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: darkBg,
+                              fontFamily: baseFont,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0.2,
+                                  // offset: Offset(0.5, 0.5)
+                                )
+                              ])),
+                    ),
                   ),
-                ),
-                if (!waitingForAck) Container(
-                  height: 60,
-                  width: screenSize.width,
-                  padding: EdgeInsets.symmetric(horizontal: 18),
-                  child: Center(
-                    child: TextField(
-                        cursorWidth: 1,
-                        style: TextStyle(
-                            fontSize: 18,
-                            color:  darkBg,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: baseFont,
-                            letterSpacing: 0.2),
-                        controller: inputCtrl,
-                        cursorColor: darkBg,
-                        keyboardType: TextInputType.number,
-                        enabled: !waitingForAck,
-                        // validator: validator,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: darkBg, width: 0.5),
-                                borderRadius: BorderRadius.all(Radius.circular(8))),
-                            disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black, width: 1),
-                                borderRadius: BorderRadius.all(Radius.circular(8))),
-                            focusColor: Colors.black,
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
-                                borderSide: BorderSide(width: 1, color: darkBg )),
-                            focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
-                                borderSide:
-                                BorderSide(width: 1, color:  Colors.black )),
-                            errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
-                                borderSide:
-                                BorderSide(width: 1, color: Colors.black )),
-                            hintText: hint,
-                            hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF9AC4C9),
-                                fontFamily: baseFont,
-                                fontWeight: FontWeight.w400),
-
-                            counterText: "")),
+                if (!waitingForAck)
+                  Container(
+                    height: 60,
+                    width: screenSize.width,
+                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    child: Center(
+                      child: TextField(
+                          cursorWidth: 1,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: darkBg,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: baseFont,
+                              letterSpacing: 0.2),
+                          controller: inputCtrl,
+                          cursorColor: darkBg,
+                          keyboardType: TextInputType.number,
+                          enabled: !waitingForAck,
+                          // validator: validator,
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: darkBg, width: 0.5),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8))),
+                              disabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.black, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8))),
+                              focusColor: Colors.black,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                  borderSide:
+                                      BorderSide(width: 1, color: darkBg)),
+                              focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                  borderSide: BorderSide(
+                                      width: 1, color: Colors.black)),
+                              errorBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                  borderSide: BorderSide(
+                                      width: 1, color: Colors.black)),
+                              hintText: hint,
+                              hintStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF9AC4C9),
+                                  fontFamily: baseFont,
+                                  fontWeight: FontWeight.w400),
+                              counterText: "")),
+                    ),
                   ),
-                ),
                 // const SizedBox(height: 10),
-                if (waitingForAck)  CircularProgressIndicator(color: darkBg,),
-                if (waitingForAck)  SizedBox(height: 8),
-                if (waitingForAck)  Text(afterText,style: TextStyle(color: darkBg),),
+                if (waitingForAck)
+                  CircularProgressIndicator(
+                    color: darkBg,
+                  ),
+                if (waitingForAck) SizedBox(height: 8),
+                if (waitingForAck)
+                  Text(
+                    afterText,
+                    style: TextStyle(color: darkBg),
+                  ),
               ],
             ),
             actions: [
@@ -1788,7 +2051,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(darkBg),
-
                   ),
                   child: const Text("Send"),
                 ),
@@ -1860,14 +2122,76 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   }
 
 
+  Future<void> _startPIDCheck() async {
+    printFunc("Inside StartPID");
+    if (_isPidLoading) return; // avoid multiple
+    _isPidLoading = true;
+
+    try {
+      await PIDforFactoryUser();
+      await scanAndConnect();
+      if (mounted) {
+        setState(() {
+          isScanning = false;
+          isOffline = false;
+        });
+      }
+    } finally {
+      _isPidLoading = false;
+    }
+  }
+
+  void _onInternetChange() {
+    printFunc("Inside _onInternetChange");
+
+    final status = InternetStatus.isOnline.value;
+
+    printFunc("IsONLIne : $status");
+
+    if (!mounted) return;
+
+    if (status) {
+      // Online case
+      if (_initialNetworkCheckDone &&
+          (HardWareNumber.Text == null || HardWareNumber.Text!.isEmpty)) {
+        _startPIDCheck();
+        printFunc("NT01");
+      } else if (!_initialNetworkCheckDone) {
+        setState(() {
+          _initialNetworkCheckDone = true;
+        });
+        _startPIDCheck();
+        printFunc("NT02");
+      }
+    } else {
+      // Offline case
+      setState(() {
+        isScanning = false;
+        deviceNotFoundError = false;
+        connectionFailedError = false;
+        _initialNetworkCheckDone = true;
+        isOffline = true;
+      });
+
+
+    }
+  }
+
 
   @override
   void dispose() {
     timeoutTimer?.cancel();
+    InternetStatus.isOnline.removeListener(_onInternetChange);
+
     super.dispose();
   }
-}
 
+
+
+
+
+
+}
 
 //Old Class
 /*

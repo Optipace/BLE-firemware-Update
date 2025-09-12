@@ -4,13 +4,10 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/log/field_log.dart';
 import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
-
-List<Widget> dailylogs(){
-  List<Widget> dailylogList =[];
-  List<Map<String,dynamic>> sorteddailyLogs =
-  [
+List<Widget> dailylogs() {
+  List<Widget> dailylogList = [];
+  List<Map<String, dynamic>> sorteddailyLogs = [
     {
       "empId": "EMP124",
       "Name": "Emma Clark",
@@ -49,7 +46,7 @@ List<Widget> dailylogs(){
     }
   ];
 
-  for(int index =0;index< sorteddailyLogs.length;index++){
+  for (int index = 0; index < sorteddailyLogs.length; index++) {
     ValueNotifier moreInfo = ValueNotifier<bool>(false);
     dailylogList.add(ValueListenableBuilder(
         valueListenable: moreInfo,
@@ -60,10 +57,10 @@ List<Widget> dailylogs(){
   return dailylogList;
 }
 
-
 class Day_logs extends StatefulWidget {
   List<dynamic> dailyLogs = [];
-  Day_logs({super.key,required this.dailyLogs});
+
+  Day_logs({super.key, required this.dailyLogs});
 
   @override
   State<Day_logs> createState() => _Day_logsState();
@@ -71,7 +68,7 @@ class Day_logs extends StatefulWidget {
 
 class _Day_logsState extends State<Day_logs> {
   var sortedDailyLogs;
-  int totalCount =0;
+  int totalCount = 0;
   int sucessCount = 0;
   int failCount = 0;
 
@@ -95,7 +92,11 @@ class _Day_logsState extends State<Day_logs> {
         iconTheme: IconThemeData(color: lightBg),
         title: Text(
           "Daily Logs",
-          style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+          style: TextStyle(
+              fontFamily: baseFont,
+              fontWeight: FontWeight.w800,
+              fontSize: 24,
+              color: lightBg),
         ),
         toolbarHeight: screenSize.height / 11.5,
         backgroundColor: darkBg,
@@ -103,167 +104,179 @@ class _Day_logsState extends State<Day_logs> {
         shadowColor: darkBg,
       ),
       backgroundColor: lightBg,
-      body: InternetStatusWatcher(
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                  padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: darkBg,
-                          width: 1.5
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.devices,color: darkBg,),
-                              SizedBox(width: 10,),
-                              Text(totalCount.toString(),
-                                style: TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.w500,
-                                    color: darkBg,
-                                    shadows: [
-                                      Shadow(
-                                          color: Colors.black,
-                                          blurRadius: 0.5
-                                      )
-                                    ]
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5,),
-                          Text("Total Devices Flashed",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w300,
-                                color: darkBg,
-                                shadows: [
-                                  Shadow(
-                                      color: Colors.black,
-                                      blurRadius: 0.5
-                                  )
-                                ]
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                decoration: BoxDecoration(
+                    border: Border.all(color: darkBg, width: 1.5),
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(height: 10,),
-                            Divider(color: darkBg,),
-                            SizedBox(height: 10,)
+                            Icon(
+                              Icons.devices,
+                              color: darkBg,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              totalCount.toString(),
+                              style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w500,
+                                  color: darkBg,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black, blurRadius: 0.5)
+                                  ]),
+                            ),
                           ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Total Devices Flashed",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300,
+                              color: darkBg,
+                              shadows: [
+                                Shadow(color: Colors.black, blurRadius: 0.5)
+                              ]),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      child: Column(
                         children: [
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(CupertinoIcons.device_phone_portrait,size: 22,color: SuccessCardText,),
-                                  SizedBox(width: 5,),
-                                  Text(sucessCount.toString(),
-                                    style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w500,
-                                        color: SuccessCardText,
-                                        shadows: [
-                                          Shadow(
-                                              color: Colors.black,
-                                              blurRadius: 0.5
-                                          )
-                                        ]
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5,),
-                              Text("Total Successful Devices",
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w300,
-                                    color: SuccessCardText,
-                                    shadows: [
-                                      Shadow(
-                                          color: Colors.black,
-                                          blurRadius: 0.5
-                                      )
-                                    ]
-                                ),
-                              ),
-                            ],
+                          SizedBox(
+                            height: 10,
                           ),
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.device_unknown,size: 24,color: FailureCardText,),
-                                  SizedBox(width: 5,),
-                                  Text(failCount.toString(),
-                                    style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w500,
-                                        color: FailureCardText,
-                                        shadows: [
-                                          Shadow(
-                                              color: Colors.black,
-                                              blurRadius: 0.5
-                                          )
-                                        ]
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5,),
-                              Text("Total Failed Devices",
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w300,
-                                    color: FailureCardText,
-                                    shadows: [
-                                      Shadow(
-                                          color: Colors.black,
-                                          blurRadius: 0.5
-                                      )
-                                    ]
-                                ),
-                              ),
-                            ],
+                          Divider(
+                            color: darkBg,
+                          ),
+                          SizedBox(
+                            height: 10,
                           )
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  CupertinoIcons.device_phone_portrait,
+                                  size: 22,
+                                  color: SuccessCardText,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  sucessCount.toString(),
+                                  style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w500,
+                                      color: SuccessCardText,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.5)
+                                      ]),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Total Successful Devices",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w300,
+                                  color: SuccessCardText,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black, blurRadius: 0.5)
+                                  ]),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.device_unknown,
+                                  size: 24,
+                                  color: FailureCardText,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  failCount.toString(),
+                                  style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w500,
+                                      color: FailureCardText,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.5)
+                                      ]),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Total Failed Devices",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w300,
+                                  color: FailureCardText,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black, blurRadius: 0.5)
+                                  ]),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-
-                ...List.generate(sortedDailyLogs.length, (index) {
-                  ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
-                  return ValueListenableBuilder(
-                    valueListenable: moreInfo,
-                    builder: (ctx, value, child) {
-                      return log_pop_up(SortedLogs: sortedDailyLogs, index: index);
-                    },
-                  );
-                }),
-              ],
-            ),
+              ),
+              ...List.generate(sortedDailyLogs.length, (index) {
+                ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
+                return ValueListenableBuilder(
+                  valueListenable: moreInfo,
+                  builder: (ctx, value, child) {
+                    return log_pop_up(
+                        SortedLogs: sortedDailyLogs, index: index);
+                  },
+                );
+              }),
+            ],
           ),
         ),
       ),

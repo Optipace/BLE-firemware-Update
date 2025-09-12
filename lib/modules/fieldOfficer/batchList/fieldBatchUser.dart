@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
+
 // import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/batch/methods.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class BatchFeildManagement extends StatefulWidget {
   const BatchFeildManagement({super.key});
@@ -15,7 +15,8 @@ class BatchFeildManagement extends StatefulWidget {
   State<BatchFeildManagement> createState() => BatchFeildManagementState();
 }
 
-TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText(
+    {required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,
@@ -42,7 +43,6 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
       getAllseriesData = await getSeriesData();
       addBatch(BatchModel.fromJson(batchList[0]));
 
-
       setState(() {});
     });
     if (mounted) {
@@ -59,7 +59,11 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
             "Batch's",
-            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+            style: TextStyle(
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 24,
+                color: lightBg),
           ),
           toolbarHeight: screenSize.height / 11.5,
           backgroundColor: darkBg,
@@ -67,32 +71,36 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: InternetStatusWatcher(
-          child: Container(
-              child: SingleChildScrollView(
-            child: Column(children: seriesSix()),
-          )),
-        ));
+        body: Container(
+            child: SingleChildScrollView(
+              child: Column(children: seriesSix()),
+            )),);
   }
 
   List<Widget> seriesSix() {
     printFunc("Serice six Data : $getAllseriesData");
     List<Widget> seriesWidgetList = [];
 
-    for (int index = 0; index < ((getAllseriesData != null) ? getAllseriesData.length : 0); index++) {
-      printFunc("DEMO DEMO Firmware logs : ${getAllseriesData[index]["saved"]}");
-      ValueNotifier moreInfo = ValueNotifier<bool>(getAllseriesData[index]['saved'] ?? false);
+    for (int index = 0;
+        index < ((getAllseriesData != null) ? getAllseriesData.length : 0);
+        index++) {
+      printFunc(
+          "DEMO DEMO Firmware logs : ${getAllseriesData[index]["saved"]}");
+      ValueNotifier moreInfo =
+          ValueNotifier<bool>(getAllseriesData[index]['saved'] ?? false);
       seriesWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
           builder: (ctx, value, child) {
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 2,
-                )
-              ]),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                    )
+                  ]),
               child: ExpansionTile(
                 // key: ValueKey('b6_$index'),
                 key: ValueKey(
@@ -100,7 +108,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
 
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
-                collapsedBackgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
+                collapsedBackgroundColor:
+                    (moreInfo.value) ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -122,7 +131,9 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Batch : ",
-                                style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
+                                style: CardText(
+                                    font_Weight: FontWeight.w300,
+                                    FontColor: secondaryText)),
                             SizedBox(
                               height: 3,
                             ),
@@ -130,7 +141,9 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                 style: CardText(
                                     font_Weight: FontWeight.w800,
                                     size: 19,
-                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText)),
+                                    FontColor: !(moreInfo.value)
+                                        ? SuccessCardText
+                                        : FailureCardText)),
                           ],
                         ),
                       ),
@@ -143,7 +156,9 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                           children: [
                             Text(
                               "Description : ",
-                              style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                              style: CardText(
+                                  font_Weight: FontWeight.w300,
+                                  FontColor: secondaryText),
                             ),
                             SizedBox(
                               height: 3,
@@ -153,7 +168,9 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                               style: CardText(
                                   font_Weight: FontWeight.w800,
                                   size: 19,
-                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                  FontColor: !(moreInfo.value)
+                                      ? SuccessCardText
+                                      : FailureCardText),
                             ),
                           ],
                         ),
@@ -165,19 +182,27 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                         children: [
                           Text(
                             "Series : ",
-                            style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                            style: CardText(
+                                font_Weight: FontWeight.w300,
+                                FontColor: secondaryText),
                           ),
                           SizedBox(
                             height: 3,
                           ),
                           Text(
-                              moreInfo.value
-                            ? getAllseriesData[index]["battery"]['batteryCode'].toString()
-                            : batchList[index]['batteryDetails']['Battery-Code'].toString(),
+                            moreInfo.value
+                                ? getAllseriesData[index]["battery"]
+                                        ['batteryCode']
+                                    .toString()
+                                : batchList[index]['batteryDetails']
+                                        ['Battery-Code']
+                                    .toString(),
                             style: CardText(
                                 font_Weight: FontWeight.w800,
                                 size: 19,
-                                FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                FontColor: !(moreInfo.value)
+                                    ? SuccessCardText
+                                    : FailureCardText),
                           )
                         ],
                       ),
@@ -204,17 +229,23 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                 children: [
                                   Text(
                                     "Firmware Version",
-                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: secondaryText),
                                   ),
                                   SizedBox(
                                     height: 3,
                                   ),
                                   Text(
-                                    getAllseriesData[index]["firmware"]['version'].toString(),
+                                    getAllseriesData[index]["firmware"]
+                                            ['version']
+                                        .toString(),
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
-                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                        FontColor: !(moreInfo.value)
+                                            ? SuccessCardText
+                                            : FailureCardText),
                                   )
                                 ],
                               ),
@@ -228,17 +259,23 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                 children: [
                                   Text(
                                     "Firmware Name",
-                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: secondaryText),
                                   ),
                                   SizedBox(
                                     height: 3,
                                   ),
                                   Text(
-                                    getAllseriesData[index]["firmware"]['versionName'].toString(),
+                                    getAllseriesData[index]["firmware"]
+                                            ['versionName']
+                                        .toString(),
                                     style: CardText(
                                         font_Weight: FontWeight.w800,
                                         size: 19,
-                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                        FontColor: !(moreInfo.value)
+                                            ? SuccessCardText
+                                            : FailureCardText),
                                   )
                                 ],
                               ),
@@ -254,28 +291,41 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                     (moreInfo.value) ? "Saved" : "Download",
                                     style: CardText(
                                         font_Weight: FontWeight.w300,
-                                        FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                        FontColor: !(moreInfo.value)
+                                            ? SuccessCardText
+                                            : FailureCardText),
                                   ),
                                   SizedBox(
                                     height: 3,
                                   ),
                                   IconButton(
                                       onPressed: () async {
-                                        if (!(getAllseriesData[index]['saved'] ?? false)) {
-                                          await addBatch(BatchModel.fromJson(getAllseriesData[index]));
+                                        if (!(getAllseriesData[index]
+                                                ['saved'] ??
+                                            false)) {
+                                          await addBatch(BatchModel.fromJson(
+                                              getAllseriesData[index]));
 
                                           setState(() {});
                                         }
                                         // getAllseriesData.clear();
 
-                                        getAllseriesData = await getSeriesData();
-                                        moreInfo.value(getAllseriesData[index]['saved']);
+                                        getAllseriesData =
+                                            await getSeriesData();
+                                        moreInfo.value(
+                                            getAllseriesData[index]['saved']);
                                         setState(() {});
                                       },
-                                      icon: (!(getAllseriesData[index]['saved'] ?? false))
-                                          ? Icon(Icons.download_for_offline_outlined,
-                                              color: SuccessCardText, size: 40)
-                                          : Icon(Icons.download_done_outlined, color: darkBg, size: 40)),
+                                      icon: (!(getAllseriesData[index]
+                                                  ['saved'] ??
+                                              false))
+                                          ? Icon(
+                                              Icons
+                                                  .download_for_offline_outlined,
+                                              color: SuccessCardText,
+                                              size: 40)
+                                          : Icon(Icons.download_done_outlined,
+                                              color: darkBg, size: 40)),
                                 ],
                               ),
                               SizedBox(
@@ -294,9 +344,12 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                               Row(
                                 children: [
                                   Text("Config : ",
-                                      style:
-                                          CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
-                                  Text(getAllseriesData[index]["profile"]["name"],
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText)),
+                                  Text(
+                                      getAllseriesData[index]["profile"]
+                                          ["name"],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
                                           size: 16,
@@ -323,13 +376,17 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
 // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_charging_full_outlined,
-                                                size: 18, color: secondaryText),
+                                            Icon(
+                                                Icons
+                                                    .battery_charging_full_outlined,
+                                                size: 18,
+                                                color: secondaryText),
                                             SizedBox(width: 5),
                                             Text(
                                               "${getAllseriesData[index]["profile"]['uT']} V",
@@ -356,7 +413,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                     ),
                                     SizedBox(width: 20),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
 // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                         Row(
@@ -389,7 +447,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                     ),
                                     SizedBox(width: 20),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
 // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                         Row(
@@ -427,7 +486,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
 // Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_1_bar_rounded, size: 18, color: secondaryText),
+                                            Icon(Icons.battery_1_bar_rounded,
+                                                size: 18, color: secondaryText),
                                             SizedBox(width: 5),
                                             Text(
                                               "${getAllseriesData[index]["profile"]['lV']} V",
@@ -453,19 +513,26 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 15,),
+                                SizedBox(
+                                  height: 15,
+                                ),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
 // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.battery_charging_full_outlined,
-                                                size: 18, color: secondaryText),
+                                            Icon(
+                                                Icons
+                                                    .battery_charging_full_outlined,
+                                                size: 18,
+                                                color: secondaryText),
                                             SizedBox(width: 5),
                                             Text(
                                               "${getAllseriesData[index]["profile"]['nV']} V",
@@ -492,7 +559,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                     ),
                                     SizedBox(width: 20),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
 // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                         Text(
@@ -518,7 +586,8 @@ class BatchFeildManagementState extends State<BatchFeildManagement> {
                                     ),
                                     SizedBox(width: 20),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
 // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                         Text(

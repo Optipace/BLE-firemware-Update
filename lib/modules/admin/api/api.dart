@@ -21,7 +21,8 @@ Future<bool> getAllLogs(BuildContext context) async {
         }
       }*/
       var designation_id = 1;
-      Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
+      Navigator.of(context)
+          .push(MaterialPageRoute<void>(builder: (_) => AdminLogs()));
       return true;
     }
     //  --else cond --
@@ -39,19 +40,17 @@ Future<bool> getAllLogs(BuildContext context) async {
   return false;
 }
 
-
 Future<bool> saveClient(
-    BuildContext context,{
-      required String name,
-      required String address,
-      required String contactNumber,
-      required String email,
-      required String contactPerson,
-      required String discription,
-      required String code,
-}) async{
-  final body =
-  {
+  BuildContext context, {
+  required String name,
+  required String address,
+  required String contactNumber,
+  required String email,
+  required String contactPerson,
+  required String discription,
+  required String code,
+}) async {
+  final body = {
     "name": name,
     "address": address,
     "contactNumber": contactNumber,
@@ -68,25 +67,19 @@ Future<bool> saveClient(
       method: 'POST',
       endpoint: ApiEndpoints.saveClient,
       bodyOrParams: body,
-      onSuccess: (data){
+      onSuccess: (data) {
         ShowSnackBarMessage(context, 'Client Created successfully!', true);
         isSuccess = true;
-      }
-  );
+      });
   return isSuccess;
 }
 
-
 Future<bool> updatePassword(
-    BuildContext context,{
-      required String phno,
-      required String pwd,
-    }) async{
-  final body =
-  {
-    "contact": phno,
-    "password":pwd
-  };
+  BuildContext context, {
+  required String phno,
+  required String pwd,
+}) async {
+  final body = {"contact": phno, "password": pwd};
 
   bool isSuccess = false;
 
@@ -95,10 +88,9 @@ Future<bool> updatePassword(
       method: 'PUT',
       endpoint: ApiEndpoints.updatePassword,
       bodyOrParams: body,
-      onSuccess: (data){
+      onSuccess: (data) {
         ShowSnackBarMessage(context, 'Password Changed!!', true);
         isSuccess = true;
-      }
-  );
+      });
   return isSuccess;
 }

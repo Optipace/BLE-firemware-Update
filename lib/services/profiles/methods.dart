@@ -5,11 +5,13 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/profileSeriesModel
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 /////////////////////////NOT IN USED/////////////////////////////////////////
 
-Future<void> saveProfileListToHive(List<Map<String, dynamic>> profileList) async {
+Future<void> saveProfileListToHive(
+    List<Map<String, dynamic>> profileList) async {
   final profileBox = await Hive.openBox<ProfileSeriesModel>('$serviceHiveBox');
 
   for (var series in profileList) {
-    List<ProfileModel> profileModels = (series['configuration'] as List).map((f) {
+    List<ProfileModel> profileModels =
+        (series['configuration'] as List).map((f) {
       return ProfileModel(
         id: f['id'] ?? 0,
         name: f['name'] ?? '',
@@ -80,12 +82,14 @@ final newProfile = ProfileModel(
 
     // Save to box
     await profileBox.put(newProfile.deviceTypeId, series);
-    printFunc("Series ${newProfile.deviceTypeId} created and profile ${newProfile.name} added.");
+    printFunc(
+        "Series ${newProfile.deviceTypeId} created and profile ${newProfile.name} added.");
   } else {
     // Series exists, add new profile
     series.profile.add(newProfile);
     await series.save();
-    print("Profile ${newProfile.name} added to series ${newProfile.deviceTypeId}.");
+    print(
+        "Profile ${newProfile.name} added to series ${newProfile.deviceTypeId}.");
   }
 
   return true;
@@ -111,7 +115,6 @@ Future<List<Map<String, dynamic>>> getAllProfile() async {
           "saved": fw.saved,
           "deviceType": fw.deviceType
         };
-
       }).toList(),
     };
   }).toList();

@@ -16,7 +16,6 @@ import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
 import 'package:tracker_firmware/modules/factoryUser/bluetooth/bluetoothHardWareNumber.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class DfuHomePage extends StatefulWidget {
   const DfuHomePage(
@@ -38,12 +37,11 @@ class _DfuHomePageState extends State<DfuHomePage> {
 
   //mac_Id for ApiCal
   String? mac_Id;
-  List result=[];
+  List result = [];
   String? QRMacId;
   bool showsnackBar = false;
   bool _scanHandled = false;
   bool _dfuPopUp = false;
-
 
   //current date and time for action timeStamp
   DateTime now = DateTime.now();
@@ -53,7 +51,6 @@ class _DfuHomePageState extends State<DfuHomePage> {
 
   //flag for Pop-up after DFU
   bool showPopUpAfterDFU = false;
-
 
   Future<void> requestPermissions() async {
     if (Platform.isAndroid) {
@@ -89,12 +86,15 @@ class _DfuHomePageState extends State<DfuHomePage> {
 
       final filtered = latestDevices.where((d) {
         final name = d.device.platformName.toLowerCase();
-        return name.contains("eionic") || name.contains("airbird");
+        return name.contains("eionic") || name.contains("airbird") ||  name.contains("dfu") || name.contains("targ");
       }).toList();
 
-      final match = latestDevices.where(
-            (d) => d.device.remoteId.str.toUpperCase() == QRMacId?.toUpperCase(),
-      ).firstOrNull;
+      final match = latestDevices
+          .where(
+            (d) =>
+                d.device.remoteId.str.toUpperCase() == QRMacId?.toUpperCase(),
+          )
+          .firstOrNull;
 
       if (QRMacId == null) {
         printFunc("No QR — showing filtered devices.");
@@ -132,274 +132,266 @@ class _DfuHomePageState extends State<DfuHomePage> {
     setState(() {});
   }
 
-  Future<void> startDfu(ScanResult device,int numberofPackets,
-        {bool first = true, String oldId = ""}) async {
-
-      _dfuPopUp = false;
-
-      String DFUstatus ;
-      String DFUreason;
-
-      printFunc("DEMO DEVICE : $device");
-      await stopScan();
-      await Future.delayed(
-          const Duration(milliseconds: 1000));
-
-      String file = widget.SelectedBatch.obj["firmware"]["file"];
-      debugPrint("🔄 SelectedBatch: ${widget.SelectedBatch.obj}");
-
-      final handler = DfuEventHandler(
-        //Device connection
-        onDeviceConnecting: (address) {
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔄 Connecting to $address")));
-        },
-        onDeviceConnected: (address) {
-          setState(() => progressMap[first ? address : oldId] = -1);
-          setState(() => percent = -1);
-
-          debugPrint("✅ Connected to device: $address");
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(" Connected to $address")));
-        },
-        //process starting
-        onDfuProcessStarting: (address) {
-          debugPrint("🚀 DFU Process Starting: $address");
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🚀 DFU Starting for $address")));
-        },
-        //Firmware uploading and entering the DFU model
-        onEnablingDfuMode: (address) async {
-          debugPrint("🛠️ Enabling DFU mode on: $address");
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text("🛠️ Enabling DFU mode on $address" ,style: TextStyle(color: Colors.white),),
-                  backgroundColor: darkBg,
-              )
-          );
-          if (first) {
-            await Future.delayed(const Duration(
-                milliseconds: 2000));
-            await NordicDfu().abortDfu(address: address);
-            ScanResult dfuDevice = await startScanSecondTime(device);
-            // results.clear();
-            // results.add(dfuDevice);
-            await startDfu(dfuDevice,numberofPackets = 4,
-                first: false, oldId: device.device.remoteId.str);
-            debugPrint("️ DFU Aborted: $device");
-          }
-        },
-        onFirmwareUploading: (address) {
-          debugPrint(" Firmware uploading started on: $address");
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(" Uploading firmware on $oldId"),
-            duration: Duration(seconds: 6),
-          ));
-        },
-        onFirmwareValidating: (address) {
-          debugPrint(" Validating firmware for: $address");
-          // ScaffoldMessenger.of(context)
-          //     .showSnackBar(SnackBar(content: Text("🧪 Validating firmware for $address")));
-        },
-
-        // If DFU is Aborting [call saveLog API]
-        onDfuAborted: (address) {
-          debugPrint("️ DFU Aborted: $address");
-          //Save LOG API CALL
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("⚠️ DFU Aborted for $address")));
-        },
-        // Device disconnecting
-        onDeviceDisconnecting: (address) {
-          debugPrint(" Disconnecting from device: $address");
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnecting from $address")));
-        },
-        onDeviceDisconnected: (address) {
-          debugPrint("Disconnected from device: $address");
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnected from $address")));
-        },
-        onProgressChanged: (address, progress, speed, avgSpeed, part, total)  {
-          setState(() => progressMap[first ? address : oldId] = progress);
-          setState(() => percent = progress);
-        },
+  Future<void> startDfu(ScanResult device, int numberofPackets,
+      {bool first = true, String oldId = ""}) async {
+    _dfuPopUp = false;
 
 
-        // On cmplting [call saveLog API]
-        onDfuCompleted: (address) async {
-          if(_dfuPopUp)return;
-          _dfuPopUp = true;
-          DFUstatus = "Y";
-          DFUreason = "DFU completed successfully";
-          setState(() {});
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text('DFU completed: $oldId'),
-                duration: Duration(seconds: 10)),
-          );
-          setState(() => progressMap.remove(first
-              ? address
-              : oldId)); //progressMap[first ? address : oldId] = );
-          setState(() => percent = 101);
-          setState(() {
-            // isDeviceSelected = false;
-            // scanedDevcice = null;
-          });
+    String DFUstatus;
+    String DFUreason;
 
-          if (mounted) {
-            await saveLog(context,//_safeContext,
-                DateAndTime: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(now),
-                deviceID: UserData.instance.UUID,
-                macID: mac_Id.toString(),
-                empID: UserData.instance.userId,
-                batchID: widget.SelectedBatch.obj["id"],
-                status: DFUstatus,
-                reason: DFUreason
-            );
-          }
+    printFunc("DEMO DEVICE : $device");
+    await stopScan();
+    await Future.delayed(const Duration(milliseconds: 1000));
 
+    String file = widget.SelectedBatch.obj["firmware"]["file"];
+    debugPrint("🔄 SelectedBatch: ${widget.SelectedBatch.obj}");
 
-          // Here the Pop-up Goes if the OK btn clicks then it goes to the Bluetooth-Hardware Page
+    final handler = DfuEventHandler(
+      //Device connection
+      onDeviceConnecting: (address) {
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔄 Connecting to $address")));
+      },
+      onDeviceConnected: (address) {
+        setState(() => progressMap[first ? address : oldId] = -1);
+        setState(() => percent = -1);
 
-          isDeviceSelected
-          ? showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext contextt) {
-            return AlertDialog(
-              // title: Text(""),
-              content: Text(
-                "DFU Completed Successfully!!",
-                style: TextStyle(
-                  color: darkBg,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              actions: [
-                //OK btn that goes for next page
-                ElevatedButton(
-                  onPressed: UserData().designationCode == '3'
-                      ? () {
-                    printFunc("Inside the Factory User");
-                    Navigator.of(context).pop();
-                    setState(() {
-                      isDeviceSelected = false;
-                      showPopUpAfterDFU = true;
-                    });
-                    Navigator.push(
-                      context,// _safeContext,
-                      MaterialPageRoute(
-                          builder: (context) => BluetoothHardwareNumber(
-                            safecontext:  context,
-                            SelectedBatch: widget.SelectedBatch,
-                            allclients: widget.allClients,
-                            macID: mac_Id,
-                          )
-                      ),
-                    );
-                  }
-                      : (){
-                    printFunc("Inside the Field User");
-                    Navigator.of(context).pop();
-                    setState(() {
-                      isDeviceSelected = false;
-                    });
-                  },
-
-                  child: Text(
-                    "Ok",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all<Color>(darkBg),
-                      shape:
-                      MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18)))),
-                )
-              ],
-              backgroundColor: second_lightBg,
-            );
-          },
-          )
-          : SizedBox();
-
-
-        },
-
-
-        // If error occured -- [ call saveLog API ]
-        onError: (address, err, type, msg)  async{
-
-          debugPrint("⚠️ DFU ERROR: $address \n $msg");
-          if(!first){
-            DFUstatus = "N";
-            DFUreason = msg ;
-            setState(() => percent = null);
-            setState(() {
-              isDeviceSelected = false;
-            });
-            debugPrint("Addres : ${address} \n"
-                "error : ${err} \n"
-                "type : ${type} \n"
-                "msg : ${msg}");
-
-
-            printFunc("Save log when error occured");
-            printFunc("Time : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)} \n"
-                "DeviceID : ${UserData.instance.UUID} \n"
-                "MacID : ${mac_Id} \n"
-                "Batch : ${widget.SelectedBatch.obj["id"]} \n"
-                "empID : ${UserData.instance.userId} \n"
-                "Status : ${DFUstatus} \n"
-                "Reason : ${DFUreason}");
-
-            // CALL savelog API
-            await saveLog(context,
-            DateAndTime: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(now),
-            deviceID: UserData.instance.UUID,
-            macID: mac_Id.toString(),
-            empID: UserData.instance.userId,
-            batchID: widget.SelectedBatch.obj["id"],
-            status: DFUstatus,
-            reason: DFUreason
-            );
-          }
-
-
-
-          ShowSnackBarMessage(context, ' DFU error [$err]: $msg', false);
-
-
-        },
-      );
-
-      try {
-        await NordicDfu().startDfu(
-          device.device.remoteId.str,
-          file, //file.files.single.path!,
-          dfuEventHandler: handler,
-          forceDfu: true,
-          numberOfPackets: numberofPackets,
-          // enableUnsafeExperimentalButtonlessServiceInSecureDfu:false,
-          androidParameters:
-              //  const AndroidParameters(rebootTime: 10000),
-              const AndroidParameters(
-            rebootTime: 2000,
-            packetReceiptNotificationsEnabled: true,
-            keepBond: false,
-            restoreBond: false,
-            numberOfRetries: 5,
+        debugPrint("✅ Connected to device: $address");
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(" Connected to $address")));
+      },
+      //process starting
+      onDfuProcessStarting: (address) {
+        debugPrint("🚀 DFU Process Starting: $address");
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🚀 DFU Starting for $address")));
+      },
+      //Firmware uploading and entering the DFU model
+      onEnablingDfuMode: (address) async {
+        debugPrint("🛠️ Enabling DFU mode on: $address");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            "🛠️ Enabling DFU mode on $address",
+            style: TextStyle(color: Colors.white),
           ),
-          // darwinParameters: const DarwinParameters(
-          //   forceScanningForNewAddressInLegacyDfu: true,
-          //   packetReceiptNotificationParameter: 4,
-          //   dataObjectPreparationDelay: 2500.0,
-          // ),
+          backgroundColor: darkBg,
+        ));
+        if (first) {
+          await Future.delayed(const Duration(milliseconds: 2000));
+          await NordicDfu().abortDfu(address: address);
+          ScanResult dfuDevice = await startScanSecondTime(device);
+          // results.clear();
+          // results.add(dfuDevice);
+          await startDfu(dfuDevice, numberofPackets = 3,
+              first: false, oldId: device.device.remoteId.str);
+          debugPrint("️ DFU Aborted: $device");
+        }
+      },
+      onFirmwareUploading: (address) {
+        debugPrint(" Firmware uploading started on: $address");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(" Uploading firmware on $oldId"),
+          duration: Duration(seconds: 6),
+        ));
+      },
+      onFirmwareValidating: (address) {
+        debugPrint(" Validating firmware for: $address");
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text("🧪 Validating firmware for $address")));
+      },
+
+      // If DFU is Aborting [call saveLog API]
+      onDfuAborted: (address) {
+        debugPrint("️ DFU Aborted: $address");
+        //Save LOG API CALL
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("⚠️ DFU Aborted for $address")));
+      },
+      // Device disconnecting
+      onDeviceDisconnecting: (address) {
+        debugPrint(" Disconnecting from device: $address");
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnecting from $address")));
+      },
+      onDeviceDisconnected: (address) {
+        debugPrint("Disconnected from device: $address");
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🔌 Disconnected from $address")));
+      },
+      onProgressChanged: (address, progress, speed, avgSpeed, part, total) {
+        setState(() => progressMap[first ? address : oldId] = progress);
+        setState(() => percent = progress);
+      },
+
+      // On cmplting [call saveLog API]
+      onDfuCompleted: (address) async {
+        if (_dfuPopUp) return;
+        _dfuPopUp = true;
+        DFUstatus = "Y";
+        DFUreason = "DFU completed successfully";
+        setState(() {});
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('DFU completed: $oldId'),
+              duration: Duration(seconds: 3)),
         );
-      }catch(e){
-        printFunc("ERROR : $e");
-      }
-      finally {
-        // await Wakelock.disable();
-      }
+        setState(() => progressMap.remove(first
+            ? address
+            : oldId)); //progressMap[first ? address : oldId] = );
+        setState(() => percent = 101);
+        setState(() {
+          // isDeviceSelected = false;
+          // scanedDevcice = null;
+        });
+
+        if (mounted) {
+          await saveLog(context, //_safeContext,
+              DateAndTime: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(now),
+              deviceID: UserData.instance.UUID,
+              macID: mac_Id.toString(),
+              empID: UserData.instance.userId,
+              batchID: widget.SelectedBatch.obj["id"],
+              status: DFUstatus,
+              reason: DFUreason);
+        }
+
+        // Here the Pop-up Goes if the OK btn clicks then it goes to the Bluetooth-Hardware Page
+
+        isDeviceSelected
+            ? showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    // title: Text(""),
+                    content: Text(
+                      "DFU Completed Successfully!!",
+                      style: TextStyle(
+                        color: darkBg,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    actions: [
+                      //OK btn that goes for next page
+                      ElevatedButton(
+                        onPressed: UserData().designationCode == '3'
+                            ? () {
+                                printFunc("Inside the Factory User");
+                                if (Navigator.canPop(context)) {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                }
+                                if (mounted) {
+                                  setState(() {
+                                    isDeviceSelected = false;
+                                    showPopUpAfterDFU = true;
+                                  });
+                                }
+
+                                Navigator.push(
+                                  context, // _safeContext,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          BluetoothHardwareNumber(
+                                            safecontext: context,
+                                            SelectedBatch: widget.SelectedBatch,
+                                            allclients: widget.allClients,
+                                            macID: mac_Id,
+                                          )),
+                                );
+                              }
+                            : () {
+                                printFunc("Inside the Field User");
+                                Navigator.of(context).pop();
+                                setState(() {
+                                  isDeviceSelected = false;
+                                });
+                              },
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(darkBg),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18)))),
+                      )
+                    ],
+                    backgroundColor: second_lightBg,
+                  );
+                },
+              )
+            : SizedBox();
+      },
+
+      // If error occured -- [ call saveLog API ]
+      onError: (address, err, type, msg) async {
+        debugPrint("⚠️ DFU ERROR onError ${first} : $address \n $msg \n $type \n $err ");
+        if (!first||true) {
+          DFUstatus = "N";
+          DFUreason = "$msg : ${first ? "1": "2"}" ;
+          setState(() {
+            percent = null;
+            isDeviceSelected = false;
+          });
+          debugPrint("Addres : ${address} \n"
+              "error : ${err} \n"
+              "type : ${type} \n"
+              "msg : ${msg}");
+
+          printFunc("Save log when error occured");
+          printFunc("Time : ${DateFormat('dd-MM-yyyy hh:mm a').format(now)} \n"
+              "DeviceID : ${UserData.instance.UUID} \n"
+              "MacID : ${mac_Id} \n"
+              "Batch : ${widget.SelectedBatch.obj["id"]} \n"
+              "empID : ${UserData.instance.userId} \n"
+              "Status : ${DFUstatus} \n"
+              "Reason : ${DFUreason}");
+
+          // CALL savelog API
+          await saveLog(context,
+              DateAndTime: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(now),
+              deviceID: UserData.instance.UUID,
+              macID: mac_Id.toString(),
+              empID: UserData.instance.userId,
+              batchID: widget.SelectedBatch.obj["id"],
+              status: DFUstatus,
+              reason: DFUreason);
+        }
+        ShowSnackBarMessage(context, ' ⚠️ DFU error [$err]: $msg', false);
+      },
+
+    );
+
+    try {
+      await NordicDfu().startDfu(
+        device.device.remoteId.str,
+        file, //file.files.single.path!,
+        dfuEventHandler: handler,
+        forceDfu: true,
+        numberOfPackets: numberofPackets,
+
+        // enableUnsafeExperimentalButtonlessServiceInSecureDfu:true,
+        androidParameters:
+            //  const AndroidParameters(rebootTime: 10000),
+            const AndroidParameters(
+          rebootTime: 2000,
+          packetReceiptNotificationsEnabled: true,
+
+          keepBond: false,
+          restoreBond: false,
+          numberOfRetries: 5,
+        ),
+        // darwinParameters: const DarwinParameters(
+        //   forceScanningForNewAddressInLegacyDfu: true,
+        //   packetReceiptNotificationParameter: 4,
+        //   dataObjectPreparationDelay: 2500.0,
+        // ),
+      );
+    } catch (e) {
+      printFunc("ERROR : $e");
+    } finally {
+      // await Wakelock.disable();
     }
+  }
 
   void openBatteryOptimizationSettings() {
     var intent = AndroidIntent(
@@ -408,7 +400,6 @@ class _DfuHomePageState extends State<DfuHomePage> {
     );
     intent.launch();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -428,56 +419,60 @@ class _DfuHomePageState extends State<DfuHomePage> {
         shadowColor: darkBg,
         iconTheme: IconThemeData(color: lightBg),
         leading: isDeviceSelected
-          ? SizedBox()
-          : IconButton(
-              icon: Icon(Icons.arrow_back_outlined),
-              onPressed: () {
-            if (isDeviceSelected) {
-              setState(() {
-                isDeviceSelected = false;
-                scanedDevcice = null;
-              });
-            } else {
-              Navigator.of(context, rootNavigator: true).pop();
-            }
-          },
-          ),
-        title: const Text("DFU Devices"), //Optipace - DFU
+            ? SizedBox()
+            : IconButton(
+                icon: Icon(Icons.arrow_back_outlined),
+                onPressed: () {
+                  if (isDeviceSelected) {
+                    setState(() {
+                      isDeviceSelected = false;
+                      scanedDevcice = null;
+                    });
+                  } else {
+                    printFunc("2nd POP");
+                    Navigator.of(context, rootNavigator: true).pop();
+                  }
+                },
+              ),
+        title: const Text("DFU Devices"),
+        //Optipace - DFU
         actions: [
           if (!isDeviceSelected)
             isScanning
                 ? Container(
                     color: darkBg,
                     margin: EdgeInsets.all(18),
-                    height: 20,
-                    width: 20,
                     child: const Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white),
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3.5, // thinner stroke
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
                       ),
                     ),
                   )
                 : IconButton(
-              icon: Icon(isScanning ? Icons.pause : Icons.play_arrow),
-              onPressed: isScanning ? stopScan : startScan,
-            ),
+                    icon: Icon(isScanning ? Icons.pause : Icons.play_arrow),
+                    onPressed: isScanning ? stopScan : startScan,
+                  ),
           if (!isDeviceSelected)
             IconButton(
-            onPressed: ()async{
-              final result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      QRScannerScreen(title: "Scan QR-Code"),
-                ),
-              );
-              QRMacId = result;
-              setState(() {});
-              await startScan();
-            },
-            icon: Icon(Icons.qr_code_2_outlined)
-          ),
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          QRScannerScreen(title: "Scan QR-Code"),
+                    ),
+                  );
+                  QRMacId = result;
+                  setState(() {});
+                  await startScan();
+                },
+                icon: Icon(Icons.qr_code_2_outlined)),
           IconButton(
             icon: const Icon(Icons.battery_alert),
             tooltip: 'Battery Optimization',
@@ -485,22 +480,20 @@ class _DfuHomePageState extends State<DfuHomePage> {
           ),
         ],
       ),
-      body: InternetStatusWatcher(
-        child: WillPopScope(
-          onWillPop: () async {
-            if (isDeviceSelected) {
-              setState(() {
-                isDeviceSelected = false;
-                scanedDevcice = null;
-              });
-              return false;
-            } else {
-              // Navigator.of(context,rootNavigator: true).pop();
-              return true;
-            }
-          },
-          child: isDeviceSelected ? DFUConfirm() : DeviceList(),
-        ),
+      body: WillPopScope(
+        onWillPop: () async {
+          if (isDeviceSelected) {
+            setState(() {
+              isDeviceSelected = false;
+              scanedDevcice = null;
+            });
+            return false;
+          } else {
+            // Navigator.of(context,rootNavigator: true).pop();
+            return true;
+          }
+        },
+        child: isDeviceSelected ? DFUConfirm() : DeviceList(),
       ),
     );
   }
@@ -512,34 +505,35 @@ class _DfuHomePageState extends State<DfuHomePage> {
     return Stack(
       children: [
         ListView.builder(
-            itemCount: results.length,
-            itemBuilder: (_, i) {
-              final device = results[i].device;
-              final id = device.remoteId.str;
-              percent = progressMap[id];
-              final name =
-                  device.platformName.isNotEmpty ? device.platformName : 'Unnamed';
+          itemCount: results.length,
+          itemBuilder: (_, i) {
+            final device = results[i].device;
+            final id = device.remoteId.str;
+            percent = progressMap[id];
+            final name = device.platformName.isNotEmpty
+                ? device.platformName
+                : 'Unnamed';
 
-              return ListTile(
-                leading: const Icon(Icons.bluetooth),
-                title: Text(name),
-                subtitle: Text(id),
-                trailing: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: darkBg),
+            return ListTile(
+              leading: const Icon(Icons.bluetooth),
+              title: Text(name),
+              subtitle: Text(id),
+              trailing: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: darkBg),
 
-                  onPressed: () => setState(() {
-                    isDeviceSelected = true;
-                    scanedDevcice = results[i];
-                    percent = null; // progressMap[id];
-                    printFunc("Demo dfu device : $scanedDevcice");
-                    stopScan;
-                  }), //startDfu(scanedDevcice),
-                  child: Text('Select'),
-                  // Text(percent != null ? '$percent%' :percent == -1 ?"i need a progress circle": 'DFU'),
-                ),
-              );
-            },
-          ),
+                onPressed: () => setState(() {
+                  isDeviceSelected = true;
+                  scanedDevcice = results[i];
+                  percent = null; // progressMap[id];
+                  printFunc("Demo dfu device : $scanedDevcice");
+                  stopScan;
+                }), //startDfu(scanedDevcice),
+                child: Text('Select'),
+                // Text(percent != null ? '$percent%' :percent == -1 ?"i need a progress circle": 'DFU'),
+              ),
+            );
+          },
+        ),
         if (showPopUpAfterDFU)
           Positioned.fill(
             child: Container(
@@ -554,13 +548,16 @@ class _DfuHomePageState extends State<DfuHomePage> {
                   width: 300,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-
                     children: [
-                      Text("Notice", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("Notice",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
                       SizedBox(height: 16),
-                      Text("Do you need to flash New Device ?",style: TextStyle(fontSize: 16,)),
+                      Text("Do you need to flash New Device ?",
+                          style: TextStyle(
+                            fontSize: 16,
+                          )),
                       SizedBox(height: 20),
-
                       SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -570,8 +567,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                             child: ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
-                                MaterialStateProperty
-                                    .all(darkBg),
+                                    MaterialStateProperty.all(darkBg),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -579,9 +575,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                 });
                               },
                               child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text("Yes")
-                              ),
+                                  fit: BoxFit.scaleDown, child: Text("Yes")),
                             ),
                           ),
                           Container(
@@ -589,11 +583,12 @@ class _DfuHomePageState extends State<DfuHomePage> {
                             child: ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
-                                MaterialStateProperty
-                                    .all(darkBg),
+                                    MaterialStateProperty.all(darkBg),
                               ),
                               onPressed: () {
-                                Navigator.of(context).pop(); // pop screen if needed
+                                printFunc("3rd pop");
+                                Navigator.of(context)
+                                    .pop(); // pop screen if needed
                                 Navigator.of(context).pop();
                                 setState(() {
                                   showPopUpAfterDFU = false;
@@ -601,7 +596,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                               },
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                child:Text("NO"),
+                                child: Text("NO"),
                               ),
                             ),
                           ),
@@ -795,7 +790,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                               // Name
                               Container(
                                 width: 80,
-                                child:Text("Batch",
+                                child: Text("Batch",
                                     style: CardText(
                                         font_Weight: FontWeight.w500,
                                         FontColor: secondaryText)),
@@ -831,16 +826,16 @@ class _DfuHomePageState extends State<DfuHomePage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(
+                            height: 5,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-
-
                               // Name
                               Container(
                                 width: 80,
-                                child:  Text(
+                                child: Text(
                                     widget.SelectedBatch.obj["name"].toString(),
                                     style: CardText(
                                         font_Weight: FontWeight.w700,
@@ -875,7 +870,8 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                 width: 60,
                                 child: Center(
                                   child: Text(
-                                    widget.SelectedBatch.obj["battery"]['batteryCode']
+                                    widget.SelectedBatch
+                                        .obj["battery"]['batteryCode']
                                         .toString(),
                                     style: CardText(
                                         font_Weight: FontWeight.w700,
@@ -883,11 +879,12 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                         FontColor: darkBg),
                                   ),
                                 ),
-
                               ),
                             ],
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                         ],
                       ),
                     )
@@ -1169,22 +1166,19 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 15,),
+                            SizedBox(
+                              height: 15,
+                            ),
                             Row(
-                              crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
                                     Text(
                                       "N. Volt",
-                                      style:
-                                      CardText(
+                                      style: CardText(
                                         font_Weight: FontWeight.w700,
                                         size: 16,
                                         FontColor: darkBg,
@@ -1192,12 +1186,12 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                     ),
 
                                     // Upper Threshold
-                                    SizedBox(
-                                        height:
-                                        5),
+                                    SizedBox(height: 5),
                                     Row(
                                       children: [
-                                        Icon(Icons.battery_charging_full_outlined,
+                                        Icon(
+                                            Icons
+                                                .battery_charging_full_outlined,
                                             size: 18,
                                             color: darkBg),
                                         SizedBox(width: 5),
@@ -1213,31 +1207,24 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                    width:
-                                    20),
+                                SizedBox(width: 20),
                                 Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
                                     Text(
                                       "U.Temp",
-                                      style:
-                                      CardText(
+                                      style: CardText(
                                         font_Weight: FontWeight.w700,
                                         size: 16,
                                         FontColor: darkBg,
                                       ),
                                     ),
                                     // Upper Voltage
-                                    SizedBox(
-                                        height:
-                                        5),
+                                    SizedBox(height: 5),
                                     Text(
                                       "${widget.SelectedBatch.obj["profile"]['uTemp']}",
-                                      style:CardText(
+                                      style: CardText(
                                         font_Weight: FontWeight.w700,
                                         size: 16,
                                         FontColor: darkBg,
@@ -1245,28 +1232,21 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                    width:
-                                    20),
+                                SizedBox(width: 20),
                                 Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
                                     Text(
                                       "L.Temp",
-                                      style:
-                                      CardText(
+                                      style: CardText(
                                         font_Weight: FontWeight.w700,
                                         size: 16,
                                         FontColor: darkBg,
                                       ),
                                     ),
                                     // Lower Threshold
-                                    SizedBox(
-                                        height:
-                                        5),
+                                    SizedBox(height: 5),
                                     Text(
                                       "${widget.SelectedBatch.obj["profile"]['lTemp']} ",
                                       style: CardText(
@@ -1277,7 +1257,6 @@ class _DfuHomePageState extends State<DfuHomePage> {
                                     ),
                                   ],
                                 ),
-
                               ],
                             ),
                           ],
@@ -1299,7 +1278,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
               ),
 
               SizedBox(
-                height: 20,
+                height: 5,
               ),
               if (percent != null && percent != 101)
                 Text("Firmware updating ...",
@@ -1313,6 +1292,8 @@ class _DfuHomePageState extends State<DfuHomePage> {
                         fontWeight: FontWeight.w500,
                         fontSize: 12,
                         color: secondaryText)),
+
+              SizedBox(height: 10,),
 
               percent != null && percent != -1
                   ? SizedBox(
@@ -1337,7 +1318,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                         )
                       : SizedBox(),
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -1364,19 +1345,19 @@ class _DfuHomePageState extends State<DfuHomePage> {
 
                     if (percent == null || percent == 101)
                       ElevatedButton(
-                        style:
-                            ElevatedButton.styleFrom(backgroundColor: darkBg),
-                        onPressed: () async {
-                          setState(() {
-                            mac_Id = scanedDevcice != null
-                                ? scanedDevcice!.device.remoteId.str
-                                : "-";
-                          });
+                          style:
+                              ElevatedButton.styleFrom(backgroundColor: darkBg),
+                          onPressed: () async {
+                            setState(() {
+                              mac_Id = scanedDevcice != null
+                                  ? scanedDevcice!.device.remoteId.str
+                                  : "-";
+                            });
 
-                          await startDfu(scanedDevcice!,4);
+                            await startDfu(scanedDevcice!, 3);
 
-                          // For aborting Button things
-                          /*if (percent != null && percent != 101) {
+                            // For aborting Button things
+                            /*if (percent != null && percent != 101) {
                             try {
                               await NordicDfu().abortDfu(
                                   address: scanedDevcice!.device.remoteId.str);
@@ -1390,33 +1371,28 @@ class _DfuHomePageState extends State<DfuHomePage> {
                           else {
                             await startDfu(scanedDevcice!,4);
                           } */
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                                Icons.flash_on_outlined
-                                //For aborting Button
-                                /*percent != null && percent != 101
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.flash_on_outlined
+                                  //For aborting Button
+                                  /*percent != null && percent != 101
                                 ? Icons.clear_outlined
                                 : Icons.flash_on_outlined */
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                                percent == 101
-                                    ? "Start Again"
-                                    : 'Start DFU'
-                                // For abort button
-                                /*percent != null && percent != 101
+                                  ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(percent == 101 ? "Start Again" : 'Start DFU'
+                                  // For abort button
+                                  /*percent != null && percent != 101
                                 ? "   Abort   "
                                 : percent == 101
                                     ? "Start Again"
                                     : 'Start DFU'*/
-                            )
-                          ],
-                        )),
-
+                                  )
+                            ],
+                          )),
                   ],
                 ),
               )
@@ -1426,6 +1402,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
   }
 
   Future<ScanResult> startScanSecondTime(ScanResult oldDevice) async {
+    printFunc("In the Second Tym");
     String oldMac = oldDevice.device.remoteId.str;
     final completer = Completer<ScanResult>();
     late StreamSubscription<List<ScanResult>> subscription;
@@ -1529,7 +1506,6 @@ class _DfuHomePageState extends State<DfuHomePage> {
       return oldMac; // fallback to old MAC if nothing found
     });
   }
-
 
   @override
   void dispose() {

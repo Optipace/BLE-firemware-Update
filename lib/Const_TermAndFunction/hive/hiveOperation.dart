@@ -44,7 +44,6 @@ class HiveService {
   // Optional: Check if box is open
   bool get isOpen => _box.isOpen;
 
-
   Future<Map<String, dynamic>> readAllData() async {
     return _box.toMap().map((key, value) => MapEntry(key.toString(), value));
   }

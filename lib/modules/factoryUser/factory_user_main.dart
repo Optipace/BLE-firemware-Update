@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-import 'package:tracker_firmware/modules/Profile/main_profile.dart';
 import 'package:tracker_firmware/modules/dfuModule/bluetoothMain.dart';
 import 'package:tracker_firmware/modules/factoryUser/Calibration/calibration_main.dart';
 import 'package:tracker_firmware/modules/factoryUser/Locate%5BFind_my_device%5D/locate_Device.dart';
@@ -11,6 +10,7 @@ import 'package:tracker_firmware/modules/factoryUser/batchList/batchList.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/ScanBluetooth/bluetoothBatches.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dashBoard.dart';
+
 import 'pairBattery/PairBattery.dart';
 
 class FactoryMain extends StatelessWidget {
@@ -30,17 +30,26 @@ class FactoryMain extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute<void>(builder: (_) => BatchFactoryManagement()));
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => BatchFactoryManagement()));
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.download,size: 22,color: Colors.white,shadows: [Shadow(
-                          color: Colors.black,
-                          blurRadius: 0.3,
-                          offset: Offset(0.5, 0.4),
-                        )],),
-                        SizedBox(width: 20,),
+                        Icon(
+                          Icons.download,
+                          size: 22,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.3,
+                              offset: Offset(0.5, 0.4),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
                         Text(
                           "Download Batches",
                           style: TextStyle(
@@ -60,7 +69,9 @@ class FactoryMain extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 15,)
+                SizedBox(
+                  height: 15,
+                )
               ],
             ),
             //locate device
@@ -71,19 +82,28 @@ class FactoryMain extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute<void>(
-                          builder: (_) => BluetoothMainScreen(onBluetoothOn: () => locateHomePage(),)
-                      ));
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => BluetoothMainScreen(
+                                onBluetoothOn: () => locateHomePage(),
+                              )));
                     },
                     child: Row(
                       children: [
-                        Icon(CupertinoIcons.location_solid,size: 22,color: Colors.white,shadows: [Shadow(
-                          color: Colors.black,
-                          blurRadius: 0.3,
-                          offset: Offset(0.5, 0.4),
-                        )],),
-                        SizedBox(width: 20,),
+                        Icon(
+                          CupertinoIcons.location_solid,
+                          size: 22,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.3,
+                              offset: Offset(0.5, 0.4),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
                         Text(
                           "Locate Device",
                           style: TextStyle(
@@ -103,7 +123,9 @@ class FactoryMain extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 15,)
+                SizedBox(
+                  height: 15,
+                )
               ],
             ),
             //calibration
@@ -114,21 +136,28 @@ class FactoryMain extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute<void>(builder: (_) => BluetoothMainScreen(
-                        onBluetoothOn: () => CalibrateDevice(),
-                      )
-                      )
-                      );
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => BluetoothMainScreen(
+                                onBluetoothOn: () => CalibrateDevice(),
+                              )));
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.settings_input_component,size: 22,color: Colors.white,shadows: [Shadow(
-                          color: Colors.black,
-                          blurRadius: 0.3,
-                          offset: Offset(0.5, 0.4),
-                        )],),
-                        SizedBox(width: 20,),
+                        Icon(
+                          Icons.settings_input_component,
+                          size: 22,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.3,
+                              offset: Offset(0.5, 0.4),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
                         Text(
                           "Calibration",
                           style: TextStyle(
@@ -148,26 +177,26 @@ class FactoryMain extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 15,)
+                SizedBox(
+                  height: 15,
+                )
               ],
             ),
           ],
         ),
-
-
         floatingBtn: Container(
           padding: EdgeInsets.all(5),
-          decoration:BoxDecoration(
-            shape: BoxShape.circle,
-            color: darkBg
-          ) ,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: darkBg),
           child: IconButton(
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute<void>(builder: (_) => BatchFactoryManagement()));
+              Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (_) => BatchFactoryManagement()));
             },
-            icon: Icon(Icons.download,size: 34,color: lightBg,),
-
+            icon: Icon(
+              Icons.download,
+              size: 34,
+              color: lightBg,
+            ),
           ),
         ),
         child: Center(
@@ -179,37 +208,34 @@ class FactoryMain extends StatelessWidget {
                   icon: Icon(
                     Icons.bluetooth_audio_outlined,
                     size:
-                    // Image.asset('assets/image/viewLog.png',width: 24,height:
-                    24,
+                        // Image.asset('assets/image/viewLog.png',width: 24,height:
+                        24,
                     color: darkBg,
                   ),
                   text: "Scan device",
                   onPress: () {
                     FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => SavedBatches()));
-                  }
-                  ),
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => SavedBatches()));
+                  }),
               SizedBox(
                 height: 15,
               ),
               //Pairing Battery
               PrimaryButton(
                   icon: Icon(
-                  Icons.battery_full_outlined,
+                    Icons.battery_full_outlined,
                     size: 24,
                     color: darkBg,
                   ),
                   text: "Pair Battery",
                   onPress: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(builder: (_) =>
-                        BluetoothMainScreen(
-                          onBluetoothOn: () => PairBattery(),
-                        )
-                    ));
-                  }
-                  ),
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => BluetoothMainScreen(
+                              onBluetoothOn: () => PairBattery(),
+                            )));
+                  }),
               SizedBox(
                 height: 15,
               ),
@@ -224,14 +250,11 @@ class FactoryMain extends StatelessWidget {
                   ),
                   text: "Assign Client",
                   onPress: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(builder: (_) => BluetoothMainScreen(
-                          onBluetoothOn: () => AssignClient(),
-                        )
-                      )
-                    );
-                  }
-                  ),
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => BluetoothMainScreen(
+                              onBluetoothOn: () => AssignClient(),
+                            )));
+                  }),
               SizedBox(
                 height: 15,
               ),
@@ -241,16 +264,16 @@ class FactoryMain extends StatelessWidget {
                   icon: Icon(
                     CupertinoIcons.location_solid,
                     size:
-                    // Image.asset('assets/image/viewLog.png',width: 24,height:
-                    24,
+                        // Image.asset('assets/image/viewLog.png',width: 24,height:
+                        24,
                     color: darkBg,
                   ),
                   text: "Locate Device",
                   onPress: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(
-                        builder: (_) => BluetoothMainScreen(onBluetoothOn: () => locateHomePage(),)
-                    ));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => BluetoothMainScreen(
+                              onBluetoothOn: () => locateHomePage(),
+                            )));
                   }),
               SizedBox(
                 height: 15,
@@ -261,28 +284,23 @@ class FactoryMain extends StatelessWidget {
                   icon: Icon(
                     Icons.settings_input_component,
                     size:
-                    // Image.asset('assets/image/viewLog.png',width: 24,height:
-                    18,
+                        // Image.asset('assets/image/viewLog.png',width: 24,height:
+                        18,
                     color: darkBg,
                   ),
                   text: "Calibration",
                   onPress: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(builder: (_) => BluetoothMainScreen(
-                      onBluetoothOn: () => CalibrateDevice(),
-                    )
-                    )
-                    );
-                  }
-                  ),
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => BluetoothMainScreen(
+                              onBluetoothOn: () => CalibrateDevice(),
+                            )));
+                  }),
               SizedBox(
                 height: 15,
               ),
-
             ],
           ),
-        )
-    );
+        ));
   }
 }
 

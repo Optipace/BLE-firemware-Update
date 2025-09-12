@@ -11,7 +11,6 @@ class Category {
   bool isSelect;
 
   Category(this.name, this.isSelect, {required this.amount});
-
 }
 
 // ----------- PIE CHART WIDGET --------------
@@ -21,11 +20,15 @@ class PieChartPainter extends CustomPainter {
   final List<Color> colors;
   final double strokeWidth;
 
-  PieChartPainter({required this.categories, required this.colors, required this.strokeWidth});
+  PieChartPainter(
+      {required this.categories,
+      required this.colors,
+      required this.strokeWidth});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double total = categories.fold<double>(0.0, (sum, c) => sum + c.amount);
+    final double total =
+        categories.fold<double>(0.0, (sum, c) => sum + c.amount);
     final Offset center = Offset(size.width / 2, size.height / 2);
     final double radius = min(size.width / 2, size.height / 2);
 
@@ -91,7 +94,8 @@ class PieChartViewState extends State<PieChartView> {
 
   @override
   Widget build(BuildContext context) {
-    final total = widget.total ?? widget.categories.fold<double>(0.0, (sum, c) => sum + c.amount);
+    final total = widget.total ??
+        widget.categories.fold<double>(0.0, (sum, c) => sum + c.amount);
     final titleText = widget.titleText;
 
     return Container(
@@ -116,7 +120,9 @@ class PieChartViewState extends State<PieChartView> {
               ),
             ),
           ),
-          SizedBox(height: 15,),
+          SizedBox(
+            height: 15,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -140,7 +146,8 @@ class PieChartViewState extends State<PieChartView> {
                     children: [
                       Text(
                         total.toStringAsFixed(0),
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text("Total", style: TextStyle(fontSize: 12)),
                     ],
@@ -169,7 +176,8 @@ class PieChartViewState extends State<PieChartView> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List.generate(widget.categories.length, (index) {
+                          children:
+                              List.generate(widget.categories.length, (index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(vertical: 8),
                               child: Row(
@@ -178,12 +186,14 @@ class PieChartViewState extends State<PieChartView> {
                                   Container(
                                     width: 12,
                                     height: 12,
-                                    color: widget.colors[index % widget.colors.length],
+                                    color: widget
+                                        .colors[index % widget.colors.length],
                                   ),
                                   SizedBox(width: 5),
                                   Container(
                                     width: 80,
-                                    child: Text(//
+                                    child: Text(
+                                      //
                                       widget.categories[index].name,
                                       style: TextStyle(fontSize: 12),
                                     ),

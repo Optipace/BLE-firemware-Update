@@ -10,7 +10,8 @@ import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/modules/factoryUser/factory_user_main.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/field_user_main.dart';
 
-Future<bool> logInAPICall(BuildContext context, String phoneNum, String password) async {
+Future<bool> logInAPICall(
+    BuildContext context, String phoneNum, String password) async {
   var request = {
     "mobileNumber": phoneNum,
     "password": password,
@@ -40,10 +41,10 @@ Future<bool> logInAPICall(BuildContext context, String phoneNum, String password
 
         UserData userData = new UserData();
         printFunc("userData after log in set userdata: ${userData.toString()}");
-        navigateToDashBoard(context, int.tryParse(userData.designationCode) ?? 2);
+        navigateToDashBoard(
+            context, int.tryParse(userData.designationCode) ?? 2);
         return true;
-      }
-      );
+      });
   return false;
 
   /////////////////// to by pass /////////////////////////////
@@ -74,7 +75,8 @@ request={
   ///////////////////// to by pass /////////////////////////////
 }
 
-Future<Map<String, dynamic>> getEmployeeDetail(BuildContext context, String contactNumber) async {
+Future<Map<String, dynamic>> getEmployeeDetail(
+    BuildContext context, String contactNumber) async {
   sharedPreferences = await SharedPreferences.getInstance();
   //////////////////////// to bypass ////////////////////////
   // return {

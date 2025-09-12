@@ -13,12 +13,8 @@ class BatteryModel extends HiveObject {
   @HiveField(2)
   String batteryCode;
 
-
-
   BatteryModel(
-      {required this.id,
-        required this.batteryName,
-        required this.batteryCode});
+      {required this.id, required this.batteryName, required this.batteryCode});
 
   @override
   String toString() {
@@ -33,10 +29,6 @@ class BatteryModel extends HiveObject {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'batteryName': batteryName,
-      'batteryCode': batteryCode
-    };
+    return {'id': id, 'batteryName': batteryName, 'batteryCode': batteryCode};
   }
 }

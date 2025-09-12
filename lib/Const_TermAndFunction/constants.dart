@@ -38,7 +38,7 @@ Color errorText = Color(0xFFCD5C5C);
 
 //Colors for Expansion Tiles
 Color collapsedBackgroundColorTile = Colors.white;
-Color backgroundColorTile = 	Color(0xFFF1F7FB);
+Color backgroundColorTile = Color(0xFFF1F7FB);
 Color textColorTile = Color(0xFF358A94);
 Color collapsedTextColorTile = Color(0xFF358A94);
 Color iconColorTile = Color(0xFF358A94);
@@ -47,11 +47,13 @@ Color borderTile = Color(0xFFB6C2D2);
 
 // Color for cards
 Color SuccessCard = Color.fromRGBO(220, 240, 255, 1.0); // soft light blue
-Color SuccessCardText = Color.fromRGBO(80, 140, 200, 1.0); // medium blue (text/icon)
+Color SuccessCardText =
+    Color.fromRGBO(80, 140, 200, 1.0); // medium blue (text/icon)
 
 Color FailureCard = Color.fromRGBO(245, 235, 250, 1.0); // soft lavender/grayish
 
-Color FailureCardText = Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text/icon)
+Color FailureCardText =
+    Color.fromRGBO(120, 90, 160, 1.0); // muted purple (text/icon)
 
 String baseFont = '';
 String serviceHiveBox = 'ServiceBox';
@@ -64,8 +66,6 @@ String getNumberHiveBox = 'numberBox';
 Map<String, dynamic> serviceProfiles = {}; //await hiveService.readAllData();
 
 bool isSession = false;
-
-
 
 showAlertDialog(
   BuildContext context,
@@ -109,11 +109,14 @@ showAlertDialog(
   showDialog(
     context: context,
     builder: (context) {
-      return BackdropFilter(filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
+      return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
     },
   );
 }
-TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
+
+TextStyle CardText(
+    {required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,
@@ -121,6 +124,5 @@ TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontCo
       fontSize: size ?? 16,
       shadows: [Shadow(color: Colors.black)]);
 }
+
 final appVersion = "1.0.0";
-
-

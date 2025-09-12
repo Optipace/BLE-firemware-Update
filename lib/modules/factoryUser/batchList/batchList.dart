@@ -9,7 +9,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/session.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
 import 'package:tracker_firmware/services/batch/methods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class BatchFactoryManagement extends StatefulWidget {
   const BatchFactoryManagement({super.key});
@@ -18,7 +17,8 @@ class BatchFactoryManagement extends StatefulWidget {
   State<BatchFactoryManagement> createState() => BatchFactoryManagementState();
 }
 
-TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText(
+    {required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,
@@ -46,10 +46,9 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
       UserData.instance.accessToken = "sdncondscpd";
       await sharedPreferences.setString("accessToken", "sdncondscpd");
 
-
       // Add request
       batchList = await getBatchList(context, Status: "Y");
-      for(int i = 0;i<batchList.length;i++){
+      for (int i = 0; i < batchList.length; i++) {
         printFunc("DEMO BATCHES FROM API - ${batchList[i]['batteryDetails']}");
       }
       seriesSixData = await getSeriesData();
@@ -73,7 +72,11 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
             "Batch's",
-            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+            style: TextStyle(
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 24,
+                color: lightBg),
           ),
           toolbarHeight: screenSize.height / 11.5,
           backgroundColor: darkBg,
@@ -81,25 +84,26 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: InternetStatusWatcher(
-          child: Container(
-              child: SingleChildScrollView(
-            child: Column(children: seriesSix()),
-          )),
-        ));
+        body: Container(
+            child: SingleChildScrollView(
+              child: Column(children: seriesSix()),
+            )),);
   }
 
   List<Widget> seriesSix() {
     printFunc("Series six Data : $seriesSixData");
     List<Widget> seriesSixWidgetList = [];
 
-    for (int index = 0; index < ((seriesSixData != null) ? seriesSixData.length : 0); index++) {
+    for (int index = 0;
+        index < ((seriesSixData != null) ? seriesSixData.length : 0);
+        index++) {
       printFunc("DEMO DEMO Firmware logs 23: ${seriesSixData[index]}");
 
       // Store the current item's ID for reference
       final currentItemId = seriesSixData[index]['id'];
 
-      ValueNotifier moreInfo = ValueNotifier<bool>(seriesSixData[index]['saved'] ?? false);
+      ValueNotifier moreInfo =
+          ValueNotifier<bool>(seriesSixData[index]['saved'] ?? false);
 
       seriesSixWidgetList.add(ValueListenableBuilder(
           valueListenable: moreInfo,
@@ -108,7 +112,7 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
             Map<String, dynamic>? currentItem;
             try {
               currentItem = seriesSixData.firstWhere(
-                    (item) => item['id'] == currentItemId,
+                (item) => item['id'] == currentItemId,
               );
             } catch (e) {
               // If item not found, use a safe fallback
@@ -122,7 +126,16 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                   'description': 'Loading...',
                   'saved': false,
                   'firmware': {'version': 'N/A', 'versionName': 'N/A'},
-                  'profile': {'name': 'N/A', 'uT': '0', 'uV': '0', 'lT': '0', 'lV': '0', 'nV': '0', 'uTemp': '0', 'lTemp': '0'},
+                  'profile': {
+                    'name': 'N/A',
+                    'uT': '0',
+                    'uV': '0',
+                    'lT': '0',
+                    'lV': '0',
+                    'nV': '0',
+                    'uTemp': '0',
+                    'lTemp': '0'
+                  },
                   'battery': {'batteryCode': 'N/A'}
                 };
               }
@@ -130,17 +143,20 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
 
             return Container(
               margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 2,
-                )
-              ]),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 2,
+                    )
+                  ]),
               child: ExpansionTile(
                 key: ValueKey('${currentItem!['id']}_${currentItem['saved']}'),
                 tilePadding: EdgeInsets.all(5),
                 backgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
-                collapsedBackgroundColor: (moreInfo.value) ? SuccessCard : FailureCard,
+                collapsedBackgroundColor:
+                    (moreInfo.value) ? SuccessCard : FailureCard,
                 iconColor: darkBg,
                 collapsedIconColor: darkBg,
                 collapsedShape: RoundedRectangleBorder(
@@ -151,107 +167,128 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                     side: BorderSide(color: Colors.black, width: 0.3)),
                 title: Padding(
                   padding: EdgeInsets.all(5),
-                  child: FittedBox(child:
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 90,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Batch : ",
-                                    style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText)),
-                              ],
+                  child: FittedBox(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 90,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("Batch : ",
+                                      style: CardText(
+                                          font_Weight: FontWeight.w300,
+                                          FontColor: secondaryText)),
+                                ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            width: 90,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Description : ",
-                                  style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
-                                ),
-                              ],
+                            Container(
+                              width: 90,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Description : ",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: secondaryText),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            width: 80,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Series : ",
-                                  style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
-                                ),
-                              ],
+                            Container(
+                              width: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Series : ",
+                                    style: CardText(
+                                        font_Weight: FontWeight.w300,
+                                        FontColor: secondaryText),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 90,
-                            padding: EdgeInsets.only(left: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  currentItem["name"].toString(),
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                                  softWrap: true,
-                                ),
-                              ],
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 90,
+                              padding: EdgeInsets.only(left: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    currentItem["name"].toString(),
+                                    style: CardText(
+                                        font_Weight: FontWeight.w800,
+                                        size: 19,
+                                        FontColor: !(moreInfo.value)
+                                            ? SuccessCardText
+                                            : FailureCardText),
+                                    softWrap: true,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            width: 90,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  currentItem["description"].toString(),
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                                ),
-                              ],
+                            Container(
+                              width: 90,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    currentItem["description"].toString(),
+                                    style: CardText(
+                                        font_Weight: FontWeight.w800,
+                                        size: 19,
+                                        FontColor: !(moreInfo.value)
+                                            ? SuccessCardText
+                                            : FailureCardText),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            width: 80,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  moreInfo.value
-                                      ? currentItem["battery"]['batteryCode'].toString()
-                                      : batchList.firstWhere((b) => b['id'] == currentItemId,
-                                      orElse: () => {'batteryDetails': {'Battery-Code': 'N/A'}})['batteryDetails']['Battery-Code'],
-                                  style: CardText(
-                                      font_Weight: FontWeight.w800,
-                                      size: 19,
-                                      FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                                )
-                              ],
+                            Container(
+                              width: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    moreInfo.value
+                                        ? currentItem["battery"]['batteryCode']
+                                            .toString()
+                                        : batchList.firstWhere(
+                                                (b) => b['id'] == currentItemId,
+                                                orElse: () => {
+                                                      'batteryDetails': {
+                                                        'Battery-Code': 'N/A'
+                                                      }
+                                                    })['batteryDetails']
+                                            ['Battery-Code'],
+                                    style: CardText(
+                                        font_Weight: FontWeight.w800,
+                                        size: 19,
+                                        FontColor: !(moreInfo.value)
+                                            ? SuccessCardText
+                                            : FailureCardText),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 children: [
@@ -261,11 +298,13 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                       children: [
                         // Firmware section
                         Container(
-                          width: screenSize.width*0.8,
+                          width: screenSize.width * 0.8,
                           child: Row(
                             children: [
                               Text("Firmware Details  ",
-                                  style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText)),
+                                  style: CardText(
+                                      font_Weight: FontWeight.w500,
+                                      FontColor: secondaryText)),
                               SizedBox(width: 5),
                               Expanded(
                                 child: Container(
@@ -284,13 +323,16 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width : 150,
+                                    width: 150,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "Firmware Version",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText),
                                         ),
                                       ],
                                     ),
@@ -298,11 +340,14 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                   Container(
                                     width: 150,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "Firmware Name",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText),
                                         ),
                                       ],
                                     ),
@@ -310,34 +355,45 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                   Container(
                                     width: 80,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          (moreInfo.value) ? "Saved" : "Download",
+                                          (moreInfo.value)
+                                              ? "Saved"
+                                              : "Download",
                                           style: CardText(
                                               font_Weight: FontWeight.w300,
-                                              FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                              FontColor: !(moreInfo.value)
+                                                  ? SuccessCardText
+                                                  : FailureCardText),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 5,),
+                              SizedBox(
+                                height: 5,
+                              ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width : 150,
+                                    width: 150,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          currentItem["firmware"]['version'].toString(),
+                                          currentItem["firmware"]['version']
+                                              .toString(),
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 19,
-                                              FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                              FontColor: !(moreInfo.value)
+                                                  ? SuccessCardText
+                                                  : FailureCardText),
                                         )
                                       ],
                                     ),
@@ -345,14 +401,18 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                   Container(
                                     width: 150,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          currentItem["firmware"]['versionName'].toString(),
+                                          currentItem["firmware"]['versionName']
+                                              .toString(),
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 19,
-                                              FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                              FontColor: !(moreInfo.value)
+                                                  ? SuccessCardText
+                                                  : FailureCardText),
                                         )
                                       ],
                                     ),
@@ -360,34 +420,55 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                   Container(
                                     width: 80,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         IconButton(
                                             onPressed: () async {
-                                              if (!(currentItem!['saved'] ?? false)) {
-                                                if (!(await addBatch(BatchModel.fromJson(currentItem))))
-                                                  ShowSnackBarMessage(context, "Failed to save Batch", false);
+                                              if (!(currentItem!['saved'] ??
+                                                  false)) {
+                                                if (!(await addBatch(
+                                                    BatchModel.fromJson(
+                                                        currentItem))))
+                                                  ShowSnackBarMessage(
+                                                      context,
+                                                      "Failed to save Batch",
+                                                      false);
                                               }
 
                                               // Refresh the data and find the updated item
-                                              seriesSixData = await getSeriesData();
+                                              seriesSixData =
+                                                  await getSeriesData();
 
                                               // Find the updated item by ID
                                               try {
-                                                final updatedItem = seriesSixData.firstWhere(
-                                                      (item) => item['id'] == currentItemId,
+                                                final updatedItem =
+                                                    seriesSixData.firstWhere(
+                                                  (item) =>
+                                                      item['id'] ==
+                                                      currentItemId,
                                                 );
-                                                moreInfo.value = updatedItem['saved'] ?? false;
+                                                moreInfo.value =
+                                                    updatedItem['saved'] ??
+                                                        false;
                                               } catch (e) {
                                                 // If item not found after update, set as saved
                                                 moreInfo.value = true;
                                               }
                                               setState(() {});
                                             },
-                                            icon: (!(currentItem['saved'] ?? false))
-                                                ? Icon(Icons.download_for_offline_outlined,
-                                                color: SuccessCardText, size: 35)
-                                                : Icon(Icons.download_done_outlined, color: darkBg, size: 35)),
+                                            icon: (!(currentItem['saved'] ??
+                                                    false))
+                                                ? Icon(
+                                                    Icons
+                                                        .download_for_offline_outlined,
+                                                    color: SuccessCardText,
+                                                    size: 35)
+                                                : Icon(
+                                                    Icons
+                                                        .download_done_outlined,
+                                                    color: darkBg,
+                                                    size: 35)),
                                       ],
                                     ),
                                   ),
@@ -404,7 +485,9 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                               Row(
                                 children: [
                                   Text("Config : ",
-                                      style: CardText(font_Weight: FontWeight.w500, FontColor: secondaryText)),
+                                      style: CardText(
+                                          font_Weight: FontWeight.w500,
+                                          FontColor: secondaryText)),
                                   Text(currentItem["profile"]["name"],
                                       style: CardText(
                                           font_Weight: FontWeight.w800,
@@ -431,26 +514,35 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width : 75,
+                                    width: 75,
                                     margin: EdgeInsets.all(1.5),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           "U. Threshold",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_charging_full_outlined,
-                                                size: 14, color: secondaryText),
+                                            Icon(
+                                                Icons
+                                                    .battery_charging_full_outlined,
+                                                size: 14,
+                                                color: secondaryText),
                                             Text(
                                               "${currentItem["profile"]['uT']} V",
                                               style: CardText(
                                                   font_Weight: FontWeight.w800,
                                                   size: 14,
-                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                                  FontColor: !(moreInfo.value)
+                                                      ? SuccessCardText
+                                                      : FailureCardText),
                                             ),
                                           ],
                                         ),
@@ -459,27 +551,36 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                   ),
                                   // ... rest of your profile containers with currentItem instead of seriesSixData[index]
                                   Container(
-                                    width:55,
+                                    width: 55,
                                     margin: EdgeInsets.all(1.5),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           "U.Volt",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         FittedBox(
                                           fit: BoxFit.scaleDown,
                                           child: Row(
                                             children: [
-                                              Icon(Icons.battery_6_bar_outlined, size: 14, color: secondaryText),
+                                              Icon(Icons.battery_6_bar_outlined,
+                                                  size: 14,
+                                                  color: secondaryText),
                                               Text(
                                                 "${currentItem["profile"]['uV']} V",
                                                 style: CardText(
-                                                    font_Weight: FontWeight.w800,
+                                                    font_Weight:
+                                                        FontWeight.w800,
                                                     size: 14,
-                                                    FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                                    FontColor: !(moreInfo.value)
+                                                        ? SuccessCardText
+                                                        : FailureCardText),
                                               ),
                                             ],
                                           ),
@@ -491,22 +592,29 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                     width: 70,
                                     margin: EdgeInsets.all(1.5),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "L.Threshold",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         Row(
                                           children: [
-                                            Icon(Icons.battery_alert_outlined, size: 13, color: secondaryText),
+                                            Icon(Icons.battery_alert_outlined,
+                                                size: 13, color: secondaryText),
                                             Text(
                                               "${currentItem["profile"]['lT']} V",
                                               style: CardText(
                                                   font_Weight: FontWeight.w800,
                                                   size: 14,
-                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                                  FontColor: !(moreInfo.value)
+                                                      ? SuccessCardText
+                                                      : FailureCardText),
                                             ),
                                           ],
                                         ),
@@ -520,52 +628,73 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                       children: [
                                         Text(
                                           "L. Volt",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.battery_1_bar_rounded, size: 13, color: secondaryText),
-                                            Text(
-                                              "${currentItem["profile"]['lV']} V",
-                                              style: CardText(
-                                                  font_Weight: FontWeight.w800,
-                                                  size: 14,
-                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
-                                            ),
-                                          ],
+                                        FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.battery_1_bar_rounded,
+                                                  size: 13, color: secondaryText),
+                                              Text(
+                                                "${currentItem["profile"]['lV']} V",
+                                                style: CardText(
+                                                    font_Weight: FontWeight.w800,
+                                                    size: 14,
+                                                    FontColor: !(moreInfo.value)
+                                                        ? SuccessCardText
+                                                        : FailureCardText),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 15,),
+                              SizedBox(
+                                height: 15,
+                              ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width : 75,
+                                    width: 75,
                                     margin: EdgeInsets.all(1.5),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "N. Volt",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.battery_charging_full_outlined,
-                                                size: 14, color: secondaryText),
+                                            Icon(
+                                                Icons
+                                                    .battery_charging_full_outlined,
+                                                size: 14,
+                                                color: secondaryText),
                                             Text(
                                               "${currentItem["profile"]['nV']} V",
                                               style: CardText(
                                                   font_Weight: FontWeight.w800,
                                                   size: 14,
-                                                  FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                                  FontColor: !(moreInfo.value)
+                                                      ? SuccessCardText
+                                                      : FailureCardText),
                                             ),
                                           ],
                                         ),
@@ -573,14 +702,18 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                     ),
                                   ),
                                   Container(
-                                    width:55,
+                                    width: 55,
                                     margin: EdgeInsets.all(1.5),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           "U.Temp",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         Text(
@@ -588,7 +721,9 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 14,
-                                              FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                              FontColor: !(moreInfo.value)
+                                                  ? SuccessCardText
+                                                  : FailureCardText),
                                         ),
                                       ],
                                     ),
@@ -597,11 +732,15 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                     width: 70,
                                     margin: EdgeInsets.all(1.5),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "L.Temp",
-                                          style: CardText(font_Weight: FontWeight.w300, FontColor: secondaryText,size: 13),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w300,
+                                              FontColor: secondaryText,
+                                              size: 13),
                                         ),
                                         SizedBox(height: 5),
                                         Text(
@@ -609,7 +748,9 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                                           style: CardText(
                                               font_Weight: FontWeight.w800,
                                               size: 14,
-                                              FontColor: !(moreInfo.value) ? SuccessCardText : FailureCardText),
+                                              FontColor: !(moreInfo.value)
+                                                  ? SuccessCardText
+                                                  : FailureCardText),
                                         ),
                                       ],
                                     ),
@@ -619,7 +760,9 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   )
@@ -654,9 +797,9 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     }
 
     // Clean up orphaned entries in Hive
-    for(var key in allBatchMap.keys){
+    for (var key in allBatchMap.keys) {
       bool isPresent = batchList.any((batch) => batch['id'] == key);
-      if(!isPresent){
+      if (!isPresent) {
         printFunc("DEMO KEY IS NOT PRESENTED : ${key}");
         await batchBox.delete(key);
       }
@@ -698,7 +841,6 @@ class BatchFactoryManagementState extends State<BatchFactoryManagement> {
     return totalBatchList;
   }
 }
-
 
 /*
 

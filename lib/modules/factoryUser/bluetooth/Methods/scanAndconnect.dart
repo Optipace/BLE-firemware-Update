@@ -39,9 +39,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 //   return null;
 // }
 
-
-
-
 Future<BluetoothDevice?> scanDeviceByMACId(String macID) async {
   BluetoothDevice? selectedDevice;
   printFunc("Old MACId: $macID");
@@ -69,9 +66,11 @@ Future<BluetoothDevice?> scanDeviceByMACId(String macID) async {
         printFunc("Tx Power: ${advData.txPowerLevel}");
         printFunc("Connectable: ${advData.connectable}");
         printFunc("Local Name: ${advData.localName}");
+        printFunc("scanned config device : ${r}");
         //////////////////////////////////////////////////////
 
-        printFunc("Device returning from the Scan Method: ${r.device.remoteId}");
+        printFunc(
+            "Device returning from the Scan Method: ${r.device.remoteId}");
         return r.device;
       }
     }
@@ -100,8 +99,3 @@ Future<bool> connectToDevice(BluetoothDevice device) async {
 
   return false;
 }
-
-
-
-
-

@@ -4,7 +4,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/admin/log/batchLogs.dart';
 import 'package:tracker_firmware/modules/admin/log/sortByStatus.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 
 class BatchLogsMain extends StatelessWidget {
   List<Map<String, dynamic>> batchList = [{}];
@@ -34,7 +33,11 @@ class BatchLogsMain extends StatelessWidget {
         iconTheme: IconThemeData(color: lightBg),
         title: Text(
           "Batches",
-          style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+          style: TextStyle(
+              fontFamily: baseFont,
+              fontWeight: FontWeight.w800,
+              fontSize: 24,
+              color: lightBg),
         ),
         toolbarHeight: screenSize.height / 11.5,
         backgroundColor: darkBg,
@@ -42,66 +45,68 @@ class BatchLogsMain extends StatelessWidget {
         shadowColor: darkBg,
       ),
       backgroundColor: lightBg,
-      body: InternetStatusWatcher(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              for (int i = 0; i < batchList.length; i++)
-
-                GestureDetector(
-                  onTap: () async {
-                    printFunc("Inside getLogsByBatchId ${batchList[i]["id"]} ");
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => BatchLogs(item: batchList[i])));
-                  },
-                  child: Container(
-                      width: screenSize.width,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: second_lightBg,
-                          border: Border.all(color: darkBg, width: 1),
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [BoxShadow(color: darkBg, blurRadius: 0.8)]),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Batch Name : ",
-                                  style: TextStyle(
-                                      color: darkBg,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  batchList[i]["name"] ?? "",
-                                  style: TextStyle(
-                                      color: darkBg,
-                                      fontFamily: baseFont,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18),
-                                )
-                              ],
-                            ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            for (int i = 0; i < batchList.length; i++)
+              GestureDetector(
+                onTap: () async {
+                  printFunc("Inside getLogsByBatchId ${batchList[i]["id"]} ");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => BatchLogs(item: batchList[i])));
+                },
+                child: Container(
+                    width: screenSize.width,
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                    margin:
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: second_lightBg,
+                        border: Border.all(color: darkBg, width: 1),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(color: darkBg, blurRadius: 0.8)
+                        ]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Batch Name : ",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                batchList[i]["name"] ?? "",
+                                style: TextStyle(
+                                    color: darkBg,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 18),
+                              )
+                            ],
                           ),
-                          Icon(
-                            CupertinoIcons.chevron_right_2,
-                            color: darkBg,
-                            weight: 40,
-                            size: 28,
-                          )
-                        ],
-                      )),
-                )
-            ],
-          ),
+                        ),
+                        Icon(
+                          CupertinoIcons.chevron_right_2,
+                          color: darkBg,
+                          weight: 40,
+                          size: 28,
+                        )
+                      ],
+                    )),
+              )
+          ],
         ),
       ),
     );

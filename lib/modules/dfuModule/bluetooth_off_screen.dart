@@ -19,7 +19,9 @@ class BluetoothOffScreen extends StatelessWidget {
       Icons.bluetooth_disabled,
       size: 200.0,
       color: lightBg.withOpacity(0.9),
-      shadows: [Shadow(color: Colors.black, blurRadius: 0.1, offset: Offset(0.4, 0.4))],
+      shadows: [
+        Shadow(color: Colors.black, blurRadius: 0.1, offset: Offset(0.4, 0.4))
+      ],
     );
   }
 
@@ -27,7 +29,11 @@ class BluetoothOffScreen extends StatelessWidget {
     String? state = adapterState?.toString().split(".").last;
     return Text(
       'Bluetooth Adapter is ${state ?? 'not available'}',
-      style: TextStyle(color: darkBg, fontWeight: FontWeight.w800, fontSize: 16, fontFamily: baseFont),
+      style: TextStyle(
+          color: darkBg,
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+          fontFamily: baseFont),
     );
   }
 
@@ -39,10 +45,14 @@ class BluetoothOffScreen extends StatelessWidget {
             elevation: MaterialStatePropertyAll(5),
             backgroundColor: MaterialStatePropertyAll(darkBg),
             shadowColor: MaterialStatePropertyAll(Colors.black),
-            shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
+            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)))),
         child: Text(
           'TURN ON',
-          style: TextStyle(color: lightBg, fontFamily: baseFont, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              color: lightBg,
+              fontFamily: baseFont,
+              fontWeight: FontWeight.w500),
         ),
         onPressed: () async {
           try {
@@ -51,7 +61,8 @@ class BluetoothOffScreen extends StatelessWidget {
             }
           } catch (e, backtrace) {
             //showsnack bar
-            ShowSnackBarMessage(context, prettyException('Error Turning On :',e), false);
+            ShowSnackBarMessage(
+                context, prettyException('Error Turning On :', e), false);
             printFunc("$e");
             printFunc("backtrace: $backtrace");
           }
@@ -63,29 +74,29 @@ class BluetoothOffScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
-      // key: Snackbar.snackBarKeyA,
+        // key: Snackbar.snackBarKeyA,
         child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [darkBg, lightBg], // Your gradient colors
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [darkBg, lightBg], // Your gradient colors
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              buildBluetoothOffIcon(context),
+              buildTitle(context),
+              if (!kIsWeb && Platform.isAndroid) buildTurnOnButton(context),
+            ],
           ),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  buildBluetoothOffIcon(context),
-                  buildTitle(context),
-                  if (!kIsWeb && Platform.isAndroid) buildTurnOnButton(context),
-                ],
-              ),
-            ),
-          ),
-        ));
+        ),
+      ),
+    ));
   }
 
   String prettyException(String prefix, dynamic e) {
@@ -96,5 +107,4 @@ class BluetoothOffScreen extends StatelessWidget {
     }
     return prefix + e.toString();
   }
-
 }

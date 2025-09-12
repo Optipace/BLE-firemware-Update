@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-import 'package:tracker_firmware/modules/Profile/main_profile.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/ScanBluetooth/bluetoothBatches.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/batchList/fieldBatchUser.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/firmwares/firmwareFieldManagement.dart';
@@ -26,17 +24,26 @@ class FieldMain extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute<void>(builder: (_) => BatchFeildManagement()));
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => BatchFeildManagement()));
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.download,size: 22,color: Colors.white,shadows: [Shadow(
-                          color: Colors.black,
-                          blurRadius: 0.3,
-                          offset: Offset(0.5, 0.4),
-                        )],),
-                        SizedBox(width: 20,),
+                        Icon(
+                          Icons.download,
+                          size: 22,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.3,
+                              offset: Offset(0.5, 0.4),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
                         Text(
                           "Download Batches",
                           style: TextStyle(
@@ -56,7 +63,9 @@ class FieldMain extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 15,)
+                SizedBox(
+                  height: 15,
+                )
               ],
             ),
             SizedBox()
@@ -78,8 +87,8 @@ class FieldMain extends StatelessWidget {
                   ),
                   text: "Firmwares",
                   onPress: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(builder: (_) => FirmwareFieldManagement()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => FirmwareFieldManagement()));
                   }),
               //SizedBox
               /*
@@ -98,8 +107,8 @@ class FieldMain extends StatelessWidget {
                   ),
                   text: "Profiles/Config",
                   onPress: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(builder: (_) => ProfileFieldManagement()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => ProfileFieldManagement()));
                   }),
               SizedBox(
                 height: 25,
@@ -115,8 +124,8 @@ class FieldMain extends StatelessWidget {
                   ),
                   text: "Batch/Profile",
                   onPress: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(builder: (_) => BatchFeildManagement()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => BatchFeildManagement()));
                   }),
               SizedBox(
                 height: 15,
@@ -134,14 +143,14 @@ class FieldMain extends StatelessWidget {
                   onPress: () {
                     // FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => SavedBatches()));
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => SavedBatches()));
                   }),
               SizedBox(
                 height: 25,
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 }

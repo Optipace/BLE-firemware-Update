@@ -12,7 +12,6 @@ class ErrorContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return show
         ? Container(
             margin: const EdgeInsets.only(left: 28, top: 10),

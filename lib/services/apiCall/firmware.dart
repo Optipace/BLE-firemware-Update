@@ -4,7 +4,8 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
 import '../../widgets/alertBoxes.dart';
 
-Future<Map<String, dynamic>> getFirmwareList(BuildContext context, {required String active}) async {
+Future<Map<String, dynamic>> getFirmwareList(BuildContext context,
+    {required String active}) async {
   Map<String, dynamic> firmwareList = {};
   final requestBody = {
     "active": active,

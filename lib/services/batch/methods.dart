@@ -67,7 +67,8 @@ Future<bool> addBatch(BatchModel newBatch) async {
   final batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
 
   // Convertion of base 64 to zip
-  String zipPath = await saveBase64ZipToFile(newBatch.firmware.file, newBatch.batchName);
+  String zipPath =
+      await saveBase64ZipToFile(newBatch.firmware.file, newBatch.batchName);
   printFunc("DEMO ZIP_PATH : $zipPath");
   if (zipPath == "" || zipPath == null) {
     return false;
@@ -93,13 +94,12 @@ Future<bool> addBatch(BatchModel newBatch) async {
 
   printFunc("DEM3."
       ".O  newBatch  _________________  \n"
-        "batchId : ${newBatch.batchId}  \n"
-        "batchName : ${newBatch.batchName}  \n"
-        "batchDescription : ${newBatch.batchDescription}  \n"
-        "firmware : ${newBatch.firmware}  \n"
-        "profile : ${newBatch.profile}  \n"
-        "battery : ${newBatch.battery}  \n"
-  );
+      "batchId : ${newBatch.batchId}  \n"
+      "batchName : ${newBatch.batchName}  \n"
+      "batchDescription : ${newBatch.batchDescription}  \n"
+      "firmware : ${newBatch.firmware}  \n"
+      "profile : ${newBatch.profile}  \n"
+      "battery : ${newBatch.battery}  \n");
 
   return true;
 }
@@ -143,8 +143,6 @@ Future<List<Map<String, dynamic>>> getAllBatchFromHive() async {
     };
   }).toList();
 }
-
-
 
 // to add one by one
 /*

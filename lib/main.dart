@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/dataBase/dbSetUp.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/battery_model.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart';
@@ -13,12 +14,10 @@ import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/hive/hiveOperation.dart';
 import 'package:tracker_firmware/widgets/splash_screen.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveService.init();
-
+  DataBase.initializeDatabase();
   // final hiveService = HiveService('$firmwareBox');
 
   await Hive.openBox<ProfileSeriesModel>('$serviceHiveBox');
@@ -46,18 +45,15 @@ void main() async {
   await Hive.openBox<GetNumberModel>('$getNumberHiveBox');
   // await Hive.deleteBoxFromDisk('$getNumberHiveBox');
 
-
   // Hive box for battery Details
-
 
   // Register adapters BEFORE using any boxes
   // Hive.registerAdapter(FirmwareModelAdapter());
   // Hive.registerAdapter(FirmwareSeriesModelAdapter());
 
-
   //Without DEV-Option
 
- SystemChrome.setPreferredOrientations([
+  SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
@@ -66,7 +62,7 @@ void main() async {
   });
 
   // with Dev-option
- /*SystemChrome.setPreferredOrientations([
+  /*SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
@@ -126,14 +122,14 @@ class MyApp extends StatelessWidget {
         ),
         scrollbarTheme: ScrollbarThemeData(
           thumbColor: MaterialStateProperty.all<Color>(Colors.white),
-          trackColor: MaterialStateProperty.all<Color>(Colors.white.withOpacity(0.5)),
+          trackColor:
+              MaterialStateProperty.all<Color>(Colors.white.withOpacity(0.5)),
         ),
       ),
       home: splashScreen(),
     );
   }
 }
-
 
 class DevOptionsChecker {
   static const MethodChannel _channel = MethodChannel('dev_options_channel');
@@ -148,4 +144,3 @@ class DevOptionsChecker {
     }
   }
 }
-

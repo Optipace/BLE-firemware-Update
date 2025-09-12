@@ -15,13 +15,11 @@ import 'package:tracker_firmware/widgets/BottomSheet.dart';
 import 'package:tracker_firmware/widgets/CustomCard.dart';
 import 'package:tracker_firmware/widgets/buttons.dart';
 import 'package:tracker_firmware/widgets/dropDownButton.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 import 'package:tracker_firmware/widgets/textFields.dart';
 
 class AddNewFirmware extends StatefulWidget {
   final int? selectedBtn;
-  final DataController? batterySeries ;
-
+  final DataController? batterySeries;
 
   AddNewFirmware({this.selectedBtn, this.batterySeries});
 
@@ -108,7 +106,11 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       appBar: AppBar(
         title: Text(
           "Manage Firmware",
-          style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 22, color: lightBg),
+          style: TextStyle(
+              fontFamily: baseFont,
+              fontWeight: FontWeight.w800,
+              fontSize: 22,
+              color: lightBg),
         ),
         toolbarHeight: 60,
         backgroundColor: darkBg,
@@ -116,215 +118,249 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
         shadowColor: darkBg,
       ),
       backgroundColor: lightBg,
-      body: InternetStatusWatcher(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Card(
-                  // // elevation: ,
-                  // // shadowColor: Colors.black,
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(22))),
-                  color: lightBg,
-                  child: Container(
-                    height: screenSize.height / 9,
-                    width: screenSize.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        //NEW Firmware
-                        InkWell(
-                            onTap: () {
-                              setState(() {
-                                selectedbutton = 1;
-                              });
-                            },
-                            child: Container(
-                              width: selectedbutton == 1 ? screenSize.width / 1.85 : (screenSize.width / 2) / 2.2,
-                              height: 120,
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  color: selectedbutton == 1 ? darkBg : Colors.white,
-                                  borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
-                                  border: Border.all(width: 0.8, color: darkBg),
-                                  boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
-                              child: Center(
-                                heightFactor: 2,
-                                child: selectedbutton == 1
-                                    ? Center(
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.system_update_outlined,
-                                              color: lightBg,
-                                              size: 28,
-                                            ),
-                                            Text(
-                                              "New Firmware",
-                                              style: TextStyle(
-                                                fontSize: 24,
-                                                fontFamily: baseFont,
-                                                fontWeight: FontWeight.w600,
-                                                color: lightBg,
-                                                shadows: [
-                                                  Shadow(offset: Offset(0.3, 0.3), color: lightBg),
-                                                  Shadow(offset: Offset(-0.3, 0.3), color: lightBg),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    : Center(
-                                        child: Text("Firmware",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontFamily: baseFont,
-                                                fontWeight: FontWeight.w600,
-                                                color: darkBg,
-                                                shadows: [
-                                                  Shadow(offset: Offset(0.3, 0.3), color: darkBg),
-                                                ])),
-                                      ),
-                              ),
-                            )),
-                        //New config
-                        InkWell(
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Card(
+              // // elevation: ,
+              // // shadowColor: Colors.black,
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(22))),
+                color: lightBg,
+                child: Container(
+                  height: screenSize.height / 9,
+                  width: screenSize.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      //NEW Firmware
+                      InkWell(
                           onTap: () {
                             setState(() {
-                              selectedbutton = 2;
+                              selectedbutton = 1;
                             });
                           },
                           child: Container(
-                            width: selectedbutton == 2 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
+                            width: selectedbutton == 1
+                                ? screenSize.width / 1.85
+                                : (screenSize.width / 2) / 2.2,
                             height: 120,
+                            padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
-                                color: selectedbutton == 2 ? darkBg : Colors.white,
-                                border: Border.all(width: 0.8, color: darkBg),
-                                boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
-                            child: Center(
-                              heightFactor: 2,
-                              child: selectedbutton == 2
-                                  ? Center(
-                                      child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.handyman_outlined,
-                                          color: lightBg,
-                                          size: 26,
-                                        ),
-                                        Text(
-                                          "New Config",
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                            fontFamily: baseFont,
-                                            fontWeight: FontWeight.w600,
-                                            color: lightBg,
-                                            shadows: [
-                                              Shadow(
-                                                offset: Offset(0.3, 0.3),
-                                                color: lightBg,
-                                              ),
-                                              Shadow(
-                                                offset: Offset(-0.3, 0.3),
-                                                color: lightBg,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ))
-                                  : Text("Config",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: baseFont,
-                                          fontWeight: FontWeight.w600,
-                                          color: darkBg,
-                                          shadows: [
-                                            Shadow(offset: Offset(0.3, 0.3), color: darkBg),
-                                          ])),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              selectedbutton = 3;
-                            });
-                          },
-                          child: Container(
-                            width: selectedbutton == 3 ? screenSize.width / 2 : (screenSize.width / 2) / 2.7,
-                            height: 120,
-                            decoration: BoxDecoration(
-                                color: selectedbutton == 3 ? darkBg : Colors.white,
+                                color: selectedbutton == 1
+                                    ? darkBg
+                                    : Colors.white,
                                 borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                                    topLeft: Radius.circular(20),
+                                    bottomLeft: Radius.circular(20)),
                                 border: Border.all(width: 0.8, color: darkBg),
-                                boxShadow: [BoxShadow(blurRadius: 0.5, color: darkBg)]),
+                                boxShadow: [
+                                  BoxShadow(blurRadius: 0.5, color: darkBg)
+                                ]),
                             child: Center(
                               heightFactor: 2,
-                              child: selectedbutton == 3
+                              child: selectedbutton == 1
                                   ? Center(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.handyman_outlined,
-                                            color: selectedbutton == 3 ? lightBg : darkBg,
-                                            size: 26,
-                                          ),
-                                          Text(
-                                            "New Batch",
-                                            style: TextStyle(
-                                              fontSize: 24,
-                                              fontFamily: baseFont,
-                                              fontWeight: FontWeight.w600,
-                                              color: lightBg,
-                                              shadows: [
-                                                Shadow(
-                                                  offset: Offset(0.3, 0.3),
-                                                  color: lightBg,
-                                                ),
-                                                Shadow(offset: Offset(-0.3, 0.3), color: lightBg),
-                                              ],
-                                            ),
-                                          ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.system_update_outlined,
+                                      color: lightBg,
+                                      size: 28,
+                                    ),
+                                    Text(
+                                      "New Firmware",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontFamily: baseFont,
+                                        fontWeight: FontWeight.w600,
+                                        color: lightBg,
+                                        shadows: [
+                                          Shadow(
+                                              offset: Offset(0.3, 0.3),
+                                              color: lightBg),
+                                          Shadow(
+                                              offset: Offset(-0.3, 0.3),
+                                              color: lightBg),
                                         ],
                                       ),
                                     )
-                                  : Text("Batch",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: baseFont,
-                                          fontWeight: FontWeight.w600,
-                                          color: darkBg,
-                                          shadows: [
-                                            Shadow(offset: Offset(0.3, 0.3), color: darkBg),
-                                          ])),
+                                  ],
+                                ),
+                              )
+                                  : Center(
+                                child: Text("Firmware",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: baseFont,
+                                        fontWeight: FontWeight.w600,
+                                        color: darkBg,
+                                        shadows: [
+                                          Shadow(
+                                              offset: Offset(0.3, 0.3),
+                                              color: darkBg),
+                                        ])),
+                              ),
                             ),
+                          )),
+                      //New config
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedbutton = 2;
+                          });
+                        },
+                        child: Container(
+                          width: selectedbutton == 2
+                              ? screenSize.width / 2
+                              : (screenSize.width / 2) / 2.7,
+                          height: 120,
+                          decoration: BoxDecoration(
+                              color:
+                              selectedbutton == 2 ? darkBg : Colors.white,
+                              border: Border.all(width: 0.8, color: darkBg),
+                              boxShadow: [
+                                BoxShadow(blurRadius: 0.5, color: darkBg)
+                              ]),
+                          child: Center(
+                            heightFactor: 2,
+                            child: selectedbutton == 2
+                                ? Center(
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.handyman_outlined,
+                                      color: lightBg,
+                                      size: 26,
+                                    ),
+                                    Text(
+                                      "New Config",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontFamily: baseFont,
+                                        fontWeight: FontWeight.w600,
+                                        color: lightBg,
+                                        shadows: [
+                                          Shadow(
+                                            offset: Offset(0.3, 0.3),
+                                            color: lightBg,
+                                          ),
+                                          Shadow(
+                                            offset: Offset(-0.3, 0.3),
+                                            color: lightBg,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ))
+                                : Text("Config",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w600,
+                                    color: darkBg,
+                                    shadows: [
+                                      Shadow(
+                                          offset: Offset(0.3, 0.3),
+                                          color: darkBg),
+                                    ])),
                           ),
-                        )
-                      ],
-                    ),
-                  )),
-              if (selectedbutton == 1)
-                newFirmware(context)
-              else if (selectedbutton == 2)
-                newConfiguration(context)
-              else
-                newBatch(context)
-            ],
-          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedbutton = 3;
+                          });
+                        },
+                        child: Container(
+                          width: selectedbutton == 3
+                              ? screenSize.width / 2
+                              : (screenSize.width / 2) / 2.7,
+                          height: 120,
+                          decoration: BoxDecoration(
+                              color:
+                              selectedbutton == 3 ? darkBg : Colors.white,
+                              borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
+                              border: Border.all(width: 0.8, color: darkBg),
+                              boxShadow: [
+                                BoxShadow(blurRadius: 0.5, color: darkBg)
+                              ]),
+                          child: Center(
+                            heightFactor: 2,
+                            child: selectedbutton == 3
+                                ? Center(
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.handyman_outlined,
+                                    color: selectedbutton == 3
+                                        ? lightBg
+                                        : darkBg,
+                                    size: 26,
+                                  ),
+                                  Text(
+                                    "New Batch",
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontFamily: baseFont,
+                                      fontWeight: FontWeight.w600,
+                                      color: lightBg,
+                                      shadows: [
+                                        Shadow(
+                                          offset: Offset(0.3, 0.3),
+                                          color: lightBg,
+                                        ),
+                                        Shadow(
+                                            offset: Offset(-0.3, 0.3),
+                                            color: lightBg),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                                : Text("Batch",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: baseFont,
+                                    fontWeight: FontWeight.w600,
+                                    color: darkBg,
+                                    shadows: [
+                                      Shadow(
+                                          offset: Offset(0.3, 0.3),
+                                          color: darkBg),
+                                    ])),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+            if (selectedbutton == 1)
+              newFirmware(context)
+            else if (selectedbutton == 2)
+              newConfiguration(context)
+            else
+              newBatch(context)
+          ],
         ),
       ),
     );
@@ -362,7 +398,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         fontWeight: FontWeight.w800,
                         fontSize: 24,
                         color: darkBg,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))]),
+                        shadows: [
+                          Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.5))
+                        ]),
                   ),
                 ),
               ),
@@ -384,7 +425,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _versionCode,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _versionCode.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _versionCode.text.trim().isEmpty
                             ? "Please Enter the Version"
                             : "",
                       ),
@@ -400,7 +442,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _releaseNote,
                         onChanged: (value) {},
                         enable: true,
-                        etext: firmwareValidator && _releaseNote.text.trim().isEmpty
+                        etext: firmwareValidator &&
+                                _releaseNote.text.trim().isEmpty
                             ? "Please Enter the Release Note"
                             : "",
                       ),
@@ -433,13 +476,16 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                               height: 40,
                               tailIcon: Icon(
                                 CupertinoIcons.arrow_up_doc,
-                                shadows: [Shadow(color: darkBg, blurRadius: 0.5)],
+                                shadows: [
+                                  Shadow(color: darkBg, blurRadius: 0.5)
+                                ],
                               ),
                               text: "Select file",
                               onPress: pickPdfAndConvertToBase64,
                             ),
                             SizedBox(height: 10),
-                            if (selectedFileName != null && selectedFileSizeInBytes != null)
+                            if (selectedFileName != null &&
+                                selectedFileSizeInBytes != null)
                               Text(
                                 "Selected File: $selectedFileName (${(selectedFileSizeInBytes! / 1024).toStringAsFixed(2)} KB)",
                                 style: TextStyle(
@@ -471,7 +517,9 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                     onPress: () async {
                       ValidateFirmwareFields();
 
-                      if (!firmwareValidator && firmwareFileBase64 != null && firmwareFileBase64 != "") {
+                      if (!firmwareValidator &&
+                          firmwareFileBase64 != null &&
+                          firmwareFileBase64 != "") {
                         printFunc("Inside IF COND");
                         if (await addNewFirmware(context,
                             versionName: '${_firmWareVersionName.text}',
@@ -480,7 +528,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             firmwareFile: '$firmwareFileBase64'))
                         // firmwareFile: '$selectedFileName'))
                         {
-                          firmwareList = await getFirmwareList(context, active: "Y");
+                          firmwareList =
+                              await getFirmwareList(context, active: "Y");
                           clearFirmware();
 
                           // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
@@ -524,7 +573,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         fontWeight: FontWeight.w800,
                         fontSize: 24,
                         color: darkBg,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))]),
+                        shadows: [
+                          Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.5))
+                        ]),
                   ),
                 ),
               ),
@@ -546,9 +600,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _configName,
                         onChanged: (value) {},
                         enable: true,
-                        etext: configValidator && _configName.text.trim().isEmpty
-                            ? "Please Enter the Config Name"
-                            : "",
+                        etext:
+                            configValidator && _configName.text.trim().isEmpty
+                                ? "Please Enter the Config Name"
+                                : "",
                       ),
                       SizedBox(
                         height: 10,
@@ -563,7 +618,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _upperTreshold,
                         onChanged: (value) {},
                         enable: true,
-                        etext: configValidator && _upperTreshold.text.trim().isEmpty
+                        etext: configValidator &&
+                                _upperTreshold.text.trim().isEmpty
                             ? "Please Enter the Cycle Threshold"
                             : "",
                       ),
@@ -572,7 +628,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // -------- Upper Voltage--------
-                      const LabelText(text: "Alarm Threshold   [Upper Limit] :"),
+                      const LabelText(
+                          text: "Alarm Threshold   [Upper Limit] :"),
                       TextFeildNewUser(
                         hintText: "Enter Alarm Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],
@@ -582,9 +639,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _upperVoltage,
                         onChanged: (value) {},
                         enable: true,
-                        etext: configValidator && _upperVoltage.text.trim().isEmpty
-                            ? "Please Enter the Alarm Threshold"
-                            : "",
+                        etext:
+                            configValidator && _upperVoltage.text.trim().isEmpty
+                                ? "Please Enter the Alarm Threshold"
+                                : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -599,7 +657,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _lowerTreshold,
                         onChanged: (value) {},
                         enable: true,
-                        etext: configValidator && _lowerTreshold.text.trim().isEmpty
+                        etext: configValidator &&
+                                _lowerTreshold.text.trim().isEmpty
                             ? "Please Enter the Cycle Threshold"
                             : "",
                       ),
@@ -616,9 +675,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _lowerVoltage,
                         onChanged: (value) {},
                         enable: true,
-                        etext: configValidator && _lowerVoltage.text.trim().isEmpty
-                            ? "Please Enter the Alarm Threshold"
-                            : "",
+                        etext:
+                            configValidator && _lowerVoltage.text.trim().isEmpty
+                                ? "Please Enter the Alarm Threshold"
+                                : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -633,9 +693,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _nominalVolt,
                         onChanged: (value) {},
                         enable: true,
-                        etext: configValidator && _nominalVolt.text.trim().isEmpty
-                            ? "Please Enter the Nominal Voltage"
-                            : "",
+                        etext:
+                            configValidator && _nominalVolt.text.trim().isEmpty
+                                ? "Please Enter the Nominal Voltage"
+                                : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -675,7 +736,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         height: 8,
                       ),
 
-
                       // ---- Description -----
                       LabelText(text: "Description :"),
                       TextFeildNewUser(
@@ -683,9 +743,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _description,
                         onChanged: (value) {},
                         enable: true,
-                        etext: configValidator && _description.text.trim().isEmpty
-                            ? "Please Enter the Description"
-                            : "",
+                        etext:
+                            configValidator && _description.text.trim().isEmpty
+                                ? "Please Enter the Description"
+                                : "",
                       ),
                       SizedBox(
                         height: 8,
@@ -693,15 +754,20 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       //----Battery series---- [DROPDOWN]
                       GestureDetector(
-                        onTap: (){
-                          printFunc("DEMO _batterySeries : ${_batterySeries.getText} && ${_batterySeries.getobj.toString()}");
+                        onTap: () {
+                          printFunc(
+                              "DEMO _batterySeries : ${_batterySeries.getText} && ${_batterySeries.getobj.toString()}");
                         },
                         child: PrimeryDropDownButton(
                           isEnabled: true,
                           tail: ErrorContainer(
-                              show: _validateDropDown, errorMsg: "Please Select the Battery Series"),
+                              show: _validateDropDown,
+                              errorMsg: "Please Select the Battery Series"),
                           mainText: "Select Battery Series",
-                          text: _batterySeries.Text != ""  && _batterySeries.Text != null ? _batterySeries.getText : "Battery Series",
+                          text: _batterySeries.Text != "" &&
+                                  _batterySeries.Text != null
+                              ? _batterySeries.getText
+                              : "Battery Series",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
@@ -715,119 +781,187 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                 BtnEnable: true,
                                 btnTitle: "ADD BATTERY SERIES ",
                                 btnFunction: () async {
-                                  await BottomSheet_Widget(context, color: lightBg, [
-                                    StatefulBuilder(builder: (thisLowerContext, checkBoxState) {
-                                      return Padding(
-                                        padding: EdgeInsets.only(
-                                          bottom: MediaQuery.of(thisLowerContext).viewInsets.bottom,
-                                        ),
-                                        child: SingleChildScrollView(
-                                          child: Container(
-                                            height: screenSize.height / 1.5,
-                                            width: screenSize.width,
-                                            color: lightBg,
+                                  await BottomSheet_Widget(
+                                      context,
+                                      color: lightBg,
+                                      [
+                                        StatefulBuilder(builder:
+                                            (thisLowerContext, checkBoxState) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: MediaQuery.of(
+                                                      thisLowerContext)
+                                                  .viewInsets
+                                                  .bottom,
+                                            ),
                                             child: SingleChildScrollView(
                                               child: Container(
-                                                padding: EdgeInsets.symmetric(vertical: 20),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      "Enter Battery Details!",
-                                                      style: TextStyle(
-                                                          fontFamily: baseFont,
-                                                          fontWeight: FontWeight.w800,
-                                                          fontSize: 24,
-                                                          color: darkBg,
-                                                          shadows: [
-                                                            Shadow(
-                                                                color: Colors.black,
-                                                                blurRadius: 0.5,
-                                                                offset: Offset(0.5, 0.5))
-                                                          ]),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
-
-                                                    Column(
-                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                height: screenSize.height / 1.5,
+                                                width: screenSize.width,
+                                                color: lightBg,
+                                                child: SingleChildScrollView(
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 20),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
-                                                        // Battery Name
-                                                        LabelText(text: "Battery Name :"),
-                                                        TextFeildNewUser(
-                                                          hintText: "Enter Battery Name",
-                                                          Controller: _newbname,
-                                                          onChanged: (value) {},
-                                                          enable: true,
-                                                          etext: batteryValidator && _newbname.text.trim().isEmpty
-                                                              ? "Please Enter Battery Name"
-                                                              : "",
+                                                        Text(
+                                                          "Enter Battery Details!",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  baseFont,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              fontSize: 24,
+                                                              color: darkBg,
+                                                              shadows: [
+                                                                Shadow(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    blurRadius:
+                                                                        0.5,
+                                                                    offset:
+                                                                        Offset(
+                                                                            0.5,
+                                                                            0.5))
+                                                              ]),
                                                         ),
                                                         SizedBox(
-                                                          height: 8,
+                                                          height: 20,
                                                         ),
-                                                        // Relase Note
-                                                        LabelText(text: "Battery Code"),
-                                                        TextFeildNewUser(
-                                                          hintText: "Enter Battery Code",
-                                                          Controller: _batteryDescription,
-                                                          type: TextInputType.number,
-                                                          maxLength: 2,
-                                                          onChanged: (value) {},
-                                                          enable: true,
-                                                          etext: batteryValidator &&
-                                                                  _batteryDescription.text.trim().isEmpty
-                                                              ? "Please Enter Battery Code"
-                                                              : "",
+
+                                                        Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            // Battery Name
+                                                            LabelText(
+                                                                text:
+                                                                    "Battery Name :"),
+                                                            TextFeildNewUser(
+                                                              hintText:
+                                                                  "Enter Battery Name",
+                                                              Controller:
+                                                                  _newbname,
+                                                              onChanged:
+                                                                  (value) {},
+                                                              enable: true,
+                                                              etext: batteryValidator &&
+                                                                      _newbname
+                                                                          .text
+                                                                          .trim()
+                                                                          .isEmpty
+                                                                  ? "Please Enter Battery Name"
+                                                                  : "",
+                                                            ),
+                                                            SizedBox(
+                                                              height: 8,
+                                                            ),
+                                                            // Relase Note
+                                                            LabelText(
+                                                                text:
+                                                                    "Battery Code"),
+                                                            TextFeildNewUser(
+                                                              hintText:
+                                                                  "Enter Battery Code",
+                                                              Controller:
+                                                                  _batteryDescription,
+                                                              type:
+                                                                  TextInputType
+                                                                      .number,
+                                                              maxLength: 2,
+                                                              onChanged:
+                                                                  (value) {},
+                                                              enable: true,
+                                                              etext: batteryValidator &&
+                                                                      _batteryDescription
+                                                                          .text
+                                                                          .trim()
+                                                                          .isEmpty
+                                                                  ? "Please Enter Battery Code"
+                                                                  : "",
+                                                            ),
+                                                            SizedBox(
+                                                              height: 8,
+                                                            ),
+                                                          ],
                                                         ),
-                                                        SizedBox(
-                                                          height: 8,
-                                                        ),
+                                                        // Add Btn
+                                                        manageUserBtn(
+                                                            text: "Add Battery",
+                                                            onPress: () async {
+                                                              printFunc(
+                                                                  "BEFORE : $batteryValidator");
+                                                              checkBoxState(() {
+                                                                ValidateBatteryFields();
+                                                              });
+                                                              printFunc(
+                                                                  "DEMO DEMO : ${batteryValidator && _newbname.text.trim().isEmpty}");
+                                                              printFunc(
+                                                                  "DEMODEMO");
+                                                              printFunc(
+                                                                  batteryValidator);
+                                                              printFunc(
+                                                                  _newbname.text
+                                                                      .trim()
+                                                                      .isEmpty);
+
+                                                              if (!batteryValidator) {
+                                                                printFunc(
+                                                                    "Inside IF COND");
+                                                                if (await addNewDeviceType(
+                                                                  context,
+                                                                  name: _newbname
+                                                                      .text
+                                                                      .trim(),
+                                                                  description:
+                                                                      _batteryDescription
+                                                                          .text
+                                                                          .trim(),
+                                                                )) {
+                                                                  allConfigList =
+                                                                      await getAllConfigurationList(
+                                                                          context,
+                                                                          active:
+                                                                              "Y");
+                                                                  batteryList =
+                                                                      {
+                                                                    for (var item
+                                                                        in allConfigList)
+                                                                      item['deviceName']:
+                                                                          item
+                                                                  };
+                                                                  clearBattery();
+                                                                  Navigator.of(
+                                                                          context,
+                                                                          rootNavigator:
+                                                                              true)
+                                                                      .pop();
+
+                                                                  // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
+                                                                }
+                                                              }
+
+                                                              setState(() {});
+                                                            })
                                                       ],
                                                     ),
-                                                    // Add Btn
-                                                    manageUserBtn(
-                                                        text: "Add Battery",
-                                                        onPress: () async {
-                                                          printFunc("BEFORE : $batteryValidator");
-                                                          checkBoxState(() {
-                                                            ValidateBatteryFields();
-                                                          });
-                                                          printFunc(
-                                                              "DEMO DEMO : ${batteryValidator && _newbname.text.trim().isEmpty}");
-                                                          printFunc("DEMODEMO");
-                                                          printFunc(batteryValidator);
-                                                          printFunc(_newbname.text.trim().isEmpty);
-
-                                                          if (!batteryValidator) {
-                                                            printFunc("Inside IF COND");
-                                                            if (await addNewDeviceType(
-                                                              context,
-                                                              name: _newbname.text.trim(),
-                                                              description: _batteryDescription.text.trim(),
-                                                            )) {
-                                                              allConfigList = await getAllConfigurationList(context, active: "Y");
-                                                              batteryList = {for (var item in allConfigList) item['deviceName']: item};
-                                                              clearBattery();
-                                                              Navigator.of(context,rootNavigator: true).pop();
-
-                                                              // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
-                                                            }
-                                                          }
-
-                                                          setState(() {});
-                                                        })
-                                                  ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                      );
-                                    })
-                                  ]);
+                                          );
+                                        })
+                                      ]);
                                 },
                               )
                             ]);
@@ -865,10 +999,15 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           lowerTemp: _lowerTemp.text.trim(),
                           upperTemp: _upperTemp.text.trim(),
                           description: _description.text.trim(),
-                          batterySeriesId: (_batterySeries.obj["id"]).toString(),
+                          batterySeriesId:
+                              (_batterySeries.obj["id"]).toString(),
                         )) {
-                          allConfigList = await getAllConfigurationList(context, active: "Y");
-                          batteryList = {for (var item in allConfigList) item['deviceName']: item};
+                          allConfigList = await getAllConfigurationList(context,
+                              active: "Y");
+                          batteryList = {
+                            for (var item in allConfigList)
+                              item['deviceName']: item
+                          };
                           clearConfig();
                           // Navigator.of(context,rootNavigator: true).pop();//(MaterialPageRoute(builder: (_) => AdminMain()));
                         }
@@ -911,7 +1050,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         fontWeight: FontWeight.w800,
                         fontSize: 24,
                         color: darkBg,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 0.5, offset: Offset(0.5, 0.5))]),
+                        shadows: [
+                          Shadow(
+                              color: Colors.black,
+                              blurRadius: 0.5,
+                              offset: Offset(0.5, 0.5))
+                        ]),
                   ),
                 ),
               ),
@@ -949,7 +1093,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         Controller: _batchDescription,
                         onChanged: (value) {},
                         enable: true,
-                        etext: batchValidator && _batchDescription.text.trim().isEmpty
+                        etext: batchValidator &&
+                                _batchDescription.text.trim().isEmpty
                             ? "Please Enter the Description"
                             : "",
                       ),
@@ -961,10 +1106,13 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       GestureDetector(
                         child: PrimeryDropDownButton(
                           isEnabled: true,
-                          tail:
-                              ErrorContainer(show: _validateFirmware, errorMsg: "Please Select the firmware"),
+                          tail: ErrorContainer(
+                              show: _validateFirmware,
+                              errorMsg: "Please Select the firmware"),
                           mainText: "Firmware",
-                          text: _firmware.Text != "" ? _firmware.getText : "Select the firmware",
+                          text: _firmware.Text != ""
+                              ? _firmware.getText
+                              : "Select the firmware",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
@@ -990,16 +1138,22 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: PrimeryDropDownButton(
                           isEnabled: true,
                           tail: ErrorContainer(
-                              show: _validatedeviceType, errorMsg: "Please Select the Battery Series"),
+                              show: _validatedeviceType,
+                              errorMsg: "Please Select the Battery Series"),
                           mainText: "Select Battery Series",
-                          text: _batterySeries.Text != "" &&  _batterySeries.Text != null ? _batterySeries.getText : "Battery Series",
+                          text: _batterySeries.Text != "" &&
+                                  _batterySeries.Text != null
+                              ? _batterySeries.getText
+                              : "Battery Series",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
                           ),
                           press: () async {
                             _config.cleardata();
-                            allConfigList = await getAllConfigurationList(context, active: "Y");
+                            allConfigList = await getAllConfigurationList(
+                                context,
+                                active: "Y");
 
                             await BottomSheet_Widget(context, [
                               MapListItemBuilder(
@@ -1010,8 +1164,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             ]);
                             setState(() {});
                             setState(() {
-                              if (_batterySeries.Text != "") _visibleConfig = true;
-
+                              if (_batterySeries.Text != "")
+                                _visibleConfig = true;
                             });
                           },
                         ),
@@ -1026,19 +1180,28 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         child: GestureDetector(
                           child: PrimeryDropDownButton(
                             isEnabled: true,
-                            tail: ErrorContainer(show: _validateConfig, errorMsg: "Please Select the Config"),
+                            tail: ErrorContainer(
+                                show: _validateConfig,
+                                errorMsg: "Please Select the Config"),
                             mainText: "Config",
-                            text: _config.Text != "" ? _config.getText : "Select Config",
+                            text: _config.Text != ""
+                                ? _config.getText
+                                : "Select Config",
                             icon: Icon(
                               Icons.keyboard_arrow_down_sharp,
                               color: darkBg,
                             ),
                             press: () async {
-                              final selectedBatteryConfigList = _batterySeries.obj['configuration'];
+                              final selectedBatteryConfigList =
+                                  _batterySeries.obj['configuration'];
 
                               Map<String, Map<String, dynamic>> deviceMap = {
                                 for (var config in selectedBatteryConfigList)
-                                  if (config['active'].toString().toUpperCase() == 'Y') config['name']: config
+                                  if (config['active']
+                                          .toString()
+                                          .toUpperCase() ==
+                                      'Y')
+                                    config['name']: config
                               };
 
                               await BottomSheet_Widget(context, [
@@ -1068,10 +1231,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                     onPress: () async {
                       ValidateBatchFields();
 
-                      validateBatchDropDown(
-                          _batterySeries, (val) => setState(() => _validatedeviceType = val));
-                      validateBatchDropDown(_config, (val) => setState(() => _validatedeviceType = val));
-                      validateBatchDropDown(_firmware, (val) => setState(() => _validateFirmware = val));
+                      validateBatchDropDown(_batterySeries,
+                          (val) => setState(() => _validatedeviceType = val));
+                      validateBatchDropDown(_config,
+                          (val) => setState(() => _validatedeviceType = val));
+                      validateBatchDropDown(_firmware,
+                          (val) => setState(() => _validateFirmware = val));
                       if (!batchValidator &&
                           !_validatedeviceType &&
                           !_validatedeviceType &&
@@ -1104,7 +1269,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       // _firmWareVersionName,
     ];
 
-    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
       firmwareValidator = hasEmpty;
     });
@@ -1124,7 +1290,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       _batteryDescription,
     ];
 
-    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     printFunc("has Next : $hasEmpty");
     setState(() {
       batteryValidator = hasEmpty;
@@ -1152,7 +1319,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       _description,
     ];
 
-    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
       configValidator = hasEmpty;
     });
@@ -1174,7 +1342,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
       _batchDescription,
     ];
 
-    bool hasEmpty = Controllers.any((controller) => controller.text.trim().isEmpty);
+    bool hasEmpty =
+        Controllers.any((controller) => controller.text.trim().isEmpty);
     setState(() {
       batchValidator = hasEmpty;
     });
@@ -1203,7 +1372,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     });
   }
 
-  void validateBatchDropDown(DataController variable, void Function(bool) setValidator) {
+  void validateBatchDropDown(
+      DataController variable, void Function(bool) setValidator) {
     if (variable.getText == "") {
       setValidator(true);
     } else {

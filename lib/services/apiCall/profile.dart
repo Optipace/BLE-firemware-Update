@@ -30,31 +30,28 @@ Future<List<Map<String, dynamic>>> getAllConfigurationList(BuildContext context,
   return configurationList;
 }
 
-Future<bool> addNewConfig(
-    BuildContext context, {
-      required String configName,
-      required String upperThreshold,
-      required String upperVoltage,
-      required String lowerThreshold,
-      required String lowerVoltage,
-      required String description,
-      required String batterySeriesId,
-      required String nominalVoltage,
-      required String upperTemp,
-      required String lowerTemp
-    }) async {
+Future<bool> addNewConfig(BuildContext context,
+    {required String configName,
+    required String upperThreshold,
+    required String upperVoltage,
+    required String lowerThreshold,
+    required String lowerVoltage,
+    required String description,
+    required String batterySeriesId,
+    required String nominalVoltage,
+    required String upperTemp,
+    required String lowerTemp}) async {
   final body = {
     "name": configName,
     "upperVoltage": upperVoltage,
     "upperThreshold": upperThreshold,
     "lowerVoltage": lowerVoltage,
     "lowerThreshold": lowerThreshold,
-    "normalVoltage":nominalVoltage,
-    "upperTemperature":upperTemp,
-    "lowerTemperature":lowerTemp,
+    "normalVoltage": nominalVoltage,
+    "upperTemperature": upperTemp,
+    "lowerTemperature": lowerTemp,
     "discription": description,
     "deviceId": batterySeriesId,
-
   };
 
   bool isSuccess = false;
@@ -65,14 +62,14 @@ Future<bool> addNewConfig(
     endpoint: ApiEndpoints.saveProfile,
     bodyOrParams: body,
     onSuccess: (data) {
-      ShowSnackBarMessage(context, 'Configuration uploaded successfully!', true);
+      ShowSnackBarMessage(
+          context, 'Configuration uploaded successfully!', true);
       isSuccess = true;
     },
   );
 
   return isSuccess;
 }
-
 
 Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
   List<Map<String, dynamic>> profileList = [{}];
@@ -193,7 +190,8 @@ Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
 }
 
 /////////////////// NOT IN USED /////////////////////////////////
-Future<List<Map<String, dynamic>>> getProfileByID(BuildContext context, String id) async {
+Future<List<Map<String, dynamic>>> getProfileByID(
+    BuildContext context, String id) async {
   List<Map<String, dynamic>> profileList = [{}];
   List<Map<String, dynamic>> profileByID = [{}];
 
@@ -207,6 +205,3 @@ Future<List<Map<String, dynamic>>> getProfileByID(BuildContext context, String i
 
   return profileByID;
 }
-
-
-

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
@@ -11,7 +9,6 @@ import 'package:tracker_firmware/modules/admin/log/monthly_logs/monthly_log.dart
 import 'package:tracker_firmware/modules/admin/log/monthly_logs/week_log.dart';
 import 'package:tracker_firmware/modules/admin/log/userLogsMain.dart';
 import 'package:tracker_firmware/services/apiCall/batch.dart';
-import 'package:tracker_firmware/widgets/internetStatusWatcher.dart';
 import 'package:tracker_firmware/widgets/pie_chart_widget.dart';
 
 class AdminLogs extends StatefulWidget {
@@ -19,29 +16,24 @@ class AdminLogs extends StatefulWidget {
   State<AdminLogs> createState() => AdminLogsState();
 }
 
-
-
 class AdminLogsState extends State<AdminLogs> {
-
   List<Map<String, dynamic>> batchList = [{}];
-  List<Map<String, dynamic>> factoryLogs =[{}];
-  List<Map<String, dynamic>> fieldLogs=[{}];
-  List<Map<String, dynamic>> allLogs=[{}];
+  List<Map<String, dynamic>> factoryLogs = [{}];
+  List<Map<String, dynamic>> fieldLogs = [{}];
+  List<Map<String, dynamic>> allLogs = [{}];
 
   //  User logs
-  List<Category> UserLogs=[];
+  List<Category> UserLogs = [];
   late final List<Color> UserColor;
 
   // Batch Logs
   List<Category> BatchLogs = [];
   List<Color> BatchColors = [];
 
-
-
   // List for logs by Days
-  List<dynamic> dayLogs =[];
-  List<dynamic> weekLogs =[];
-  List<dynamic> monthlylogs =[];
+  List<dynamic> dayLogs = [];
+  List<dynamic> weekLogs = [];
+  List<dynamic> monthlylogs = [];
   List<dynamic> emptyList = [
     {
       "TotalCount": 0,
@@ -51,27 +43,21 @@ class AdminLogsState extends State<AdminLogs> {
     <Map<String, dynamic>>[{}]
   ];
 
-
-
   //List for logs by user
-  List<dynamic> userlogs=[];
+  List<dynamic> userlogs = [];
 
   //Counts
-  int totalMonthlyCount=0;
-  int totalWeeklyCount=0;
+  int totalMonthlyCount = 0;
+  int totalWeeklyCount = 0;
   int totalDailyCount = 0;
   int totalAllCount = 0;
   double factoryCount = 0;
   double fieldCount = 0;
 
   //Maps For Counts
-  Map<String,dynamic> AllLogsCounts = {};
-  Map<String,dynamic> FactoryLogsCounts = {};
-  Map<String,dynamic> FieldLogsCounts = {};
-
-
-
-
+  Map<String, dynamic> AllLogsCounts = {};
+  Map<String, dynamic> FactoryLogsCounts = {};
+  Map<String, dynamic> FieldLogsCounts = {};
 
   @override
   void initState() {
@@ -81,37 +67,35 @@ class AdminLogsState extends State<AdminLogs> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       batchList = await getBatchList(context, Status: "A");
 
-
       // logs API's
 
       //Days
-      dayLogs = await getLogsByDays(context, days: 1) ;
+      dayLogs = await getLogsByDays(context, days: 1);
       weekLogs = await getLogsByDays(context, days: 7);
       monthlylogs = await getLogsByDays(context, days: 30);
 
       // By users
       userlogs = await getAllCount(context);
 
-      if(monthlylogs.isNotEmpty){
+      if (monthlylogs.isNotEmpty) {
         totalMonthlyCount = monthlylogs[0]['TotalCount'];
-      }else{
+      } else {
         totalMonthlyCount = 0;
-        monthlylogs =emptyList;
+        monthlylogs = emptyList;
       }
 
-      if(weekLogs.isNotEmpty){
+      if (weekLogs.isNotEmpty) {
         totalWeeklyCount = weekLogs[0]['TotalCount'];
-      }else{
+      } else {
         totalWeeklyCount = 0;
-        weekLogs =emptyList;
+        weekLogs = emptyList;
       }
-      if(dayLogs.isNotEmpty) {
+      if (dayLogs.isNotEmpty) {
         totalDailyCount = dayLogs[0]['TotalCount'];
-      }else{
+      } else {
         totalDailyCount = 0;
         dayLogs = emptyList;
       }
-
 
       //For PIECHART
       totalAllCount = userlogs[0].first[0]['TotalLogs'];
@@ -137,23 +121,25 @@ class AdminLogsState extends State<AdminLogs> {
         "SucessCount": userlogs[0].first[0]['SucessCount'],
         "FailureCount": userlogs[0].first[0]['FailureCount']
       };
-      FieldLogsCounts =  {
+      FieldLogsCounts = {
         "TotalFieldLogs": userlogs[1].first[0]['TotalFieldLogs'],
         "SuccessFieldLogs": userlogs[1].first[0]['SuccessFieldLogs'],
         "FailureFieldLogs": userlogs[1].first[0]['FailureFieldLogs']
       };
-      FactoryLogsCounts =  {
+      FactoryLogsCounts = {
         "TotalFactLogs": userlogs[2].first[0]['TotalFactLogs'],
         "SuccessFactLogs": userlogs[2].first[0]['SuccessFactLogs'],
         "FailureFactLogs": userlogs[2].first[0]['FailureFactLogs']
       };
 
-
-
       // BACTH LOGS PIE CHART
       BatchLogs = [
         for (int i = 0; i < batchList.length; i++)
-          Category(batchList[i]["name"].toString(), false, amount: allLogs.where((log) => log["Batch"] == batchList[i]["name"]).length.toDouble())
+          Category(batchList[i]["name"].toString(), false,
+              amount: allLogs
+                  .where((log) => log["Batch"] == batchList[i]["name"])
+                  .length
+                  .toDouble())
       ];
       BatchColors = generateBrightColors(batchList.length);
       // printFunc("demo batch ${batchList[1]['name']}");
@@ -164,15 +150,10 @@ class AdminLogsState extends State<AdminLogs> {
       printFunc("ALL LOGS DEMO : ${allLogs.length}");
     });
 
-
-
     UserColor = [Color(0xFF5262FF), Color(0xFF2EC6FF)];
-
 
     setState(() {});
   }
-
-
 
   // To generate the different Colors
   List<Color> generateBrightColors(int count) {
@@ -183,7 +164,6 @@ class AdminLogsState extends State<AdminLogs> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -192,7 +172,11 @@ class AdminLogsState extends State<AdminLogs> {
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
             "Logs",
-            style: TextStyle(fontFamily: baseFont, fontWeight: FontWeight.w800, fontSize: 24, color: lightBg),
+            style: TextStyle(
+                fontFamily: baseFont,
+                fontWeight: FontWeight.w800,
+                fontSize: 24,
+                color: lightBg),
           ),
           toolbarHeight: screenSize.height / 11.5,
           backgroundColor: darkBg,
@@ -200,345 +184,373 @@ class AdminLogsState extends State<AdminLogs> {
           shadowColor: darkBg,
         ),
         backgroundColor: lightBg,
-        body: InternetStatusWatcher(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                //Analytics Overview
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                      decoration: BoxDecoration(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              //Analytics Overview
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin:
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                    decoration: BoxDecoration(
                         border: Border.all(color: Colors.black26),
-                        color: Colors.white
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Analytics Overview : ",
-                            style: TextStyle(
-                              color: darkBg,
-                              fontFamily: baseFont,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 20,
-                              shadows: [Shadow(color: Colors.black, blurRadius: 0.5)],
-                            ),
-                          ),
-                          SizedBox(height: 20,),
-
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              //Month
-                              GestureDetector(
-                                onTap :() async {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Monthly_log(monthlyLogs: monthlylogs,)));
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: screenSize.width/4,
-                                      height: screenSize.height/7,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.black
-                                      ),
-                                      child: Center(
-                                        child: Container(
-                                          width: screenSize.width/4,
-                                          height: screenSize.height/7.1,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Color(0xFFB2EBF2).withOpacity(0.8)
-                                          ),
-                                          child: Center(
-                                            child: Container(
-                                              width: screenSize.width/4,
-                                              height: screenSize.height/9,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color:Colors.white
-                                              ),
-                                              child: Center(
-                                                child: Container(
-                                                  width: screenSize.width/4,
-                                                  height: screenSize.height/9.1,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.black
-                                                  ),
-                                                  child: Center(
-                                                    child: Container(
-                                                      width: screenSize.width/4,
-                                                      height: screenSize.height/9.4,
-                                                      decoration: BoxDecoration(
-                                                          shape: BoxShape.circle,
-                                                          color: Colors.white
-                                                      ),
-                                                      child: FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child:Text
-                                                          (totalMonthlyCount.toString(),
-                                                          style: TextStyle(
-                                                              color: Color(0xFF212121),
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 24
-                                                          ),
-                                                        ),
-
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 12,),
-                                    Text("This Month",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              //Week
-                              GestureDetector(
-                                onTap: (){
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Week_logs(weeklogs: weekLogs,)));
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: screenSize.width/4,
-                                      height: screenSize.height/7,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.black
-                                      ),
-                                      child: Center(
-                                        child: Container(
-                                          width: screenSize.width/4,
-                                          height: screenSize.height/7.1,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Color(0xFFFFE0B2)
-                                          ),
-                                          child: Center(
-                                            child: Container(
-                                              width: screenSize.width/4,
-                                              height: screenSize.height/9,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color:Colors.white
-                                              ),
-                                              child: Center(
-                                                child: Container(
-                                                  width: screenSize.width/4,
-                                                  height: screenSize.height/9.1,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.black
-                                                  ),
-                                                  child: Center(
-                                                    child: Container(
-                                                      width: screenSize.width/4,
-                                                      height: screenSize.height/9.4,
-                                                      decoration: BoxDecoration(
-                                                          shape: BoxShape.circle,
-                                                          color: Colors.white
-                                                      ),
-                                                      child: FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child:Text(
-                                                          totalWeeklyCount.toString(),
-                                                          style: TextStyle(
-                                                              color: Color(0xFF212121),
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 24
-                                                          ),
-                                                        ),
-
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 12,),
-                                    Text("This Week",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              //day
-                              GestureDetector(
-                                onTap: (){
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Day_logs(dailyLogs: dayLogs,)));
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: screenSize.width/4,
-                                      height: screenSize.height/7,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.black
-                                      ),
-                                      child: Center(
-                                        child: Container(
-                                          width: screenSize.width/4,
-                                          height: screenSize.height/7.1,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Color(0xFFFFF9C4)
-                                          ),
-                                          child: Center(
-                                            child: Container(
-                                              width: screenSize.width/4,
-                                              height: screenSize.height/9,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color:Colors.white
-                                              ),
-                                              child: Center(
-                                                child: Container(
-                                                  width: screenSize.width/4,
-                                                  height: screenSize.height/9.1,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.black
-                                                  ),
-                                                  child: Center(
-                                                    child: Container(
-                                                      width: screenSize.width/4,
-                                                      height: screenSize.height/9.4,
-                                                      decoration: BoxDecoration(
-                                                          shape: BoxShape.circle,
-                                                          color: Colors.white
-                                                      ),
-                                                      child: FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child:Text(
-                                                          totalDailyCount.toString(),
-                                                          style: TextStyle(
-                                                              color: Color(0xFF212121),
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 24
-                                                          ),
-                                                        ),
-
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 12,),
-                                    Text("Today",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
+                        color: Colors.white),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Analytics Overview : ",
+                          style: TextStyle(
+                            color: darkBg,
+                            fontFamily: baseFont,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 20,
+                            shadows: [
+                              Shadow(color: Colors.black, blurRadius: 0.5)
                             ],
                           ),
-                          SizedBox(height: 5,),
-                          Divider(color: darkBg,),
-                          Container(
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            //Month
+                            GestureDetector(
+                              onTap: () async {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => Monthly_log(
+                                      monthlyLogs: monthlylogs,
+                                    )));
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: screenSize.width / 4,
+                                    height: screenSize.height / 7,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.black),
+                                    child: Center(
+                                      child: Container(
+                                        width: screenSize.width / 4,
+                                        height: screenSize.height / 7.1,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xFFB2EBF2)
+                                                .withOpacity(0.8)),
+                                        child: Center(
+                                          child: Container(
+                                            width: screenSize.width / 4,
+                                            height: screenSize.height / 9,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white),
+                                            child: Center(
+                                              child: Container(
+                                                width: screenSize.width / 4,
+                                                height:
+                                                screenSize.height / 9.1,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.black),
+                                                child: Center(
+                                                  child: Container(
+                                                    width:
+                                                    screenSize.width / 4,
+                                                    height:
+                                                    screenSize.height /
+                                                        9.4,
+                                                    decoration: BoxDecoration(
+                                                        shape:
+                                                        BoxShape.circle,
+                                                        color: Colors.white),
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Text(
+                                                        totalMonthlyCount
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF212121),
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .bold,
+                                                            fontSize: 24),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    "This Month",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            //Week
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => Week_logs(
+                                      weeklogs: weekLogs,
+                                    )));
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: screenSize.width / 4,
+                                    height: screenSize.height / 7,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.black),
+                                    child: Center(
+                                      child: Container(
+                                        width: screenSize.width / 4,
+                                        height: screenSize.height / 7.1,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xFFFFE0B2)),
+                                        child: Center(
+                                          child: Container(
+                                            width: screenSize.width / 4,
+                                            height: screenSize.height / 9,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white),
+                                            child: Center(
+                                              child: Container(
+                                                width: screenSize.width / 4,
+                                                height:
+                                                screenSize.height / 9.1,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.black),
+                                                child: Center(
+                                                  child: Container(
+                                                    width:
+                                                    screenSize.width / 4,
+                                                    height:
+                                                    screenSize.height /
+                                                        9.4,
+                                                    decoration: BoxDecoration(
+                                                        shape:
+                                                        BoxShape.circle,
+                                                        color: Colors.white),
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Text(
+                                                        totalWeeklyCount
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF212121),
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .bold,
+                                                            fontSize: 24),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    "This Week",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            //day
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => Day_logs(
+                                      dailyLogs: dayLogs,
+                                    )));
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: screenSize.width / 4,
+                                    height: screenSize.height / 7,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.black),
+                                    child: Center(
+                                      child: Container(
+                                        width: screenSize.width / 4,
+                                        height: screenSize.height / 7.1,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xFFFFF9C4)),
+                                        child: Center(
+                                          child: Container(
+                                            width: screenSize.width / 4,
+                                            height: screenSize.height / 9,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white),
+                                            child: Center(
+                                              child: Container(
+                                                width: screenSize.width / 4,
+                                                height:
+                                                screenSize.height / 9.1,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.black),
+                                                child: Center(
+                                                  child: Container(
+                                                    width:
+                                                    screenSize.width / 4,
+                                                    height:
+                                                    screenSize.height /
+                                                        9.4,
+                                                    decoration: BoxDecoration(
+                                                        shape:
+                                                        BoxShape.circle,
+                                                        color: Colors.white),
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Text(
+                                                        totalDailyCount
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF212121),
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .bold,
+                                                            fontSize: 24),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    "Today",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Divider(
+                          color: darkBg,
+                        ),
+                        Container(
                             margin: EdgeInsets.fromLTRB(0, 15, 0, 5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Row(
                                 children: [
-                                  SizedBox(width: 5,),
-                                  Text("Number of devices Flashed : $totalAllCount",
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "Number of devices Flashed : $totalAllCount",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16
-                                    ),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16),
                                   ),
                                 ],
                               ),
-                            )
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                //User logs pie-chart
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Center(
-                    child: PieChartView(
-                      titleText: "User Logs : ",
-                      categories: UserLogs,
-                      colors: UserColor,
-                      onTap: () {
-                        printFunc("User Logs ${UserLogs[1].name}");
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) =>
-                            UserLogsMain(
-                              AllLogs: allLogs,
-                              FieldLogs: fieldLogs,
-                              FactoryLogs: factoryLogs,
-                              AllLogsCount: AllLogsCounts,
-                              FactoryLogsCount: FactoryLogsCounts,
-                              FieldLogsCount: FieldLogsCounts,
-                            )
-                        )
-                        );
-                      },
+                            )),
+                      ],
                     ),
+                  )
+                ],
+              ),
+              //User logs pie-chart
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Center(
+                  child: PieChartView(
+                    titleText: "User Logs : ",
+                    categories: UserLogs,
+                    colors: UserColor,
+                    onTap: () {
+                      printFunc("User Logs ${UserLogs[1].name}");
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => UserLogsMain(
+                            AllLogs: allLogs,
+                            FieldLogs: fieldLogs,
+                            FactoryLogs: factoryLogs,
+                            AllLogsCount: AllLogsCounts,
+                            FactoryLogsCount: FactoryLogsCounts,
+                            FieldLogsCount: FieldLogsCounts,
+                          )));
+                    },
                   ),
                 ),
-                //Batch logs pie-chart
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Center(
-                    child: PieChartView(
-                      titleText: "Batch Logs : ",
-                      categories: BatchLogs,
-                      colors: BatchColors,
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => BatchLogsMain(
-                              batchList: batchList,
-                              allLogs: allLogs,
-                            )));
-                      },
-                      total: allLogs.length,
-                    ),
+              ),
+              //Batch logs pie-chart
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Center(
+                  child: PieChartView(
+                    titleText: "Batch Logs : ",
+                    categories: BatchLogs,
+                    colors: BatchColors,
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => BatchLogsMain(
+                            batchList: batchList,
+                            allLogs: allLogs,
+                          )));
+                    },
+                    total: allLogs.length,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+        ),);
   }
 }

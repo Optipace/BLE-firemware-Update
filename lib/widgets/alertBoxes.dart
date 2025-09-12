@@ -5,21 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
-showAlertNavigtorLogout(BuildContext context, String type, String msg, Function Action1, Function Action2, String? Yes, String? No) {
+showAlertNavigtorLogout(BuildContext context, String type, String msg,
+    Function Action1, Function Action2, String? Yes, String? No) {
   // Create button
   getSize(context);
   Widget cancleButton = ElevatedButton(
     style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFC62828)),
-    child: Text(No ??
-      "NO",
+    child: Text(
+      No ?? "NO",
       style: TextStyle(fontSize: 12, fontFamily: baseFont),
     ),
     onPressed: Action2 as void Function()?,
   );
   Widget okButton = ElevatedButton(
     style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF2E7D32)),
-    child: Text( Yes ??
-      "YES",
+    child: Text(
+      Yes ?? "YES",
       style: TextStyle(fontSize: 12, fontFamily: baseFont),
     ),
     onPressed: Action1 as void Function()?,
@@ -32,11 +33,19 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg, Function 
     shadowColor: darkBg,
     title: Text(
       type,
-      style: TextStyle(fontSize: 18, color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w800),
+      style: TextStyle(
+          fontSize: 18,
+          color: darkBg,
+          fontFamily: baseFont,
+          fontWeight: FontWeight.w800),
     ),
     content: Text(
       msg,
-      style: TextStyle(fontSize: 18, color: darkBg, fontFamily: baseFont, fontWeight: FontWeight.w500),
+      style: TextStyle(
+          fontSize: 18,
+          color: darkBg,
+          fontFamily: baseFont,
+          fontWeight: FontWeight.w500),
     ),
     actions: [
       okButton,
@@ -49,7 +58,8 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg, Function 
     barrierDismissible: false,
     context: context,
     builder: (context) {
-      return BackdropFilter(filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
+      return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), child: alert);
     },
   );
 }
@@ -105,12 +115,43 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> ShowSnackBarMessage(
   );
 }
 
+Widget loadingDialogWithGif() {
+  printFunc("Loading with gif");
+  return WillPopScope(
+    onWillPop: () async => true, //false, //false for  ❌ disable back button
+    child: Container(
+      color: Colors.black.withOpacity(0.5),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              "assets/image/circuteLoading.gif",
+              height: 150,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              "Loading ...",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 Widget loadingDialog() {
-  return Container(
-    color: Colors.black.withOpacity(0.5),
-    child: const Center(
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+  printFunc("Loading with out gif");
+
+  return WillPopScope(
+    onWillPop: () async => true, //false, //false for  ❌ disable back button
+    child: Container(
+      color: Colors.black.withOpacity(0.5),
+      child: const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
       ),
     ),
   );

@@ -2,11 +2,20 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
+import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
+bool isSync = true;
+
+class InternetStatus {
+  static ValueNotifier<bool> isOnline = ValueNotifier(true);
+}
 
 class InternetStatusWatcher extends StatefulWidget {
   final Widget child;
+  final Function(bool)? onStatusChange;
 
-  const InternetStatusWatcher({Key? key, required this.child}) : super(key: key);
+  const InternetStatusWatcher({Key? key, required this.child,this.onStatusChange})
+      : super(key: key);
 
   @override
   State<InternetStatusWatcher> createState() => _InternetStatusWatcherState();
@@ -21,7 +30,8 @@ class _InternetStatusWatcherState extends State<InternetStatusWatcher> {
   void initState() {
     super.initState();
     _initConnectivity();
-    _subscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    _subscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
   Future<void> _initConnectivity() async {
@@ -29,24 +39,41 @@ class _InternetStatusWatcherState extends State<InternetStatusWatcher> {
     _updateConnectionStatus(result);
   }
 
-  void _updateConnectionStatus(ConnectivityResult result) {
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     final hasConnection = result != ConnectivityResult.none;
     if (hasConnection != _isConnected) {
-      if (!mounted) return;
+      if(hasConnection)isSync=true;
 
-      setState(() {
-        _isConnected = hasConnection;
-      });
+      InternetStatus.isOnline.value = hasConnection;
+
+
+      if (!mounted) return;
+      widget.onStatusChange?.call(hasConnection);
+      //notifier Updates
 
       final messenger = ScaffoldMessenger.maybeOf(context);
       if (messenger != null) {
+        printFunc("DEVICE OFFLINE : ${InternetStatus.isOnline.value}");
         messenger.showSnackBar(
           SnackBar(
-            content: Text(hasConnection ? 'Internet Connected' : 'No Internet Connection'),
+            content: Text(hasConnection
+                ? 'Internet Connected'
+                : 'No Internet Connection'),
             backgroundColor: hasConnection ? Colors.green : Colors.red,
-            duration: const Duration(seconds: 2),
+            duration: const Duration(seconds: 5),
           ),
         );
+      }
+      if (hasConnection &&isSync) {
+        setState(() {
+          _isConnected = hasConnection;
+        });
+        syncLog(context);
+
+      }else{
+        setState(() {
+          _isConnected = hasConnection;
+        });
       }
     }
   }
@@ -62,7 +89,7 @@ class _InternetStatusWatcherState extends State<InternetStatusWatcher> {
     return Stack(
       children: [
         widget.child,
-        if (!_isConnected)
+        if (false&&!_isConnected )
           Positioned(
             top: 0,
             left: 0,
