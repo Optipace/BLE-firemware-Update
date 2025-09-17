@@ -1,13 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/modules/Profile/edit_profile.dart';
 import 'package:tracker_firmware/modules/deviceInfo/deviceInfoAPI.dart';
 import 'package:tracker_firmware/modules/factoryUser/assignClient/qr_code.dart';
-import 'package:tracker_firmware/widgets/buttons.dart';
-import 'package:tracker_firmware/widgets/textFields.dart';
 
 class deviceInfoMain extends StatefulWidget {
   const deviceInfoMain({super.key});

@@ -133,3 +133,4 @@ Future setDeviceId() async {
       "\n model : ${sharedPreferences.getString("deviceModel")}"
       "\n deviceBrand : ${sharedPreferences.getString("deviceBrand")}");
 }
+

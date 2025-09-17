@@ -1824,7 +1824,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       printFunc("Error: $e");
       return false;
     }
-    printFunc("${widget.macID} is voltage is sent");
   }
 
   Future<bool> sendTemperatureThresholds() async {

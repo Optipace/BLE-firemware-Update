@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
@@ -10,15 +11,14 @@ import 'package:tracker_firmware/services/apiCall/logIn.dart';
 
 class splashScreen extends StatefulWidget {
   @override
-  splashScreenState createState() => splashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class splashScreenState extends State<splashScreen>
+class SplashScreenState extends State<splashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  Timer? _timer;
 
-  //Inistiating and navigating to login Screen
-  @override
   @override
   void initState() {
     super.initState();
@@ -28,38 +28,78 @@ class splashScreenState extends State<splashScreen>
       vsync: this,
     )..repeat();
 
-    Timer(Duration(seconds: 4), () {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        requestPermission();
-        setDeviceId();
-        getSize(context);
-        isSession = await checkSession();
-        if (isSession) {
-          printFunc("Yes Session is active");
-          printFunc(await getUserDataFromSharedPref());
+    _timer = Timer(Duration(seconds: 4), () {
+      _handleNavigation();
+    });
+  }
+
+  Future<void> _handleNavigation() async {
+    // Check if widget is still mounted before proceeding
+    if (!mounted) return;
+
+    try {
+      // Perform non-context dependent operations first
+      requestPermission();
+      setDeviceId();
+
+      // Check if still mounted before using context
+      if (!mounted) return;
+
+      getSize(context);
+      isSession = await checkSession();
+
+      if (isSession) {
+        printFunc("Yes Session is active");
+        printFunc("CHECK AUTH :: ${await ApiService.checkAuth(context) == true}");
+        printFunc("CHECK Interenet :: ${await checkInternet(context) == 0}");
+
+
+        if (!mounted) return;
+
+        if (await checkInternet(context) == 0) {
+          if (await ApiService.checkAuth(context) == true) {
+            await setUserData();
+
+            UserData userData = new UserData();
+            printFunc("Userdata from Userdata() ${userData.toJson()}");
+
+            if (!mounted) return;
+
+            navigateToDashBoard(
+                context, int.tryParse(userData.designationCode) ?? 1);
+            return;
+          }
+        }
+        else{
           await setUserData();
 
           UserData userData = new UserData();
           printFunc("Userdata from Userdata() ${userData.toJson()}");
+
+          if (!mounted) return;
+
           navigateToDashBoard(
               context, int.tryParse(userData.designationCode) ?? 1);
+          return;
         }
-      });
+      }
+
+      if (!mounted) return;
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => LoginScreen()));
-    });
-  }
 
-  //clearing the Controller
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    } catch (e) {
+      printFunc("Error in splash navigation: $e");
+
+      if (!mounted) return;
+
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -71,32 +111,40 @@ class splashScreenState extends State<splashScreen>
         ),
         child: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "TRACKER FIRMWARE ",
-              style: TextStyle(
-                color: primaryText,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-                wordSpacing: 1.5,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              "PROVISIONING APP",
-              style: TextStyle(
-                color: primaryText,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-                wordSpacing: 1.5,
-              ),
-            ),
-          ],
-        )),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "TRACKER FIRMWARE ",
+                  style: TextStyle(
+                    color: primaryText,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    wordSpacing: 1.5,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "PROVISIONING APP",
+                  style: TextStyle(
+                    color: primaryText,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    wordSpacing: 1.5,
+                  ),
+                ),
+
+              ],
+            )),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel timer to prevent callback execution
+    _controller.dispose();
+    super.dispose();
   }
 }

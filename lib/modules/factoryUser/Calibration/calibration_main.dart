@@ -912,7 +912,6 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
     required Function(int) onSubmit,
   }) async {
     final TextEditingController inputCtrl = TextEditingController();
-    bool error = false;
 
     return showDialog(
       context: Alertcontext,

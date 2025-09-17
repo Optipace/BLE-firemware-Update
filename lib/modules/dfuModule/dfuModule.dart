@@ -40,7 +40,6 @@ class _DfuHomePageState extends State<DfuHomePage> {
   List result = [];
   String? QRMacId;
   bool showsnackBar = false;
-  bool _scanHandled = false;
   bool _dfuPopUp = false;
 
   //current date and time for action timeStamp

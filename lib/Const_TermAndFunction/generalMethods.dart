@@ -119,6 +119,7 @@ getSize(BuildContext context) {
   }
 }
 
+
 class ThreeDecimalInputFormatter extends TextInputFormatter {
   final RegExp _regExp =
       RegExp(r'^\d{0,2}(\.\d{0,3})?$'); // Adjust digits as needed

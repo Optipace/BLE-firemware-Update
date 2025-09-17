@@ -198,6 +198,7 @@ class ApiService {
           await forceLogOut(context);
         }
       }
+
       if (response.statusCode == 200 && responseBody['response']["code"] == 1) {
         await onSuccess(responseBody['data']);
       } else if (response.statusCode == 200 &&
@@ -226,17 +227,66 @@ class ApiService {
     }
   }
 
+  static Future<bool> checkAuth(BuildContext context) async {
+    try {
+      final userData = await getUserDataFromSharedPref();
+      printFunc("USER DATA IN CHECK AUTH : $userData");
+
+      final String? token = userData['accessToken'];
+
+      if (token == null || token.isEmpty) {
+        print('No access token available');
+        return false;
+      }
+
+      final Uri url = Uri.parse('${ApiEndpoints.baseUrl}${ApiEndpoints.checkAuth}');
+
+      final response = await http.get(url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+
+      if(response.statusCode == 401){
+        printFunc("ACCESS TOKEN EXIPED CALLING REFRESH TOKEN");
+        bool success = await refreshAccessToken(context);
+        if(success){
+          await checkAuth(context);
+        }else{
+          return false;
+        }
+      }
+      if (response.statusCode == 200 && jsonResponse['response']['code'] == 1) {
+        return true;
+      }
+
+      return false;
+
+    } catch (e) {
+      print('Error checking auth: $e');
+      return false;
+    }
+  }
+
   static Future<bool> refreshAccessToken(BuildContext context) async {
     try {
+
+      final userData = await getUserDataFromSharedPref();
+      printFunc("USER DATA IN CHECK AUTH : $userData");
+
       final url = Uri.parse('${ApiEndpoints.baseUrl}${ApiEndpoints.refresh}');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'refreshToken': UserData().refreshToken}),
+        body: jsonEncode({'refreshToken': userData['refreshToken']}),
       );
       printFunc("Refresh token url: ${url}");
       printFunc("Refresh token body: ${jsonEncode({
-            'refreshToken': UserData().refreshToken
+            'refreshToken': userData['refreshToken']
           })}");
       final responseBody = jsonDecode(response.body);
       printFunc("Refresh token : ${response.statusCode}");
@@ -331,3 +381,4 @@ class ApiService {
     return 1;
   }
 }
+

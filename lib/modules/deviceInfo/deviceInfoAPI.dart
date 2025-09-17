@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 
 Future <Map<String,dynamic>> getHardwareDetails(BuildContext context,{required String macId}) async{
   final body = {"macId":macId};

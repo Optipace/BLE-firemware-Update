@@ -30,7 +30,6 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _Password = TextEditingController();
   TextEditingController _Repassword = TextEditingController();
 
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {

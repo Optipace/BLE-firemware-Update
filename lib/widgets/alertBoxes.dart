@@ -132,7 +132,7 @@ Widget loadingDialogWithGif() {
             const SizedBox(height: 16),
             const Text(
               "Loading ...",
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.white, fontSize: 16, ),
             ),
           ],
         ),

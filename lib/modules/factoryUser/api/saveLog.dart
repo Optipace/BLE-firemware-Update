@@ -28,6 +28,7 @@ Future<bool> saveLog(BuildContext context,
   if (await checkInternet(context) == 0) {
     await ApiService.callApi(
         context: context,
+        errorDisplay: false,
         method: 'POST',
         endpoint: ApiEndpoints.saveLog,
         bodyOrParams: body,
