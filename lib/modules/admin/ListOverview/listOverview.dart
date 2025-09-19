@@ -322,9 +322,7 @@ class listOverviewState extends State<listOverview> {
                                                           ),
                                                         ],
                                                       ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
+                                                      SizedBox(height: 10,),
                                                       Row(
                                                         children: [
                                                           Container(
@@ -347,33 +345,20 @@ class listOverviewState extends State<listOverview> {
                                                           ),
                                                         ],
                                                       ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
+                                                      SizedBox(height: 10,),
                                                       Align(
-                                                        alignment: Alignment
-                                                            .centerLeft,
+                                                        alignment: Alignment.centerLeft,
                                                         child: Column(
-                                                          crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Text(
                                                               "Relase Note : ",
                                                               style:
                                                               titleTileStyle,
                                                             ),
-                                                            SizedBox(
-                                                              height: 5,
-                                                            ),
+                                                            SizedBox(height: 5,),
                                                             Padding(
-                                                              padding:
-                                                              EdgeInsets
-                                                                  .fromLTRB(
-                                                                  15,
-                                                                  0,
-                                                                  0,
-                                                                  0),
+                                                              padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                                                               child: Text(
                                                                 "${entry.value["releaseNote"]}",
                                                                 style:
@@ -393,13 +378,9 @@ class listOverviewState extends State<listOverview> {
                                                 ),
                                               ),
                                               //Btns
-                                              SizedBox(
-                                                height: 10,
-                                              ),
+                                              SizedBox(height: 10),
                                               Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceEvenly,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: [
                                                   ElevatedButton(
                                                       style: ButtonStyle(
@@ -634,9 +615,7 @@ class listOverviewState extends State<listOverview> {
                 SizedBox(
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 5,
-                      ),
+                      SizedBox(height: 5,),
                       Divider(
                         color: darkBg,
                       ),
@@ -669,7 +648,7 @@ class listOverviewState extends State<listOverview> {
                     horizontal: 10,
                   ),
                   title: Text(
-                    "Config",
+                    "Batteries & Config",
                     style: TextStyle(
                       color: darkBg,
                       fontFamily: baseFont,

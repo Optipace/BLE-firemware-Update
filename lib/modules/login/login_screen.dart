@@ -11,7 +11,6 @@ import 'package:tracker_firmware/services/apiCall/logIn.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
-
   @override
   State<LoginScreen> createState() => LoginScreenState();
 }
@@ -21,6 +20,14 @@ class LoginScreenState extends State<LoginScreen> {
   TextEditingController _password = TextEditingController();
   bool _showInfo = false;
   String _uuid = "";
+
+  String? errorPhnMsg;
+  String? errorPassMsg;
+  Color focused_clr = Color(0xCCFFFFFF);
+  Color error_clr = Color(0xFFE74C3C);
+  Color base_clr = Color(0xCCFFFFFF);
+  bool showPass = false;
+
 
   @override
   void initState() {
@@ -38,13 +45,6 @@ class LoginScreenState extends State<LoginScreen> {
   void dispose() {
     super.dispose();
   }
-
-  String? errorPhnMsg;
-  String? errorPassMsg;
-  Color focused_clr = Color(0xCCFFFFFF);
-  Color error_clr = Color(0xFFE74C3C);
-  Color base_clr = Color(0xCCFFFFFF);
-  bool showPass = false;
 
   bool checkPhnNum(String phone) {
     return phone.length == 10;
@@ -77,8 +77,8 @@ class LoginScreenState extends State<LoginScreen> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.2), // Shadow color
-                      spreadRadius: 2, // How wide the shadow spreads
-                      blurRadius: 2, // How soft the shadow is
+                      spreadRadius: 2,
+                      blurRadius: 2,
                     )
                   ],
                 ),
@@ -87,11 +87,9 @@ class LoginScreenState extends State<LoginScreen> {
                     Positioned(
                       bottom: 0,
                       child: Container(
-                        // width: size.width / 1.5,
                         height: 50,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          // mainAxisAlignment: MainAxisAlignment.,
                           children: [
                             IconButton(
                               icon: Icon(
@@ -147,7 +145,6 @@ class LoginScreenState extends State<LoginScreen> {
                                               ),
                                             )),
                                         //to copy UUID
-
                                         Align(
                                           alignment: Alignment.centerLeft,
                                           child: IconButton(
@@ -193,246 +190,239 @@ class LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 50,
-                    ),
+                    SizedBox(height: 50,),
                     Center(
                         child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //  login Text
-                        Container(
-                          child: Text(
-                            "LOGIN",
-                            style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xCCFFFFFF)),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-
-                        //  Phone number
-                        Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 300,
-                                child: TextFormField(
-                                  controller: phoneNumber,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-                                    LengthLimitingTextInputFormatter(10),
-                                  ],
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter Your Phone number',
-                                    hintStyle: TextStyle(
-                                        color: Color(0xCCFFFFFF),
-                                        fontWeight: FontWeight.w700,
-                                        wordSpacing: 1.5,
-                                        letterSpacing: 1.1),
-                                    hintMaxLines: 1,
-                                    labelText: 'Phone Number',
-                                    labelStyle: TextStyle(
-                                        wordSpacing: 1.5,
-                                        letterSpacing: 1.1,
-                                        color: base_clr,
-                                        fontWeight: FontWeight.w400),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.auto,
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: base_clr)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: base_clr, width: 1.5)),
-                                    prefixIcon: Icon(CupertinoIcons.phone,
-                                        color: base_clr),
-                                    floatingLabelAlignment:
-                                        FloatingLabelAlignment.start,
-                                    floatingLabelStyle: TextStyle(
-                                        color: focused_clr,
-                                        fontWeight: FontWeight.w700,
-                                        wordSpacing: 1.5,
-                                        letterSpacing: 1.1),
-                                  ),
-                                  style: TextStyle(color: Color(0xCCFFFFFF)),
-                                ),
-                              ),
-                              errorPhnMsg != null
-                                  ? Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 2, right: 100),
-                                      child: Text(
-                                        errorPhnMsg!,
-                                        style: TextStyle(color: error_clr),
-                                      ),
-                                    )
-                                  : SizedBox(
-                                      height: 20,
-                                    ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        //  Password
-                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 300,
-                              child: TextFormField(
-                                controller: _password,
-                                obscureText: !showPass,
-                                style: TextStyle(color: Color(0xCCFFFFFF)),
-                                decoration: InputDecoration(
-                                  hintText: 'Enter Your Password',
-                                  hintStyle: TextStyle(
-                                      color: focused_clr,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 1.1,
-                                      wordSpacing: 1.5),
-                                  labelText: 'Password',
-                                  labelStyle: TextStyle(
-                                      wordSpacing: 1.5,
-                                      letterSpacing: 1.1,
-                                      color: base_clr,
-                                      fontWeight: FontWeight.w400),
-
-                                  // border: OutlineInputBorder(borderSide: BorderSide(width: 1,),),
-
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: base_clr)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: focused_clr, width: 1.5)),
-                                  prefixIcon: Icon(
-                                    CupertinoIcons.lock,
-                                    color: base_clr,
-                                  ),
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        showPass = !showPass;
-                                      });
-                                    },
-                                    icon: Icon(showPass
-                                        ? Icons.visibility_outlined
-                                        : Icons.visibility_off_outlined),
-                                    color: base_clr,
-                                  ),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.auto,
-                                  floatingLabelAlignment:
-                                      FloatingLabelAlignment.start,
-                                  floatingLabelStyle: TextStyle(
-                                      color: focused_clr,
-                                      wordSpacing: 1.5,
-                                      letterSpacing: 1.1,
-                                      fontWeight: FontWeight.w800),
+                              //  login Text
+                              Container(
+                                child: Text(
+                                  "LOGIN",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xCCFFFFFF)),
                                 ),
                               ),
-                            ),
-                            errorPassMsg != null
-                                ? Padding(
-                                    padding: EdgeInsets.only(top: 2, right: 40),
-                                    child: Text(
-                                      errorPassMsg!,
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(250, 0, 0, 1)),
+                              SizedBox(height: 20,),
+
+                              //  Phone number
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 300,
+                                      child: TextFormField(
+                                        controller: phoneNumber,
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly,
+                                          LengthLimitingTextInputFormatter(10),
+                                        ],
+                                        decoration: InputDecoration(
+                                          hintText: 'Enter Your Phone number',
+                                          hintStyle: TextStyle(
+                                              color: Color(0xCCFFFFFF),
+                                              fontWeight: FontWeight.w700,
+                                              wordSpacing: 1.5,
+                                              letterSpacing: 1.1),
+                                          hintMaxLines: 1,
+                                          labelText: 'Phone Number',
+                                          labelStyle: TextStyle(
+                                              wordSpacing: 1.5,
+                                              letterSpacing: 1.1,
+                                              color: base_clr,
+                                              fontWeight: FontWeight.w400),
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.auto,
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide:
+                                                  BorderSide(color: base_clr)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: base_clr, width: 1.5)),
+                                          prefixIcon: Icon(CupertinoIcons.phone,
+                                              color: base_clr),
+                                          floatingLabelAlignment:
+                                              FloatingLabelAlignment.start,
+                                          floatingLabelStyle: TextStyle(
+                                              color: focused_clr,
+                                              fontWeight: FontWeight.w700,
+                                              wordSpacing: 1.5,
+                                              letterSpacing: 1.1),
+                                        ),
+                                        style: TextStyle(color: Color(0xCCFFFFFF)),
+                                      ),
                                     ),
-                                  )
-                                : SizedBox(),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                                    errorPhnMsg != null
+                                        ? Padding(
+                                            padding:
+                                                EdgeInsets.only(top: 2, right: 100),
+                                            child: Text(
+                                              errorPhnMsg!,
+                                              style: TextStyle(color: error_clr),
+                                            ),
+                                          )
+                                        : SizedBox(
+                                            height: 20,
+                                          ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10,),
 
-                        //  Login Button
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryButton,
-                              minimumSize: Size(180, 40),
-                              elevation: 0,
-                              shadowColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                // side: BorderSide(color: Colors.black,width: 1,strokeAlign: 2.5)
-                              )),
-                          onPressed: () async {
-                            // await DataBase.database;
-                            // final exists = await DataBase.isDatabaseCreated();
-                            // if(exists){
-                            //   printFunc("Database is created!!");
-                            // }else{
-                            //   printFunc("Some issues");
-                            // }
-                            // printFunc("Device Information : \n"
-                            //     "uuid :  ${sharedPreferences.getString("UUID")}"
-                            //     "\n version : ${sharedPreferences.getString("osVersion")}"
-                            //     "\n model : ${sharedPreferences.getString("deviceModel")}");
-                            setState(() {
-                              if (checkPhnNum(phoneNumber.text) &&
-                                  checkPass(_password.text)) {
-                                errorPassMsg = null;
-                                errorPhnMsg = null;
-                                // await loginDetails(phoneNumber, _password);
-                              } else {
-                                if (!checkPhnNum(phoneNumber.text)) {
-                                  errorPhnMsg =
-                                      'Please Enter the 10 Digit number';
-                                } else {
-                                  errorPhnMsg = null;
-                                }
-                                if (!checkPass(_password.text)) {
-                                  errorPassMsg =
-                                      'Password Must be greater than 4 Characters';
-                                } else {
-                                  errorPassMsg = null;
-                                }
-                              }
-                              // Future.delayed(Duration(seconds: 3), () {
-                              //   setState(() {
-                              //     errorPhnMsg = null;
-                              //     errorPassMsg = null;
-                              //   });
-                              // });
-                            });
-                            printFunc(
-                                "DEMO DEMO ${checkPhnNum(phoneNumber.toString()) && checkPass(_password.toString())}");
+                              //  Password
+                              Column(
+                                children: [
+                                  Container(
+                                    width: 300,
+                                    child: TextFormField(
+                                      controller: _password,
+                                      obscureText: !showPass,
+                                      style: TextStyle(color: Color(0xCCFFFFFF)),
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter Your Password',
+                                        hintStyle: TextStyle(
+                                            color: focused_clr,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 1.1,
+                                            wordSpacing: 1.5),
+                                        labelText: 'Password',
+                                        labelStyle: TextStyle(
+                                            wordSpacing: 1.5,
+                                            letterSpacing: 1.1,
+                                            color: base_clr,
+                                            fontWeight: FontWeight.w400),
 
-                            if ((checkPhnNum(phoneNumber.text) &&
-                                checkPass(_password.text))) {
-                              printFunc("Inside if cond");
-                              printFunc("SIZE : $screenSize");
-                              // await getEmpDetails(context, phoneNumber.text, _password.text);
-                              await logInAPICall(
-                                  context, phoneNumber.text, _password.text);
-                            }
-                          },
-                          child: Text(
-                            "LOGIN",
-                            style: TextStyle(
-                                color: lightBg,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.1),
-                          ),
-                        ),
-                        SizedBox(
-                          height: _showInfo ? 45 : 5,
-                        ),
-                      ],
-                    )),
-                  ],
-                )),
-          )),
+                                        // border: OutlineInputBorder(borderSide: BorderSide(width: 1,),),
+
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: base_clr)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: focused_clr, width: 1.5)),
+                                        prefixIcon: Icon(
+                                          CupertinoIcons.lock,
+                                          color: base_clr,
+                                        ),
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              showPass = !showPass;
+                                            });
+                                          },
+                                          icon: Icon(showPass
+                                              ? Icons.visibility_outlined
+                                              : Icons.visibility_off_outlined),
+                                          color: base_clr,
+                                        ),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.auto,
+                                        floatingLabelAlignment:
+                                            FloatingLabelAlignment.start,
+                                        floatingLabelStyle: TextStyle(
+                                            color: focused_clr,
+                                            wordSpacing: 1.5,
+                                            letterSpacing: 1.1,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                  ),
+                                  errorPassMsg != null
+                                      ? Padding(
+                                          padding: EdgeInsets.only(top: 2, right: 40),
+                                          child: Text(
+                                            errorPassMsg!,
+                                            style: TextStyle(
+                                                color: Color.fromRGBO(250, 0, 0, 1)),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                ],
+                              ),
+                              SizedBox(height: 20,),
+
+                              //  Login Button
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryButton,
+                                    minimumSize: Size(180, 40),
+                                    elevation: 0,
+                                    shadowColor: Colors.black,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      // side: BorderSide(color: Colors.black,width: 1,strokeAlign: 2.5)
+                                    )),
+                                onPressed: () async {
+                                  // await DataBase.database;
+                                  // final exists = await DataBase.isDatabaseCreated();
+                                  // if(exists){
+                                  //   printFunc("Database is created!!");
+                                  // }else{
+                                  //   printFunc("Some issues");
+                                  // }
+                                  // printFunc("Device Information : \n"
+                                  //     "uuid :  ${sharedPreferences.getString("UUID")}"
+                                  //     "\n version : ${sharedPreferences.getString("osVersion")}"
+                                  //     "\n model : ${sharedPreferences.getString("deviceModel")}");
+                                  setState(() {
+                                    if (checkPhnNum(phoneNumber.text) &&
+                                        checkPass(_password.text)) {
+                                      errorPassMsg = null;
+                                      errorPhnMsg = null;
+                                      // await loginDetails(phoneNumber, _password);
+                                    } else {
+                                      if (!checkPhnNum(phoneNumber.text)) {
+                                        errorPhnMsg =
+                                            'Please Enter the 10 Digit number';
+                                      } else {
+                                        errorPhnMsg = null;
+                                      }
+                                      if (!checkPass(_password.text)) {
+                                        errorPassMsg =
+                                            'Password Must be greater than 4 Characters';
+                                      } else {
+                                        errorPassMsg = null;
+                                      }
+                                    }
+                                    // Future.delayed(Duration(seconds: 3), () {
+                                    //   setState(() {
+                                    //     errorPhnMsg = null;
+                                    //     errorPassMsg = null;
+                                    //   });
+                                    // });
+                                  });
+                                  printFunc(
+                                      "DEMO DEMO ${checkPhnNum(phoneNumber.toString()) && checkPass(_password.toString())}");
+
+                                  if ((checkPhnNum(phoneNumber.text) &&
+                                      checkPass(_password.text))) {
+                                    printFunc("Inside if cond");
+                                    printFunc("SIZE : $screenSize");
+                                    // await getEmpDetails(context, phoneNumber.text, _password.text);
+                                    await logInAPICall(
+                                        context, phoneNumber.text, _password.text);
+                                  }
+                                },
+                                child: Text(
+                                  "LOGIN",
+                                  style: TextStyle(
+                                      color: lightBg,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.1),
+                                ),
+                              ),
+                              SizedBox(height: _showInfo ? 45 : 5,),
+                        ],
+                      )
+                    ),
+                ],
+            )
+          ),
+        )
+      ),
     );
   }
 }

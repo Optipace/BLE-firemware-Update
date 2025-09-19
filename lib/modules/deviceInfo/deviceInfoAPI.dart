@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 
 Future <Map<String,dynamic>> getHardwareDetails(BuildContext context,{required String macId}) async{
   final body = {"macId":macId};
   Map<String,dynamic> HardwareDetail = {};
 
-  HardwareDetail = {
+  /*  HardwareDetail = {
     'MacId' : "06:1A:2B:3C:4D:5E",
     'ClientName' : "John",
     'ClientContactNum' : "9482956503",
@@ -20,10 +21,10 @@ Future <Map<String,dynamic>> getHardwareDetails(BuildContext context,{required S
     'NVoltage' : "3.6",
     'UTemp' : "40",
     'LTemp' : "10"
-  };
+  };*/
 
 
-/*  await ApiService.callApi(
+  await ApiService.callApi(
       context: context,
       method: 'POST',
       endpoint: ApiEndpoints.getHardwareDetails,
@@ -49,7 +50,7 @@ Future <Map<String,dynamic>> getHardwareDetails(BuildContext context,{required S
           'LTemp' : detail['batchResponce']['configuration']['lowerTemperature'] ?? 'NA'
         };
       }
-  );*/
+  );
 
 
   return HardwareDetail;

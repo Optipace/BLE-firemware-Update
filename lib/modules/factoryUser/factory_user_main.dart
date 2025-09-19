@@ -320,9 +320,7 @@ class FactoryMain extends StatelessWidget {
                     Navigator.of(context)
                         .push(MaterialPageRoute<void>(builder: (_) => FirmwareFactoryManagement()));
                   }),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15,),
               //Config/profile [Not in used]
               PrimaryButton(
                   enable: false,

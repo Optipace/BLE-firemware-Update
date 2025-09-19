@@ -81,9 +81,7 @@ class _all_LogsState extends State<all_Logs> {
                               Icons.devices,
                               color: darkBg,
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
+                            SizedBox(width: 10,),
                             Text(
                               totalCount.toString(),
                               style: TextStyle(
@@ -97,9 +95,7 @@ class _all_LogsState extends State<all_Logs> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
+                        SizedBox(height: 5,),
                         Text(
                           "Total Devices Flashed",
                           style: TextStyle(

@@ -378,7 +378,6 @@ class ApiService {
       Navigator.of(context, rootNavigator: true).pop();
       return 1;
     }
-    return 1;
   }
 }
 

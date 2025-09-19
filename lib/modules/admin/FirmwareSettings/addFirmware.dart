@@ -163,7 +163,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                               heightFactor: 2,
                               child: selectedbutton == 1
                                   ? Center(
-                                child: Column(
+                                     child: Column(
                                   mainAxisAlignment:
                                   MainAxisAlignment.center,
                                   children: [
@@ -191,7 +191,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                     )
                                   ],
                                 ),
-                              )
+                                  )
                                   : Center(
                                 child: Text("Firmware",
                                     maxLines: 1,
@@ -303,7 +303,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             heightFactor: 2,
                             child: selectedbutton == 3
                                 ? Center(
-                              child: Column(
+                                   child: Column(
                                 mainAxisAlignment:
                                 MainAxisAlignment.center,
                                 children: [
@@ -952,7 +952,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                               }
 
                                                               setState(() {});
-                                                            })
+                                                            }
+                                                         )
                                                       ],
                                                     ),
                                                   ),
@@ -961,10 +962,12 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                             ),
                                           );
                                         })
-                                      ]);
+                                      ]
+                                  );
                                 },
                               )
-                            ]);
+                            ]
+                            );
                             setState(() {});
                           },
                         ),

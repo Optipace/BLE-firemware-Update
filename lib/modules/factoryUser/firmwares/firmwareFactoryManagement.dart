@@ -17,8 +17,7 @@ class FirmwareFactoryManagement extends StatefulWidget {
       FirmwareFactoryManagementState();
 }
 
-TextStyle CardText(
-    {required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,

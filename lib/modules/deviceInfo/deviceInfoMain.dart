@@ -38,7 +38,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color(0xFF56B6C2), // a lighter shade for smooth effect
+                    Color(0xFF56B6C2),
                     Color(0xFF358A94),
                   ],
                   begin: Alignment.topCenter,
@@ -158,7 +158,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text("Client Name:", style: TitleStyle(),),
-                                        FittedBox(fit: BoxFit.scaleDown,child: Text(HardwareDetail['ClientName'],style:ContentStyle())),
+                                        FittedBox(fit: BoxFit.scaleDown,child: Text(HardwareDetail['ClientName']??"N/A",style:ContentStyle())),
                                       ],
                                     ),
                                   ),
@@ -169,7 +169,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text("Contact Number:",style:TitleStyle(),),
-                                        FittedBox(fit: BoxFit.scaleDown,child: Text(HardwareDetail['ClientContactNum'],style: ContentStyle())),
+                                        FittedBox(fit: BoxFit.scaleDown,child: Text(HardwareDetail['ClientContactNum'] ?? "N/A",style: ContentStyle())),
                                       ],
                                     ),
                                   ),
@@ -203,7 +203,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text("Battery Sl.No:",style:TitleStyle(),),
-                                        FittedBox(fit: BoxFit.scaleDown,child: Text(HardwareDetail['BatSerialNum'],style: ContentStyle())),
+                                        FittedBox(fit: BoxFit.scaleDown,child: Text(HardwareDetail['BatSerialNum'] ?? "N/A",style: ContentStyle())),
                                       ],
                                     ),
                                   ),
@@ -214,7 +214,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text("Device Type:",style:TitleStyle(),),
-                                        FittedBox(fit: BoxFit.scaleDown,child: Text(HardwareDetail['BatteryType'],style: ContentStyle())),
+                                        FittedBox(fit: BoxFit.scaleDown,child: Text(HardwareDetail['BatteryType'] ?? "N/A",style: ContentStyle())),
                                       ],
                                     ),
                                   ),
@@ -252,7 +252,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Text("Batch Name",style: TitleStyle(),),
-                                          FittedBox(fit: BoxFit.scaleDown, child: Text(HardwareDetail['BatchName'],style: ContentStyle(),),)
+                                          FittedBox(fit: BoxFit.scaleDown, child: Text(HardwareDetail['BatchName'] ?? "N/A",style: ContentStyle(),),)
                                         ],
                                       ),
                                     ),
@@ -263,7 +263,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Text("Firmware Name",style: TitleStyle(),),
-                                          FittedBox(fit: BoxFit.scaleDown, child: Text(HardwareDetail['FWName'],style:ContentStyle(),),)
+                                          FittedBox(fit: BoxFit.scaleDown, child: Text(HardwareDetail['FWName']?? "N/A",style:ContentStyle(),),)
                                         ],
                                       ),
                                     ),
@@ -294,7 +294,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                      Column(
                                   children: [
                                     Text("Configure Details",style: MainTitleStyle(),),
-                                    FittedBox(fit : BoxFit.scaleDown,child: Text("${HardwareDetail['CName']}",
+                                    FittedBox(fit : BoxFit.scaleDown,child: Text("${HardwareDetail['CName'] ?? "N/A"}" ,
                                     style:  TextStyle(
                                         fontSize: 12,
                                         color: darkBg,
@@ -322,7 +322,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                             children: [
                                               Text("U. Threshold", style: TitleStyle(),),
                                               SizedBox(height: 2.5),
-                                              Text("${HardwareDetail['UThershold']}V",style: ContentStyle(),),
+                                              Text("${HardwareDetail['UThershold'] ?? "N/A"}V",style: ContentStyle(),),
                                             ],
                                           ),
                                           SizedBox(width: 20),
@@ -332,7 +332,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                             children: [
                                               Text("U.Volt", style:TitleStyle(),),
                                               SizedBox(height: 2.5),
-                                              Text("${HardwareDetail['UVoltage']}V", style: ContentStyle(),),
+                                              Text("${HardwareDetail['UVoltage']?? "N/A"} V", style: ContentStyle(),),
                                             ],
                                           ),
                                           SizedBox(width: 20),
@@ -342,7 +342,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                             children: [
                                               Text("L.Threshold", style: TitleStyle(),),
                                               SizedBox(height: 2.5),
-                                              Text("${HardwareDetail['LThershold']}V", style: ContentStyle(),),
+                                              Text("${HardwareDetail['LThershold']?? "N/A"}V", style: ContentStyle(),),
                                             ],
                                           ),
                                           SizedBox(width: 20),
@@ -352,7 +352,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                             children: [
                                               Center(child: Text("L. Volt", style:TitleStyle(),)),
                                               SizedBox(height: 2.5),
-                                              Text("${HardwareDetail['LVoltage']}V", style: ContentStyle(),),
+                                              Text("${HardwareDetail['LVoltage']?? "N/A"}V", style: ContentStyle(),),
 
                                             ],
                                           ),
@@ -369,7 +369,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                             children: [
                                               Text("N. Volt", style: TitleStyle(),),
                                               SizedBox(height: 2.5),
-                                              Text("${HardwareDetail['NVoltage']}V", style: ContentStyle(),),
+                                              Text("${HardwareDetail['NVoltage']?? "N/A"}V", style: ContentStyle(),),
 
                                             ],
                                           ),
@@ -380,7 +380,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                             children: [
                                               Text("U.Temp", style: TitleStyle(),),
                                               SizedBox(height: 2.5),
-                                              Text(HardwareDetail['UTemp'], style:ContentStyle(),),
+                                              Text(HardwareDetail['UTemp'].toString()?? "N/A", style:ContentStyle(),),
                                             ],
                                           ),
                                           SizedBox(width: 20),
@@ -390,7 +390,7 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                                             children: [
                                               Text("L.Temp", style: TitleStyle(),),
                                               SizedBox(height: 2.5),
-                                              Text(HardwareDetail['LTemp'], style: ContentStyle(),),
+                                              Text(HardwareDetail['LTemp'].toString()?? "N/A", style: ContentStyle(),),
                                             ],
                                           ),
                                         ],
@@ -659,13 +659,15 @@ class _deviceInfoMainState extends State<deviceInfoMain> {
                           ),
                           onPressed: () async {
                             HardwareDetail = await getHardwareDetails(context, macId: _macIdController.text.trim());
+                            printFunc("Demo Hardware details : $HardwareDetail");
+                            printFunc("DEMO Cond : ${macIdisEmpty == false && HardwareDetail.isNotEmpty}");
                             setState(() {
                               if(_macIdController.text.trim().isEmpty) {
                                 macIdisEmpty = true;
                               }else{
                                 macIdisEmpty = false;
                               }
-                             if(macIdisEmpty == false){
+                             if(macIdisEmpty == false && HardwareDetail.isNotEmpty){
                                deviceFound = true;
                              }
 

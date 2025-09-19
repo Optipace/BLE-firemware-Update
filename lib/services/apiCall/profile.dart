@@ -190,8 +190,8 @@ Future<List<Map<String, dynamic>>> getProfileList(BuildContext context) async {
 }
 
 /////////////////// NOT IN USED /////////////////////////////////
-Future<List<Map<String, dynamic>>> getProfileByID(
-    BuildContext context, String id) async {
+
+Future<List<Map<String, dynamic>>> getProfileByID(BuildContext context, String id) async {
   List<Map<String, dynamic>> profileList = [{}];
   List<Map<String, dynamic>> profileByID = [{}];
 

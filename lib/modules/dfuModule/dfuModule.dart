@@ -45,8 +45,6 @@ class _DfuHomePageState extends State<DfuHomePage> {
   //current date and time for action timeStamp
   DateTime now = DateTime.now();
 
-  //context for savelog api
-  // late BuildContext _safeContext;
 
   //flag for Pop-up after DFU
   bool showPopUpAfterDFU = false;

@@ -679,7 +679,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                         height: 15,
                       ),
                     ],
-                  )),
+                  )
+              ),
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: manageUserBtn(
@@ -699,9 +700,9 @@ class AdminNewUserState extends State<AdminNewUser> {
                         );
                         if (success) {
                           clearNewUserFields();
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => AdminMain()));
-                        } else {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminMain()));
+                        }
+                        else {
                           clearNewUserFields();
                         }
                       }
@@ -738,65 +739,65 @@ class AdminNewUserState extends State<AdminNewUser> {
                     borderRadius: BorderRadius.circular(20)),
                 child: SingleChildScrollView(
                     child: Column(children: [
-                  //Title
-                  Padding(
-                    padding: EdgeInsets.only(top: 15),
-                    child: Center(
-                      child: Text(
-                        "Employee's Phone number",
-                        style: TextStyle(
-                            fontFamily: baseFont,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 24,
-                            color: darkBg,
-                            shadows: [
-                              Shadow(
-                                  color: Colors.black,
-                                  blurRadius: 0.5,
-                                  offset: Offset(0.5, 0.5))
-                            ]),
+                      //Title
+                      Padding(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Center(
+                          child: Text(
+                            "Employee's Phone number",
+                            style: TextStyle(
+                                fontFamily: baseFont,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 24,
+                                color: darkBg,
+                                shadows: [
+                                  Shadow(
+                                      color: Colors.black,
+                                      blurRadius: 0.5,
+                                      offset: Offset(0.5, 0.5))
+                                ]),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Divider(
-                      color: darkBg,
-                    ),
-                  ),
-                  //TextField
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          //----Name-----
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Divider(
+                          color: darkBg,
+                        ),
+                      ),
+                      //TextField
+                      Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              //----Name-----
 
-                          TextFeildNewUser(
-                            hintText: "Enter Phone number",
-                            Controller: _searchPhn,
-                            maxLength: 10,
-                            type: TextInputType.number,
-                            onChanged: (value) {},
-                            enable: true,
-                            etext: _validatePhn
-                                ? "Please Enter 10 digit Phone number"
-                                : "",
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      )),
-                  //Search btn
-                  Padding(
+                              TextFeildNewUser(
+                                hintText: "Enter Phone number",
+                                Controller: _searchPhn,
+                                maxLength: 10,
+                                type: TextInputType.number,
+                                onChanged: (value) {},
+                                enable: true,
+                                etext: _validatePhn
+                                    ? "Please Enter 10 digit Phone number"
+                                    : "",
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          )),
+                      //Search btn
+                      Padding(
                       padding: EdgeInsets.only(bottom: 15),
                       child: SizedBox(
                         width: screenSize.width / 3,

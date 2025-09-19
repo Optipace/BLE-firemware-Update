@@ -3,8 +3,7 @@ import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
 
 // Firmware
-Future<bool> setFirmwareStatus(BuildContext context,
-    {required String id, required String status}) async {
+Future<bool> setFirmwareStatus(BuildContext context, {required String id, required String status}) async {
   final requestBody = {"id": id, "active": status};
 
   bool isSuccess = false;
@@ -29,8 +28,7 @@ Future<bool> setFirmwareStatus(BuildContext context,
 }
 
 //Config
-Future<bool> setconfigStatus(BuildContext context,
-    {required String id, required String status}) async {
+Future<bool> setconfigStatus(BuildContext context, {required String id, required String status}) async {
   final requestBody = {"id": id, "active": status};
 
   bool isSuccess = false;
@@ -54,8 +52,7 @@ Future<bool> setconfigStatus(BuildContext context,
 }
 
 //Batches
-Future<bool> setBacthesStatus(BuildContext context,
-    {required String id, required String status}) async {
+Future<bool> setBacthesStatus(BuildContext context, {required String id, required String status}) async {
   final requestBody = {"id": id, "active": status};
 
   bool isSuccess = false;

@@ -3,10 +3,10 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/profileSeriesModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-/////////////////////////NOT IN USED/////////////////////////////////////////
 
-Future<void> saveProfileListToHive(
-    List<Map<String, dynamic>> profileList) async {
+
+
+Future<void> saveProfileListToHive(List<Map<String, dynamic>> profileList) async {
   final profileBox = await Hive.openBox<ProfileSeriesModel>('$serviceHiveBox');
 
   for (var series in profileList) {
@@ -38,6 +38,8 @@ Future<void> saveProfileListToHive(
     await profileBox.put(series['id'], seriesModel);
   }
 }
+
+/////////////////////////NOT IN USED/////////////////////////////////////////
 
 Future<ProfileModel?> getProfileByVersion(String seriesId, String name) async {
   final profileBox = await Hive.openBox<ProfileSeriesModel>('$serviceHiveBox');

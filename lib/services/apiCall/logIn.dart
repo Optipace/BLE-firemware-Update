@@ -10,8 +10,7 @@ import 'package:tracker_firmware/modules/admin/admin_main.dart';
 import 'package:tracker_firmware/modules/factoryUser/factory_user_main.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/field_user_main.dart';
 
-Future<bool> logInAPICall(
-    BuildContext context, String phoneNum, String password) async {
+Future<bool> logInAPICall(BuildContext context, String phoneNum, String password) async {
   var request = {
     "mobileNumber": phoneNum,
     "password": password,
@@ -75,8 +74,7 @@ request={
   ///////////////////// to by pass /////////////////////////////
 }
 
-Future<Map<String, dynamic>> getEmployeeDetail(
-    BuildContext context, String contactNumber) async {
+Future<Map<String, dynamic>> getEmployeeDetail(BuildContext context, String contactNumber) async {
   sharedPreferences = await SharedPreferences.getInstance();
   //////////////////////// to bypass ////////////////////////
   // return {

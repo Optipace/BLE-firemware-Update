@@ -40,6 +40,7 @@ Future<bool> addNewUser(
   return isSuccess;
 }
 
+
 Future<bool> updateUser(
   BuildContext context, {
   required String id,
@@ -80,6 +81,7 @@ Future<bool> updateUser(
   return isSuccess;
 }
 
+
 Future<bool> setUserActive(
   BuildContext context, {
   required String id,
@@ -101,6 +103,7 @@ Future<bool> setUserActive(
 
   return isSuccess;
 }
+
 
 Future<bool> deActivateUser(
   BuildContext context, {

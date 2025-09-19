@@ -141,6 +141,8 @@ Widget loadingDialogWithGif() {
   );
 }
 
+
+//////////// Not in Used ////////////
 Widget loadingDialog() {
   printFunc("Loading with out gif");
 
@@ -157,4 +159,4 @@ Widget loadingDialog() {
   );
 }
 
-//pop-up while flashing
+

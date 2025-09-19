@@ -8,14 +8,12 @@ import 'package:tracker_firmware/services/firmware/methods.dart';
 
 class FirmwareFieldManagement extends StatefulWidget {
   const FirmwareFieldManagement({super.key});
-
   @override
   State<FirmwareFieldManagement> createState() =>
       FirmwareFieldManagementState();
 }
 
-TextStyle CardText(
-    {required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,

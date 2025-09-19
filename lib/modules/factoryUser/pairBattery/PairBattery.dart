@@ -33,7 +33,7 @@ class _PairBatteryState extends State<PairBattery> {
 
   List result = [];
 
-// For Bluetooth Device
+  // For Bluetooth Device
   final flutterBlue = FlutterBluePlus.instance;
   BluetoothDevice? device;
   BluetoothCharacteristic? configChar;
@@ -1002,6 +1002,17 @@ class _PairBatteryState extends State<PairBattery> {
   }
 
 
+
+  @override
+  void dispose() {
+    _macIdController.dispose();
+    _batteryController.dispose();
+    super.dispose();
+  }
+
+
+  /////////////////////////NOT IN USED/////////////////////////////////////////
+
   Future<bool> sendBatterySerialNumbers(String batterySerialCtrl) async {
     if (configChar == null) {
       printFunc("DEMODEMODMEOM configChar : $configChar");
@@ -1034,13 +1045,6 @@ class _PairBatteryState extends State<PairBattery> {
       );
       return false;
     }
-  }
-
-  @override
-  void dispose() {
-    _macIdController.dispose();
-    _batteryController.dispose();
-    super.dispose();
   }
 }
 

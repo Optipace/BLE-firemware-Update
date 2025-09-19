@@ -11,13 +11,11 @@ import 'package:tracker_firmware/modules/factoryUser/api/hardWareNumber.dart';
 
 class SavedBatches extends StatefulWidget {
   const SavedBatches({super.key});
-
   @override
   State<SavedBatches> createState() => BlueetoothBatchesState();
 }
 
-TextStyle CardText(
-    {required FontWeight font_Weight, double? size, Color? FontColor}) {
+TextStyle CardText({required FontWeight font_Weight, double? size, Color? FontColor}) {
   return TextStyle(
       color: FontColor ?? darkBg,
       fontWeight: font_Weight,

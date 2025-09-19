@@ -39,8 +39,7 @@ Future<Map<String, dynamic>> getDesignation(BuildContext context) async {
   return designationList;
 }
 
-Future<bool> addNewDesgination(BuildContext context,
-    {required String name, required int priority}) async {
+Future<bool> addNewDesgination(BuildContext context, {required String name, required int priority}) async {
   final body = {"name": name, "priority": priority};
   bool isSuccess = false;
 

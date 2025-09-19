@@ -221,24 +221,6 @@ Future<List<Map<String, dynamic>>> getBatchList(
   return batchList;
 }
 
-////////////////////// NOT IN USED /////////////////////////////////////
-Future<List<Map<String, dynamic>>> getBatchByID(
-    BuildContext context, String id) async {
-  List<Map<String, dynamic>> batchList = [{}];
-  List<Map<String, dynamic>> batchByID = [{}];
-
-  batchList = await getBatchList(context, Status: "A");
-
-  for (var index in batchList) {
-    if (index["id"].toString() == id) {
-      batchByID = index["batch"];
-    }
-  }
-
-  return batchByID;
-}
-////////////////////// NOT IN USED /////////////////////////////////////
-
 Future<bool> addNewBatch(
   BuildContext context, {
   required String config,
@@ -267,4 +249,22 @@ Future<bool> addNewBatch(
   );
 
   return isSuccess;
+}
+
+
+////////////////////// NOT IN USED /////////////////////////////////////
+Future<List<Map<String, dynamic>>> getBatchByID(
+    BuildContext context, String id) async {
+  List<Map<String, dynamic>> batchList = [{}];
+  List<Map<String, dynamic>> batchByID = [{}];
+
+  batchList = await getBatchList(context, Status: "A");
+
+  for (var index in batchList) {
+    if (index["id"].toString() == id) {
+      batchByID = index["batch"];
+    }
+  }
+
+  return batchByID;
 }

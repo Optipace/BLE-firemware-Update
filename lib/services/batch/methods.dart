@@ -8,58 +8,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/batchModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
-// --------------------- This is not Used ------------------------------
-// Future<void> saveBatchListToHive(List<Map<String, dynamic>> batchList) async {
-//   final batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
-//
-//   for (var series in batchList) {
-//     var firmware = series["firmware"];
-//     var profile = series["profile"];
-//
-//     printFunc("DEMODEMODEMO path : ${firmware['file']}");
-//     // Convert base64 into Zip
-//
-//     FirmwareModel firmwareModel = FirmwareModel(
-//         id: firmware['id'],
-//         version: firmware['version'],
-//         releaseNote: firmware['releaseNote'],
-//         versionName: firmware['versionName'],
-//         deviceTypeId: firmware['deviceTypeId'],
-//         file: firmware['file'],
-//         saved: true,
-//         deviceType: firmware['deviceType']);
-//     ProfileModel profileModel = ProfileModel(
-//       id: profile['id'] ?? 0,
-//       name: profile['name'] ?? '',
-//       releaseNote: profile['releaseNote'] ?? '',
-//       uT: profile['uT'] ?? '',
-//       uV: profile['uV'] ?? '',
-//       lT: profile['lT'] ?? '',
-//       lV: profile['lV'] ?? '',
-//       saved: true,
-//       deviceTypeId: profile['deviceTypeId'] ?? '',
-//       deviceType: profile['deviceType'] ?? '',
-//     );
-//
-//     BatteryModel Battery = BatteryModel(
-//         id: '',
-//         batteryName: '',
-//         batteryCode: ''
-//     );
-//     // var batchModel = BatchModel(
-//     //   batchId: series['id'],
-//     //   batchName: series['name'],
-//     //   batchDescription: series['description'],
-//     //   firmware: firmwareModel,
-//     //   profile: profileModel,
-//     //   battery: Battery,
-//     //   saved: true,
-//     // );
-//
-//     // await batchBox.put(series['id'], batchModel);
-//   }
-// }
-// -------------------------not used -----------------------------------
 
 Future<bool> addBatch(BatchModel newBatch) async {
 // to add one by one
@@ -144,14 +92,53 @@ Future<List<Map<String, dynamic>>> getAllBatchFromHive() async {
   }).toList();
 }
 
-// to add one by one
-/*
-final newBatch = BatchModel(
-  id: 321238,
-  version: "321.0.35",
-  releaseNote: "29/05/2025",
-  versionName: "b6 2.0.3",
-  deviceTypeid: "3",
-  file: "Base64Data",
-);
- */
+/*Future<void> saveBatchListToHive(List<Map<String, dynamic>> batchList) async {
+  final batchBox = await Hive.openBox<BatchModel>('$batchHiveBox');
+
+  for (var series in batchList) {
+    var firmware = series["firmware"];
+    var profile = series["profile"];
+
+    printFunc("DEMODEMODEMO path : ${firmware['file']}");
+    // Convert base64 into Zip
+
+    FirmwareModel firmwareModel = FirmwareModel(
+        id: firmware['id'],
+        version: firmware['version'],
+        releaseNote: firmware['releaseNote'],
+        versionName: firmware['versionName'],
+        deviceTypeId: firmware['deviceTypeId'],
+        file: firmware['file'],
+        saved: true,
+        deviceType: firmware['deviceType']);
+    ProfileModel profileModel = ProfileModel(
+      id: profile['id'] ?? 0,
+      name: profile['name'] ?? '',
+      releaseNote: profile['releaseNote'] ?? '',
+      uT: profile['uT'] ?? '',
+      uV: profile['uV'] ?? '',
+      lT: profile['lT'] ?? '',
+      lV: profile['lV'] ?? '',
+      saved: true,
+      deviceTypeId: profile['deviceTypeId'] ?? '',
+      deviceType: profile['deviceType'] ?? '',
+    );
+
+    BatteryModel Battery = BatteryModel(
+        id: '',
+        batteryName: '',
+        batteryCode: ''
+    );
+    // var batchModel = BatchModel(
+    //   batchId: series['id'],
+    //   batchName: series['name'],
+    //   batchDescription: series['description'],
+    //   firmware: firmwareModel,
+    //   profile: profileModel,
+    //   battery: Battery,
+    //   saved: true,
+    // );
+
+    // await batchBox.put(series['id'], batchModel);
+  }
+}*/

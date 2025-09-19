@@ -70,9 +70,7 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
         backgroundColor: lightBg,
         body:Column(
           children: [
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5,),
             Card(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               shape: RoundedRectangleBorder(
@@ -237,7 +235,8 @@ class ProfileFieldManagementState extends State<ProfileFieldManagement> {
                   ),
                 )),
           ],
-        ),);
+        ),
+    );
   }
 
   List<Widget> seriesSix() {

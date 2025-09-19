@@ -14,8 +14,7 @@ class splashScreen extends StatefulWidget {
   SplashScreenState createState() => SplashScreenState();
 }
 
-class SplashScreenState extends State<splashScreen>
-    with SingleTickerProviderStateMixin {
+class SplashScreenState extends State<splashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   Timer? _timer;
 

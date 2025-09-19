@@ -4,55 +4,6 @@ import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareModel.dart
 import 'package:tracker_firmware/Const_TermAndFunction/entity/firmwareSeriesModel.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 
-Future<void> saveFirmwareListToHive(
-    List<Map<String, dynamic>> firmwareList) async {
-  final firmwareBox =
-      await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
-
-  for (var series in firmwareList) {
-    List<FirmwareModel> firmwareModels = (series['firmware'] as List).map((f) {
-      return FirmwareModel(
-          id: f['id'],
-          version: f['version'],
-          releaseNote: f['releaseNote'],
-          versionName: f['versionName'],
-          deviceTypeId: f['deviceTypeId'],
-          file: f['file'],
-          saved: true,
-          deviceType: f['deviceType']);
-    }).toList();
-
-    var seriesModel = FirmwareSeriesModel(
-      id: series['id'],
-      name: series['name'],
-      firmware: firmwareModels,
-    );
-
-    await firmwareBox.put(series['id'], seriesModel);
-  }
-}
-
-Future<FirmwareModel?> getFirmwareByVersion(
-    String seriesId, String version) async {
-  final firmwareBox =
-      await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
-  final series = firmwareBox.get(seriesId);
-  if (series != null) {
-    return series.firmware.firstWhere(
-      (fw) => fw.version == version,
-      // orElse: () => null,
-    );
-  }
-  return null;
-
-  // how to use
-  /*
-  var firmware = await getFirmwareByVersion("3", "321.0.31");
-  if (firmware != null) {
-  printFunc("Found firmware: ${firmware.versionName}");
-}
-   */
-}
 
 Future<bool> addFirmware(FirmwareModel newFirmware) async {
 // to add one by one
@@ -70,7 +21,7 @@ final newFirmware = FirmwareModel(
  */
   printFunc("Firmware model : \n${newFirmware.toJson()}");
   final firmwareBox =
-      await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
+  await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
 
   newFirmware.saved = true;
 
@@ -99,17 +50,56 @@ final newFirmware = FirmwareModel(
   return true;
 }
 
-// to add one by one
-/*
-final newFirmware = FirmwareModel(
-  id: 321238,
-  version: "321.0.35",
-  releaseNote: "29/05/2025",
-  versionName: "b6 2.0.3",
-  deviceTypeid: "3",
-  file: "Base64Data",
-);
- */
+/////////////////////////NOT IN USED/////////////////////////////////////////
+
+Future<void> saveFirmwareListToHive(List<Map<String, dynamic>> firmwareList) async {
+  final firmwareBox =
+      await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
+
+  for (var series in firmwareList) {
+    List<FirmwareModel> firmwareModels = (series['firmware'] as List).map((f) {
+      return FirmwareModel(
+          id: f['id'],
+          version: f['version'],
+          releaseNote: f['releaseNote'],
+          versionName: f['versionName'],
+          deviceTypeId: f['deviceTypeId'],
+          file: f['file'],
+          saved: true,
+          deviceType: f['deviceType']);
+    }).toList();
+
+    var seriesModel = FirmwareSeriesModel(
+      id: series['id'],
+      name: series['name'],
+      firmware: firmwareModels,
+    );
+
+    await firmwareBox.put(series['id'], seriesModel);
+  }
+}
+
+Future<FirmwareModel?> getFirmwareByVersion(String seriesId, String version) async {
+  final firmwareBox =
+      await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
+  final series = firmwareBox.get(seriesId);
+  if (series != null) {
+    return series.firmware.firstWhere(
+      (fw) => fw.version == version,
+      // orElse: () => null,
+    );
+  }
+  return null;
+
+  // how to use
+  /*
+  var firmware = await getFirmwareByVersion("3", "321.0.31");
+  if (firmware != null) {
+  printFunc("Found firmware: ${firmware.versionName}");
+}
+   */
+}
+
 Future<List<Map<String, dynamic>>> getAllFirmware() async {
   final box = await Hive.openBox<FirmwareSeriesModel>('$firmwareHiveBox');
 

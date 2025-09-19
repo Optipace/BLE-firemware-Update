@@ -64,7 +64,6 @@ class _AssignClientState extends State<AssignClient> {
 
   bool isOffline = false;
 
-  // Timer? timeoutTimer;
 
   @override
   void initState() {
