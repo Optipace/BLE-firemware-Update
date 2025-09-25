@@ -1063,7 +1063,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                                         .spaceEvenly,
                                                     children: [
                                                       Container(
-                                                        width: screenSize.width/3.5,
+                                                        width: screenSize.width/4,
                                                         height: screenSize.height/12,
                                                         padding: EdgeInsets.all(10),
                                                         decoration: BoxDecoration(
@@ -1115,7 +1115,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                                         ),
                                                       ),
                                                       Container(
-                                                        width: screenSize.width/3.5,
+                                                        width: screenSize.width/4,
                                                         height: screenSize.height/12,
                                                         padding: EdgeInsets.all(10),
                                                         decoration: BoxDecoration(

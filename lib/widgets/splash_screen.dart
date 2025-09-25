@@ -109,11 +109,20 @@ class SplashScreenState extends State<splashScreen> with SingleTickerProviderSta
           ),
         ),
         child: Center(
-            child: Column(
+            child: Text(
+              "DFI TRACKR ",
+              style: TextStyle(
+                color: primaryText,
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                wordSpacing: 1.5,
+              ),
+            ),
+            /*Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "TRACKER FIRMWARE ",
+                  "DFI TRACKR ",
                   style: TextStyle(
                     color: primaryText,
                     fontWeight: FontWeight.bold,
@@ -135,7 +144,8 @@ class SplashScreenState extends State<splashScreen> with SingleTickerProviderSta
                 ),
 
               ],
-            )),
+            )*/
+        ),
       ),
     );
   }

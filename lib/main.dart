@@ -52,16 +52,16 @@ void main() async {
   // Hive.registerAdapter(FirmwareSeriesModelAdapter());
 
   //Without DEV-Option
-  SystemChrome.setPreferredOrientations([
+/*  SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
   ]).then((_) async {
     runApp(MyApp());
-  });
+  });*/
 
   // with Dev-option
-  /*SystemChrome.setPreferredOrientations([
+  SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
@@ -102,7 +102,7 @@ void main() async {
     } else {
       runApp(MyApp());
     }
-  });*/
+  });
 }
 
 class MyApp extends StatelessWidget {

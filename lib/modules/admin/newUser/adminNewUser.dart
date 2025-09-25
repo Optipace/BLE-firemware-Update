@@ -142,6 +142,7 @@ class AdminNewUserState extends State<AdminNewUser> {
                   color: Colors.white,
                   child: Container(
                     height: screenSize.height / 9,
+                    width : screenSize.width,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -153,8 +154,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.fromLTRB(51, 0, 48, 0),
                             height: 120,
+                            width: screenSize.width/2.2,
                             decoration: BoxDecoration(
                                 color: selectedbutton == 1 ? darkBg : Colors.white,
                                 borderRadius: const BorderRadius.only(
@@ -214,8 +215,8 @@ class AdminNewUserState extends State<AdminNewUser> {
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.fromLTRB(48, 0, 48, 0),
                             height: 120,
+                            width: screenSize.width/2.22,
                             decoration: BoxDecoration(
                                 color: selectedbutton == 2 ? darkBg : Colors.white,
                                 borderRadius: const BorderRadius.only(

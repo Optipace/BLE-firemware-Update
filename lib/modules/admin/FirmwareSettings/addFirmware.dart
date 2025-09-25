@@ -143,8 +143,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 21.5),
                             height: 120,
+                            width: screenSize.width/3.5,
                             decoration: BoxDecoration(
                                 color: selectedbutton == 1
                                     ? darkBg
@@ -205,7 +205,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         },
                         child: Container(
                           height: 120,
-                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          width: screenSize.width/3.5,
                           decoration: BoxDecoration(
                               color:
                               selectedbutton == 2 ? darkBg : Colors.white,
@@ -262,7 +262,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         },
                         child: Container(
                           height: 120,
-                          padding: EdgeInsets.symmetric(horizontal: 28),
+                          width: screenSize.width/3,
                           decoration: BoxDecoration(
                               color:
                               selectedbutton == 3 ? darkBg : Colors.white,

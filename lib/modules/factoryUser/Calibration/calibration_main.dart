@@ -517,7 +517,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                                       .spaceEvenly,
                                                   children: [
                                                     Container(
-                                                      width: screenSize.width/3.5,
+                                                      width: screenSize.width/4,
                                                       height: screenSize.height/12,
                                                       padding: EdgeInsets.all(10),
                                                       decoration: BoxDecoration(
@@ -571,7 +571,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                                       ),
                                                     ),
                                                     Container(
-                                                      width: screenSize.width/3.5,
+                                                      width: screenSize.width/4,
                                                       height: screenSize.height/12,
                                                       padding: EdgeInsets.all(10),
                                                       decoration: BoxDecoration(
