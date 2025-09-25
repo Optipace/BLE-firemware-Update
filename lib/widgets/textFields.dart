@@ -41,67 +41,66 @@ class TextFeildNewUser extends StatelessWidget {
   Widget build(BuildContext context) {
     if (maxLength != null) {}
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Container(
-        height: 60,
-        width: screenSize.width * 0.85,
-        padding: EdgeInsets.symmetric(horizontal: 18),
-        child: Center(
-          child: TextField(
-            inputFormatters: inputFormatters,
-            cursorWidth: 1,
-            style: TextStyle(
-                fontSize: 18,
-                color: enable ? darkBg : Colors.black,
-                fontWeight: FontWeight.w500,
-                fontFamily: baseFont,
-                letterSpacing: 0.2),
-            keyboardType: type,
-            controller: Controller,
-            maxLength: maxLength,
-            cursorColor: darkBg,
-            onChanged: onChanged,
-            enabled: enable,
-            textAlign: alignemnt ?? TextAlign.left,
+    return Container(
+      height: 60,
+      width: screenSize.width * 0.85,
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+      padding: EdgeInsets.symmetric(horizontal: 18),
+      child: Center(
+        child: TextField(
+          inputFormatters: inputFormatters,
+          cursorWidth: 1,
+          style: TextStyle(
+              fontSize: 16,
+              color: enable ? darkBg : Colors.black,
+              fontWeight: FontWeight.w500,
+              fontFamily: baseFont,
+              letterSpacing: 0.2),
+          keyboardType: type,
+          controller: Controller,
+          maxLength: maxLength,
+          cursorColor: darkBg,
+          onChanged: onChanged,
+          enabled: enable,
+          textAlign: alignemnt ?? TextAlign.left,
 
-            decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: darkBg, width: 0.5),
-                    borderRadius: BorderRadius.all(Radius.circular(8))),
-                disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(8))),
-                focusColor: Colors.black,
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                        width: 1, color: etext == "" ? darkBg : Colors.black)),
-                focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: etext == "" ? Colors.black : Color(0xFFFF8A80))),
-                errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: etext == "" ? Colors.black : Color(0xFFFF8A80))),
-                filled: true,
-                fillColor: enable ? Colors.white : lightBg,
-                hintText: hintText,
-                hintStyle: TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFF9AC4C9),
-                    fontFamily: baseFont,
-                    fontWeight: FontWeight.w400),
-                errorText: etext == "" ? null : etext,
-                errorStyle: TextStyle(color: errorText),
-                counterText: ""),
-            // validator: validators,
-          ),
+          decoration: InputDecoration(
+              contentPadding:
+              EdgeInsets.symmetric( horizontal: 15),
+
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: darkBg, width: 0.5),
+                  borderRadius: BorderRadius.all(Radius.circular(8))),
+              disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(8))),
+              focusColor: Colors.black,
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide(
+                      width: 1, color: etext == "" ? darkBg : Colors.black)),
+              focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide(
+                      width: 1,
+                      color: etext == "" ? Colors.black : Color(0xFFFF8A80))),
+              errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide(
+                      width: 1,
+                      color: etext == "" ? Colors.black : Color(0xFFFF8A80))),
+              filled: true,
+              fillColor: enable ? Colors.white : lightBg,
+              hintText: hintText,
+              hintStyle: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF9AC4C9),
+                  fontFamily: baseFont,
+                  fontWeight: FontWeight.w400),
+              errorText: etext == "" ? null : etext,
+              errorStyle: TextStyle(color: errorText),
+              counterText: ""),
+          // validator: validators,
         ),
       ),
     );
@@ -117,7 +116,7 @@ class LabelText extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.fromLTRB(20, 5, 15, 5),
       child: Text(text,
           style: TextStyle(
               fontSize: 16,

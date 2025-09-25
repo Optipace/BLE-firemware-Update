@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/api/serviceUtils.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/dataBase/table_curl.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/widgets/alertBoxes.dart';
+
+import '../../../Const_TermAndFunction/constants.dart';
 
 Future<bool> saveLog(BuildContext context,
     {required String DateAndTime,
@@ -39,7 +42,30 @@ Future<bool> saveLog(BuildContext context,
         });
   } else {
     await insertIntoLogs(body);
-    ShowSnackBarMessage(context, "Log locally saved", null);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "Log locally saved",
+                style: TextStyle(
+                  color: infoText,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: baseFont,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: infoBg,
+        elevation: 6,
+        margin: EdgeInsets.all(16),
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
   return isSuccess;
 }

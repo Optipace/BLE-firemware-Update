@@ -78,8 +78,8 @@ class _BatchLogsState extends State<BatchLogs> {
             "${widget.item["name"]} Logs",
             style: TextStyle(
                 fontFamily: baseFont,
-                fontWeight: FontWeight.w800,
-                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
                 color: lightBg),
           ),
           toolbarHeight: screenSize.height / 11.5,
@@ -87,7 +87,7 @@ class _BatchLogsState extends State<BatchLogs> {
           elevation: 5,
           shadowColor: darkBg,
         ),
-        backgroundColor: lightBg,
+        backgroundColor: UpdatedBG,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -192,7 +192,7 @@ class _BatchLogsState extends State<BatchLogs> {
                                 height: 5,
                               ),
                               Text(
-                                "Total Successful Devices",
+                                "Successful Devices",
                                 style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w300,
@@ -235,7 +235,7 @@ class _BatchLogsState extends State<BatchLogs> {
                                 height: 5,
                               ),
                               Text(
-                                "Total Failed Devices",
+                                "Failed Devices",
                                 style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w300,

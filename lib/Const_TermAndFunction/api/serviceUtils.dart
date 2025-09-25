@@ -168,39 +168,44 @@ class ApiService {
       final responseBody = jsonDecode(response.body);
       printFunc(
           "API CALL DETAIL ________________________\nUrl : $url\nBody :$bodyOrParams \nMethod: $method\nHeader : $headers\nResponce code : ${response.statusCode}\nResponce : \n ${jsonDecode(response.body)}\n--------------------------\n");
-      if (response.statusCode == 401 && !isRetry && headerAuth) {
-        //
-        // && jsonDecode(response.body)['response']==-5) {
-        // Unauthorized: try to refresh token
-        bool success = await refreshAccessToken(context);
-        if (success) {
-          // Retry once with new token
-          printFunc("Recall same api $endpoint");
-          headers = headerAuth ? ApiHeaders().authHeader : ApiHeaders().header;
-          printFunc("user token after refresh token :$headers");
-          await callApi(
-            context: context,
-            method: method,
-            endpoint: endpoint,
-            bodyOrParams: bodyOrParams,
-            errorDisplay: errorDisplay,
-            onSuccess: onSuccess,
-            isRetry: true,
-          );
-          return;
-        } else {
-          ShowSnackBarMessage(
-            context,
-            'Session expired. Please log in again.',
-            false,
-          );
+      if (response.statusCode == 401 ) {
+        if (!isRetry && headerAuth) {
+          //
+          // && jsonDecode(response.body)['response']==-5) {
+          // Unauthorized: try to refresh token
+          bool success = await refreshAccessToken(context);
+          if (success) {
+            // Retry once with new token
+            printFunc("Recall same api $endpoint");
+            headers =
+                headerAuth ? ApiHeaders().authHeader : ApiHeaders().header;
+            printFunc("user token after refresh token :$headers");
+            await callApi(
+              context: context,
+              method: method,
+              endpoint: endpoint,
+              bodyOrParams: bodyOrParams,
+              errorDisplay: errorDisplay,
+              onSuccess: onSuccess,
+              isRetry: true,
+            );
+            return;
+          } else {
+            ShowSnackBarMessage(
+              context,
+              'Session expired. Please log in again.',
+              false,
+            );
 
-          await forceLogOut(context);
+            await forceLogOut(context);
+          }
         }
       }
 
       if (response.statusCode == 200 && responseBody['response']["code"] == 1) {
         await onSuccess(responseBody['data']);
+      } else if (response.statusCode == 200 && responseBody['response']["code"] == -45 &&endpoint.toString().split("/").last.trim()=="save_softwareLog") {
+        await onSuccess(responseBody['data']??"");
       } else if (response.statusCode == 200 &&
           responseBody['response']["code"] == -42) {
         ShowSnackBarMessage(
@@ -208,7 +213,14 @@ class ApiService {
           'User already Exist!',
           false,
         );
-      } else {
+      }
+
+      /*else if (response.statusCode == 200 &&
+          responseBody['response']["code"] == -42){
+        Navigator.pop(context);
+      }*/
+      else
+      {
         if (errorDisplay) {
           ShowSnackBarMessage(
             context,
@@ -235,7 +247,7 @@ class ApiService {
       final String? token = userData['accessToken'];
 
       if (token == null || token.isEmpty) {
-        print('No access token available');
+        printFunc('No access token available');
         return false;
       }
 
@@ -267,7 +279,7 @@ class ApiService {
       return false;
 
     } catch (e) {
-      print('Error checking auth: $e');
+      printFunc('Error checking auth: $e');
       return false;
     }
   }

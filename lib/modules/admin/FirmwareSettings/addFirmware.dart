@@ -108,8 +108,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
           "Manage Firmware",
           style: TextStyle(
               fontFamily: baseFont,
-              fontWeight: FontWeight.w800,
-              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
               color: lightBg),
         ),
         toolbarHeight: 60,
@@ -117,16 +117,16 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
         elevation: 5,
         shadowColor: darkBg,
       ),
-      backgroundColor: lightBg,
+      backgroundColor: UpdatedBG,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(height: 15,),
             Card(
-              // // elevation: ,
-              // // shadowColor: Colors.black,
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 shape: RoundedRectangleBorder(
+                    side: BorderSide(color: darkBg, width: 1),
                     borderRadius: BorderRadius.all(Radius.circular(22))),
                 color: lightBg,
                 child: Container(
@@ -143,11 +143,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             });
                           },
                           child: Container(
-                            width: selectedbutton == 1
-                                ? screenSize.width / 1.85
-                                : (screenSize.width / 2) / 2.2,
+                            padding: EdgeInsets.symmetric(horizontal: 21.5),
                             height: 120,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 color: selectedbutton == 1
                                     ? darkBg
@@ -161,24 +158,29 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                 ]),
                             child: Center(
                               heightFactor: 2,
-                              child: selectedbutton == 1
-                                  ? Center(
+                              child:  Center(
                                      child: Column(
                                   mainAxisAlignment:
                                   MainAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.system_update_outlined,
-                                      color: lightBg,
-                                      size: 28,
+                                      Icons.system_update_alt,
+                                      color: selectedbutton == 1
+                                          ? lightBg
+                                          : darkBg,
+                                      size: 20,
                                     ),
+                                    SizedBox(height: 5,),
                                     Text(
-                                      "New Firmware",
+                                      "New\nFirmware",
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 24,
+                                        fontSize: 16,
                                         fontFamily: baseFont,
-                                        fontWeight: FontWeight.w600,
-                                        color: lightBg,
+                                        fontWeight: FontWeight.w500,
+                                        color: selectedbutton == 1
+                                            ? lightBg
+                                            : darkBg,
                                         shadows: [
                                           Shadow(
                                               offset: Offset(0.3, 0.3),
@@ -191,22 +193,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                     )
                                   ],
                                 ),
-                                  )
-                                  : Center(
-                                child: Text("Firmware",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: baseFont,
-                                        fontWeight: FontWeight.w600,
-                                        color: darkBg,
-                                        shadows: [
-                                          Shadow(
-                                              offset: Offset(0.3, 0.3),
-                                              color: darkBg),
-                                        ])),
-                              ),
+                                  ),
                             ),
                           )),
                       //New config
@@ -217,10 +204,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           });
                         },
                         child: Container(
-                          width: selectedbutton == 2
-                              ? screenSize.width / 2
-                              : (screenSize.width / 2) / 2.7,
                           height: 120,
+                          padding: EdgeInsets.symmetric(horizontal: 2),
                           decoration: BoxDecoration(
                               color:
                               selectedbutton == 2 ? darkBg : Colors.white,
@@ -229,25 +214,29 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                 BoxShadow(blurRadius: 0.5, color: darkBg)
                               ]),
                           child: Center(
-                            heightFactor: 2,
-                            child: selectedbutton == 2
-                                ? Center(
+                            child: Center(
                                 child: Column(
                                   mainAxisAlignment:
                                   MainAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.handyman_outlined,
-                                      color: lightBg,
-                                      size: 26,
+                                      Icons.settings,
+                                      color: selectedbutton == 2
+                                          ? lightBg
+                                          : darkBg,
+                                      size: 23,
                                     ),
+                                    SizedBox(height: 5,),
                                     Text(
-                                      "New Config",
+                                      "New\nConfigure",
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 24,
+                                        fontSize: 16,
                                         fontFamily: baseFont,
-                                        fontWeight: FontWeight.w600,
-                                        color: lightBg,
+                                        fontWeight: FontWeight.w500,
+                                        color: selectedbutton == 2
+                                            ? lightBg
+                                            : darkBg,
                                         shadows: [
                                           Shadow(
                                             offset: Offset(0.3, 0.3),
@@ -261,20 +250,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                       ),
                                     ),
                                   ],
-                                ))
-                                : Text("Config",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: baseFont,
-                                    fontWeight: FontWeight.w600,
-                                    color: darkBg,
-                                    shadows: [
-                                      Shadow(
-                                          offset: Offset(0.3, 0.3),
-                                          color: darkBg),
-                                    ])),
+                                )),
                           ),
                         ),
                       ),
@@ -285,10 +261,8 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           });
                         },
                         child: Container(
-                          width: selectedbutton == 3
-                              ? screenSize.width / 2
-                              : (screenSize.width / 2) / 2.7,
                           height: 120,
+                          padding: EdgeInsets.symmetric(horizontal: 28),
                           decoration: BoxDecoration(
                               color:
                               selectedbutton == 3 ? darkBg : Colors.white,
@@ -301,8 +275,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                               ]),
                           child: Center(
                             heightFactor: 2,
-                            child: selectedbutton == 3
-                                ? Center(
+                            child: Center(
                                    child: Column(
                                 mainAxisAlignment:
                                 MainAxisAlignment.center,
@@ -312,15 +285,19 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                     color: selectedbutton == 3
                                         ? lightBg
                                         : darkBg,
-                                    size: 26,
+                                    size: 22,
                                   ),
+                                  SizedBox(height: 5,),
                                   Text(
-                                    "New Batch",
+                                    "New\nBatch",
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: 16,
                                       fontFamily: baseFont,
-                                      fontWeight: FontWeight.w600,
-                                      color: lightBg,
+                                      fontWeight: FontWeight.w500,
+                                      color: selectedbutton == 3
+                                          ? lightBg
+                                          : darkBg,
                                       shadows: [
                                         Shadow(
                                           offset: Offset(0.3, 0.3),
@@ -335,19 +312,6 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                 ],
                               ),
                             )
-                                : Text("Batch",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: baseFont,
-                                    fontWeight: FontWeight.w600,
-                                    color: darkBg,
-                                    shadows: [
-                                      Shadow(
-                                          offset: Offset(0.3, 0.3),
-                                          color: darkBg),
-                                    ])),
                           ),
                         ),
                       )
@@ -371,7 +335,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     clearBattery();
     clearBatch();
     return Card(
-      elevation: 5,
+      elevation: 1,
       margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20), // <-- radius here
@@ -383,6 +347,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
               color: darkBg,
               width: 1,
             ),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(20)),
         child: SingleChildScrollView(
           child: Column(
@@ -395,7 +360,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                     "ENTER THE DETAILS",
                     style: TextStyle(
                         fontFamily: baseFont,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w500,
                         fontSize: 24,
                         color: darkBg,
                         shadows: [
@@ -419,7 +384,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       //----2.0.3-----
                       // Firmware version
-                      LabelText(text: "Firmware Version :"),
+                      LabelText(text: "Firmware Version "),
                       TextFeildNewUser(
                         hintText: "Enter Firmware Version ",
                         Controller: _versionCode,
@@ -436,7 +401,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       //update on bluetooth conectivity
                       // Release note
-                      LabelText(text: "Release Note:"),
+                      LabelText(text: "Release Note"),
                       TextFeildNewUser(
                         hintText: "Release Note",
                         Controller: _releaseNote,
@@ -453,7 +418,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       //B5 v 2.0.3
                       // Version name
-                      // LabelText(text: "Version Name :"),
+                      // LabelText(text: "Version Name "),
                       // TextFeildNewUser(
                       //   hintText: "Enter Version Name",
                       //   Controller: _firmWareVersionName,
@@ -467,22 +432,56 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       //   height: 8,
                       // ),
 
-                      LabelText(text: "Select Firmware :"),
+                      LabelText(text: "Select Firmware "),
                       Center(
                         child: Column(
                           children: [
-                            PrimaryButton(
-                              width: screenSize.width / 2.5,
-                              height: 40,
-                              tailIcon: Icon(
-                                CupertinoIcons.arrow_up_doc,
-                                shadows: [
-                                  Shadow(color: darkBg, blurRadius: 0.5)
-                                ],
+                            ElevatedButton(
+                              onPressed: pickPdfAndConvertToBase64,
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(lightBg),
+                                foregroundColor: MaterialStateProperty.all(darkBg),
+                                elevation: MaterialStateProperty.all(5),
+                                shadowColor: MaterialStateProperty.all(darkBg),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                    side: BorderSide(color: darkBg, width: 1),
+                                  ),
+                                ),
                               ),
-                              text: "Select file",
-                              onPress: pickPdfAndConvertToBase64,
+                              child: Container(
+                                width: screenSize.width / 2.5,
+                                height: 40,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 4,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+
+                                    Text(
+                                      "Select file",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: baseFont,
+                                        shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
+                                      ),
+                                    ),
+                                    Icon(
+                                      CupertinoIcons.arrow_up_doc,
+                                      shadows: [
+                                        Shadow(color: darkBg, blurRadius: 0.5)
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
+
                             SizedBox(height: 10),
                             if (selectedFileName != null &&
                                 selectedFileSizeInBytes != null)
@@ -499,13 +498,13 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       SizedBox(
-                        height: 8,
+                        height: 5,
                       ),
                     ],
                   )),
 
               SizedBox(
-                height: 10,
+                height: 5,
               ),
               // add firmware btn
 
@@ -546,7 +545,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
   Widget newConfiguration(context) {
     return Card(
-      elevation: 5,
+      elevation: 1,
       margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20), // <-- radius here
@@ -558,6 +557,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
               color: darkBg,
               width: 1,
             ),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(20)),
         child: SingleChildScrollView(
           child: Column(
@@ -570,7 +570,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                     "ENTER THE DETAILS",
                     style: TextStyle(
                         fontFamily: baseFont,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w500,
                         fontSize: 24,
                         color: darkBg,
                         shadows: [
@@ -594,7 +594,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
                       //----2.0.3-----
                       // ---- Config name ------
-                      LabelText(text: "Config Name :"),
+                      LabelText(text: "Config Name "),
                       TextFeildNewUser(
                         hintText: "Enter Config Name  ",
                         Controller: _configName,
@@ -610,7 +610,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ----- Upper threshold -------
-                      const LabelText(text: "Cycle Thershold  [Upper Limit]:"),
+                      const LabelText(text: "Cycle Thershold [Upper Limit]"),
                       TextFeildNewUser(
                         hintText: "Enter Cycle Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],
@@ -629,7 +629,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       // -------- Upper Voltage--------
                       const LabelText(
-                          text: "Alarm Threshold   [Upper Limit] :"),
+                          text: "Alarm Threshold [Upper Limit] "),
                       TextFeildNewUser(
                         hintText: "Enter Alarm Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],
@@ -649,7 +649,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ---------- Lower Threshold ----------
-                      const LabelText(text: "Cycle Threshold  [Lower Limit] :"),
+                      const LabelText(text: "Cycle Threshold [Lower Limit] "),
                       TextFeildNewUser(
                         hintText: "Enter Cycle Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],
@@ -667,7 +667,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ---------- Lower Voltage -------
-                      const LabelText(text: "Alarm Threshold  [Lower Limit]:"),
+                      const LabelText(text: "Alarm Threshold [Lower Limit]"),
                       TextFeildNewUser(
                         hintText: "Enter Alarm Threshold",
                         inputFormatters: [ThreeDecimalInputFormatter()],
@@ -685,7 +685,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ---------- nominal Voltage -------
-                      const LabelText(text: "Nominal Voltage :"),
+                      const LabelText(text: "Nominal Voltage "),
                       TextFeildNewUser(
                         hintText: "Enter Nominal Voltage",
                         inputFormatters: [ThreeDecimalInputFormatter()],
@@ -703,7 +703,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ---------- Upper Temp -------
-                      const LabelText(text: "Upper Temperature :"),
+                      const LabelText(text: "Upper Temperature "),
                       TextFeildNewUser(
                         hintText: "Enter Upper Temperature ",
                         inputFormatters: [ThreeDecimalInputFormatter()],
@@ -720,7 +720,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ---------- Lower Temp -------
-                      const LabelText(text: "Lower Temperature :"),
+                      const LabelText(text: "Lower Temperature "),
                       TextFeildNewUser(
                         hintText: "Enter Lower Temperature",
                         inputFormatters: [ThreeDecimalInputFormatter()],
@@ -737,7 +737,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
 
                       // ---- Description -----
-                      LabelText(text: "Description :"),
+                      LabelText(text: "Description "),
                       TextFeildNewUser(
                         hintText: "Description",
                         Controller: _description,
@@ -763,11 +763,11 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           tail: ErrorContainer(
                               show: _validateDropDown,
                               errorMsg: "Please Select the Battery Series"),
-                          mainText: "Select Battery Series",
+                          mainText: "Battery Series",
                           text: _batterySeries.Text != "" &&
                                   _batterySeries.Text != null
                               ? _batterySeries.getText
-                              : "Battery Series",
+                              : "Select Battery Series",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
@@ -816,7 +816,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                                   baseFont,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w800,
+                                                                      .w500,
                                                               fontSize: 24,
                                                               color: darkBg,
                                                               shadows: [
@@ -846,7 +846,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                                                             // Battery Name
                                                             LabelText(
                                                                 text:
-                                                                    "Battery Name :"),
+                                                                    "Battery Name"),
                                                             TextFeildNewUser(
                                                               hintText:
                                                                   "Enter Battery Name",
@@ -980,7 +980,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                   )),
               //Upload btn
               Padding(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.only(bottom: 20,top: 10),
                 child: manageUserBtn(
                     text: "Upload Config",
                     onPress: () async {
@@ -1026,7 +1026,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
   Widget newBatch(context) {
     return Card(
-      elevation: 5,
+      elevation: 1,
       margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20), // <-- radius here
@@ -1038,6 +1038,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
               color: darkBg,
               width: 1,
             ),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(20)),
         child: SingleChildScrollView(
           child: Column(
@@ -1050,7 +1051,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                     "ENTER THE DETAILS",
                     style: TextStyle(
                         fontFamily: baseFont,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w500,
                         fontSize: 24,
                         color: darkBg,
                         shadows: [
@@ -1074,7 +1075,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                       ),
                       //----2.0.3-----
                       // ------ Batch name -----
-                      LabelText(text: "Batch Name :"),
+                      LabelText(text: "Batch Name "),
                       TextFeildNewUser(
                         hintText: "Enter Batch Name  ",
                         Controller: _batchName,
@@ -1090,7 +1091,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
 
                       //update on bluetooth conectivity
                       // ------- Description --------
-                      LabelText(text: "Description :"),
+                      LabelText(text: "Description "),
                       TextFeildNewUser(
                         hintText: "Description",
                         Controller: _batchDescription,
@@ -1115,7 +1116,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           mainText: "Firmware",
                           text: _firmware.Text != ""
                               ? _firmware.getText
-                              : "Select the firmware",
+                              : "Select firmware",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
@@ -1133,7 +1134,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         ),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 18,
                       ),
 
                       // ------ Battery series [DropDown] -----
@@ -1143,11 +1144,11 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                           tail: ErrorContainer(
                               show: _validatedeviceType,
                               errorMsg: "Please Select the Battery Series"),
-                          mainText: "Select Battery Series",
+                          mainText: "Battery Series",
                           text: _batterySeries.Text != "" &&
                                   _batterySeries.Text != null
                               ? _batterySeries.getText
-                              : "Battery Series",
+                              : "Select Battery Series",
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             color: darkBg,
@@ -1174,7 +1175,7 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                         ),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 12,
                       ),
 
                       // ----- Config[DropDown] -----
@@ -1186,10 +1187,10 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
                             tail: ErrorContainer(
                                 show: _validateConfig,
                                 errorMsg: "Please Select the Config"),
-                            mainText: "Config",
+                            mainText: "Configure",
                             text: _config.Text != ""
                                 ? _config.getText
-                                : "Select Config",
+                                : "Select Configure",
                             icon: Icon(
                               Icons.keyboard_arrow_down_sharp,
                               color: darkBg,
@@ -1467,3 +1468,18 @@ class AddNewFirmwareState extends State<AddNewFirmware> {
     setState(() {});
   }
 }
+
+
+//BTN SELECT FILE
+/*   PrimaryButton(
+                              width: screenSize.width / 2.5,
+                              height: 40,
+                              tailIcon: Icon(
+                                CupertinoIcons.arrow_up_doc,
+                                shadows: [
+                                  Shadow(color: darkBg, blurRadius: 0.5)
+                                ],
+                              ),
+                              text: "Select file",
+                              onPress: pickPdfAndConvertToBase64,
+                            ),*/

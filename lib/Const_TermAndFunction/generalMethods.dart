@@ -18,7 +18,7 @@ var screenSize;
 
 void printFunc(var str) {
   // if(isTesting)
-  print(str.toString());
+  // print(str.toString());
   // dev.log(str.toString());
   // debugPrint(str.toString());
 }
@@ -152,7 +152,7 @@ Future<dynamic> forceLogOut(BuildContext context) async {
 Future<dynamic> LogOutUser(BuildContext context) async {
   sharedPreferences = await SharedPreferences.getInstance();
   await syncLog(context);
-  showAlertNavigtorLogout(context, "ALERT", "DO YOU REALLY NEED TO LOG-OUT",
+  showAlertNavigtorLogout(context, "ALERT", "Are you sure you want to log out?",
       () async {
     Navigator.of(context, rootNavigator: true).pop();
 

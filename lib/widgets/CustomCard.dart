@@ -14,7 +14,7 @@ class ErrorContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return show
         ? Container(
-            margin: const EdgeInsets.only(left: 28, top: 10),
+            margin: const EdgeInsets.only(left: 10, top: 10),
             alignment: Alignment.topLeft,
             child: Text("$errorMsg",
                 textAlign: TextAlign.left,

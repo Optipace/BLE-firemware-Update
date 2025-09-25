@@ -61,6 +61,7 @@ class PieChartView extends StatefulWidget {
   final Function onTap;
   final double radius;
   int? total;
+  String? totalText;
   final List<Color> colors;
   final String titleText;
 
@@ -71,7 +72,8 @@ class PieChartView extends StatefulWidget {
       required this.titleText,
       required this.colors,
       this.total,
-      this.radius = 200})
+      this.totalText,
+      this.radius = 180})
       : super(key: key);
 
   State<PieChartView> createState() => PieChartViewState();
@@ -114,7 +116,7 @@ class PieChartViewState extends State<PieChartView> {
               style: TextStyle(
                 color: darkBg,
                 fontFamily: baseFont,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w500,
                 fontSize: 20,
                 shadows: [Shadow(color: Colors.black, blurRadius: 0.5)],
               ),
@@ -149,13 +151,14 @@ class PieChartViewState extends State<PieChartView> {
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      Text("Total", style: TextStyle(fontSize: 12)),
+                      Text(widget.totalText ?? "Total", style: TextStyle(fontSize: 12)),
                     ],
                   ),
                 ],
               ),
               Container(
                 height: widget.radius / 1.8,
+                margin: EdgeInsets.only(left: 5),
                 child: Theme(
                     data: Theme.of(context).copyWith(
                       scrollbarTheme: ScrollbarThemeData(
@@ -191,7 +194,7 @@ class PieChartViewState extends State<PieChartView> {
                                   ),
                                   SizedBox(width: 5),
                                   Container(
-                                    width: 80,
+                                    width: 65,
                                     child: Text(
                                       //
                                       widget.categories[index].name,

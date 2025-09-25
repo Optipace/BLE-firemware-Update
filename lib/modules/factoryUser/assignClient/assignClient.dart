@@ -201,43 +201,88 @@ class _AssignClientState extends State<AssignClient> {
                                       ),
                                     ),
                                   )
-                                      : ElevatedButton(
-                                    onPressed: enableSubmit
-                                        ? () {}
-                                        : () async {
-                                      validateFields();
-
-                                      !validateFileds;
-                                      // await scanAndConnect();
-
-                                      setState(() {});
-                                    },
-                                    child: enableSubmit
-                                        ? Text("Connected")
-                                        : Text("Connect"),
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                      MaterialStateProperty.all(
-                                          darkBg),
-                                      elevation:
-                                      MaterialStateProperty.all(
-                                          5),
-                                      shadowColor:
-                                      MaterialStateProperty.all(
-                                          darkBg),
-                                      shape:
-                                      MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius
-                                                .circular(10),
-                                            side: BorderSide(
-                                                color: darkBg,
-                                                width: 1)),
-                                      ),
+                                      : Container(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: (device != null &&
+                                                  device!.isConnected )
+                                                  ? darkBg
+                                                  : darkBg.withOpacity(0.4)
+                                          ),
+                                          padding: EdgeInsets.all(5),
+                                          margin: EdgeInsets.only(bottom: 5,top: 5),
+                                          child: Icon(Icons.bluetooth, size: 18,
+                                            color: (device != null &&
+                                                device!.isConnected )
+                                                ? Colors.white
+                                                : Colors.black54,
+                                          ),
+                                        ),
+                                        (device != null &&
+                                            device!.isConnected )
+                                            ? Text("Connected",style: TextStyle(fontSize: 14,color: darkBg),)
+                                            : SizedBox()
+                                      ],
                                     ),
                                   )
-                                      : SizedBox(),
+                                      : SizedBox()
+                                  /*Column(
+                                        children: [
+                                          ElevatedButton(
+                                    onPressed: enableSubmit
+                                            ? () {}
+                                            : () async {
+                                          validateFields();
+
+                                          !validateFileds;
+                                          // await scanAndConnect();
+
+                                          setState(() {});
+                                    },
+                                    child: enableSubmit
+                                            ? Text("Connected")
+                                            : Text("Connect"),
+                                    style: ButtonStyle(
+                                          backgroundColor:
+                                          MaterialStateProperty.all(
+                                              darkBg),
+                                          elevation:
+                                          MaterialStateProperty.all(
+                                              5),
+                                          shadowColor:
+                                          MaterialStateProperty.all(
+                                              darkBg),
+                                          shape:
+                                          MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius
+                                                    .circular(10),
+                                                side: BorderSide(
+                                                    color: darkBg,
+                                                    width: 1)),
+                                          ),
+                                    ),
+                                  ),
+                                          enableSubmit
+                                          ? Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 18, vertical: 10),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color:  CupertinoColors.activeGreen),
+                                            child: Text(
+                                              "Connected",
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+                                          )
+                                          : SizedBox()
+                                        ],
+                                      )*/
+
                                 ],
                               ),
                             ),
@@ -385,6 +430,7 @@ class _AssignClientState extends State<AssignClient> {
                                               ),
                                               onPressed: !isOffline
                                                  ?  () async {
+                                                FocusScope.of(context).unfocus();
                                                 //POP UP GOES HERE
                                                 validateFields();
                                                 if (_macIdController.text
@@ -429,30 +475,19 @@ class _AssignClientState extends State<AssignClient> {
                                                     ClientName.setText =
                                                     ClientDetails['name'];
                                                     ClientName.setobj = {
-                                                      "id":
-                                                      ClientDetails['id'],
-                                                      "name": ClientDetails[
-                                                      'name'],
-                                                      "address":
-                                                      ClientDetails[
-                                                      'address'],
-                                                      "contactNumber":
-                                                      ClientDetails[
-                                                      'contactNumber'],
-                                                      "email": ClientDetails[
-                                                      'email'],
-                                                      "contactPerson":
-                                                      ClientDetails[
-                                                      'contactPerson'],
-                                                      "discription":
-                                                      ClientDetails[
-                                                      'discription'],
-                                                      "createdBy":
-                                                      ClientDetails[
-                                                      'createdBy'],
-                                                      "code": ClientDetails[
-                                                      'code']
+                                                      "id": ClientDetails['id'],
+                                                      "name": ClientDetails['name'],
+                                                      "address": ClientDetails['address'],
+                                                      "contactNumber": ClientDetails['contactNumber'],
+                                                      "email": ClientDetails['email'],
+                                                      "contactPerson": ClientDetails['contactPerson'],
+                                                      "discription": ClientDetails['discription'],
+                                                      "createdBy": ClientDetails['createdBy'],
+                                                      "code":ClientDetails['code'] == null
+                                                          ? "0"
+                                                          : int.tryParse(ClientDetails['code'].toString().trim())?.toString() ?? "0"
                                                     };
+                                                    setState(() {});
 
                                                     showDialog(
                                                         context: context,
@@ -485,7 +520,7 @@ class _AssignClientState extends State<AssignClient> {
                                                               ],
                                                             ),
                                                             content: Text(
-                                                              "This Device is Assigned to ${ClientDetails['name']}. Do you want too?",
+                                                              "This Device is Assigned to ${ClientDetails['name']}. ",
                                                               style:
                                                               TextStyle(
                                                                 color: darkBg,
@@ -500,13 +535,10 @@ class _AssignClientState extends State<AssignClient> {
                                                                 onPressed:
                                                                     () {
                                                                   //Go back
-                                                                  enableClientField =
-                                                                  true;
-                                                                  Navigator.of(
-                                                                      context)
-                                                                      .pop(); //Save Log API
-                                                                  setState(
-                                                                          () {});
+                                                                  enableClientField = true;
+                                                                  Navigator.of(context).pop(); 
+                                                                  printFunc("DEMO CLient${ClientName.obj.toString()}");//Save Log API
+                                                                  setState(() {});
                                                                 },
                                                                 child: Text(
                                                                   "Continue",
@@ -657,6 +689,7 @@ class _AssignClientState extends State<AssignClient> {
                                                 20))),
                                   ),
                                   onPressed: () async {
+                                    FocusScope.of(context).unfocus();
                                     printFunc(
                                         "DEMO DEMO ClientName : ${ClientName.getobj['code'].toString()}");
                                     validateFields();
@@ -724,6 +757,11 @@ class _AssignClientState extends State<AssignClient> {
         validateFileds = true;
       });
     }
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        validateFileds = false;
+      });
+    });
   }
 
   Future<void> requestPermissions() async {
@@ -833,11 +871,15 @@ class _AssignClientState extends State<AssignClient> {
                   actions: [
                     //OK btn that goes for next page
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        FocusScope.of(context).unfocus();
+
                         Navigator.of(context).pop();
+
+                        setState(() {});
                       },
                       child: const Text(
-                        "Re-Try",
+                        "Back",
                         style: TextStyle(fontSize: 16),
                       ),
                       style: ButtonStyle(

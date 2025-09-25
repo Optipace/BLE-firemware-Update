@@ -122,7 +122,7 @@ class FieldMain extends StatelessWidget {
                         24,
                     color: darkBg,
                   ),
-                  text: "Batch/Profile",
+                  text: "Batches",
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute<void>(
                         builder: (_) => BatchFeildManagement()));
@@ -139,7 +139,7 @@ class FieldMain extends StatelessWidget {
                         24,
                     color: darkBg,
                   ),
-                  text: "Scan device",
+                  text: "Scan Device",
                   onPress: () {
                     // FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 

@@ -61,7 +61,7 @@ void main() async {
   });
 
   // with Dev-option
- /* SystemChrome.setPreferredOrientations([
+  /*SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,

@@ -56,8 +56,8 @@ class _UserLogsMainState extends State<UserLogsMain> {
           "Logs",
           style: TextStyle(
               fontFamily: baseFont,
-              fontWeight: FontWeight.w800,
-              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
               color: lightBg),
         ),
         toolbarHeight: screenSize.height / 11.5,
@@ -65,7 +65,7 @@ class _UserLogsMainState extends State<UserLogsMain> {
         elevation: 5,
         shadowColor: darkBg,
       ),
-      backgroundColor: lightBg,
+      backgroundColor: UpdatedBG,
       body: Column(
         children: [
           SizedBox(
@@ -82,10 +82,10 @@ class _UserLogsMainState extends State<UserLogsMain> {
             },
             child: Container(
                 width: screenSize.width,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 decoration: BoxDecoration(
-                    color: second_lightBg,
+                    color: Colors.white,
                     border: Border.all(color: darkBg, width: 1),
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [BoxShadow(color: darkBg, blurRadius: 0.8)]),
@@ -100,12 +100,10 @@ class _UserLogsMainState extends State<UserLogsMain> {
                           style: TextStyle(
                               color: darkBg,
                               fontFamily: baseFont,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 20),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 4,),
                         Row(
                           children: [
                             Text(
@@ -114,18 +112,16 @@ class _UserLogsMainState extends State<UserLogsMain> {
                                   color: darkBg,
                                   fontFamily: baseFont,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 18),
+                                  fontSize: 14),
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
+                            SizedBox(width: 5,),
                             Text(
                               "${allLogs.length}",
                               style: TextStyle(
                                   color: darkBg,
                                   fontFamily: baseFont,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14),
                             )
                           ],
                         )
@@ -154,10 +150,10 @@ class _UserLogsMainState extends State<UserLogsMain> {
             },
             child: Container(
                 width: screenSize.width,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 decoration: BoxDecoration(
-                    color: second_lightBg,
+                    color: Colors.white,
                     border: Border.all(color: darkBg, width: 1),
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [BoxShadow(color: darkBg, blurRadius: 0.8)]),
@@ -172,12 +168,11 @@ class _UserLogsMainState extends State<UserLogsMain> {
                           style: TextStyle(
                               color: darkBg,
                               fontFamily: baseFont,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 20),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+
+                        SizedBox(height: 4,),
                         Row(
                           children: [
                             Text(
@@ -186,7 +181,7 @@ class _UserLogsMainState extends State<UserLogsMain> {
                                   color: darkBg,
                                   fontFamily: baseFont,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 18),
+                                  fontSize: 14),
                             ),
                             SizedBox(
                               width: 5,
@@ -196,8 +191,8 @@ class _UserLogsMainState extends State<UserLogsMain> {
                               style: TextStyle(
                                   color: darkBg,
                                   fontFamily: baseFont,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14),
                             )
                           ],
                         )
@@ -226,10 +221,10 @@ class _UserLogsMainState extends State<UserLogsMain> {
             },
             child: Container(
                 width: screenSize.width,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 decoration: BoxDecoration(
-                    color: second_lightBg,
+                    color: Colors.white,
                     border: Border.all(color: darkBg, width: 1),
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [BoxShadow(color: darkBg, blurRadius: 0.8)]),
@@ -244,12 +239,11 @@ class _UserLogsMainState extends State<UserLogsMain> {
                           style: TextStyle(
                               color: darkBg,
                               fontFamily: baseFont,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 20),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+
+                        SizedBox(height: 4,),
                         Row(
                           children: [
                             Text(
@@ -258,7 +252,7 @@ class _UserLogsMainState extends State<UserLogsMain> {
                                   color: darkBg,
                                   fontFamily: baseFont,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 18),
+                                  fontSize: 14),
                             ),
                             SizedBox(
                               width: 5,
@@ -268,8 +262,8 @@ class _UserLogsMainState extends State<UserLogsMain> {
                               style: TextStyle(
                                   color: darkBg,
                                   fontFamily: baseFont,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14),
                             )
                           ],
                         )

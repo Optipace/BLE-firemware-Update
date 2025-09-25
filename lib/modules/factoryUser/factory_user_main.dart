@@ -212,7 +212,7 @@ class FactoryMain extends StatelessWidget {
                         24,
                     color: darkBg,
                   ),
-                  text: "Scan device",
+                  text: "Scan Device",
                   onPress: () {
                     FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 

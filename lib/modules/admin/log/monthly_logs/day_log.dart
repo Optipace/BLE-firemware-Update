@@ -94,8 +94,8 @@ class _Day_logsState extends State<Day_logs> {
           "Daily Logs",
           style: TextStyle(
               fontFamily: baseFont,
-              fontWeight: FontWeight.w800,
-              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
               color: lightBg),
         ),
         toolbarHeight: screenSize.height / 11.5,
@@ -103,7 +103,7 @@ class _Day_logsState extends State<Day_logs> {
         elevation: 5,
         shadowColor: darkBg,
       ),
-      backgroundColor: lightBg,
+      backgroundColor: UpdatedBG,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -207,7 +207,7 @@ class _Day_logsState extends State<Day_logs> {
                               height: 5,
                             ),
                             Text(
-                              "Total Successful Devices",
+                              "Successful Devices",
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,
@@ -249,7 +249,7 @@ class _Day_logsState extends State<Day_logs> {
                               height: 5,
                             ),
                             Text(
-                              "Total Failed Devices",
+                              "Failed Devices",
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,
@@ -271,6 +271,7 @@ class _Day_logsState extends State<Day_logs> {
                 return ValueListenableBuilder(
                   valueListenable: moreInfo,
                   builder: (ctx, value, child) {
+
                     return log_pop_up(
                         SortedLogs: sortedDailyLogs, index: index);
                   },

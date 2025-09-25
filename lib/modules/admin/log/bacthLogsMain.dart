@@ -35,8 +35,8 @@ class BatchLogsMain extends StatelessWidget {
           "Batches",
           style: TextStyle(
               fontFamily: baseFont,
-              fontWeight: FontWeight.w800,
-              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
               color: lightBg),
         ),
         toolbarHeight: screenSize.height / 11.5,
@@ -44,10 +44,11 @@ class BatchLogsMain extends StatelessWidget {
         elevation: 5,
         shadowColor: darkBg,
       ),
-      backgroundColor: lightBg,
+      backgroundColor: UpdatedBG,
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 11,),
             for (int i = 0; i < batchList.length; i++)
               GestureDetector(
                 onTap: () async {
@@ -58,11 +59,11 @@ class BatchLogsMain extends StatelessWidget {
                 child: Container(
                     width: screenSize.width,
                     padding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                    EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     margin:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     decoration: BoxDecoration(
-                        color: second_lightBg,
+                        color: Colors.white,
                         border: Border.all(color: darkBg, width: 1),
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
@@ -71,30 +72,42 @@ class BatchLogsMain extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Batch Name : ",
-                                style: TextStyle(
-                                    color: darkBg,
-                                    fontFamily: baseFont,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                batchList[i]["name"] ?? "",
-                                style: TextStyle(
-                                    color: darkBg,
-                                    fontFamily: baseFont,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 18),
-                              )
-                            ],
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Batch Name : ",
+                                  style: TextStyle(
+                                      color: darkBg,
+                                      fontFamily: baseFont,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18),
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  width: screenSize.width/2.7,
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        batchList[i]["name"] ?? "",
+                                        style: TextStyle(
+                                            color: darkBg,
+                                            fontFamily: baseFont,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 18),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Icon(

@@ -42,7 +42,7 @@ showAlertNavigtorLogout(BuildContext context, String type, String msg,
     content: Text(
       msg,
       style: TextStyle(
-          fontSize: 18,
+          fontSize: 16,
           color: darkBg,
           fontFamily: baseFont,
           fontWeight: FontWeight.w500),
@@ -115,7 +115,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> ShowSnackBarMessage(
   );
 }
 
-Widget loadingDialogWithGif() {
+Widget loadingDialog() {
   printFunc("Loading with gif");
   return WillPopScope(
     onWillPop: () async => true, //false, //false for  ❌ disable back button
@@ -143,9 +143,8 @@ Widget loadingDialogWithGif() {
 
 
 //////////// Not in Used ////////////
-Widget loadingDialog() {
+Widget loadingDialogWithGif(){
   printFunc("Loading with out gif");
-
   return WillPopScope(
     onWillPop: () async => true, //false, //false for  ❌ disable back button
     child: Container(

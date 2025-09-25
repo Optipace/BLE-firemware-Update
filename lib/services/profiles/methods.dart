@@ -90,7 +90,7 @@ final newProfile = ProfileModel(
     // Series exists, add new profile
     series.profile.add(newProfile);
     await series.save();
-    print(
+    printFunc(
         "Profile ${newProfile.name} added to series ${newProfile.deviceTypeId}.");
   }
 

@@ -222,11 +222,11 @@ class _DfuHomePageState extends State<DfuHomePage> {
         DFUstatus = "Y";
         DFUreason = "DFU completed successfully";
         setState(() {});
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('DFU completed: $oldId'),
-              duration: Duration(seconds: 3)),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //       content: Text('DFU completed: $oldId'),
+        //       duration: Duration(seconds: 3)),
+        // );
         setState(() => progressMap.remove(first
             ? address
             : oldId)); //progressMap[first ? address : oldId] = );
@@ -309,7 +309,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                             shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18)))),
+                                    borderRadius: BorderRadius.circular(10)))),
                       )
                     ],
                     backgroundColor: second_lightBg,
@@ -366,7 +366,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
         forceDfu: true,
         numberOfPackets: numberofPackets,
 
-        // enableUnsafeExperimentalButtonlessServiceInSecureDfu:true,
+        enableUnsafeExperimentalButtonlessServiceInSecureDfu:true,
         androidParameters:
             //  const AndroidParameters(rebootTime: 10000),
             const AndroidParameters(
@@ -398,6 +398,12 @@ class _DfuHomePageState extends State<DfuHomePage> {
     intent.launch();
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    startScan();
+  }
   @override
   Widget build(BuildContext context) {
     // _safeContext = context;
@@ -477,21 +483,18 @@ class _DfuHomePageState extends State<DfuHomePage> {
           ),
         ],
       ),
-      body: WillPopScope(
+      body: isDeviceSelected
+          ? WillPopScope(
         onWillPop: () async {
-          if (isDeviceSelected) {
-            setState(() {
-              isDeviceSelected = false;
-              scanedDevcice = null;
-            });
-            return false;
-          } else {
-            // Navigator.of(context,rootNavigator: true).pop();
-            return true;
-          }
+          setState(() {
+            isDeviceSelected = false;
+            scanedDevcice = null;
+          });
+          return false; // prevent popping the whole screen
         },
-        child: isDeviceSelected ? DFUConfirm() : DeviceList(),
-      ),
+        child: DFUConfirm(),
+      )
+          : DeviceList(),
     );
   }
 
@@ -593,7 +596,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
                               },
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                child: Text("NO"),
+                                child: Text("No"),
                               ),
                             ),
                           ),
@@ -613,7 +616,7 @@ class _DfuHomePageState extends State<DfuHomePage> {
     printFunc(" NAME NAME : ${widget.SelectedBatch.obj}");
     return Container(
         margin: EdgeInsets.all(20),
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(vertical: 1),
         decoration: BoxDecoration(
             color: second_lightBg.withOpacity(0.5),
             border: Border.all(
@@ -624,201 +627,64 @@ class _DfuHomePageState extends State<DfuHomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.all(5),
-                child: Center(
-                  child: Text(
-                    "CONFIRM THE DETAILS",
-                    style: TextStyle(
-                        fontFamily: baseFont,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 24,
-                        color: darkBg,
-                        shadows: [
-                          Shadow(
-                              color: Colors.black,
-                              blurRadius: 0.5,
-                              offset: Offset(0.5, 0.5))
-                        ]),
-                  ),
+              Container(
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  color: (percent == null || percent == 101)
+                    ? Colors.transparent
+                    : Colors.grey.withOpacity(0.2),
+                  borderRadius: BorderRadius.only(topLeft:Radius.circular(20),topRight: Radius.circular(20))
                 ),
-              ),
-              Divider(
-                color: darkBg,
-              ),
-              //Device
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Text("DEVICE DETAILS ",
-                            style: TextStyle(
-                                color: darkBg,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: baseFont,
-                                fontSize: 16,
-                                shadows: [
-                                  Shadow(
-                                      color: Colors.black,
-                                      blurRadius: 0.5,
-                                      offset: Offset(0.5, 0.5))
-                                ])),
-                        SizedBox(width: 5), // spacing before line
-                        Expanded(
-                          child: Container(
-                            height: 1,
-                            color: Colors.black26,
-                          ),
+                    Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Center(
+                        child: Text(
+                          "CONFIRM THE DETAILS",
+                          style: TextStyle(
+                              fontFamily: baseFont,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24,
+                              color: darkBg,
+                              shadows: [
+                                Shadow(
+                                    color: Colors.black,
+                                    blurRadius: 0.5,
+                                    offset: Offset(0.5, 0.5))
+                              ]),
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // Name
-                          Container(
-                            width: screenSize.width * 0.4,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("MAC Id",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w500,
-                                        FontColor: secondaryText)),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                    scanedDevcice != null
-                                        ? scanedDevcice!.device.remoteId.str
-                                        : "-",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 14,
-                                        FontColor: darkBg)),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          // Description
-                          Container(
-                            width: screenSize.width * 0.25,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Name",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w500,
-                                      FontColor: secondaryText),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  scanedDevcice != null
-                                      ? scanedDevcice!.device.platformName
-                                      : "-",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w700,
-                                      size: 16,
-                                      FontColor: darkBg),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
                       ),
-                    )
-                  ],
-                ),
-              ),
-              //Bacthes
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text("BATCH DETAILS ",
-                            style: TextStyle(
-                                color: darkBg,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: baseFont,
-                                fontSize: 16,
-                                shadows: [
-                                  Shadow(
-                                      color: Colors.black,
-                                      blurRadius: 0.5,
-                                      offset: Offset(0.5, 0.5))
-                                ])),
-                        SizedBox(width: 5), // spacing before line
-                        Expanded(
-                          child: Container(
-                            height: 1,
-                            color: Colors.black26,
-                          ),
-                        ),
-                      ],
                     ),
-                    SizedBox(
-                      height: 5,
+                    Divider(
+                      color: darkBg,
                     ),
-                    Container(
-                      padding: EdgeInsets.all(10),
+                    //Device
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              // Name
-                              Container(
-                                width: 80,
-                                child: Text("Batch",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w500,
-                                        FontColor: secondaryText)),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              // Description
-                              Container(
-                                width: 80,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    "Description",
-                                    style: CardText(
-                                        font_Weight: FontWeight.w500,
-                                        FontColor: secondaryText),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              // Description
-                              Container(
-                                width: 60,
-                                child: Text(
-                                  "Series",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w500,
-                                      FontColor: secondaryText),
+                              Text("DEVICE DETAILS ",
+                                  style: TextStyle(
+                                      color: darkBg,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: baseFont,
+                                      fontSize: 16,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.5,
+                                            offset: Offset(0.5, 0.5))
+                                      ])),
+                              SizedBox(width: 5), // spacing before line
+                              Expanded(
+                                child: Container(
+                                  height: 1,
+                                  color: Colors.black26,
                                 ),
                               ),
                             ],
@@ -826,449 +692,603 @@ class _DfuHomePageState extends State<DfuHomePage> {
                           SizedBox(
                             height: 5,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              // Name
-                              Container(
-                                width: 80,
-                                child: Text(
-                                    widget.SelectedBatch.obj["name"].toString(),
-                                    style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg)),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              // Description
-                              Container(
-                                width: 80,
-                                child: Center(
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      widget.SelectedBatch.obj["description"]
-                                          .toString(),
-                                      style: CardText(
-                                          font_Weight: FontWeight.w700,
-                                          size: 16,
-                                          FontColor: darkBg),
-                                    ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // Name
+                                Container(
+                                  width: screenSize.width * 0.4,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("MAC Id",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w500,
+                                              FontColor: secondaryText)),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                          scanedDevcice != null
+                                              ? scanedDevcice!.device.remoteId.str
+                                              : "-",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 14,
+                                              FontColor: darkBg)),
+                                    ],
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              // Description
-                              Container(
-                                width: 60,
-                                child: Center(
-                                  child: Text(
-                                    widget.SelectedBatch
-                                        .obj["battery"]['batteryCode']
-                                        .toString(),
-                                    style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                // Description
+                                Container(
+                                  width: screenSize.width * 0.25,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Name",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w500,
+                                            FontColor: secondaryText),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        scanedDevcice != null
+                                            ? scanedDevcice!.device.platformName
+                                            : "-",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w700,
+                                            size: 16,
+                                            FontColor: darkBg),
+                                      ),
+                                    ],
                                   ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    //Bacthes
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text("BATCH DETAILS ",
+                                  style: TextStyle(
+                                      color: darkBg,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: baseFont,
+                                      fontSize: 16,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.5,
+                                            offset: Offset(0.5, 0.5))
+                                      ])),
+                              SizedBox(width: 5), // spacing before line
+                              Expanded(
+                                child: Container(
+                                  height: 1,
+                                  color: Colors.black26,
                                 ),
                               ),
                             ],
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 5,
                           ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    // Name
+                                    Container(
+                                      width: 80,
+                                      child: Text("Batch",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w500,
+                                              FontColor: secondaryText)),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    // Description
+                                    Container(
+                                      width: 80,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          "Description",
+                                          style: CardText(
+                                              font_Weight: FontWeight.w500,
+                                              FontColor: secondaryText),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    // Description
+                                    Container(
+                                      width: 60,
+                                      child: Text(
+                                        "Series",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w500,
+                                            FontColor: secondaryText),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    // Name
+                                    Container(
+                                      width: 80,
+                                      child: Text(
+                                          widget.SelectedBatch.obj["name"].toString(),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg)),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    // Description
+                                    Container(
+                                      width: 80,
+                                      child: Center(
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            widget.SelectedBatch.obj["description"]
+                                                .toString(),
+                                            style: CardText(
+                                                font_Weight: FontWeight.w700,
+                                                size: 16,
+                                                FontColor: darkBg),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    // Description
+                                    Container(
+                                      width: 60,
+                                      child: Center(
+                                        child: Text(
+                                          widget.SelectedBatch
+                                              .obj["battery"]['batteryCode']
+                                              .toString(),
+                                          style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  ],
-                ),
-              ),
-              //FirmWare
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text("FIRMWARE DETAILS ",
-                            style: TextStyle(
-                                color: darkBg,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: baseFont,
-                                fontSize: 16,
-                                shadows: [
-                                  Shadow(
-                                      color: Colors.black,
-                                      blurRadius: 0.5,
-                                      offset: Offset(0.5, 0.5))
-                                ])),
-                        SizedBox(width: 5), // spacing before line
-                        Expanded(
-                          child: Container(
-                            height: 1,
-                            color: Colors.black26,
+                    ),
+                    //FirmWare
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text("FIRMWARE DETAILS ",
+                                  style: TextStyle(
+                                      color: darkBg,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: baseFont,
+                                      fontSize: 16,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.5,
+                                            offset: Offset(0.5, 0.5))
+                                      ])),
+                              SizedBox(width: 5), // spacing before line
+                              Expanded(
+                                child: Container(
+                                  height: 1,
+                                  color: Colors.black26,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: FittedBox(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Firm version
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Firmware Version",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w500,
-                                      FontColor: secondaryText),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  widget
-                                      .SelectedBatch.obj["firmware"]["version"]
-                                      .toString(),
-                                  style: CardText(
-                                      font_Weight: FontWeight.w700,
-                                      size: 16,
-                                      FontColor: darkBg),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            // firmware name
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Firmware Name",
-                                  style: CardText(
-                                      font_Weight: FontWeight.w500,
-                                      FontColor: secondaryText),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  widget.SelectedBatch
-                                      .obj["firmware"]["versionName"]
-                                      .toString(),
-                                  style: CardText(
-                                      font_Weight: FontWeight.w700,
-                                      size: 16,
-                                      FontColor: darkBg),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              //Config
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text("CONFIG DETAILS ",
-                            style: TextStyle(
-                                color: darkBg,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: baseFont,
-                                fontSize: 16,
-                                shadows: [
-                                  Shadow(
-                                      color: Colors.black,
-                                      blurRadius: 0.5,
-                                      offset: Offset(0.5, 0.5))
-                                ])),
-                        SizedBox(width: 5), // spacing before line
-                        Expanded(
-                          child: Container(
-                            height: 1,
-                            color: Colors.black26,
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: FittedBox(
-                        child: Column(
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-// Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
-
-                                    Text(
-                                      "U. Threshold",
-                                      style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg,
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: FittedBox(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Firm version
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Firmware Version",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w500,
+                                            FontColor: secondaryText),
                                       ),
-                                    ),
-// Upper Threshold
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                            Icons
-                                                .battery_charging_full_outlined,
-                                            size: 18,
-                                            color: secondaryText),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "${widget.SelectedBatch.obj["profile"]["uT"]} V",
-                                          style: CardText(
-                                            font_Weight: FontWeight.w700,
-                                            size: 18,
-                                            FontColor: darkBg,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 20),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-// Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
-                                    Text(
-                                      "U.Volt",
-                                      style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg,
+                                      SizedBox(
+                                        height: 3,
                                       ),
-                                    ), // Upper Voltage
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Icon(Icons.battery_6_bar_outlined,
-                                            size: 18, color: secondaryText),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "${widget.SelectedBatch.obj["profile"]['uV']} V",
-                                          style: CardText(
-                                            font_Weight: FontWeight.w700,
-                                            size: 18,
-                                            FontColor: darkBg,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 20),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-// Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
-                                    Text(
-                                      "L.Threshold",
-                                      style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg,
-                                      ),
-                                    ),
-// Lower Threshold
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Icon(Icons.battery_alert_outlined,
-                                            size: 18, color: secondaryText),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "${widget.SelectedBatch.obj["profile"]['lT']} V",
-                                          style: CardText(
-                                            font_Weight: FontWeight.w700,
-                                            size: 18,
-                                            FontColor: darkBg,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 20),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-// crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-// Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
-                                    Text(
-                                      "L. Volt",
-                                      style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5),
-// Lower Voltage
-                                    Row(
-                                      children: [
-                                        Icon(Icons.battery_1_bar_rounded,
-                                            size: 18, color: secondaryText),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "${widget.SelectedBatch.obj["profile"]['lV']} V",
-                                          style: CardText(
-                                            font_Weight: FontWeight.w700,
-                                            size: 18,
-                                            FontColor: darkBg,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
-                                    Text(
-                                      "N. Volt",
-                                      style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg,
-                                      ),
-                                    ),
-
-                                    // Upper Threshold
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                            Icons
-                                                .battery_charging_full_outlined,
-                                            size: 18,
-                                            color: darkBg),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "${widget.SelectedBatch.obj["profile"]["nV"]} V",
-                                          style: CardText(
+                                      Text(
+                                        widget
+                                            .SelectedBatch.obj["firmware"]["version"]
+                                            .toString(),
+                                        style: CardText(
                                             font_Weight: FontWeight.w700,
                                             size: 16,
-                                            FontColor: darkBg,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 20),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
-                                    Text(
-                                      "U.Temp",
-                                      style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg,
+                                            FontColor: darkBg),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  // firmware name
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Firmware Name",
+                                        style: CardText(
+                                            font_Weight: FontWeight.w500,
+                                            FontColor: secondaryText),
                                       ),
-                                    ),
-                                    // Upper Voltage
-                                    SizedBox(height: 5),
-                                    Text(
-                                      "${widget.SelectedBatch.obj["profile"]['uTemp']}",
-                                      style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg,
+                                      SizedBox(
+                                        height: 3,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 20),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
-                                    Text(
-                                      "L.Temp",
-                                      style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg,
-                                      ),
-                                    ),
-                                    // Lower Threshold
-                                    SizedBox(height: 5),
-                                    Text(
-                                      "${widget.SelectedBatch.obj["profile"]['lTemp']} ",
-                                      style: CardText(
-                                        font_Weight: FontWeight.w700,
-                                        size: 16,
-                                        FontColor: darkBg,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      Text(
+                                        widget.SelectedBatch
+                                            .obj["firmware"]["versionName"]
+                                            .toString(),
+                                        style: CardText(
+                                            font_Weight: FontWeight.w700,
+                                            size: 16,
+                                            FontColor: darkBg),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                    )
+                    ),
+                    //Config
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text("CONFIG DETAILS ",
+                                  style: TextStyle(
+                                      color: darkBg,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: baseFont,
+                                      fontSize: 16,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.5,
+                                            offset: Offset(0.5, 0.5))
+                                      ])),
+                              SizedBox(width: 5), // spacing before line
+                              Expanded(
+                                child: Container(
+                                  height: 1,
+                                  color: Colors.black26,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: FittedBox(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+// Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+
+                                          Text(
+                                            "U. Threshold",
+                                            style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg,
+                                            ),
+                                          ),
+// Upper Threshold
+                                          SizedBox(height: 5),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                  Icons
+                                                      .battery_charging_full_outlined,
+                                                  size: 18,
+                                                  color: secondaryText),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                "${widget.SelectedBatch.obj["profile"]["uT"]} V",
+                                                style: CardText(
+                                                  font_Weight: FontWeight.w700,
+                                                  size: 18,
+                                                  FontColor: darkBg,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width: 20),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+// Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                          Text(
+                                            "U.Volt",
+                                            style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg,
+                                            ),
+                                          ), // Upper Voltage
+                                          SizedBox(height: 5),
+                                          Row(
+                                            children: [
+                                              Icon(Icons.battery_6_bar_outlined,
+                                                  size: 18, color: secondaryText),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                "${widget.SelectedBatch.obj["profile"]['uV']} V",
+                                                style: CardText(
+                                                  font_Weight: FontWeight.w700,
+                                                  size: 18,
+                                                  FontColor: darkBg,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width: 20),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+// Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                          Text(
+                                            "L.Threshold",
+                                            style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg,
+                                            ),
+                                          ),
+// Lower Threshold
+                                          SizedBox(height: 5),
+                                          Row(
+                                            children: [
+                                              Icon(Icons.battery_alert_outlined,
+                                                  size: 18, color: secondaryText),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                "${widget.SelectedBatch.obj["profile"]['lT']} V",
+                                                style: CardText(
+                                                  font_Weight: FontWeight.w700,
+                                                  size: 18,
+                                                  FontColor: darkBg,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width: 20),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+// crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+// Icon(Icons.battery_2_bar, size: 18, color: secondaryText), // Lower Voltage
+                                          Text(
+                                            "L. Volt",
+                                            style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+// Lower Voltage
+                                          Row(
+                                            children: [
+                                              Icon(Icons.battery_1_bar_rounded,
+                                                  size: 18, color: secondaryText),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                "${widget.SelectedBatch.obj["profile"]['lV']} V",
+                                                style: CardText(
+                                                  font_Weight: FontWeight.w700,
+                                                  size: 18,
+                                                  FontColor: darkBg,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          // Icon(Icons.trending_up, size: 18, color: secondaryText), // Upper Threshold
+                                          Text(
+                                            "N. Volt",
+                                            style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg,
+                                            ),
+                                          ),
+
+                                          // Upper Threshold
+                                          SizedBox(height: 5),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                  Icons
+                                                      .battery_charging_full_outlined,
+                                                  size: 18,
+                                                  color: darkBg),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                "${widget.SelectedBatch.obj["profile"]["nV"]} V",
+                                                style: CardText(
+                                                  font_Weight: FontWeight.w700,
+                                                  size: 16,
+                                                  FontColor: darkBg,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width: 20),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          // Icon(Icons.flash_on, size: 18, color: secondaryText), // Upper Voltage
+                                          Text(
+                                            "U.Temp",
+                                            style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg,
+                                            ),
+                                          ),
+                                          // Upper Voltage
+                                          SizedBox(height: 5),
+                                          Text(
+                                            "${widget.SelectedBatch.obj["profile"]['uTemp']}",
+                                            style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width: 20),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          // Icon(Icons.trending_down, size: 18, color: secondaryText), // Lower Threshold
+                                          Text(
+                                            "L.Temp",
+                                            style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg,
+                                            ),
+                                          ),
+                                          // Lower Threshold
+                                          SizedBox(height: 5),
+                                          Text(
+                                            "${widget.SelectedBatch.obj["profile"]['lTemp']} ",
+                                            style: CardText(
+                                              font_Weight: FontWeight.w700,
+                                              size: 16,
+                                              FontColor: darkBg,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
 
-              Divider(
-                color: darkBg,
+              Container(
+                margin: EdgeInsets.zero,
+                child: Divider(
+                  color: darkBg,
+                ),
               ),
               Divider(
                 color: darkBg,
@@ -1277,6 +1297,8 @@ class _DfuHomePageState extends State<DfuHomePage> {
               SizedBox(
                 height: 5,
               ),
+
+
               if (percent != null && percent != 101)
                 Text("Firmware updating ...",
                     style: TextStyle(

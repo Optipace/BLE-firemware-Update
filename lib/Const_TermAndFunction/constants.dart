@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-bool futureScope = true;
+bool futureScope = false;
 
 // Dark background
 Color darkBg = Color(0xFF358A94);
@@ -17,6 +17,7 @@ Color successText = Color(0xFFE8F5E9); // Light greenish-white
 Color errorText_msg = Color(0xFFFFEBEE); // Soft red-white
 Color infoText = Color(0xFFECEFF1); // Light grey
 
+Color UpdatedBG = Color.fromRGBO(249, 243, 239, 1.0);
 // Light background
 Color lightBg = Color.fromRGBO(234, 241, 251, 1.0);
 
@@ -38,7 +39,7 @@ Color errorText = Color(0xFFCD5C5C);
 
 //Colors for Expansion Tiles
 Color collapsedBackgroundColorTile = Colors.white;
-Color backgroundColorTile = Color(0xFFF1F7FB);
+Color backgroundColorTile =Colors.white;
 Color textColorTile = Color(0xFF358A94);
 Color collapsedTextColorTile = Color(0xFF358A94);
 Color iconColorTile = Color(0xFF358A94);

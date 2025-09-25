@@ -176,44 +176,90 @@ class _PairBatteryState extends State<PairBattery> {
                                         ),
                                       ),
                                     )
-                                        : ElevatedButton(
-                                      onPressed: enableSubmit
-                                          ? () {}
-                                          : () async {
-                                        validateField();
-                                        !validateFields;
-
-                                        // await scanAndConnect();
-
-                                        setState(() {});
-                                      },
-                                      child: (device != null &&
-                                          device!.isConnected)
-                                          ? Text("Connected")
-                                          : Text("Connect"),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                        MaterialStateProperty.all(
-                                            darkBg),
-                                        elevation:
-                                        MaterialStateProperty.all(
-                                            5),
-                                        shadowColor:
-                                        MaterialStateProperty.all(
-                                            darkBg),
-                                        shape:
-                                        MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  10),
-                                              side: BorderSide(
-                                                  color: darkBg,
-                                                  width: 1)),
-                                        ),
+                                        : Container(
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: (device != null &&
+                                                    device!.isConnected )
+                                                    ? darkBg
+                                                    : darkBg.withOpacity(0.4)
+                                            ),
+                                            padding: EdgeInsets.all(5),
+                                            margin: EdgeInsets.only(bottom: 5,top: 5),
+                                            child: Icon(Icons.bluetooth, size: 18,
+                                              color: (device != null &&
+                                                  device!.isConnected )
+                                                  ? Colors.white
+                                                  : Colors.black54,
+                                            ),
+                                          ),
+                                          (device != null &&
+                                              device!.isConnected )
+                                              ? Text("Connected",style: TextStyle(fontSize: 14,color: darkBg),)
+                                              : SizedBox()
+                                        ],
                                       ),
                                     )
-                                        : SizedBox(),
+                                        : SizedBox()
+                                    /*Column(
+                                          children: [
+                                            ElevatedButton(
+                                      onPressed: enableSubmit
+                                              ? () {}
+                                              : () async {
+                                            validateField();
+                                            !validateFields;
+
+                                            // await scanAndConnect();
+
+                                            setState(() {});
+                                      },
+                                      child: (device != null &&
+                                              device!.isConnected)
+                                              ? Text("Connected")
+                                              : Text("Connect"),
+                                      style: ButtonStyle(
+                                            backgroundColor:
+                                            MaterialStateProperty.all(
+                                                darkBg),
+                                            elevation:
+                                            MaterialStateProperty.all(
+                                                5),
+                                            shadowColor:
+                                            MaterialStateProperty.all(
+                                                darkBg),
+                                            shape:
+                                            MaterialStateProperty.all(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      10),
+                                                  side: BorderSide(
+                                                      color: darkBg,
+                                                      width: 1)),
+                                            ),
+                                      ),
+                                    ),
+                                            (device != null &&
+                                                device!.isConnected )
+                                            ? Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 18, vertical: 10),
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  color:  CupertinoColors.activeGreen),
+                                              child: Text(
+                                                "Connected",
+                                                style: TextStyle(color: Colors.white),
+                                              ),
+                                            )
+                                            : SizedBox()
+                                          ],
+                                        )*/
+
                                   ],
                                 ),
                               ),
@@ -357,6 +403,7 @@ class _PairBatteryState extends State<PairBattery> {
                                             ),
                                             onPressed: !isOffline
                                                 ? () async {
+                                              FocusScope.of(context).unfocus();
                                               validateField();
                                               if (_macIdController.text
                                                   .trim()
@@ -405,7 +452,7 @@ class _PairBatteryState extends State<PairBattery> {
                                                             ],
                                                           ),
                                                           content: Text(
-                                                              "This Device is Paired with this ${batteryDetail['batterySerialNumber']} Battery. Do you want too?"),
+                                                              "This Device is Paired with this ${batteryDetail['batterySerialNumber']} Battery. "),
                                                           actions: [
                                                             //Continue btn
                                                             ElevatedButton(
@@ -699,6 +746,7 @@ class _PairBatteryState extends State<PairBattery> {
                                                   20))),
                                     ),
                                     onPressed: () async {
+                                      FocusScope.of(context).unfocus();
                                       //After this everything goes to the server
                                       validateField();
                                       printFunc(
@@ -736,7 +784,7 @@ class _PairBatteryState extends State<PairBattery> {
                                       }
                                     },
                                     child: Text(
-                                      "SUBMIT",
+                                      "Submit",
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
@@ -880,11 +928,64 @@ class _PairBatteryState extends State<PairBattery> {
                   actions: [
                     //OK btn that goes for next page
                     ElevatedButton(
+                      onPressed: () async {
+                        //After this everything goes to the server
+                        validateField();
+                        printFunc(
+                            "MacID : ${_macIdController.text} \n Battery SErial number : ${_batteryController.text}");
+                        if (!validateFields) {
+                          await scanAndConnect();
+                          isBatterySnoSent =
+                          await sendBatterySerialNumber(
+                              _batteryController.text
+                                  .toString());
+                          if (isBatterySnoSent) {
+                            disconnect();
+                            await saveMacandBattery(context,
+                                macId: _macIdController.text,
+                                BatterySerialNo:
+                                _batteryController.text);
+                            _batteryController.clear();
+                            _macIdController.clear();
+                            enableBarCode = false;
+                            validateFields = false;
+
+                            setState(() {});
+                            Navigator.of(context).pop();
+                            // Navigator.popUntil(context, (route) => route.isFirst);
+                          } else {
+                            // _batteryController.clear();
+                            // _macIdController.clear();
+                            // enableBarCode = false;
+                            // validateFields = false;
+                            Navigator.of(context).pop();
+                            await disconnect();
+                            setState(() {});
+                          }
+                        }
+                        if (mounted) {
+                          setState(() {});
+                        }
+                      },
+                      child: Text(
+                        "Re-Try",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(darkBg),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(18)))),
+                    ),
+                    ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       child: Text(
-                        "Re-Try",
+                        "Back",
                         style: TextStyle(fontSize: 16),
                       ),
                       style: ButtonStyle(
@@ -913,6 +1014,8 @@ class _PairBatteryState extends State<PairBattery> {
         if (mounted) {
           setState(() {
             NotConnected = false;
+            enableBarCode = false;
+            _batteryController.clear();
           });
         }
         printFunc("DEVICE NOT FOund in else Cond");

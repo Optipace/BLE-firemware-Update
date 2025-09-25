@@ -73,7 +73,7 @@ class AdminMainState extends State<AdminMain> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Dashboard(
-        text: 'ADMIN\nDASH-BOARD',
+        text: 'ADMIN\nDASHBOARD',
         userProfile: true,
         sliderChild: Column(
           children: [
@@ -334,8 +334,8 @@ class AdminMainState extends State<AdminMain> {
                                               "Enter Client Details!",
                                               style: TextStyle(
                                                 fontFamily: baseFont,
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: 28,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 24,
                                                 color: darkBg,
                                                 shadows: [
                                                   Shadow(
@@ -348,7 +348,9 @@ class AdminMainState extends State<AdminMain> {
                                             ),
                                           ),
                                           const SizedBox(height: 20),
-                                          LabelText(text: "Client Name :"),
+
+                                          //Client Name
+                                          LabelText(text: "Client Name "),
                                           TextFeildNewUser(
                                             hintText: "Enter Client Name",
                                             Controller: _clientName,
@@ -362,6 +364,74 @@ class AdminMainState extends State<AdminMain> {
                                                 : "",
                                           ),
                                           const SizedBox(height: 8),
+                                          //client code
+                                          LabelText(text: "Client's code"),
+                                          TextFeildNewUser(
+                                            hintText: "Enter Client's code",
+                                            Controller: _clientCode,
+                                            type: TextInputType.number,
+                                            onChanged: (value) {},
+                                            enable: true,
+                                            etext: clientValidator &&
+                                                _clientCode.text
+                                                    .trim()
+                                                    .isEmpty
+                                                ? "Please Enter Client's code"
+                                                : "",
+                                          ),
+                                          const SizedBox(height: 20),
+                                          //contact person
+                                          LabelText(text: "Client's Contact Person"),
+                                          TextFeildNewUser(
+                                            hintText:
+                                            "Enter Client's Contact Person",
+                                            Controller: _clientContactPerson,
+                                            onChanged: (value) {},
+                                            maxLength: 10,
+                                            enable: true,
+                                            etext: clientValidator &&
+                                                _clientContactPerson.text
+                                                    .trim()
+                                                    .isEmpty
+                                                ? "Please Enter Client's Contact Person"
+                                                : "",
+                                          ),
+                                          const SizedBox(height: 8),
+                                          //phno
+                                          LabelText(text: "Client Phone Number"),
+                                          TextFeildNewUser(
+                                            hintText:
+                                            "Enter Client Phone Number",
+                                            Controller: _clientPhno,
+                                            type: TextInputType.number,
+                                            onChanged: (value) {},
+                                            maxLength: 10,
+                                            enable: true,
+                                            etext: clientValidator &&
+                                                _clientPhno.text
+                                                    .trim()
+                                                    .isEmpty
+                                                ? "Please Enter Client Phone Number"
+                                                : "",
+                                          ),
+                                          const SizedBox(height: 8),
+                                          //mail
+                                          LabelText(text: "Client Email"),
+                                          TextFeildNewUser(
+                                            hintText: "Enter Client Email",
+                                            Controller: _clientEmail,
+                                            onChanged: (value) {},
+                                            enable: true,
+                                            etext: clientValidator &&
+                                                _clientEmail.text
+                                                    .trim()
+                                                    .isEmpty
+                                                ? "Please Enter Client Email"
+                                                : "",
+                                          ),
+                                          const SizedBox(height: 8),
+
+                                          //address
                                           LabelText(text: "Client Address"),
                                           TextFeildNewUser(
                                             hintText: "Enter Client Address",
@@ -376,55 +446,7 @@ class AdminMainState extends State<AdminMain> {
                                                 : "",
                                           ),
                                           const SizedBox(height: 8),
-                                          LabelText(
-                                              text: "Client Phone-Number"),
-                                          TextFeildNewUser(
-                                            hintText:
-                                                "Enter Client Phone-Number",
-                                            Controller: _clientPhno,
-                                            type: TextInputType.number,
-                                            onChanged: (value) {},
-                                            maxLength: 10,
-                                            enable: true,
-                                            etext: clientValidator &&
-                                                    _clientPhno.text
-                                                        .trim()
-                                                        .isEmpty
-                                                ? "Please Enter Client Phone-Number"
-                                                : "",
-                                          ),
-                                          const SizedBox(height: 8),
-                                          LabelText(text: "Client E-mail"),
-                                          TextFeildNewUser(
-                                            hintText: "Enter Client E-mail",
-                                            Controller: _clientEmail,
-                                            onChanged: (value) {},
-                                            enable: true,
-                                            etext: clientValidator &&
-                                                    _clientEmail.text
-                                                        .trim()
-                                                        .isEmpty
-                                                ? "Please Enter Client E-mail"
-                                                : "",
-                                          ),
-                                          const SizedBox(height: 8),
-                                          LabelText(
-                                              text: "Client's Contact Person"),
-                                          TextFeildNewUser(
-                                            hintText:
-                                                "Enter Client's Contact Person",
-                                            Controller: _clientContactPerson,
-                                            onChanged: (value) {},
-                                            maxLength: 10,
-                                            enable: true,
-                                            etext: clientValidator &&
-                                                    _clientContactPerson.text
-                                                        .trim()
-                                                        .isEmpty
-                                                ? "Please Enter Client's Contact Person"
-                                                : "",
-                                          ),
-                                          const SizedBox(height: 8),
+                                          //descprition
                                           LabelText(text: "Description"),
                                           TextFeildNewUser(
                                             hintText: "Enter Description",
@@ -439,24 +461,12 @@ class AdminMainState extends State<AdminMain> {
                                                 : "",
                                           ),
                                           const SizedBox(height: 8),
-                                          LabelText(text: "Client's code"),
-                                          TextFeildNewUser(
-                                            hintText: "Enter Client's code",
-                                            Controller: _clientCode,
-                                            type: TextInputType.number,
-                                            onChanged: (value) {},
-                                            enable: true,
-                                            etext: clientValidator &&
-                                                    _clientCode.text
-                                                        .trim()
-                                                        .isEmpty
-                                                ? "Please Enter Client's code"
-                                                : "",
-                                          ),
-                                          const SizedBox(height: 20),
+
+
+
                                           Center(
                                             child: manageUserBtn(
-                                              text: "Add Client",
+                                              text: "Save Client",
                                               onPress: () async {
                                                 checkClientState(() {
                                                   ValidateClientFields();
@@ -578,7 +588,7 @@ class AdminMainState extends State<AdminMain> {
                                           "Enter Battery Details!",
                                           style: TextStyle(
                                               fontFamily: baseFont,
-                                              fontWeight: FontWeight.w800,
+                                              fontWeight: FontWeight.w500,
                                               fontSize: 24,
                                               color: darkBg,
                                               shadows: [
@@ -599,7 +609,7 @@ class AdminMainState extends State<AdminMain> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             // Battery Name
-                                            LabelText(text: "Battery Name :"),
+                                            LabelText(text: "Battery Name "),
                                             TextFeildNewUser(
                                               hintText: "Enter Battery Name",
                                               Controller: _newbname,
@@ -723,7 +733,8 @@ class AdminMainState extends State<AdminMain> {
               ],
             ),
             //Add Designation
-            Column(
+            futureScope
+                ? Column(
               children: [
                 Container(
                   margin: EdgeInsets.only(left: 15),
@@ -755,7 +766,7 @@ class AdminMainState extends State<AdminMain> {
                                           "Enter Designation Details!",
                                           style: TextStyle(
                                               fontFamily: baseFont,
-                                              fontWeight: FontWeight.w800,
+                                              fontWeight: FontWeight.w500,
                                               fontSize: 24,
                                               color: darkBg,
                                               shadows: [
@@ -777,7 +788,7 @@ class AdminMainState extends State<AdminMain> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               // Battery Name
-                                              LabelText(text: "Designation :"),
+                                              LabelText(text: "Designation "),
                                               TextFeildNewUser(
                                                 hintText: "Enter Designation",
                                                 Controller: _newDesgination,
@@ -895,7 +906,8 @@ class AdminMainState extends State<AdminMain> {
                   height: 15,
                 )
               ],
-            ),
+            )
+                : SizedBox(),
             futureScope
                 ? Column(
                     children: [
@@ -983,7 +995,7 @@ class AdminMainState extends State<AdminMain> {
                         height: 20,
                         color: darkBg,
                       ),
-                      text: "Modify User Data",
+                      text: "Manage User Data",
                       onPress: () {
                         Navigator.of(context).push(MaterialPageRoute<void>(
                             builder: (_) => AdminNewUser()));
@@ -1000,7 +1012,7 @@ class AdminMainState extends State<AdminMain> {
                         height: 20,
                         color: darkBg,
                       ),
-                      text: "Firmware settings",
+                      text: "Firmware Settings",
                       onPress: () {
                         Navigator.of(context).push(MaterialPageRoute<void>(
                             builder: (_) => AddNewFirmware()));
@@ -1028,7 +1040,7 @@ class AdminMainState extends State<AdminMain> {
 
                   //Demo profile thing
                   /*ElevatedButton(onPressed: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => EmployeeFormTextField()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => binDemo()));
                   }, child: Text("child"))*/
                 ],
               ),

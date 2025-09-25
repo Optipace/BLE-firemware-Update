@@ -57,6 +57,10 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
 
   bool isDeviceConnected = true;
 
+  bool voltCalibrationDone = false;
+  bool tempCalibrationDone = false;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,8 +145,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                                 blurRadius: 0.3)
                                           ]),
                                     ),
-                                    enableConnect
-                                        ? NotConnected
+                                    NotConnected
                                         ? Container(
                                       color: Colors.transparent,
                                       height: 25,
@@ -156,48 +159,90 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                         ),
                                       ),
                                     )
-                                        : ElevatedButton(
-                                      onPressed: (device != null &&
-                                          device!.isConnected)
-                                          ? () {}
-                                          : () async {
-                                        //After this everything goes to the server
-                                        validateField();
-                                        !validateFields;
-                                        if (!validateFields) {
-                                          await scanAndConnect();
-                                        }
-                                        if (mounted) {
-                                          setState(() {});
-                                        }
-                                      },
-                                      child: (device != null &&
-                                          device!.isConnected)
-                                          ? Text("Connected")
-                                          : Text("Connect"),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                        MaterialStateProperty.all(
-                                            darkBg),
-                                        elevation:
-                                        MaterialStateProperty.all(
-                                            5),
-                                        shadowColor:
-                                        MaterialStateProperty.all(
-                                            darkBg),
-                                        shape:
-                                        MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  10),
-                                              side: BorderSide(
-                                                  color: darkBg,
-                                                  width: 1)),
-                                        ),
+                                        : Container(
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: (device != null && device!.isConnected)
+                                                ? darkBg
+                                                : darkBg.withOpacity(0.4)
+                                            ),
+                                            padding: EdgeInsets.all(5),
+                                            margin: EdgeInsets.only(bottom: 5,top: 5),
+                                            child: Icon(Icons.bluetooth, size: 18,
+                                              color: (device != null && device!.isConnected)
+                                              ? Colors.white
+                                              : Colors.black54,
+                                            ),
+                                          ),
+                                          (device != null && device!.isConnected)
+                                              ? Text("Connected",style: TextStyle(fontSize: 14,color: darkBg),)
+                                              : SizedBox()
+                                        ],
                                       ),
                                     )
-                                        : SizedBox()
+                                    /*Column(
+                                          children: [
+                                            ElevatedButton(
+                                      onPressed: (device != null &&
+                                              device!.isConnected)
+                                              ? () {}
+                                              : () async {
+                                            //After this everything goes to the server
+                                            validateField();
+                                            !validateFields;
+                                            if (!validateFields) {
+                                              await scanAndConnect();
+                                            }
+                                            if (mounted) {
+                                              setState(() {});
+                                            }
+                                      },
+                                      child: (device != null &&
+                                              device!.isConnected)
+                                              ? Text("Connected")
+                                              : Text("Connect"),
+                                      style: ButtonStyle(
+                                            backgroundColor:
+                                            MaterialStateProperty.all(
+                                                darkBg),
+                                            elevation:
+                                            MaterialStateProperty.all(
+                                                5),
+                                            shadowColor:
+                                            MaterialStateProperty.all(
+                                                darkBg),
+                                            shape:
+                                            MaterialStateProperty.all(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      10),
+                                                  side: BorderSide(
+                                                      color: darkBg,
+                                                      width: 1)),
+                                            ),
+                                      ),
+                                    ),
+                                            (device != null &&
+                                                device!.isConnected)
+                                            ? Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 18, vertical: 10),
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  color:  CupertinoColors.activeGreen),
+                                              child: Text(
+                                                "Connected",
+                                                style: TextStyle(color: Colors.white),
+                                              ),
+                                            )
+                                            : SizedBox()
+                                          ],
+                                        )*/
+                                        
                                   ],
                                 ),
                               ),
@@ -326,6 +371,9 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                               ? "Please Enter MAC-Id"
                                               : "",
                                         ),
+
+                                       
+
                                       ],
                                     ),
                                   ],
@@ -334,6 +382,8 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                             ],
                           ),
                         ),
+
+                        
 
                         (device != null && device!.isConnected)
                             ? Row(
@@ -357,7 +407,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                   shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
                                         borderRadius:
-                                        BorderRadius.circular(25),
+                                        BorderRadius.circular(10),
                                         side: BorderSide(
                                             color: darkBg, width: 1)),
                                   ),
@@ -467,31 +517,30 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                                       .spaceEvenly,
                                                   children: [
                                                     Container(
-                                                      padding:
-                                                      EdgeInsets
-                                                          .all(
-                                                          10),
-                                                      decoration:
-                                                      BoxDecoration(
-                                                        border: Border
-                                                            .all(
-                                                            color:
-                                                            darkBg),
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            10),
-                                                        color: darkBg,
+                                                      width: screenSize.width/3.5,
+                                                      height: screenSize.height/12,
+                                                      padding: EdgeInsets.all(10),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                              darkBg),
+                                                          borderRadius:
+                                                          BorderRadius.circular(10),
+                                                          color: voltCalibrationDone
+                                                          ? darkBg.withOpacity(0.4)
+                                                          : darkBg
+                                                          /*VoltcalibrationDone
+                                                              ? Color(0xFF4CAF50).withOpacity(0.8)
+                                                              : darkBg*/
                                                       ),
-                                                      child:
-                                                      GestureDetector(
+                                                      child: GestureDetector(
                                                         onTap:
                                                             () async {
                                                           _showInputDialog(
                                                               Alertcontext:
                                                               context,
                                                               title:
-                                                              "Vmax for Calibration",
+                                                              "Vmax Calibration",
                                                               hint:
                                                               "e.g. 4200",
                                                               onSubmit:
@@ -501,47 +550,52 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                                               labelText:
                                                               "Enter Vmax(mV)");
                                                         },
-                                                        child: Text(
-                                                          "Voltage\nCalibration",
-                                                          style: TextStyle(
-                                                              fontSize:
-                                                              16,
-                                                              color: Colors
-                                                                  .white,
-                                                              fontWeight:
-                                                              FontWeight.w500),
-                                                          textAlign:
-                                                          TextAlign
-                                                              .center,
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          child: Text(
+                                                            voltCalibrationDone
+                                                            ? "Recalibrate\nVoltage"
+                                                            : "Voltage\nCalibration",
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                16,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                FontWeight.w500),
+                                                            textAlign:
+                                                            TextAlign
+                                                                .center,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                     Container(
-                                                      padding:
-                                                      EdgeInsets
-                                                          .all(
-                                                          10),
-                                                      decoration:
-                                                      BoxDecoration(
-                                                        border: Border
-                                                            .all(
-                                                            color:
-                                                            darkBg),
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            10),
-                                                        color: darkBg,
+                                                      width: screenSize.width/3.5,
+                                                      height: screenSize.height/12,
+                                                      padding: EdgeInsets.all(10),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                              darkBg),
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                          color: tempCalibrationDone
+                                                          ? darkBg.withOpacity(0.4)
+                                                          : darkBg
+                                                          /*VoltcalibrationDone
+                                                              ? Color(0xFF4CAF50).withOpacity(0.8)
+                                                              : darkBg*/
                                                       ),
-                                                      child:
-                                                      GestureDetector(
+                                                      child: GestureDetector(
                                                         onTap:
                                                             () async {
                                                           _showInputDialog(
                                                               Alertcontext:
                                                               context,
                                                               title:
-                                                              "Temperature for Calibration",
+                                                              "Temperature Calibration",
                                                               hint:
                                                               "e.g. 25000",
                                                               onSubmit:
@@ -551,18 +605,23 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                                               afterText:
                                                               "Calibrating Temp...");
                                                         },
-                                                        child: Text(
-                                                          "Temperature\nCalibration",
-                                                          style: TextStyle(
-                                                              fontSize:
-                                                              16,
-                                                              color: Colors
-                                                                  .white,
-                                                              fontWeight:
-                                                              FontWeight.w500),
-                                                          textAlign:
-                                                          TextAlign
-                                                              .center,
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          child: Text(
+                                                            tempCalibrationDone
+                                                            ? "Recalibrate\nTemperature"
+                                                            : "Temperature\nCalibration",
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                16,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                FontWeight.w500),
+                                                            textAlign:
+                                                            TextAlign
+                                                                .center,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -592,7 +651,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                                           18)),
                                                 ),
                                               ),
-                                              child: Text("Cancel",
+                                              child: Text("Done",
                                                   style: TextStyle(
                                                       fontSize: 16)),
                                             ),
@@ -611,7 +670,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                                   shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
                                         borderRadius:
-                                        BorderRadius.circular(25),
+                                        BorderRadius.circular(10),
                                         side: BorderSide(
                                             color: darkBg, width: 1)),
                                   ),
@@ -645,9 +704,49 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                             ),
                           ],
                         )
-                            : SizedBox(
-                          height: 20,
+                            : Center(
+                              child: Container(
+                                width: screenSize.width / 3,
+                                padding: EdgeInsets.only(bottom: 10),
+                                child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:  NotConnected
+                                    ? MaterialStateProperty.all<
+                                    Color>(
+                                    darkBg.withOpacity(0.3))
+                                    : MaterialStateProperty.all<
+                                    Color>(darkBg),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            12))),
+                              ),
+                              onPressed: () async {
+                                FocusScope.of(context).unfocus();
+                                validateField();
+                                !validateFields;
+                                if (!validateFields) {
+                                  await scanAndConnect();
+                                }
+                                if (mounted) {
+                                  setState(() {});
+                                }
+                              },
+                              child: Text(
+                                "Connect",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.black)
+                                    ]),
+                              ),
+                          ),
                         ),
+                            )
                       ],
                     ),
                   ],
@@ -888,6 +987,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
         setState(() {
           calibrationStep = 0;
           waitingForAck = false;
+          voltCalibrationDone = true;
         });
       }
       Navigator.of(context, rootNavigator: true).pop();
@@ -897,6 +997,7 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
       setState(() {
         calibrationStep = 0;
         waitingForAck = false;
+        tempCalibrationDone = true;
       });
       Navigator.of(context, rootNavigator: true).pop();
       printFunc("Temperature Calibration Completed!");
@@ -1025,9 +1126,17 @@ class _CalibrateDeviceState extends State<CalibrateDevice> {
                   ),
                 if (waitingForAck) SizedBox(height: 8),
                 if (waitingForAck)
-                  Text(
-                    afterText,
-                    style: TextStyle(color: darkBg),
+                  Column(
+                    children: [
+                      Text(
+                        afterText,
+                        style: TextStyle(color: darkBg),
+                      ),
+                      Text(
+                        "It will take approx. 3–4 mins.",
+                        style: TextStyle(color: darkBg),
+                      ),
+                    ],
                   ),
               ],
             ),

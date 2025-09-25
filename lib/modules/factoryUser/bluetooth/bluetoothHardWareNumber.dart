@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -117,6 +118,9 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
   //flag for Disconnect
   bool enableDisconnect = false;
 
+  bool VoltcalibrationDone = false;
+  bool TempCalibrationDone = false;
+
   BuildContext? alertContext;
 
   String? fullSerial;
@@ -148,6 +152,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       if(!isOffline) {
         // PIDforFactoryUser();
         // await scanAndConnect();
+        printFunc("Online");
       }else{
         printFunc("OFFLINE");
       }
@@ -169,6 +174,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       minTempCtrl.text = widget.SelectedBatch?.obj['profile']['lTemp'];
       maxTempCtrl.text = widget.SelectedBatch?.obj['profile']['uTemp'];
       tempCalibCtrl.text = "13";
+      VoltcalibrationDone = false;
     });
 
     if (mounted) {
@@ -206,7 +212,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: lightBg),
           title: Text(
-            "Adding",
+            "Configure Details",
             style: TextStyle(
                 fontFamily: baseFont,
                 fontWeight: FontWeight.w800,
@@ -221,7 +227,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
         body: Center(
           child: Card(
             elevation: 5,
-            margin: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 20),
+            margin: EdgeInsets.only(left: 15, top: 8, right: 15, bottom: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
@@ -238,24 +244,26 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 15, left: 25, right: 25),
+                        padding: EdgeInsets.only(top: 10, left: 25, right: 25),
                         child: Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                "DETAILS ",
-                                style: TextStyle(
-                                    fontFamily: baseFont,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 24,
-                                    color: darkBg,
-                                    shadows: [
-                                      Shadow(
-                                          color: Colors.black,
-                                          blurRadius: 0.5,
-                                          offset: Offset(0.5, 0.5))
-                                    ]),
+                              Center(
+                                child: Text(
+                                  "DETAILS ",
+                                  style: TextStyle(
+                                      fontFamily: baseFont,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 24,
+                                      color: darkBg,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.5,
+                                            offset: Offset(0.5, 0.5))
+                                      ]),
+                                ),
                               ),
                               isScanning
                                   ? Container(
@@ -270,39 +278,32 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                   ),
                                 ),
                               )
-                                  : ElevatedButton(
-                                onPressed: !isOffline
-                                    ? isDeviceConnected
-                                    ? () async {
-                                  await disconnect();
-                                }
-                                    : () async {
-                                  printFunc("NETWORK IS THEIR : $isOffline");
-                                  resetConnectionFlags();
-                                  PIDforFactoryUser();
-                                  await scanAndConnect();
-                                }
-                                    : null,
-                                child: Text(isDeviceConnected
-                                    ? "Connected"
-                                    : "Connect"),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                  !isOffline
-                                      ? MaterialStateProperty.all(darkBg)
-                                      : MaterialStateProperty.all(Color(0xFFB0BEC5)),
-                                  elevation: MaterialStateProperty.all(5),
-                                  shadowColor:
-                                  MaterialStateProperty.all(darkBg),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(10),
-                                        side: BorderSide(
-                                            color: darkBg, width: 1)),
-                                  ),
+                                  : isDeviceConnected
+                                  ? Container(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: isDeviceConnected
+                                          ? darkBg
+                                          : darkBg.withOpacity(0.4)
+                                      ),
+                                      padding: EdgeInsets.all(8),
+                                      margin: EdgeInsets.only(bottom: 5,top: 5),
+                                      child: Icon(Icons.bluetooth,size: 20,
+                                        color: isDeviceConnected
+                                        ? Colors.white
+                                        : Colors.black54,
+                                      ),
+                                    ),
+                                    isDeviceConnected
+                                    ? Text("Connected",style: TextStyle(fontSize: 14,color: darkBg),)
+                                    : SizedBox()
+                                  ],
                                 ),
-                              ),
+                              )
+                                  : SizedBox(),
                             ],
                           ),
                         ),
@@ -320,7 +321,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                 onChanged: (value) {},
                                 enable: false,
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 5),
                               const LabelText(text: "FirmWare Name :"),
                               TextFeildNewUser(
                                 hintText: firmWareName.text,
@@ -328,7 +329,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                 onChanged: (value) {},
                                 enable: false,
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 5),
                               const LabelText(text: "Config Name :"),
                               TextFeildNewUser(
                                 hintText: configName.text,
@@ -336,8 +337,14 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                 onChanged: (value) {},
                                 enable: false,
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 5),
                               GestureDetector(
+                                onTap: ()async{
+                                  printFunc("IN THIS ");
+                                  HardWareNumber.Text != ""
+                                      ? await _startPIDCheck()
+                                      :null;
+                                },
                                 child: PrimeryDropDownButton(
                                   isEnabled: false,
                                   tail: ErrorContainer(
@@ -345,7 +352,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                           HardWareNumber.getText == "",
                                       errorMsg:
                                       "Please Select the HardWare Number"),
-                                  mainText: "Select Tracker Serial Number",
+                                  mainText: "Tracker Serial Number",
                                   text: HardWareNumber.Text != ""
                                       ? HardWareNumber.getText
                                       : "Tracker Serial Number",
@@ -363,7 +370,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 5),
                             ],
                           )),
 
@@ -377,16 +384,14 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                             children: [
                               Padding(
                                 padding:
-                                EdgeInsets.only(bottom: 10, top: 15),
+                                EdgeInsets.only(bottom: 5, top: 15),
                                 child: ElevatedButton(
                                   onPressed: isDeviceConnected
                                       ? enableDisconnect
-                                      ? () async {
-                                    await disconnect();
-                                    if (mounted) {
-                                      Navigator.pop(context);
-                                    }
-                                  }
+                                      ? (){
+                                          printFunc("Configure already sent");
+                                          ShowSnackBarMessage(context, "Configure already sent!!", null);
+                                        }
                                       : () async {
                                     showDialog(
                                         context: context,
@@ -937,9 +942,10 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                   },
                                   style: ButtonStyle(
                                     backgroundColor: isDeviceConnected
-                                        ? MaterialStateProperty.all(darkBg)
-                                        : MaterialStateProperty.all(
-                                        darkBg.withOpacity(0.4)),
+                                        ? enableDisconnect
+                                        ? MaterialStateProperty.all(darkBg.withOpacity(0.4))
+                                        : MaterialStateProperty.all(darkBg)
+                                        : MaterialStateProperty.all(darkBg.withOpacity(0.4)),
                                     shape: MaterialStateProperty.all(
                                       RoundedRectangleBorder(
                                           borderRadius:
@@ -954,9 +960,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       child: Text(
-                                        enableDisconnect
-                                            ? "Disconnect"
-                                            : "Configure",
+                                        "Configure",
                                         maxLines: 1,
                                         style: TextStyle(
                                           color: isDeviceConnected
@@ -980,7 +984,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                               // Handle Calibration Btn
                               Padding(
                                 padding:
-                                EdgeInsets.only(bottom: 10, top: 15),
+                                EdgeInsets.only(bottom: 5, top: 15),
                                 child: ElevatedButton(
                                   onPressed: isDeviceConnected
                                       ? () {
@@ -1059,30 +1063,28 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                                         .spaceEvenly,
                                                     children: [
                                                       Container(
-                                                        padding:
-                                                        EdgeInsets
-                                                            .all(
-                                                            10),
-                                                        decoration:
-                                                        BoxDecoration(
+                                                        width: screenSize.width/3.5,
+                                                        height: screenSize.height/12,
+                                                        padding: EdgeInsets.all(10),
+                                                        decoration: BoxDecoration(
                                                           border: Border.all(
                                                               color:
                                                               darkBg),
                                                           borderRadius:
                                                           BorderRadius.circular(
                                                               10),
-                                                          color:
-                                                          darkBg,
+                                                          color: VoltcalibrationDone
+                                                              ? darkBg.withOpacity(0.4)
+                                                              : darkBg
                                                         ),
-                                                        child:
-                                                        GestureDetector(
+                                                        child: GestureDetector(
                                                           onTap:
                                                               () async {
                                                             _showInputDialog(
                                                                 Alertcontext:
                                                                 context,
                                                                 title:
-                                                                "Vmax for Calibration",
+                                                                "Vmax Calibration",
                                                                 hint:
                                                                 "e.g. 4200",
                                                                 onSubmit:
@@ -1092,46 +1094,45 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                                                 labelText:
                                                                 "Enter Vmax(mV)");
                                                           },
-                                                          child: Text(
-                                                            "Voltage\nCalibration",
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                16,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                FontWeight.w500),
-                                                            textAlign:
-                                                            TextAlign
-                                                                .center,
+                                                          child: FittedBox(
+                                                            fit: BoxFit.scaleDown,
+                                                            child: Text(
+                                                              VoltcalibrationDone
+                                                              ? "Recalibrate\nVoltage"
+                                                              : "Voltage\nCalibration",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                  16,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                  FontWeight.w500),
+                                                              textAlign:
+                                                              TextAlign
+                                                                  .center,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                       Container(
-                                                        padding:
-                                                        EdgeInsets
-                                                            .all(
-                                                            10),
-                                                        decoration:
-                                                        BoxDecoration(
-                                                          border: Border.all(
-                                                              color:
-                                                              darkBg),
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                          color:
-                                                          darkBg,
+                                                        width: screenSize.width/3.5,
+                                                        height: screenSize.height/12,
+                                                        padding: EdgeInsets.all(10),
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(color: darkBg),
+                                                          borderRadius: BorderRadius.circular(10),
+                                                          color: TempCalibrationDone
+                                                              ? darkBg.withOpacity(0.8)
+                                                              : darkBg,
                                                         ),
-                                                        child:
-                                                        GestureDetector(
+                                                        child: GestureDetector(
                                                           onTap:
                                                               () async {
                                                             _showInputDialog(
                                                                 Alertcontext:
                                                                 context,
                                                                 title:
-                                                                "Temperature for Calibration",
+                                                                "Temperature Calibration",
                                                                 hint:
                                                                 "e.g. 25000",
                                                                 onSubmit:
@@ -1141,18 +1142,23 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                                                 afterText:
                                                                 "Calibrating Temp...");
                                                           },
-                                                          child: Text(
-                                                            "Temperature\nCalibration",
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                16,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                FontWeight.w500),
-                                                            textAlign:
-                                                            TextAlign
-                                                                .center,
+                                                          child: FittedBox(
+                                                            fit: BoxFit.scaleDown,
+                                                            child: Text(
+                                                              TempCalibrationDone
+                                                               ? "Recalibrate\nTemperature"
+                                                               : "Temperature\nCalibration",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                  16,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                  FontWeight.w500),
+                                                              textAlign:
+                                                              TextAlign
+                                                                  .center,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
@@ -1182,7 +1188,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                                                             18)),
                                                   ),
                                                 ),
-                                                child: Text("Cancel",
+                                                child: Text("Done",
                                                     style: TextStyle(
                                                         fontSize:
                                                         16)),
@@ -1238,6 +1244,61 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                               //Submit btn
                             ],
                           ),
+                          Padding(
+                            padding:
+                            EdgeInsets.only(bottom: 5, ),
+                            child: ElevatedButton(
+                              onPressed: isDeviceConnected
+                                  ? () async {
+                                await disconnect();
+                                if (mounted) {
+                                  Navigator.pop(context);
+                                }
+                              }
+                                  : () {
+                                printFunc("NOT CONNECTED");
+                              },
+                              style: ButtonStyle(
+                                backgroundColor: isDeviceConnected
+                                    ? MaterialStateProperty.all(darkBg)
+                                    : MaterialStateProperty.all(
+                                    darkBg.withOpacity(0.4)),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(25),
+                                      side: BorderSide(
+                                          color: darkBg, width: 1)),
+                                ),
+                              ),
+                              child: Container(
+                                height: 30,
+                                width: screenSize.width / 3.5,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    "Cancel",
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: isDeviceConnected
+                                          ? Colors.white
+                                          : Color(0xFFEEEEEE),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: baseFont,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 0.1)
+                                      ],
+                                      overflow: TextOverflow.visible,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
                         ],
                       )
                           : SizedBox(height: 15,),
@@ -1315,7 +1376,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18)))),
             ),
-            ElevatedButton(
+            /*ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
@@ -1329,7 +1390,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18)))),
-            ),
+            ),*/
           ],
           backgroundColor: second_lightBg,
         );
@@ -1385,7 +1446,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   ],
                 ),
                 content: Text(
-                  "This Device is Assign with this ${productId['productId'].toString()} Tracker Serial Number. Do you want too?",
+                  "This Device is Assign with this ${productId['productId'].toString()} Tracker Serial Number.",
                   style: TextStyle(
                     color: darkBg,
                     fontWeight: FontWeight.w500,
@@ -1599,13 +1660,18 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
               ),
               actions: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(context).pop();
                     // Reset flags and retry
                     resetConnectionFlags();
+                    setState(() {
+                      isScanning=false;
+                    });
+                    disconnect();
+                    await scanAndConnect();
                   },
                   child: Text(
-                    "Re-Connect",
+                    "ReConnect",
                     style: TextStyle(fontSize: 16),
                   ),
                   style: ButtonStyle(
@@ -1668,22 +1734,6 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                 },
                 child: Text(
                   "Back",
-                  style: TextStyle(fontSize: 16),
-                ),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(darkBg),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18)))),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  // Reset flags and retry
-                  resetConnectionFlags();
-                },
-                child: Text(
-                  "Re-try",
                   style: TextStyle(fontSize: 16),
                 ),
                 style: ButtonStyle(
@@ -1858,11 +1908,11 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
         });
         Navigator.of(context, rootNavigator: true).pop();
         ShowSnackBarMessage(
-            alertContext!, 'Voltage_max sent for Calibration', true);
+            alertContext!, 'Voltage_min sent for Calibration', true);
         Future.delayed(const Duration(milliseconds: 300), () {
           _showInputDialog(
               Alertcontext: context,
-              title: "Vmin for Calibration",
+              title: "Vmin Calibration",
               hint: "e.g. 3200",
               onSubmit: sendVmin,
               labelText: "Enter Vmin (mV)",
@@ -1880,6 +1930,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
         setState(() {
           calibrationStep = 0;
           waitingForAck = false;
+          VoltcalibrationDone = true;
         });
       }
       Navigator.of(context, rootNavigator: true).pop();
@@ -1890,6 +1941,7 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       setState(() {
         calibrationStep = 0;
         waitingForAck = false;
+        TempCalibrationDone = true;
       });
       Navigator.of(context, rootNavigator: true).pop();
       printFunc("Temperature Calibration Completed!");
@@ -2022,9 +2074,17 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
                   ),
                 if (waitingForAck) SizedBox(height: 8),
                 if (waitingForAck)
-                  Text(
-                    afterText,
-                    style: TextStyle(color: darkBg),
+                  Column(
+                    children: [
+                      Text(
+                        afterText,
+                        style: TextStyle(color: darkBg),
+                      ),
+                      Text(
+                        "It will take approx. 3–4 mins.",
+                        style: TextStyle(color: darkBg),
+                      ),
+                    ],
                   ),
               ],
             ),
@@ -2135,7 +2195,8 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
     }
   }
 
-  void _onInternetChange() {
+
+  Future<void> _onInternetChange() async {
     printFunc("Inside _onInternetChange");
 
     final status = InternetStatus.isOnline.value;
@@ -2148,13 +2209,13 @@ class BluetoothHardwareNumberState extends State<BluetoothHardwareNumber> {
       // Online case
       if (_initialNetworkCheckDone &&
           (HardWareNumber.Text == null || HardWareNumber.Text!.isEmpty)) {
-        _startPIDCheck();
+        await _startPIDCheck();
         printFunc("NT01");
       } else if (!_initialNetworkCheckDone) {
         setState(() {
           _initialNetworkCheckDone = true;
         });
-        _startPIDCheck();
+        await _startPIDCheck();
         printFunc("NT02");
       }
     } else {

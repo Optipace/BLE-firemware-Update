@@ -174,8 +174,8 @@ class AdminLogsState extends State<AdminLogs> {
             "Logs",
             style: TextStyle(
                 fontFamily: baseFont,
-                fontWeight: FontWeight.w800,
-                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
                 color: lightBg),
           ),
           toolbarHeight: screenSize.height / 11.5,
@@ -183,7 +183,7 @@ class AdminLogsState extends State<AdminLogs> {
           elevation: 5,
           shadowColor: darkBg,
         ),
-        backgroundColor: lightBg,
+        backgroundColor: UpdatedBG,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -207,7 +207,7 @@ class AdminLogsState extends State<AdminLogs> {
                           style: TextStyle(
                             color: darkBg,
                             fontFamily: baseFont,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w500,
                             fontSize: 20,
                             shadows: [
                               Shadow(color: Colors.black, blurRadius: 0.5)
@@ -230,6 +230,7 @@ class AdminLogsState extends State<AdminLogs> {
                               },
                               child: Column(
                                 children: [
+                                  //circle
                                   Container(
                                     width: screenSize.width / 4,
                                     height: screenSize.height / 7,
@@ -299,8 +300,8 @@ class AdminLogsState extends State<AdminLogs> {
                                   Text(
                                     "This Month",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
                                     ),
                                   ),
                                 ],
@@ -384,8 +385,8 @@ class AdminLogsState extends State<AdminLogs> {
                                   Text(
                                     "This Week",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
                                     ),
                                   ),
                                 ],
@@ -449,8 +450,7 @@ class AdminLogsState extends State<AdminLogs> {
                                                             color: Color(
                                                                 0xFF212121),
                                                             fontWeight:
-                                                            FontWeight
-                                                                .bold,
+                                                            FontWeight.w500,
                                                             fontSize: 24),
                                                       ),
                                                     ),
@@ -469,8 +469,8 @@ class AdminLogsState extends State<AdminLogs> {
                                   Text(
                                     "Today",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
                                     ),
                                   ),
                                 ],
@@ -485,7 +485,7 @@ class AdminLogsState extends State<AdminLogs> {
                           color: darkBg,
                         ),
                         Container(
-                            margin: EdgeInsets.fromLTRB(0, 15, 0, 5),
+                            margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Row(
@@ -497,7 +497,7 @@ class AdminLogsState extends State<AdminLogs> {
                                     "Number of devices Flashed : $totalAllCount",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16),
+                                        fontSize: 14),
                                   ),
                                 ],
                               ),
@@ -515,6 +515,8 @@ class AdminLogsState extends State<AdminLogs> {
                     titleText: "User Logs : ",
                     categories: UserLogs,
                     colors: UserColor,
+                    total: 2,
+                    totalText: "Users",
                     onTap: () {
                       printFunc("User Logs ${UserLogs[1].name}");
                       Navigator.of(context).push(MaterialPageRoute(
@@ -538,6 +540,7 @@ class AdminLogsState extends State<AdminLogs> {
                     titleText: "Batch Logs : ",
                     categories: BatchLogs,
                     colors: BatchColors,
+                    totalText: "Batches",
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => BatchLogsMain(
@@ -545,7 +548,7 @@ class AdminLogsState extends State<AdminLogs> {
                             allLogs: allLogs,
                           )));
                     },
-                    total: allLogs.length,
+                    total: batchList.length,
                   ),
                 ),
               ),

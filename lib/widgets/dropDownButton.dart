@@ -47,16 +47,14 @@ class PrimeryDropDownButton extends StatelessWidget {
             children: [
               anchor ?? SizedBox(),
               Container(
-                  margin: EdgeInsets.only(
-                      // left: 25,
-                      ),
+
                   child: Row(
                     children: [
                       Text(
                         "${mainText.toString()} ",
                         style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w400,
                             color: darkBg,
                             fontFamily: baseFont,
                             shadows: [
@@ -84,24 +82,25 @@ class PrimeryDropDownButton extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(
-              left: 10,
+              left: 2,
               top: 5.0,
             ),
-            padding: EdgeInsets.only(left: 18),
+            padding: EdgeInsets.only(left: 15),
             decoration: BoxDecoration(
                 color: isEnabled ? color ?? Colors.white : lightBg,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(width: 1)),
-            height: height ?? 45,
+            height: height ?? 42,
             width: width ?? screenSize.width * 0.90,
             child: InkWell(
                 // color: color,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(left: 5),
+                        margin: EdgeInsets.zero,
+                        padding: EdgeInsets.zero,
                         child: Text(
                           text!,
                           style: TextStyle(
@@ -113,6 +112,7 @@ class PrimeryDropDownButton extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
+
                       ),
                     ),
                     Container(

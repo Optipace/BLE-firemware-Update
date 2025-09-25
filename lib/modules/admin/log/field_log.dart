@@ -73,8 +73,8 @@ class _FieldLogsState extends State<FieldLogs> {
           "Field Logs",
           style: TextStyle(
               fontFamily: baseFont,
-              fontWeight: FontWeight.w800,
-              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
               color: lightBg),
         ),
         toolbarHeight: screenSize.height / 11.5,
@@ -82,7 +82,7 @@ class _FieldLogsState extends State<FieldLogs> {
         elevation: 5,
         shadowColor: darkBg,
       ),
-      backgroundColor: lightBg,
+      backgroundColor: UpdatedBG,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -156,47 +156,51 @@ class _FieldLogsState extends State<FieldLogs> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  CupertinoIcons.device_phone_portrait,
-                                  size: 22,
-                                  color: SuccessCardText,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  successCount.toString(),
-                                  style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w500,
-                                      color: SuccessCardText,
-                                      shadows: [
-                                        Shadow(
-                                            color: Colors.black,
-                                            blurRadius: 0.5)
-                                      ]),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              "Total Successful Devices",
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w300,
-                                  color: SuccessCardText,
-                                  shadows: [
-                                    Shadow(
-                                        color: Colors.black, blurRadius: 0.5)
-                                  ]),
-                            ),
-                          ],
+                        GestureDetector(
+                          onTap: (){
+                          },
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.device_phone_portrait,
+                                    size: 22,
+                                    color: SuccessCardText,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    successCount.toString(),
+                                    style: TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.w500,
+                                        color: SuccessCardText,
+                                        shadows: [
+                                          Shadow(
+                                              color: Colors.black,
+                                              blurRadius: 0.5)
+                                        ]),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "Successful Devices",
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w300,
+                                    color: SuccessCardText,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.black, blurRadius: 0.5)
+                                    ]),
+                              ),
+                            ],
+                          ),
                         ),
                         Column(
                           children: [
@@ -228,7 +232,7 @@ class _FieldLogsState extends State<FieldLogs> {
                               height: 5,
                             ),
                             Text(
-                              "Total Failed Devices",
+                              "Failed Devices",
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,
@@ -239,7 +243,7 @@ class _FieldLogsState extends State<FieldLogs> {
                                   ]),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ],
@@ -255,6 +259,7 @@ class _FieldLogsState extends State<FieldLogs> {
                 return ValueListenableBuilder(
                   valueListenable: moreInfo,
                   builder: (ctx, value, child) {
+                    printFunc("Demo : ${sortedFieldLogs[0]}");
                     return log_pop_up(
                         SortedLogs: sortedFieldLogs, index: index);
                   },
@@ -280,7 +285,7 @@ class log_pop_up extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    printFunc("Sorted LOGS IN POP_UP : ${SortedLogs[index]}");
+    // printFunc("Sorted LOGS IN POP_UP : ${SortedLogs[index]}");
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -937,7 +942,7 @@ class log_pop_up extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
-                  width: screenSize.width / 4,
+                  width: screenSize.width / 5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -968,7 +973,7 @@ class log_pop_up extends StatelessWidget {
 
                 // Batch
                 Container(
-                  width: screenSize.width / 5,
+                  width: screenSize.width / 5.5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1000,7 +1005,7 @@ class log_pop_up extends StatelessWidget {
 
                 //Time and Date
                 Container(
-                  width: screenSize.width / 6,
+                  width: screenSize.width / 4.5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,

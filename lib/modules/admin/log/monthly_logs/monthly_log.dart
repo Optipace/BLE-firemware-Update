@@ -71,6 +71,7 @@ class _Monthly_logState extends State<Monthly_log> {
   int totalCount = 0;
   int sucessCount = 0;
   int failCount = 0;
+  int selectedBtn = 1;
 
   @override
   void initState() {
@@ -93,8 +94,8 @@ class _Monthly_logState extends State<Monthly_log> {
           "Monthly Logs",
           style: TextStyle(
               fontFamily: baseFont,
-              fontWeight: FontWeight.w800,
-              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
               color: lightBg),
         ),
         toolbarHeight: screenSize.height / 11.5,
@@ -102,7 +103,7 @@ class _Monthly_logState extends State<Monthly_log> {
         elevation: 5,
         shadowColor: darkBg,
       ),
-      backgroundColor: lightBg,
+      backgroundColor: UpdatedBG,
       body:  SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -206,7 +207,7 @@ class _Monthly_logState extends State<Monthly_log> {
                               height: 5,
                             ),
                             Text(
-                              "Total Successful Devices",
+                              "Successful Devices",
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,
@@ -248,7 +249,7 @@ class _Monthly_logState extends State<Monthly_log> {
                               height: 5,
                             ),
                             Text(
-                              "Total Failed Devices",
+                              "Failed Devices",
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,
@@ -265,16 +266,41 @@ class _Monthly_logState extends State<Monthly_log> {
                   ],
                 ),
               ),
+              if(selectedBtn == 1)
               ...List.generate(sortedMontlyLogs.length, (index) {
+                printFunc("Failure : ${sortedMontlyLogs[0]}");
                 ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
                 return ValueListenableBuilder(
                   valueListenable: moreInfo,
                   builder: (ctx, value, child) {
+
                     return log_pop_up(
                         SortedLogs: sortedMontlyLogs, index: index);
                   },
                 );
               }),
+              if(selectedBtn == 2)
+                ...List.generate(sortedMontlyLogs[1].length, (index) {
+                  ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
+                  return ValueListenableBuilder(
+                    valueListenable: moreInfo,
+                    builder: (ctx, value, child) {
+                      return log_pop_up(
+                          SortedLogs: sortedMontlyLogs[1], index: index);
+                    },
+                  );
+                }),
+              if(selectedBtn == 3)
+                ...List.generate(sortedMontlyLogs[1].length, (index) {
+                  ValueNotifier<bool> moreInfo = ValueNotifier<bool>(false);
+                  return ValueListenableBuilder(
+                    valueListenable: moreInfo,
+                    builder: (ctx, value, child) {
+                      return log_pop_up(
+                          SortedLogs: sortedMontlyLogs[1], index: index);
+                    },
+                  );
+                })
             ],
           ),
         ),

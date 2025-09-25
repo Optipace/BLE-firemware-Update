@@ -125,6 +125,13 @@ class _locateHomePageState extends State<locateHomePage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    startScan();
+  }
+
+  @override
   Widget build(BuildContext context) {
     getSize(context);
     return Scaffold(

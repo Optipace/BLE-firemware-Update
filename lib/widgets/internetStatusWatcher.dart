@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/dataBase/table_curl.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
 import 'package:tracker_firmware/modules/factoryUser/api/saveLog.dart';
 bool isSync = true;
@@ -68,7 +69,9 @@ class _InternetStatusWatcherState extends State<InternetStatusWatcher> {
         setState(() {
           _isConnected = hasConnection;
         });
-        syncLog(context);
+        if(await hasLogs()){
+          syncLog(context);
+        }
 
       }else{
         setState(() {

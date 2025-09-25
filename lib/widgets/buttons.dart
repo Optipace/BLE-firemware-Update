@@ -48,7 +48,7 @@ class PrimaryButton extends StatelessWidget {
         ),
         child: Container(
           width: buttonWidth,
-          height: height ?? 40,
+          height: height ?? 45,
           padding: EdgeInsets.symmetric(
             vertical: 4,
           ),
@@ -74,7 +74,7 @@ class PrimaryButton extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w500,
                     fontFamily: baseFont,
                     shadows: [Shadow(color: Colors.black, blurRadius: 0.1)],
                   ),
@@ -130,7 +130,7 @@ class manageUserBtn extends StatelessWidget {
         shadowColor: MaterialStateProperty.all(darkBg),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(16),
               side: BorderSide(color: darkBg, width: 1)),
         ),
       ),
