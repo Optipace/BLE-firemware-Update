@@ -809,14 +809,16 @@ class AdminNewUserState extends State<AdminNewUser> {
                               _userFound = false;
                             });
                             if (!_validatePhn) {
-                              if (UserData().phone == _searchPhn.text.trim()) {
+                              setEmpDetails();
+                              /*if (UserData().phone == _searchPhn.text.trim()) {
                                 ShowSnackBarMessage(
                                     context,
                                     "Edit your profile from 'View Profile' section",
                                     null);
-                              } else {
-                                setEmpDetails();
                               }
+                              else {
+                                setEmpDetails();
+                              }*/
                             }
                             //api call and store in a bool var so then if the bool is true then olny set the userFound to true otherwise set to false
                           },

@@ -51,17 +51,18 @@ void main() async {
   // Hive.registerAdapter(FirmwareModelAdapter());
   // Hive.registerAdapter(FirmwareSeriesModelAdapter());
 
-  //Without DEV-Option
-/*  SystemChrome.setPreferredOrientations([
+  //Without DEV-
+  developerOption
+   ? SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
   ]).then((_) async {
     runApp(MyApp());
-  });*/
+  })
 
   // with Dev-option
-  SystemChrome.setPreferredOrientations([
+   : SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
