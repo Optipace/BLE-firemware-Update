@@ -46,6 +46,7 @@ dependencies:
   file_picker: ^5.2.5
   #  nordic_dfu: ^3.0.1
   nordic_dfu: ^7.0.0
+  version: ^3.0.2
   android_intent: ^2.0.2
   connectivity_plus:
   qr_code_scanner: ^1.0.1

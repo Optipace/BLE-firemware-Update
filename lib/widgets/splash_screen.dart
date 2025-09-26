@@ -108,43 +108,86 @@ class SplashScreenState extends State<splashScreen> with SingleTickerProviderSta
             end: Alignment.bottomRight,
           ),
         ),
-        child: Center(
-            child: Text(
-              "DFI TRACKR ",
-              style: TextStyle(
-                color: primaryText,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-                wordSpacing: 1.5,
+        child: Column(
+          children: [
+            // Main content - keeps its centered position
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'DREAMFLY INNOVATION',
+                      style: TextStyle(
+                        color: primaryText,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 26,
+                        wordSpacing: 1.5,
+                      ),
+                    ),
+
+                    SizedBox(height: 5.0),
+
+                    Text(
+                      'TRAKR PROVISONING ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: primaryText,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        wordSpacing: 1.5,
+                      ),
+                    ),
+
+                  ],
+                ),
               ),
             ),
-            /*Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "DFI TRACKR ",
-                  style: TextStyle(
-                    color: primaryText,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    wordSpacing: 1.5,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "PROVISIONING APP",
-                  style: TextStyle(
-                    color: primaryText,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    wordSpacing: 1.5,
-                  ),
-                ),
 
-              ],
-            )*/
+            // Bottom text
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Powered by',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/image/logo.png',
+                        width: 20,
+                        height: 20,
+
+                      ),
+                      Text(
+                        'Optipace',
+                        style: TextStyle(
+                          fontSize: 13.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+
+                    ],
+                  ),
+                  Text(
+                    'Version : 1.0.0',
+                    style: TextStyle(
+                      fontSize: 10.0,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

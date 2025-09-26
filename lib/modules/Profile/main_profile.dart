@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
-import 'package:tracker_firmware/modules/Profile/edit_profile.dart';
 import 'package:tracker_firmware/modules/admin/api/api.dart';
 
 class mainProfile extends StatefulWidget {

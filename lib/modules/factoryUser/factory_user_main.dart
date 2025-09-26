@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/checkVersion.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/modules/dfuModule/bluetoothMain.dart';
 import 'package:tracker_firmware/modules/factoryUser/Calibration/calibration_main.dart';
@@ -29,9 +30,11 @@ class FactoryMain extends StatelessWidget {
                   margin: EdgeInsets.only(left: 15),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (_) => BatchFactoryManagement()));
+                    onTap: () async {
+                      if(await checkVersion(context)){
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (_) => BatchFactoryManagement()));
+                      }
                     },
                     child: Row(
                       children: [
@@ -81,11 +84,13 @@ class FactoryMain extends StatelessWidget {
                   margin: EdgeInsets.only(left: 15),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (_) => BluetoothMainScreen(
-                                onBluetoothOn: () => locateHomePage(),
-                              )));
+                    onTap: () async {
+                      if(await checkVersion(context)){
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (_) => BluetoothMainScreen(
+                                  onBluetoothOn: () => locateHomePage(),
+                                )));
+                      }
                     },
                     child: Row(
                       children: [
@@ -135,11 +140,13 @@ class FactoryMain extends StatelessWidget {
                   margin: EdgeInsets.only(left: 15),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (_) => BluetoothMainScreen(
-                                onBluetoothOn: () => CalibrateDevice(),
-                              )));
+                    onTap: () async {
+                      if(await checkVersion(context)){
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (_) => BluetoothMainScreen(
+                                  onBluetoothOn: () => CalibrateDevice(),
+                                )));
+                      }
                     },
                     child: Row(
                       children: [
@@ -188,9 +195,11 @@ class FactoryMain extends StatelessWidget {
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(shape: BoxShape.circle, color: darkBg),
           child: IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute<void>(
-                  builder: (_) => BatchFactoryManagement()));
+            onPressed: () async {
+              if(await checkVersion(context)){
+                Navigator.of(context).push(MaterialPageRoute<void>(
+                    builder: (_) => BatchFactoryManagement()));
+              }
             },
             icon: Icon(
               Icons.download,
@@ -213,11 +222,14 @@ class FactoryMain extends StatelessWidget {
                     color: darkBg,
                   ),
                   text: "Scan Device",
-                  onPress: () {
-                    FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
+                  onPress: () async {
+                    if(await checkVersion(context)){
+                      FlutterBluePlus.setLogLevel(LogLevel.verbose,
+                          color: true);
 
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => SavedBatches()));
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => SavedBatches()));
+                    }
                   }),
               SizedBox(
                 height: 15,
@@ -230,11 +242,13 @@ class FactoryMain extends StatelessWidget {
                     color: darkBg,
                   ),
                   text: "Pair Battery",
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => BluetoothMainScreen(
-                              onBluetoothOn: () => PairBattery(),
-                            )));
+                  onPress: () async {
+                    if(await checkVersion(context)){
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => BluetoothMainScreen(
+                                onBluetoothOn: () => PairBattery(),
+                              )));
+                    }
                   }),
               SizedBox(
                 height: 15,
@@ -249,11 +263,13 @@ class FactoryMain extends StatelessWidget {
                     color: darkBg,
                   ),
                   text: "Assign Client",
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => BluetoothMainScreen(
-                              onBluetoothOn: () => AssignClient(),
-                            )));
+                  onPress: () async {
+                    if(await checkVersion(context)){
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => BluetoothMainScreen(
+                                onBluetoothOn: () => AssignClient(),
+                              )));
+                    }
                   }),
               SizedBox(
                 height: 15,
@@ -269,11 +285,13 @@ class FactoryMain extends StatelessWidget {
                     color: darkBg,
                   ),
                   text: "Locate Device",
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => BluetoothMainScreen(
-                              onBluetoothOn: () => locateHomePage(),
-                            )));
+                  onPress: () async {
+                    if(await checkVersion(context)){
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => BluetoothMainScreen(
+                                onBluetoothOn: () => locateHomePage(),
+                              )));
+                    }
                   }),
               SizedBox(
                 height: 15,
@@ -289,11 +307,13 @@ class FactoryMain extends StatelessWidget {
                     color: darkBg,
                   ),
                   text: "Calibration",
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => BluetoothMainScreen(
-                              onBluetoothOn: () => CalibrateDevice(),
-                            )));
+                  onPress: () async {
+                    if(await checkVersion(context)){
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => BluetoothMainScreen(
+                                onBluetoothOn: () => CalibrateDevice(),
+                              )));
+                    }
                   }),
               SizedBox(
                 height: 15,

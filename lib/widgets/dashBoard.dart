@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/checkVersion.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/entity/userData.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/generalMethods.dart';
@@ -150,9 +151,11 @@ UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
         Padding(
           padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
           child: InkWell(
-            onTap: (){
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => mainProfile()));
+            onTap: () async {
+              if(await checkVersion(context)){
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => mainProfile()));
+              }
             },
             child: Row(
               children: [
@@ -251,11 +254,13 @@ UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
               margin: EdgeInsets.only(left: 15),
               padding: EdgeInsets.symmetric(vertical: 10),
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   // printFunc("DEMO USER DATA : ${UserData()}");
-
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => mainProfile()));
+                  if(await checkVersion(context))
+                  {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => mainProfile()));
+                  }
                 },
                 child: Row(
                   children: [
@@ -307,11 +312,13 @@ UserProfileSlider(context, Function? onlogout, Widget? sliderChild) {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: GestureDetector(
             onTap: () async {
-              Navigator.of(context, rootNavigator: true)
-                  .pop(); // Close the drawer first
-              await setSharedPreference(
-                  await getEmployeeDetail(context, UserData().phone));
-              await setUserData();
+              if(await checkVersion(context)){
+                Navigator.of(context, rootNavigator: true)
+                    .pop(); // Close the drawer first
+                await setSharedPreference(
+                    await getEmployeeDetail(context, UserData().phone));
+                await setUserData();
+              }
             },
             child: Row(
               children: [

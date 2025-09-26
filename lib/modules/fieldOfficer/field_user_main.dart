@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracker_firmware/Const_TermAndFunction/api/checkVersion.dart';
 import 'package:tracker_firmware/Const_TermAndFunction/constants.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/ScanBluetooth/bluetoothBatches.dart';
 import 'package:tracker_firmware/modules/fieldOfficer/batchList/fieldBatchUser.dart';
@@ -23,9 +24,11 @@ class FieldMain extends StatelessWidget {
                   margin: EdgeInsets.only(left: 15),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (_) => BatchFeildManagement()));
+                    onTap: () async {
+                      if(await checkVersion(context)){
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (_) => BatchFeildManagement()));
+                      }
                     },
                     child: Row(
                       children: [
@@ -86,9 +89,11 @@ class FieldMain extends StatelessWidget {
                     color: darkBg,
                   ),
                   text: "Firmwares",
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => FirmwareFieldManagement()));
+                  onPress: () async {
+                    if(await checkVersion(context)){
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => FirmwareFieldManagement()));
+                    }
                   }),
               //SizedBox
               /*
@@ -96,7 +101,7 @@ class FieldMain extends StatelessWidget {
                 height: 25,
               ),*/
               // Config/Service
-              PrimaryButton(
+             /* PrimaryButton(
                   enable: false,
                   icon: Icon(
                     Icons.handyman_outlined,
@@ -106,13 +111,15 @@ class FieldMain extends StatelessWidget {
                     color: darkBg,
                   ),
                   text: "Profiles/Config",
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => ProfileFieldManagement()));
-                  }),
-              SizedBox(
+                  onPress: () async {
+                    if(await checkVersion(context)){
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => ProfileFieldManagement()));
+                    }
+                  }),*/
+             /* SizedBox(
                 height: 25,
-              ),
+              ),*/
               // Batch/Profile
               PrimaryButton(
                   icon: Icon(
@@ -123,9 +130,11 @@ class FieldMain extends StatelessWidget {
                     color: darkBg,
                   ),
                   text: "Batches",
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => BatchFeildManagement()));
+                  onPress: () async {
+                    if(await checkVersion(context)){
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => BatchFeildManagement()));
+                    }
                   }),
               SizedBox(
                 height: 15,
@@ -140,11 +149,13 @@ class FieldMain extends StatelessWidget {
                     color: darkBg,
                   ),
                   text: "Scan Device",
-                  onPress: () {
+                  onPress: () async {
                     // FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
-
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => SavedBatches()));
+                    if(await checkVersion(context))
+                    {
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => SavedBatches()));
+                    }
                   }),
               SizedBox(
                 height: 25,
